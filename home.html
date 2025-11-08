@@ -1575,6 +1575,69 @@
   margin: 3px 0 0;
   font-size: 0.8rem;
 }
+
+.results-container {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: rgba(10, 10, 20, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(124, 92, 255, 0.5);
+  max-height: 400px;
+  overflow-y: auto;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 1000;
+  backdrop-filter: blur(8px);
+  transform: translateY(5px);
+}
+
+.results-container.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.result-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.2s ease;
+}
+
+.result-item:hover {
+  background: rgba(124, 92, 255, 0.2);
+  transform: scale(1.02);
+}
+
+.result-item img {
+  width: 55px;
+  height: 70px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.result-info h4 {
+  color: #fff;
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.result-info p {
+  color: #aaa;
+  margin: 3px 0 0;
+  font-size: 0.8rem;
+}
+
+.search {
+  position: relative;
+  z-index: 9999;
+}
+
   </style>
 </head>
 
@@ -2107,6 +2170,78 @@ document.addEventListener("click", (e) => {
   }
 });
 </script>
+<script>
+const searchInput = document.getElementById("searchInput");
+const searchResults = document.getElementById("searchResults");
+
+// Load data from searchData.json
+let animeList = [];
+
+fetch('searchData.json')
+  .then(res => res.json())
+  .then(data => (animeList = data))
+  .catch(err => console.error("Error loading searchData.json:", err));
+
+// Live search listener
+searchInput.addEventListener("input", () => {
+  const query = searchInput.value.trim().toLowerCase();
+  searchResults.innerHTML = "";
+
+  if (!query) {
+    searchResults.classList.remove("active");
+    return;
+  }
+
+  const filtered = animeList.filter(anime =>
+    anime.title.toLowerCase().includes(query)
+  );
+
+  if (filtered.length === 0) {
+    searchResults.innerHTML = `
+      <p style="color:#bbb;padding:10px;text-align:center;">No results found</p>
+    `;
+  } else {
+    filtered.forEach(anime => {
+      const item = document.createElement("div");
+      item.classList.add("result-item");
+      item.innerHTML = `
+        <img src="${anime.image}" alt="${anime.title}">
+        <div class="result-info">
+          <h4>${anime.title}</h4>
+          <p>${anime.type}</p>
+          <p style="font-size:0.75rem;color:#9aa;">${anime.genre}</p>
+        </div>
+      `;
+      item.addEventListener("click", () => {
+        window.location.href = anime.link;
+      });
+      searchResults.appendChild(item);
+    });
+  }
+
+  // Adjust dropdown width to match search bar
+  const searchBoxWidth = document.querySelector(".search").offsetWidth;
+  searchResults.style.width = `${searchBoxWidth}px`;
+
+  searchResults.classList.add("active");
+});
+
+// Hide dropdown when clicking outside
+document.addEventListener("click", (e) => {
+  if (!searchResults.contains(e.target) && e.target !== searchInput) {
+    searchResults.classList.remove("active");
+  }
+});
+
+// Keep dropdown aligned on window resize
+window.addEventListener("resize", () => {
+  if (searchResults.classList.contains("active")) {
+    const searchBoxWidth = document.querySelector(".search").offsetWidth;
+    searchResults.style.width = `${searchBoxWidth}px`;
+  }
+});
+</script>
+
 </body>
 
 </html>
