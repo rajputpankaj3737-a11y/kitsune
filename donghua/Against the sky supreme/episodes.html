@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Against The Sky Supreme — Watch Episodes | Kitsune</title>
+  <style>
+    :root {
+      --bg: #071023;
+      --accent1: #ff6b81;
+      --accent2: #7c5cff;
+      --text: #e6eef8;
+      --muted: #98a0b3;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      color: var(--text);
+      background: linear-gradient(180deg, rgba(7,16,35,0.85), rgba(8,17,38,0.95)),
+        url("../../Image & logo/Against_The_Sky_Supreme.webp") center/cover no-repeat;
+      background-attachment: fixed;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* 🔥 HEADER */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 40px;
+      background: rgba(11,18,32,0.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-btn {
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      border: none;
+      color: #fff;
+      padding: 8px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-weight: 500;
+    }
+
+    .nav-btn:hover {
+      opacity: 0.85;
+    }
+
+    /* MAIN SECTIONS */
+    .banner {
+      text-align: center;
+      padding: 50px 20px 20px;
+      background: rgba(7,10,20,0.65);
+      backdrop-filter: blur(6px);
+    }
+
+    .banner h1 {
+      font-size: 30px;
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+
+    .banner p {
+      color: var(--muted);
+      max-width: 700px;
+      margin: 0 auto;
+      font-size: 15px;
+    }
+
+    .info-section {
+      text-align: center;
+      background: rgba(11,18,32,0.6);
+      max-width: 850px;
+      margin: 30px auto;
+      padding: 25px;
+      border-radius: 14px;
+      box-shadow: 0 0 25px rgba(124, 92, 255, 0.2);
+      backdrop-filter: blur(10px);
+    }
+
+    .info-section h3 {
+      color: var(--accent1);
+      margin-bottom: 6px;
+    }
+
+    .info-section p {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .episode-section {
+      max-width: 900px;
+      margin: 30px auto 80px;
+      padding: 20px;
+      background: rgba(11,18,32,0.6);
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 25px rgba(124,92,255,0.2);
+    }
+
+    .episode-section h2 {
+      text-align: center;
+      font-size: 22px;
+      margin-bottom: 14px;
+      color: var(--accent2);
+    }
+
+    .episode-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-height: 420px;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+
+    /* Custom Scrollbar */
+    .episode-list::-webkit-scrollbar {
+      width: 8px;
+    }
+    .episode-list::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, var(--accent2), var(--accent1));
+      border-radius: 10px;
+    }
+    .episode-list::-webkit-scrollbar-track {
+      background: rgba(7,10,20,0.6);
+    }
+
+    .episode-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 12px;
+      border-radius: 12px;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+
+    .episode-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 15px rgba(124, 92, 255, 0.5);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .episode-item img {
+      width: 110px;
+      height: 65px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .episode-item h4 {
+      font-size: 15px;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .episode-item span {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 600px) {
+      .banner h1 { font-size: 22px; }
+      .episode-item img { width: 80px; height: 50px; }
+      header { padding: 14px 20px; }
+      .logo { font-size: 1.4rem; }
+      .nav-btn { padding: 6px 14px; font-size: 0.9rem; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 🧭 HEADER -->
+  <header>
+    <div class="logo">Kitsune</div>
+    <button class="nav-btn" onclick="location.href='../../home.html'">Home</button>
+  </header>
+
+  <!-- 🖼 Banner -->
+  <div class="banner">
+    <h1>Against The Sky Supreme</h1>
+    <p>After being betrayed by his lover and losing his powers, Qin Chen rises to defy the heavens
+      and rewrite his destiny in the eternal battle between gods and demons.</p>
+  </div>
+
+  <!-- 💡 Info -->
+  <div class="info-section">
+    <h3>Languages:</h3>
+    <p>Hindi • English • Japanese • Tamil • Telugu</p>
+    <h3>Quality:</h3>
+    <p>1080p FHD | 720p HD | 480p</p>
+  </div>
+
+  <!-- 🎬 Episodes -->
+  <div class="episode-section">
+    <h2>Episodes</h2>
+    <div id="episodeList" class="episode-list"></div>
+  </div>
+
+  <script>
+    const episodes = [
+      { number: 1, title: "Rise of the Supreme", thumb: "../../Image & logo/Against_The_Sky_Supreme.webp", file: "episode1.html" },
+      { number: 2, title: "Battle of the Celestial Realm", thumb: "../../Image & logo/Against_The_Sky_Supreme.webp", file: "episode2.html" },
+      { number: 3, title: "Heavenly Tribulation", thumb: "../../Image & logo/Against_The_Sky_Supreme.webp", file: "episode3.html" },
+      { number: 4, title: "Immortal Awakening", thumb: "../../Image & logo/Against_The_Sky_Supreme.webp", file: "episode4.html" },
+      { number: 5, title: "Divine Conflict", thumb: "../../Image & logo/Against_The_Sky_Supreme.webp", file: "episode5.html" },
+      { number: 6, title: "The Fall of Heaven", thumb: "../../Image & logo/Against_The_Sky_Supreme.webp", file: "episode6.html" }
+    ];
+
+    const list = document.getElementById("episodeList");
+    episodes.forEach(ep => {
+      const div = document.createElement("div");
+      div.className = "episode-item";
+      div.innerHTML = `
+        <img src="${ep.thumb}" alt="Episode ${ep.number}">
+        <div>
+          <h4>Episode ${ep.number}: ${ep.title}</h4>
+          <span>Watch Now →</span>
+        </div>
+      `;
+      div.onclick = () => window.location.href = ep.file;
+      list.appendChild(div);
+    });
+  </script>
+
+</body>
+</html>
