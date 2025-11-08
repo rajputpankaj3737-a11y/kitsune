@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -22,7 +23,7 @@
 
     body {
       color: var(--text);
-      background: linear-gradient(180deg, rgba(7,16,35,0.85), rgba(8,17,38,0.95)),
+      background: linear-gradient(180deg, rgba(7, 16, 35, 0.85), rgba(8, 17, 38, 0.95)),
         url("../../Image & logo/Against_The_Sky_Supreme.webp") center/cover no-repeat;
       background-attachment: fixed;
       overflow-x: hidden;
@@ -39,7 +40,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 16px 28px;
-      background: rgba(11,18,32,0.85);
+      background: rgba(11, 18, 32, 0.85);
       backdrop-filter: blur(8px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
@@ -48,8 +49,13 @@
       font-size: 1.6rem;
       font-weight: 700;
       background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      background-clip: text;
+      /* Standard property */
       -webkit-background-clip: text;
+      /* Safari/WebKit support */
       -webkit-text-fill-color: transparent;
+      color: transparent;
+      /* Fallback */
     }
 
     .nav-btn {
@@ -71,7 +77,7 @@
     .banner {
       text-align: center;
       padding: 50px 20px 20px;
-      background: rgba(7,10,20,0.65);
+      background: rgba(7, 10, 20, 0.65);
       backdrop-filter: blur(6px);
     }
 
@@ -79,8 +85,13 @@
       font-size: 30px;
       font-weight: 800;
       background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      background-clip: text;
+      /* Standard property */
       -webkit-background-clip: text;
+      /* Safari/WebKit support */
       -webkit-text-fill-color: transparent;
+      color: transparent;
+      /* Fallback for older browsers */
       margin-bottom: 10px;
     }
 
@@ -94,7 +105,7 @@
 
     .info-section {
       text-align: center;
-      background: rgba(11,18,32,0.6);
+      background: rgba(11, 18, 32, 0.6);
       max-width: 850px;
       margin: 30px auto;
       padding: 25px;
@@ -118,10 +129,10 @@
       max-width: 900px;
       margin: 30px auto 80px;
       padding: 20px;
-      background: rgba(11,18,32,0.6);
+      background: rgba(11, 18, 32, 0.6);
       border-radius: 16px;
       backdrop-filter: blur(10px);
-      box-shadow: 0 0 25px rgba(124,92,255,0.2);
+      box-shadow: 0 0 25px rgba(124, 92, 255, 0.2);
     }
 
     .episode-section h2 {
@@ -144,12 +155,14 @@
     .episode-list::-webkit-scrollbar {
       width: 8px;
     }
+
     .episode-list::-webkit-scrollbar-thumb {
       background: linear-gradient(180deg, var(--accent2), var(--accent1));
       border-radius: 10px;
     }
+
     .episode-list::-webkit-scrollbar-track {
-      background: rgba(7,10,20,0.6);
+      background: rgba(7, 10, 20, 0.6);
     }
 
     .episode-item {
@@ -278,30 +291,58 @@
   </div>
 
   <script>
-    const episodes = [
-      { number: 1, title: "Rise of the Supreme", thumb: "../../Image & logo/Against_The_Sky_Supreme.webp", file: "episode1.html" },
-      { number: 2, title: "Battle of the Celestial Realm", thumb: "../../Image & logo/Against_The_Sky_Supreme.webp", file: "episode2.html" },
-      { number: 3, title: "Heavenly Tribulation", thumb: "../../Image & logo/Against_The_Sky_Supreme.webp", file: "episode3.html" },
-      { number: 4, title: "Immortal Awakening", thumb: "../../Image & logo/Against_The_Sky_Supreme.webp", file: "episode4.html" },
-      { number: 5, title: "Divine Conflict", thumb: "../../Image & logo/Against_The_Sky_Supreme.webp", file: "episode5.html" },
-      { number: 6, title: "The Fall of Heaven", thumb: "../../Image & logo/Against_The_Sky_Supreme.webp", file: "episode6.html" }
-    ];
+  const episodes = [
+    { number: 1, title: "Rise of the Supreme", thumb: "../../Image & logo/Against_The_Sky_Supreme.webp", file: "episode1.html" },
+    { number: 2, title: "Battle of the Celestial Realm", thumb: "../../Image & logo/Against_The_Sky_Supreme.webp", file: "episode2.html" },
+    { number: 3, title: "Heavenly Tribulation", thumb: "../../Image & logo/Against_The_Sky_Supreme.webp", file: "episode3.html" },
+    { number: 4, title: "Immortal Awakening", thumb: "../../Image & logo/Against_The_Sky_Supreme.webp", file: "episode4.html" },
+    { number: 5, title: "Divine Conflict", thumb: "../../Image & logo/Against_The_Sky_Supreme.webp", file: "episode5.html" },
+    { number: 6, title: "The Fall of Heaven", thumb: "../../Image & logo/Against_The_Sky_Supreme.webp", file: "episode6.html" }
+  ];
 
-    const list = document.getElementById("episodeList");
-    episodes.forEach(ep => {
-      const div = document.createElement("div");
-      div.className = "episode-item";
-      div.innerHTML = `
-        <img src="${ep.thumb}" alt="Episode ${ep.number}">
-        <div>
-          <h4>Episode ${ep.number}: ${ep.title}</h4>
-          <span>Watch Now →</span>
-        </div>
-      `;
-      div.onclick = () => window.location.href = ep.file;
-      list.appendChild(div);
-    });
-  </script>
+  const list = document.getElementById("episodeList");
+  let currentEpisode = 1; // default
+
+  // Detect current episode from URL
+  const path = window.location.pathname;
+  const match = path.match(/episode(\d+)/i);
+  if (match) currentEpisode = parseInt(match[1]);
+
+  // Build list
+  episodes.forEach(ep => {
+    const div = document.createElement("div");
+    div.className = "episode-item";
+    div.innerHTML = `
+      <img src="${ep.thumb}" alt="Episode ${ep.number}">
+      <div>
+        <h4>Episode ${ep.number}: ${ep.title}</h4>
+        <span>Watch Now →</span>
+      </div>
+    `;
+    div.onclick = () => window.location.href = ep.file;
+
+    // Highlight current episode
+    if (ep.number === currentEpisode) {
+      div.style.border = "1px solid #ff6b81";
+      div.style.boxShadow = "0 0 10px rgba(255,107,129,0.6)";
+      div.style.background = "rgba(255,255,255,0.1)";
+    }
+
+    list.appendChild(div);
+  });
+
+  // Scroll to current episode
+  window.addEventListener("load", () => {
+    const active = list.querySelector(".episode-item:nth-child(" + currentEpisode + ")");
+    if (active) {
+      active.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+    }
+  });
+</script>
 
 </body>
+
 </html>
