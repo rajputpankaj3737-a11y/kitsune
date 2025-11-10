@@ -236,10 +236,7 @@
   </section>
 
   <div class="video-container">
-    <iframe width="1020" height="574" src="https://www.youtube.com/embed/87v1wInLbDo"
-      title="✨MULTI SUB | Throne of Seal EP 02" frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe frameborder="0" type="text/html" src="https://www.dailymotion.com/embed/video/k3HfPizuRqytJxxUUmx" width="100%" height="100%" allow="autoplay" allowfullscreen=""></iframe>
   </div>
 
   <div class="nav-arrows">
@@ -247,14 +244,30 @@
     <div class="arrow" onclick="location.href='episode3.html'">⏭</div>
   </div>
 
-  <section class="episode-list">
-    <h2>All Episodes</h2>
-    <div id="episode-list-container">
-      Loading episodes...
-    </div>
-  </section>
+  <div id="episodeListContainer">Loading episodes...</div>
 
-  <script src="shared-episodes.js"></script>
+  <script>
+    fetch('episodes.html')
+      .then(res => res.text())
+      .then(html => {
+        const container = document.getElementById("episodeListContainer");
+        container.innerHTML = html;
+
+        // ✅ Run the embedded script manually after HTML insertion
+        const temp = document.createElement("div");
+        temp.innerHTML = html;
+        const scriptTag = temp.querySelector("script");
+        if (scriptTag) {
+          const newScript = document.createElement("script");
+          newScript.textContent = scriptTag.textContent;
+          document.body.appendChild(newScript);
+        }
+      })
+      .catch(() => {
+        document.getElementById("episodeListContainer").innerHTML =
+          "<p style='color:#bbb;'>Failed to load episode list.</p>";
+      });
+  </script>
 
   <footer>© 2025 Kitsune | All rights reserved.</footer>
 </body>

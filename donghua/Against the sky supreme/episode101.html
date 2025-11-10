@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Against The Sky Supreme — Episode 2 | Kitsune</title>
+    <title>Against The Sky Supreme — Episode 101 | Kitsune</title>
 
     <style>
         * {
@@ -233,7 +233,7 @@
     </header>
 
     <section class="hero">
-        <h1>Against The Sky Supreme — Episode 2</h1>
+        <h1>Against The Sky Supreme — Episode 101</h1>
         <p>
             On the mortal side, there are many worlds (such as the Tianfa Continent)
             and the Nine-Heavens Star Territory, where nine immortal emperors rule
@@ -246,25 +246,40 @@
     </section>
 
     <div class="video-container">
-        <iframe width="1020" height="574" src="https://www.youtube.com/embed/"
-            title="The Great Ruler | EP2: The Great Buddha art | iQIYI Anime【Subscribe to watch latest】" frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; 
-    picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <div style=" width: 90%;max-width: 900px;margin: 25px auto;border-radius: 14px;overflow: hidden;box-shadow: 0 0 25px rgba(124, 92, 255, 0.4);border: 1px solid rgba(124, 92, 255, 0.25);position: relative;"></div>
+      <iframe width="1237" height="696" src="https://www.youtube.com/embed/qpsgNAl1pj0" title="[Eng Sub] Against The Sky Supreme 101-110  full episode highlights" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      </div>
     </div>
 
     <div class="nav-arrows">
         <div class="arrow" onclick="location.href='episode1.html'">⏮</div>
-        <div class="arrow" onclick="location.href='episode3.html'">⏭</div>
+        <div class="arrow" onclick="location.href='episode111.html'">⏭</div>
     </div>
 
-    <section class="episode-list">
-        <h2>All Episodes</h2>
-        <div id="episode-list-container">
-            Loading episodes...
-        </div>
-    </section>
+    <div id="episodeListContainer">Loading episodes...</div>
 
-    <script src="shared-episodes.js"></script>
+<script>
+fetch('episodes.html')
+  .then(res => res.text())
+  .then(html => {
+    const container = document.getElementById("episodeListContainer");
+    container.innerHTML = html;
+
+    // ✅ Run the embedded script manually after HTML insertion
+    const temp = document.createElement("div");
+    temp.innerHTML = html;
+    const scriptTag = temp.querySelector("script");
+    if (scriptTag) {
+      const newScript = document.createElement("script");
+      newScript.textContent = scriptTag.textContent;
+      document.body.appendChild(newScript);
+    }
+  })
+  .catch(() => {
+    document.getElementById("episodeListContainer").innerHTML =
+      "<p style='color:#bbb;'>Failed to load episode list.</p>";
+  });
+</script>
 
     <footer>© 2025 Kitsune | All rights reserved.</footer>
 </body>

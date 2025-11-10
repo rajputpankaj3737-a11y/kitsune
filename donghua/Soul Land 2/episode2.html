@@ -13,7 +13,7 @@
       box-sizing: border-box;
       font-family: "Poppins", sans-serif;
     }
- 
+
     body {
       background: linear-gradient(180deg, #0f172a 0%, #1e1b29 100%);
       color: #fff;
@@ -235,13 +235,20 @@
   <section class="hero">
     <h1>Soul Land 2:The Peerless Tang Sect-Episode-2 The Skydream Iceworm</h1>
     <p>
-         Set several years after the events of the first Soul Land, the sequel follows Huo Yuhao, a young, seemingly talentless boy who forms a spirit contract with a million-year-old intelligent spirit beast, the Skydream Iceworm. This partnership grants him unique spiritual powers and sets him on the path to becoming a powerful soul master. He enrolls in the Shrek Academy to hone his skills, where he forms the Tang Sect's first soul tool department and builds deep bonds with his friends, especially his fated love, Wang Dong'er. The overarching story chronicles Huo Yuhao's incredible journey of growth, revenge, and protecting the continent from looming threats, all while uncovering the mysteries of Wang Dong'er's own divine lineage.
+      Set several years after the events of the first Soul Land, the sequel follows Huo Yuhao, a young, seemingly
+      talentless boy who forms a spirit contract with a million-year-old intelligent spirit beast, the Skydream Iceworm.
+      This partnership grants him unique spiritual powers and sets him on the path to becoming a powerful soul master.
+      He enrolls in the Shrek Academy to hone his skills, where he forms the Tang Sect's first soul tool department and
+      builds deep bonds with his friends, especially his fated love, Wang Dong'er. The overarching story chronicles Huo
+      Yuhao's incredible journey of growth, revenge, and protecting the continent from looming threats, all while
+      uncovering the mysteries of Wang Dong'er's own divine lineage.
     </p>
     <p><strong>Genre:</strong> Action, Fantasy, Adventure | <strong>Released:</strong> 2023 June 24</p>
   </section>
 
   <div class="video-container">
-    <iframe frameborder="0" type="text/html" src="https://www.dailymotion.com/embed/video/k2UiKjv5kA0zhizeMZJ" width="100%" height="100%" allowfullscreen=""></iframe>
+    <iframe frameborder="0" type="text/html" src="https://www.dailymotion.com/embed/video/k2UiKjv5kA0zhizeMZJ"
+      width="100%" height="100%" allowfullscreen=""></iframe>
   </div>
 
   <div class="nav-arrows">
@@ -249,14 +256,30 @@
     <div class="arrow" onclick="location.href='episode3.html'">⏭</div>
   </div>
 
-  <section class="episode-list">
-    <h2>All Episodes</h2>
-    <div id="episode-list-container">
-      Loading episodes...
-    </div>
-  </section>
+  <div id="episodeListContainer">Loading episodes...</div>
 
-  <script src="shared-episodes.js"></script>
+  <script>
+    fetch('episodes.html')
+      .then(res => res.text())
+      .then(html => {
+        const container = document.getElementById("episodeListContainer");
+        container.innerHTML = html;
+
+        // ✅ Run the embedded script manually after HTML insertion
+        const temp = document.createElement("div");
+        temp.innerHTML = html;
+        const scriptTag = temp.querySelector("script");
+        if (scriptTag) {
+          const newScript = document.createElement("script");
+          newScript.textContent = scriptTag.textContent;
+          document.body.appendChild(newScript);
+        }
+      })
+      .catch(() => {
+        document.getElementById("episodeListContainer").innerHTML =
+          "<p style='color:#bbb;'>Failed to load episode list.</p>";
+      });
+  </script>
 
   <footer>© 2025 Kitsune | All rights reserved.</footer>
 </body>

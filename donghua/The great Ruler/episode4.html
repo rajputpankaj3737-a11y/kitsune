@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>The Great Ruler — Episode 2 | Kitsune</title>
+  <title>The Great Ruler — Episode 4 | Kitsune</title>
 
   <style>
     * {
@@ -233,7 +233,7 @@
   </header>
 
   <section class="hero">
-    <h1>The Great Ruler — Episode 2</h1>
+    <h1>The Great Ruler — Episode 4</h1>
     <p>
       In a vast world called the Great Thousand World, where countless realms
       and powerful cultivators exist. It follows Mu Chen, a talented young cultivator
@@ -245,26 +245,38 @@
   </section>
 
   <div class="video-container">
-    <iframe width="1020" height="574"
-      src="https://www.youtube.com/embed/c4sl3NtalRk?list=PLTbLcHjNgGMhwfPyMdsiR0Ytnf9bf-Gsr"
-      title="The Great Ruler | EP2: The Great Buddha art | iQIYI Anime【Subscribe to watch latest】" frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; 
-    picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe frameborder="0" type="text/html" src="https://www.dailymotion.com/embed/video/k2flg68yxKk4vlzhMsI" width="100%" height="100%" allow="autoplay" allowfullscreen=""></iframe>
   </div>
 
   <div class="nav-arrows">
     <div class="arrow" onclick="location.href='episode1.html'">⏮</div>
-    <div class="arrow" onclick="location.href='episode3.html'">⏭</div>
+    <div class="arrow" onclick="location.href='episode5.html'">⏭</div>
   </div>
 
-  <section class="episode-list">
-    <h2>All Episodes</h2>
-    <div id="episode-list-container">
-      Loading episodes...
-    </div>
-  </section>
+  <div id="episodeListContainer">Loading episodes...</div>
 
-  <script src="shared-episodes.js"></script>
+  <script>
+    fetch('episodes.html')
+      .then(res => res.text())
+      .then(html => {
+        const container = document.getElementById("episodeListContainer");
+        container.innerHTML = html;
+
+        // ✅ Run the embedded script manually after HTML insertion
+        const temp = document.createElement("div");
+        temp.innerHTML = html;
+        const scriptTag = temp.querySelector("script");
+        if (scriptTag) {
+          const newScript = document.createElement("script");
+          newScript.textContent = scriptTag.textContent;
+          document.body.appendChild(newScript);
+        }
+      })
+      .catch(() => {
+        document.getElementById("episodeListContainer").innerHTML =
+          "<p style='color:#bbb;'>Failed to load episode list.</p>";
+      });
+  </script>
 
   <footer>© 2025 Kitsune | All rights reserved.</footer>
 </body>
