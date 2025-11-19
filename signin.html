@@ -45,8 +45,10 @@ h2 {
   margin-top: 0;
   margin-bottom: 32px;
   background: linear-gradient(90deg, #ff6b81, #7c5cff);
-  -webkit-background-clip: text;
+  background-clip: text;            /* Standard property */
+  -webkit-background-clip: text;    /* Safari/WebKit support */
   -webkit-text-fill-color: transparent;
+  color: transparent;               /* Fallback */
   text-align: center;
   font-size: 2rem;
   font-weight: 800;
@@ -194,34 +196,6 @@ a:hover {
   animation: cardEntrance 0.6s ease-out;
 }
 
-.google-signin-wrapper {
-      display: flex;
-      justify-content: center;
-      margin: 24px 0;
-      min-height: 44px;
-      width: 100%;
-    }
-
-    /* Add the new Google button width styles here */
-    .g_id_signin {
-      width: 100% !important;
-    }
-
-    .g_id_signin > div {
-      width: 100% !important;
-    }
-
-    .g_id_signin > div > div {
-      width: 100% !important;
-      justify-content: center !important;
-    }
-
-    .footer {
-      text-align: center;
-      margin-top: 24px;
-      font-size: 0.9rem;
-      color: #98a0b3;
-    }
   </style>
 
   <script src="https://accounts.google.com/gsi/client" async defer></script>
