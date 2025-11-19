@@ -1,41 +1,232 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <script>
-// If user already signed in, skip signin/signup and go to home page
-(function() {
-  const existingUser = localStorage.getItem('kitsune_user');
-  if (existingUser) {
-    window.location.href = 'home.html';
-  }
-})();
-</script>
+    // If user already signed in, skip signin/signup and go to home page
+    (function () {
+      const existingUser = localStorage.getItem('kitsune_user');
+      if (existingUser) {
+        window.location.href = 'home.html';
+      }
+    })();
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign In - Kitsune</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
   <style>
-    body {font-family: Inter, sans-serif; background: linear-gradient(180deg,#071023 0%,#081126 60%);
-      display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; color: #e6eef8;}
-    .card {background:#0b1220;padding:32px 24px;border-radius:14px;max-width:400px;width:100%;
-      box-shadow:0 10px 30px rgba(2,6,23,0.7);}
-    h2 {margin-top:0;margin-bottom:16px;}
-    label {display:block;margin-bottom:6px;font-weight:600;}
-    input {width:100%;padding:10px 12px;margin-bottom:14px;border-radius:8px;
-      border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);color:#fff;}
-    input:focus {border-color:#ff6b81;outline:none;}
-    .btn {width:100%;padding:12px;border:none;border-radius:8px;background:linear-gradient(90deg,#ff6b81,#7c5cff);
-      color:#071023;font-weight:700;cursor:pointer;}
-    .divider {text-align:center;margin:20px 0;color:#98a0b3;position:relative;}
-    .divider::before,.divider::after{content:'';position:absolute;top:50%;width:40%;height:1px;
-      background:rgba(255,255,255,0.1);} .divider::before{left:0;} .divider::after{right:0;}
-    .footer{text-align:center;margin-top:16px;font-size:13px;color:#98a0b3;}
-    .google-signin-wrapper{display:flex;justify-content:center;margin:20px 0;}
+    /* Modern CSS redesign - keeping only original colors and theme */
+body {
+  font-family: Inter, sans-serif;
+  background: linear-gradient(180deg, #071023 0%, #081126 60%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  color: #e6eef8;
+  padding: 20px;
+}
+
+.card {
+  background: #0b1220;
+  padding: 48px 40px;
+  border-radius: 20px;
+  max-width: 440px;
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+h2 {
+  margin-top: 0;
+  margin-bottom: 32px;
+  background: linear-gradient(90deg, #ff6b81, #7c5cff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #98a0b3;
+}
+
+input {
+  width: 100%;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+input:focus {
+  border-color: #ff6b81;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 107, 129, 0.1);
+  transform: translateY(-1px);
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.btn {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #ff6b81, #7c5cff);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  margin-top: 8px;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(182, 108, 225, 0.5);
+}
+
+.divider {
+  text-align: center;
+  margin: 28px 0;
+  color: #98a0b3;
+  position: relative;
+  font-size: 0.9rem;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 42%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+}
+
+.divider::before {
+  left: 0;
+}
+
+.divider::after {
+  right: 0;
+}
+
+.google-signin-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0;
+  min-height: 44px;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 0.9rem;
+  color: #98a0b3;
+}
+
+a {
+  color: #ff6b81;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #7c5cff;
+}
+
+/* Loading state */
+.btn:active {
+  transform: translateY(0);
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .card {
+    padding: 32px 24px;
+    border-radius: 16px;
+    margin: 10px;
+  }
+  
+  h2 {
+    font-size: 1.75rem;
+    margin-bottom: 24px;
+  }
+  
+  input {
+    padding: 12px 14px;
+  }
+}
+
+/* Animation for card entrance */
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card {
+  animation: cardEntrance 0.6s ease-out;
+}
+
+.google-signin-wrapper {
+      display: flex;
+      justify-content: center;
+      margin: 24px 0;
+      min-height: 44px;
+      width: 100%;
+    }
+
+    /* Add the new Google button width styles here */
+    .g_id_signin {
+      width: 100% !important;
+    }
+
+    .g_id_signin > div {
+      width: 100% !important;
+    }
+
+    .g_id_signin > div > div {
+      width: 100% !important;
+      justify-content: center !important;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 0.9rem;
+      color: #98a0b3;
+    }
   </style>
 
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
+
 <body>
   <div class="card">
     <h2>Sign In to Kitsune</h2>
@@ -52,12 +243,8 @@
 
     <!-- Google Sign-In (unchanged) -->
     <div class="google-signin-wrapper">
-      <div id="g_id_onload"
-        data-client_id="313330582001-705egcef1ef656lmqb5i7qmkb4n5t6at.apps.googleusercontent.com"
-        data-context="signin"
-        data-ux_mode="popup"
-        data-callback="handleCredentialResponse"
-        data-auto_prompt="false">
+      <div id="g_id_onload" data-client_id="313330582001-705egcef1ef656lmqb5i7qmkb4n5t6at.apps.googleusercontent.com"
+        data-context="signin" data-ux_mode="popup" data-callback="handleCredentialResponse" data-auto_prompt="false">
       </div>
       <div class="g_id_signin" data-type="standard" data-theme="outline" data-text="signin_with"></div>
     </div>
@@ -104,60 +291,61 @@
     }
   </script>
   <script>
-document.querySelector('.btn')?.addEventListener('click', (e) => {
-  e.preventDefault();
+    document.querySelector('.btn')?.addEventListener('click', (e) => {
+      e.preventDefault();
 
-  const name = document.getElementById('name')?.value?.trim();
-  const email = document.getElementById('email')?.value?.trim();
-  const usernameInput = document.getElementById('username')?.value?.trim();
-  const password = document.getElementById('password')?.value;
+      const name = document.getElementById('name')?.value?.trim();
+      const email = document.getElementById('email')?.value?.trim();
+      const usernameInput = document.getElementById('username')?.value?.trim();
+      const password = document.getElementById('password')?.value;
 
-  if (!name || !email || !usernameInput || !password) {
-    alert('Please fill required fields');
-    return;
-  }
+      if (!name || !email || !usernameInput || !password) {
+        alert('Please fill required fields');
+        return;
+      }
 
-  // Build canonical user object
-  const user = {
-    name,
-    email,
-    phone: null,                // set if you collect phone number
-    username: '@' + usernameInput.replace(/\s+/g,'_'),
-    avatar: null,
-    provider: 'local'          // mark as local account
-  };
+      // Build canonical user object
+      const user = {
+        name,
+        email,
+        phone: null,                // set if you collect phone number
+        username: '@' + usernameInput.replace(/\s+/g, '_'),
+        avatar: null,
+        provider: 'local'          // mark as local account
+      };
 
-  // Save user in localStorage (persists across sessions until removed)
-  localStorage.setItem('kitsune_user', JSON.stringify(user));
+      // Save user in localStorage (persists across sessions until removed)
+      localStorage.setItem('kitsune_user', JSON.stringify(user));
 
-  // Navigate to home
-  document.body.classList.add('fade-out');
-  setTimeout(() => { window.location.href = 'home.html'; }, 250);
-});
-</script>
-<script>
-function parseJwt(token) {
-  try { return JSON.parse(atob(token.split('.')[1])); }
-  catch(e){ return {}; }
-}
+      // Navigate to home
+      document.body.classList.add('fade-out');
+      setTimeout(() => { window.location.href = 'home.html'; }, 250);
+    });
+  </script>
+  <script>
+    function parseJwt(token) {
+      try { return JSON.parse(atob(token.split('.')[1])); }
+      catch (e) { return {}; }
+    }
 
-function handleCredentialResponse(response) {
-  const data = parseJwt(response.credential);
-  // Normalize into the same user object shape
-  const user = {
-    name: data.name || (data.given_name ? (data.given_name + ' ' + (data.family_name||'')) : 'Google User'),
-    email: data.email || null,
-    username: data.given_name ? ('@' + data.given_name.toLowerCase()) : ('@' + (data.email || 'google_user').split('@')[0]),
-    avatar: data.picture || null,
-    provider: 'google'
-  };
+    function handleCredentialResponse(response) {
+      const data = parseJwt(response.credential);
+      // Normalize into the same user object shape
+      const user = {
+        name: data.name || (data.given_name ? (data.given_name + ' ' + (data.family_name || '')) : 'Google User'),
+        email: data.email || null,
+        username: data.given_name ? ('@' + data.given_name.toLowerCase()) : ('@' + (data.email || 'google_user').split('@')[0]),
+        avatar: data.picture || null,
+        provider: 'google'
+      };
 
-  // Persist - this is what keeps them logged in across visits
-  localStorage.setItem('kitsune_user', JSON.stringify(user));
+      // Persist - this is what keeps them logged in across visits
+      localStorage.setItem('kitsune_user', JSON.stringify(user));
 
-  // Redirect to protected home
-  window.location.href = 'home.html';
-}
-</script>
+      // Redirect to protected home
+      window.location.href = 'home.html';
+    }
+  </script>
 </body>
+
 </html>
