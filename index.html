@@ -42,89 +42,97 @@ body {
   from { opacity: 1; transform: translateY(0); }
   to { opacity: 0; transform: translateY(10px); }
 }
-    /* ====== Base style ====== */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
-    }
 
-    body {
-      background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+/* ====== Smooth Scrolling ====== */
+html {
+  scroll-behavior: smooth;
+}
 
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 60px;
-      background: rgba(15, 23, 42, 0.8);
-      backdrop-filter: blur(8px);
-    }
+body {
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
 
-    .logo {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #ff6b81;
-      letter-spacing: 1px;
-    }
+/* ====== Base style ====== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
 
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 25px;
-    }
+body {
+  background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
-    nav ul li a {
-      text-decoration: none;
-      color: #e2e8f0;
-      font-weight: 500;
-      position: relative;
-      transition: color 0.3s ease;
-    }
+/* ====== Modern Header Design ====== */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 60px;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
 
-    /* ✨ Animated underline for nav links */
-    nav ul li a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -4px;
-      width: 0;
-      height: 2px;
-      background: linear-gradient(90deg, #ff6b81, #7c5cff);
-      transition: width 0.3s ease;
-    }
+.logo {
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, #ff6b81, #7c5cff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 1.5px;
+  text-shadow: 0 2px 10px rgba(255, 107, 129, 0.3);
+}
 
-    nav ul li a:hover {
-      color: #ff6b81;
-    }
+.signin-btn {
+  background: linear-gradient(90deg, #ff6b81, #7c5cff);
+  color: #fff;
+  padding: 12px 32px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(124, 92, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+}
 
-    nav ul li a:hover::after {
-      width: 100%;
-    }
+.signin-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
 
-    .signin-btn {
-      background: linear-gradient(90deg, #ff6b81, #7c5cff);
-      color: #fff;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 25px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
+.signin-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(124, 92, 255, 0.5);
+}
 
-    .signin-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 12px rgba(124, 92, 255, 0.5);
-    }
-    /* ====== Hero section (Smooth + Blended Background) ====== */
-/* ====== Hero section (Glass-blur + soft visibility) ====== */
+.signin-btn:hover::before {
+  left: 100%;
+}
+
+.signin-btn:active {
+  transform: translateY(-1px);
+}
+
+/* ====== Enhanced Hero Section ====== */
 .hero {
   position: relative;
   display: flex;
@@ -132,79 +140,197 @@ body {
   align-items: center;
   flex-direction: column;
   text-align: center;
-  padding: 100px 20px;
+  padding: 120px 20px;
   width: 100%;
-  min-height: 90vh;
+  min-height: 100vh;
   overflow: hidden;
-
-  /* 🎨 Base anime background (slightly visible) */
   background: url("Image & logo/wp5203548.jpg") center/cover no-repeat;
 }
 
-/* 🔮 Add soft blur-glass layer */
 .hero::before {
   content: "";
   position: absolute;
   inset: 0;
-  backdrop-filter: blur(8px);
-  background: rgba(11, 18, 32, 0.65); /* dark semi-transparent overlay */
+  backdrop-filter: blur(12px);
+  background: linear-gradient(
+    135deg,
+    rgba(11, 18, 32, 0.85) 0%,
+    rgba(15, 23, 42, 0.75) 50%,
+    rgba(11, 18, 32, 0.9) 100%
+  );
   z-index: 1;
 }
 
-/* Hero content */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 30% 50%,
+    rgba(255, 107, 129, 0.15) 0%,
+    transparent 50%
+  ),
+  radial-gradient(
+    circle at 70% 20%,
+    rgba(124, 92, 255, 0.1) 0%,
+    transparent 50%
+  );
+  z-index: 1;
+}
+
 .hero-text {
   position: relative;
   z-index: 2;
-  max-width: 700px;
+  max-width: 800px;
   color: #fff;
 }
 
 .hero-text h1 {
-  font-size: 3rem;
-  margin-bottom: 20px;
+  font-size: 3.5rem;
+  margin-bottom: 25px;
   background: linear-gradient(90deg, #ff6b81, #7c5cff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+  text-shadow: 0 4px 20px rgba(255, 107, 129, 0.3);
 }
 
 .hero-text p {
+  font-size: 1.3rem;
+  color: #e2e8f0;
+  margin-bottom: 35px;
+  line-height: 1.7;
+  font-weight: 300;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.hero-text .signin-btn {
+  padding: 16px 40px;
   font-size: 1.1rem;
-  color: #d1d5db;
-  margin-bottom: 25px;
-  line-height: 1.6;
+  border-radius: 35px;
+  box-shadow: 0 6px 20px rgba(124, 92, 255, 0.4);
 }
 
-.hero-text button {
-  background: linear-gradient(90deg, #ff6b81, #7c5cff);
-  border: none;
-  color: #fff;
-  padding: 12px 28px;
-  border-radius: 30px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.hero-text .signin-btn:hover {
+  box-shadow: 0 10px 30px rgba(124, 92, 255, 0.6);
 }
 
-.hero-text button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 18px rgba(124, 92, 255, 0.5);
+/* ====== Modern Footer ====== */
+footer {
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(20px);
+  text-align: center;
+  padding: 30px 20px;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: auto;
 }
 
-/* 📱 Responsive */
+/* ====== Floating Animation ====== */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.hero-text {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* ====== Responsive Design ====== */
 @media (max-width: 768px) {
+  header {
+    padding: 15px 20px;
+  }
+  
+  .logo {
+    font-size: 1.6rem;
+  }
+  
+  .signin-btn {
+    padding: 10px 24px;
+    font-size: 0.9rem;
+  }
+  
   .hero {
-    padding: 70px 15px;
-    min-height: 80vh;
+    padding: 80px 15px;
+    min-height: 90vh;
   }
-
+  
   .hero-text h1 {
-    font-size: 2.2rem;
+    font-size: 2.5rem;
   }
+  
+  .hero-text p {
+    font-size: 1.1rem;
+  }
+  
+  .hero-text .signin-btn {
+    padding: 14px 32px;
+    font-size: 1rem;
+  }
+}
 
+@media (max-width: 480px) {
+  .hero-text h1 {
+    font-size: 2rem;
+  }
+  
   .hero-text p {
     font-size: 1rem;
   }
-}   
+  
+  header {
+    padding: 12px 15px;
+  }
+  
+  .logo {
+    font-size: 1.4rem;
+  }
+}
+
+/* ====== Scrollbar Styling ====== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #ff6b81, #7c5cff);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #ff8fa3, #9d8aff);
+}
+
+/* ====== Selection Color ====== */
+::selection {
+  background: rgba(255, 107, 129, 0.3);
+  color: white;
+}
+
+/* ====== Loading Animation ====== */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.loading-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
   </style>
 </head>
 <body>
@@ -252,7 +378,7 @@ window.history.pushState(null, null, window.location.href);
 window.onpopstate = function () {
   // When user presses back or slides back gesture
   window.history.pushState(null, null, window.location.href);
-  alert("🚫 For security reasons, you’ve been logged out!");
+  alert("🚫 For security reasons, you've been logged out!");
   localStorage.removeItem("kitsune_user");
   window.location.href = "signin.html"; // redirect to sign-in or landing page
 };
@@ -267,5 +393,67 @@ document.addEventListener("touchmove", function (e) {
   }
 }, { passive: false });
 </script>
+// ...existing code...
+<script>
+(function () {
+  // Smooth wheel & keyboard scrolling with easing
+  let target = window.scrollY;
+  let current = window.scrollY;
+  let isAnimating = false;
+  const ease = 0.08; // lower = smoother/slower
+
+  function clamp(v) {
+    return Math.max(0, Math.min(v, document.documentElement.scrollHeight - window.innerHeight));
+  }
+
+  function update() {
+    isAnimating = true;
+    current += (target - current) * ease;
+    if (Math.abs(target - current) < 0.5) {
+      window.scrollTo(0, Math.round(target));
+      isAnimating = false;
+      return;
+    }
+    window.scrollTo(0, current);
+    requestAnimationFrame(update);
+  }
+
+  function onWheel(e) {
+    // allow pinch-zoom / ctrl+wheel and horizontal gestures handled elsewhere
+    if (e.ctrlKey) return;
+    e.preventDefault();
+    target = clamp(target + e.deltaY);
+    if (!isAnimating) requestAnimationFrame(update);
+  }
+
+  function onKey(e) {
+    const page = window.innerHeight * 0.9;
+    switch (e.key) {
+      case "ArrowDown": target = clamp(target + 40); break;
+      case "ArrowUp": target = clamp(target - 40); break;
+      case "PageDown": target = clamp(target + page); break;
+      case "PageUp": target = clamp(target - page); break;
+      case "Home": target = 0; break;
+      case "End": target = document.documentElement.scrollHeight - window.innerHeight; break;
+      default: return;
+    }
+    e.preventDefault();
+    if (!isAnimating) requestAnimationFrame(update);
+  }
+
+  // keep targets in sync if user jumps (anchor links, programmatic scroll)
+  function sync() {
+    if (!isAnimating) {
+      target = current = window.scrollY;
+    }
+  }
+
+  window.addEventListener("wheel", onWheel, { passive: false });
+  window.addEventListener("keydown", onKey, { passive: false });
+  window.addEventListener("resize", sync);
+  window.addEventListener("scroll", sync, { passive: true });
+})();
+</script>
+// ...existing code...
 </body>
 </html>
