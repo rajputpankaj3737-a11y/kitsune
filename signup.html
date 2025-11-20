@@ -17,10 +17,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
   <style>
-    /* Modern CSS redesign for Sign Up page - keeping original colors and theme */
+    /* Modern CSS redesign for Sign Up page - Black & Red theme */
 body {
   font-family: Inter, sans-serif;
-  background: linear-gradient(180deg, #071023 0%, #081126 60%);
+  background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 60%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,20 +31,20 @@ body {
 }
 
 .card {
-  background: #0b1220;
+  background: #0b0b0b;
   padding: 48px 40px;
   border-radius: 20px;
   max-width: 440px;
   width: 100%;
-  box-shadow: 0 20px 40px rgba(2, 6, 23, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 0, 0, 0.2);
   backdrop-filter: blur(10px);
 }
 
 h2 {
   margin-top: 0;
   margin-bottom: 32px;
-  background: linear-gradient(90deg, #ff6b81, #7c5cff);
+  background: linear-gradient(90deg, #ff0000, #cc0000);
   background-clip: text;            /* Standard property */
   -webkit-background-clip: text;    /* Safari/WebKit support */
   -webkit-text-fill-color: transparent;
@@ -60,7 +60,7 @@ label {
   margin-bottom: 8px;
   font-weight: 600;
   font-size: 0.9rem;
-  color: #98a0b3;
+  color: #a0a0a0;
 }
 
 input {
@@ -68,7 +68,7 @@ input {
   padding: 14px 16px;
   margin-bottom: 16px;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 0, 0, 0.2);
   background: rgba(255, 255, 255, 0.03);
   color: #fff;
   font-size: 1rem;
@@ -77,9 +77,9 @@ input {
 }
 
 input:focus {
-  border-color: #ff6b81;
+  border-color: #ff0000;
   outline: none;
-  box-shadow: 0 0 0 3px rgba(255, 107, 129, 0.1);
+  box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.1);
   transform: translateY(-1px);
 }
 
@@ -92,7 +92,7 @@ input::placeholder {
   padding: 16px;
   border: none;
   border-radius: 12px;
-  background: linear-gradient(90deg, #ff6b81, #7c5cff);
+  background: linear-gradient(90deg, #ff0000, #cc0000);
   color: #fff;
   font-weight: 700;
   cursor: pointer;
@@ -103,13 +103,13 @@ input::placeholder {
 
 .btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(182, 108, 225, 0.5);
+  box-shadow: 0 10px 25px rgba(255, 0, 0, 0.4);
 }
 
 .divider {
   text-align: center;
   margin: 28px 0;
-  color: #98a0b3;
+  color: #a0a0a0;
   position: relative;
   font-size: 0.9rem;
 }
@@ -121,7 +121,7 @@ input::placeholder {
   top: 50%;
   width: 42%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 0, 0, 0.2), transparent);
 }
 
 .divider::before {
@@ -143,18 +143,18 @@ input::placeholder {
   text-align: center;
   margin-top: 24px;
   font-size: 0.9rem;
-  color: #98a0b3;
+  color: #a0a0a0;
 }
 
 a {
-  color: #ff6b81;
+  color: #ff0000;
   text-decoration: none;
   font-weight: 600;
   transition: color 0.3s ease;
 }
 
 a:hover {
-  color: #7c5cff;
+  color: #ff3333;
 }
 
 /* Form grid layout for better organization */
@@ -198,7 +198,6 @@ input[type="password"] {
   }
 }
 
-
 /* Animation for card entrance */
 @keyframes cardEntrance {
   from {
@@ -222,19 +221,40 @@ input:valid {
 
 /* Error state for password mismatch */
 input.error {
-  border-color: #ff6b81;
-  box-shadow: 0 0 0 3px rgba(255, 107, 129, 0.2);
+  border-color: #ff0000;
+  box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.2);
 }
 
 /* Enhanced focus for better accessibility */
 .btn:focus, input:focus {
-  outline: 2px solid #7c5cff;
+  outline: 2px solid #cc0000;
   outline-offset: 2px;
 }
 
 /* Smooth transitions for all interactive elements */
 button, input, a {
   transition: all 0.3s ease-in-out;
+}
+
+/* Fade out animation */
+.fade-out {
+  animation: fadeOut 0.5s ease forwards;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(10px); }
+}
+
+/* Custom Google Sign-in button styling */
+.g_id_signin {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.g_id_signin > div {
+  border-radius: 12px !important;
 }
   </style>
 
@@ -267,17 +287,21 @@ button, input, a {
 
     <div class="divider">or</div>
 
-    <!-- Google Sign-Up (unchanged) -->
+    <!-- Google Sign-Up -->
     <div class="google-signin-wrapper">
-      <div id="g_id_onload" data-client_id="313330582001-705egcef1ef656lmqb5i7qmkb4n5t6at.apps.googleusercontent.com"
-        data-context="signup" data-ux_mode="popup" data-callback="handleCredentialResponse" data-auto_prompt="false">
+      <div id="g_id_onload" 
+        data-client_id="313330582001-705egcef1ef656lmqb5i7qmkb4n5t6at.apps.googleusercontent.com"
+        data-context="signup" 
+        data-ux_mode="popup" 
+        data-callback="handleCredentialResponse" 
+        data-auto_prompt="false">
       </div>
       <div class="g_id_signin" data-type="standard" data-theme="outline" data-text="signup_with"></div>
     </div>
 
     <div class="footer">
       Already have an account?
-      <a href="signin.html" style="color:#ff6b81;text-decoration:none;font-weight:600;">Sign In</a>
+      <a href="signin.html" style="color:#ff0000;text-decoration:none;font-weight:600;">Sign In</a>
     </div>
   </div>
 
@@ -292,29 +316,44 @@ button, input, a {
       const confirm = document.getElementById('confirm').value;
 
       if (!name || !email || !phone || !username || !password || !confirm) {
-        alert("Please fill all fields."); return;
+        alert("Please fill all fields."); 
+        return;
       }
       if (password !== confirm) {
-        alert("Passwords do not match."); return;
+        alert("Passwords do not match."); 
+        return;
       }
 
       // Load existing users
       const users = JSON.parse(localStorage.getItem("kitsune_users") || "[]");
       const duplicate = users.find(u => u.email === email || u.phone === phone);
       if (duplicate) {
-        alert("An account with this email or phone already exists."); return;
+        alert("An account with this email or phone already exists."); 
+        return;
       }
 
-      const newUser = { name, email, phone, username: '@' + username, password, avatar: null, provider: 'local' };
+      const newUser = { 
+        name, 
+        email, 
+        phone, 
+        username: '@' + username, 
+        password, 
+        avatar: null, 
+        provider: 'local' 
+      };
       users.push(newUser);
       localStorage.setItem("kitsune_users", JSON.stringify(users));
       localStorage.setItem("kitsune_user", JSON.stringify(newUser));
 
-      alert("Account created successfully!");
-      window.location.href = "home.html";
+      // Add fade-out animation before redirect
+      document.body.classList.add('fade-out');
+      setTimeout(() => {
+        alert("Account created successfully!");
+        window.location.href = "home.html";
+      }, 400);
     });
 
-    // Google callback (unchanged)
+    // Google callback
     function handleCredentialResponse(response) {
       const data = JSON.parse(atob(response.credential.split('.')[1]));
       const user = {
@@ -325,64 +364,14 @@ button, input, a {
         avatar: data.picture,
         provider: 'google'
       };
+      
       localStorage.setItem('kitsune_user', JSON.stringify(user));
-      window.location.href = 'home.html';
-    }
-  </script>
-  <script>
-    document.querySelector('.btn')?.addEventListener('click', (e) => {
-      e.preventDefault();
-
-      const name = document.getElementById('name')?.value?.trim();
-      const email = document.getElementById('email')?.value?.trim();
-      const usernameInput = document.getElementById('username')?.value?.trim();
-      const password = document.getElementById('password')?.value;
-
-      if (!name || !email || !usernameInput || !password) {
-        alert('Please fill required fields');
-        return;
-      }
-
-      // Build canonical user object
-      const user = {
-        name,
-        email,
-        phone: null,                // set if you collect phone number
-        username: '@' + usernameInput.replace(/\s+/g, '_'),
-        avatar: null,
-        provider: 'local'          // mark as local account
-      };
-
-      // Save user in localStorage (persists across sessions until removed)
-      localStorage.setItem('kitsune_user', JSON.stringify(user));
-
-      // Navigate to home
+      
+      // Add fade-out animation before redirect
       document.body.classList.add('fade-out');
-      setTimeout(() => { window.location.href = 'home.html'; }, 250);
-    });
-  </script>
-  <script>
-    function parseJwt(token) {
-      try { return JSON.parse(atob(token.split('.')[1])); }
-      catch (e) { return {}; }
-    }
-
-    function handleCredentialResponse(response) {
-      const data = parseJwt(response.credential);
-      // Normalize into the same user object shape
-      const user = {
-        name: data.name || (data.given_name ? (data.given_name + ' ' + (data.family_name || '')) : 'Google User'),
-        email: data.email || null,
-        username: data.given_name ? ('@' + data.given_name.toLowerCase()) : ('@' + (data.email || 'google_user').split('@')[0]),
-        avatar: data.picture || null,
-        provider: 'google'
-      };
-
-      // Persist - this is what keeps them logged in across visits
-      localStorage.setItem('kitsune_user', JSON.stringify(user));
-
-      // Redirect to protected home
-      window.location.href = 'home.html';
+      setTimeout(() => {
+        window.location.href = 'home.html';
+      }, 400);
     }
   </script>
 </body>
