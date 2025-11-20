@@ -1995,10 +1995,10 @@
         "link": "janime/Solo Leveling 2/episode.html"
       },
       {
-        "title": "The Great Ruler",
+        "title": "The Angel Next Door Spoils Me Rotten",
         "type": "DONGHUA • Ep 27 [4K] • Sub",
         "genre": "Action, Fantasy",
-        "image": "Image & logo/The great Ruler.jpg",
+        "image": "Image & logo/The angel next door spoils me rotten.jpg",
         "link": "Image & logo/The angel next door spoils me rotten.jpg"
       }
     ];
@@ -2256,6 +2256,71 @@
       document.querySelectorAll('.fade-in').forEach(el => {
         observer.observe(el);
       });
+    });
+  </script>
+  <script>
+    // Search functionality
+    function performSearch(query) {
+      const normalizedQuery = query.toLowerCase().trim();
+
+      if (normalizedQuery === '') {
+        searchResults.classList.remove('active');
+        return;
+      }
+
+      const filteredAnime = animeData.filter(anime => {
+        return anime.title.toLowerCase().includes(normalizedQuery) ||
+          anime.genre.toLowerCase().includes(normalizedQuery) ||
+          anime.type.toLowerCase().includes(normalizedQuery);
+      });
+
+      displaySearchResults(filteredAnime);
+    }
+
+    // Display search results
+    function displaySearchResults(results) {
+      searchResults.innerHTML = '';
+
+      if (results.length === 0) {
+        searchResults.innerHTML = '<div class="no-results">No anime found matching your search</div>';
+      } else {
+        results.forEach(anime => {
+          const resultItem = document.createElement('a');
+          resultItem.className = 'search-result-item';
+          resultItem.href = anime.link;
+          resultItem.innerHTML = `
+                        <div class="search-result-image">
+                            <img src="${anime.image}" alt="${anime.title}" onerror="this.src='https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
+                        </div>
+                        <div class="search-result-content">
+                            <div class="search-result-title">${anime.title}</div>
+                            <div class="search-result-type">${anime.type}</div>
+                            <div class="search-result-genre">${anime.genre}</div>
+                        </div>
+                    `;
+          searchResults.appendChild(resultItem);
+        });
+      }
+
+      searchResults.classList.add('active');
+    }
+
+    // Event listeners for search
+    searchInput.addEventListener('input', function () {
+      performSearch(this.value);
+    });
+
+    searchInput.addEventListener('focus', function () {
+      if (this.value.trim() !== '') {
+        performSearch(this.value);
+      }
+    });
+
+    // Close search results when clicking outside
+    document.addEventListener('click', function (event) {
+      if (!event.target.closest('.search-container')) {
+        searchResults.classList.remove('active');
+      }
     });
   </script>
 </body>

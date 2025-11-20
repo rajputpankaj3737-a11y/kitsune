@@ -5,28 +5,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Throne Of Seal — Episode 1 | Kitsune</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --accent1: #ff6b81;
-            --accent2: #7c5cff;
-            --text: #ffffff;
-            --muted: #a0a7c0;
-            --bg: linear-gradient(180deg, #0f172a 0%, #1e1b29 100%);
-            --card-bg: rgba(30, 27, 41, 0.7);
+            --primary: #E50914;
+            --primary-dark: #B20710;
+            --primary-light: #FF4D4D;
+            --secondary: #1A1A1A;
+            --accent: #FF3333;
+            --dark: #0F0F0F;
+            --darker: #0A0A0A;
+            --light: #F5F5F5;
+            --gray: #8A8A8A;
+            --card-bg: rgba(40, 40, 40, 0.8);
+            --glass: rgba(255, 255, 255, 0.08);
+            --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            --radius: 12px;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Poppins", sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background: var(--bg);
-            color: var(--text);
+            background: var(--darker);
+            color: var(--light);
             overflow-x: hidden;
             min-height: 100vh;
+            line-height: 1.6;
         }
 
         /* HEADER */
@@ -34,20 +44,43 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 20px 20px;
-            background: transparent;
+            padding: 18px 20px;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 0, 0, 0.1);
         }
 
         .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: linear-gradient(90deg, var(--accent1), var(--accent2));
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(229, 9, 20, 0.4);
+        }
+
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-shadow: 0 2px 8px rgba(229, 9, 20, 0.3);
         }
 
         .nav-links {
@@ -58,23 +91,25 @@
 
         .nav-links a {
             text-decoration: none;
-            color: #fff;
-            padding: 8px 18px;
-            border-radius: 20px;
+            color: rgba(255, 255, 255, 0.8);
             font-weight: 500;
-            background: linear-gradient(90deg, var(--accent1), var(--accent2));
-            transition: 0.3s;
+            padding: 10px 20px;
+            border-radius: 50px;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--glass);
         }
 
         .nav-links a:hover {
-            opacity: 0.8;
-            transform: scale(1.05);
+            color: var(--primary-light);
+            background: rgba(229, 9, 20, 0.2);
+            border-color: rgba(229, 9, 20, 0.3);
+            transform: translateY(-2px);
         }
-
 
         /* MAIN CONTENT */
         .main-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 40px 20px;
         }
@@ -90,18 +125,41 @@
             display: flex;
             gap: 30px;
             background: var(--card-bg);
-            border-radius: 12px;
+            border-radius: var(--radius);
             padding: 30px;
             margin-bottom: 30px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .anime-info-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(229, 9, 20, 0.05), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .anime-info-section:hover::before {
+            left: 100%;
         }
 
         .poster {
             width: 35%;
-            border-radius: 12px;
-            box-shadow: 0 0 25px rgba(124, 92, 255, 0.4);
+            border-radius: var(--radius);
+            box-shadow: 0 0 25px rgba(229, 9, 20, 0.4);
             object-fit: cover;
             height: 300px;
+            transition: var(--transition);
+        }
+
+        .anime-info-section:hover .poster {
+            transform: scale(1.02);
         }
 
         .anime-details {
@@ -112,101 +170,138 @@
             font-size: 2.2rem;
             font-weight: 700;
             margin-bottom: 10px;
-            background: linear-gradient(90deg, var(--accent1), var(--accent2));
-            background-clip: text;
-            /* Standard property */
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
             -webkit-background-clip: text;
-            /* Safari/WebKit support */
             -webkit-text-fill-color: transparent;
-            color: transparent;
-            /* Fallback */
+            background-clip: text;
         }
 
         .anime-meta {
-            color: var(--muted);
+            color: var(--gray);
             font-size: 0.95rem;
             margin-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .meta-tag {
+            background: rgba(229, 9, 20, 0.2);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(229, 9, 20, 0.3);
+            transition: var(--transition);
+        }
+
+        .meta-tag:hover {
+            background: rgba(229, 9, 20, 0.3);
+            transform: translateY(-2px);
         }
 
         .anime-description {
-            color: #cbd5e1;
+            color: rgba(255, 255, 255, 0.8);
             line-height: 1.6;
         }
 
         /* VIDEO PLAYER */
         .video-section {
             background: var(--card-bg);
-            border-radius: 12px;
+            border-radius: var(--radius);
             overflow: hidden;
             margin-bottom: 30px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+        }
+
+        .video-section:hover {
+            border-color: rgba(229, 9, 20, 0.2);
+        }
+
+        .video-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .video-header h2 {
+            font-size: 1.4rem;
+            color: var(--primary-light);
+        }
+
+        .video-controls {
+            display: flex;
+            gap: 15px;
+        }
+
+        .video-controls button {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .video-controls button:hover {
+            background: rgba(229, 9, 20, 0.2);
+            border-color: rgba(229, 9, 20, 0.3);
+            transform: translateY(-2px);
         }
 
         .video-player {
             width: 100%;
-            height: 400px;
+            height: 500px;
             background: #000;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--muted);
+            color: var(--gray);
         }
 
         /* EPISODE LIST */
         .episode-list {
             background: var(--card-bg);
-            border-radius: 12px;
-            padding: 20px;
+            border-radius: var(--radius);
+            padding: 25px;
             margin-bottom: 30px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             max-height: 500px;
             overflow-y: auto;
+            transition: var(--transition);
+        }
+
+        .episode-list:hover {
+            border-color: rgba(229, 9, 20, 0.2);
         }
 
         .episode-list h2 {
-            margin-bottom: 15px;
-            background: linear-gradient(90deg, var(--accent1), var(--accent2));
-            background-clip: text;
-            /* Standard property */
-            -webkit-background-clip: text;
-            /* Safari/WebKit support */
-            -webkit-text-fill-color: transparent;
-            color: transparent;
-            /* Fallback */
+            margin-bottom: 20px;
+            color: var(--primary-light);
+            font-size: 1.4rem;
+            position: relative;
+            display: inline-block;
         }
 
-        .episode-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.25s;
-            margin-bottom: 10px;
-        }
-
-        .episode-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .episode-item img {
-            width: 80px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-
-        .episode-item h4 {
-            font-size: 0.9rem;
-            color: #fff;
-        }
-
-        .episode-item span {
-            font-size: 0.8rem;
-            color: var(--muted);
+        .episode-list h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
         }
 
         /* SIDEBAR */
@@ -219,23 +314,35 @@
         /* CONTACT SECTION */
         .contact-section {
             background: var(--card-bg);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+        }
+
+        .contact-section:hover {
+            border-color: rgba(229, 9, 20, 0.2);
         }
 
         .contact-section h2 {
-            margin-bottom: 15px;
-            background: linear-gradient(90deg, var(--accent1), var(--accent2));
-            background-clip: text;
-            /* Standard property */
-            -webkit-background-clip: text;
-            /* Safari/WebKit support */
-            -webkit-text-fill-color: transparent;
-            color: transparent;
-            /* Fallback */
+            margin-bottom: 20px;
+            color: var(--primary-light);
+            font-size: 1.4rem;
+            position: relative;
+            display: inline-block;
         }
 
+        .contact-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
 
         .contact-form {
             display: flex;
@@ -249,8 +356,16 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 8px;
             padding: 12px;
-            color: var(--text);
+            color: var(--light);
             font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.2);
         }
 
         .contact-form textarea {
@@ -259,88 +374,73 @@
         }
 
         .contact-form button {
-            background: linear-gradient(90deg, var(--accent1), var(--accent2));
+            background: var(--primary);
             border: none;
             color: #fff;
             padding: 12px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
-            transition: 0.3s;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .contact-form button:hover {
-            opacity: 0.85;
-        }
-
-        /* TOP TRADING SECTION */
-        .top-trading {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-        }
-
-        .top-trading h2 {
-            margin-bottom: 15px;
-            background: linear-gradient(90deg, var(--accent1), var(--accent2));
-            background-clip: text;
-            /* Standard property */
-            -webkit-background-clip: text;
-            /* Safari/WebKit support */
-            -webkit-text-fill-color: transparent;
-            color: transparent;
-            /* Fallback */
-        }
-
-        .trading-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-
-        .trading-item img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-
-        .trading-item h4 {
-            font-size: 0.9rem;
-            color: #fff;
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
         }
 
         /* COMMENTS SECTION */
         .comments-section {
             background: var(--card-bg);
-            border-radius: 12px;
+            border-radius: var(--radius);
             padding: 30px;
             margin-top: 30px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+        }
+
+        .comments-section:hover {
+            border-color: rgba(229, 9, 20, 0.2);
         }
 
         .comments-section h2 {
             margin-bottom: 20px;
-            background: linear-gradient(90deg, var(--accent1), var(--accent2));
-            background-clip: text;
-            /* Standard property */
-            -webkit-background-clip: text;
-            /* Safari/WebKit support */
-            -webkit-text-fill-color: transparent;
-            color: transparent;
-            /* Fallback */
+            color: var(--primary-light);
+            font-size: 1.4rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .comments-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
         }
 
         .comment {
             display: flex;
             gap: 15px;
-            padding: 15px 0;
+            padding: 20px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+        }
+
+        .comment:hover {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            padding: 20px 15px;
+            margin: 0 -15px;
         }
 
         .comment:last-child {
@@ -352,15 +452,23 @@
             height: 50px;
             border-radius: 50%;
             object-fit: cover;
+            border: 2px solid rgba(229, 9, 20, 0.3);
+            transition: var(--transition);
+        }
+
+        .comment:hover .comment-avatar {
+            border-color: rgba(229, 9, 20, 0.6);
+            transform: scale(1.05);
         }
 
         .comment-content h4 {
             font-size: 1rem;
             margin-bottom: 5px;
+            color: var(--light);
         }
 
         .comment-content p {
-            color: #cbd5e1;
+            color: rgba(255, 255, 255, 0.7);
             line-height: 1.5;
         }
 
@@ -376,33 +484,42 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 8px;
             padding: 12px;
-            color: var(--text);
+            color: var(--light);
+            transition: var(--transition);
+        }
+
+        .post-comment input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.2);
         }
 
         .post-comment button {
-            background: linear-gradient(90deg, var(--accent1), var(--accent2));
+            background: var(--primary);
             border: none;
             color: #fff;
             padding: 12px 20px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
-            transition: 0.3s;
+            transition: var(--transition);
         }
 
         .post-comment button:hover {
-            opacity: 0.85;
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
         }
 
         /* FOOTER */
         footer {
             text-align: center;
-            padding: 20px;
+            padding: 30px;
             font-size: 0.9rem;
-            color: var(--muted);
+            color: var(--gray);
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             margin-top: 50px;
-            max-width: 1200px;
+            max-width: 1400px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -412,9 +529,19 @@
             width: 8px;
         }
 
+        .episode-list::-webkit-scrollbar-track {
+            background: var(--dark);
+            border-radius: 4px;
+        }
+
         .episode-list::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, var(--accent2), var(--accent1));
-            border-radius: 6px;
+            background: var(--primary);
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .episode-list::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
         }
 
         /* Next Episode Arrow */
@@ -422,28 +549,28 @@
             display: flex;
             justify-content: flex-end;
             gap: 20px;
-            width: 90%;
-            max-width: 900px;
-            margin: 10px auto 40px;
+            margin: 20px 0 40px;
         }
 
         .arrow {
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #ff6b81, #7c5cff);
+            background: var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
             color: #fff;
             font-size: 1.4rem;
             cursor: pointer;
-            transition: .3s;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
         }
 
         .arrow:hover {
+            background: var(--primary-dark);
             transform: scale(1.1);
-            box-shadow: 0 0 12px rgba(124, 92, 255, 0.8);
+            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.6);
         }
 
         /* RESPONSIVE */
@@ -472,15 +599,41 @@
             .main-container {
                 padding: 20px 15px;
             }
+
+            .video-player {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .video-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
+            .video-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .post-comment {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 
 <body>
     <header>
-        <div class="logo">Kitsune</div>
+        <a href="../../home.html" class="logo">
+            <div class="logo-icon">
+                <img src="../../Image & logo/kitsune logo.jpg" alt="Kitsune Logo">
+            </div>
+            <div class="logo-text">Kitsune</div>
+        </a>
         <div class="nav-links">
-            <a href="#">Contact Us</a>
+            <a href="#contact">Contact Us</a>
             <a href="../../home.html">Home</a>
         </div>
     </header>
@@ -488,11 +641,17 @@
     <div class="main-container">
         <!-- ANIME INFO SECTION -->
         <section class="anime-info-section">
-            <img src="../../Image & logo/TOS.jpg" alt="Soul Land 2 Poster" class="poster">
+            <img src="../../Image & logo/TOS.jpg" alt="Throne Of Seal Poster" class="poster">
             <div class="anime-details">
                 <h1 class="anime-title">Throne Of Seal — Episode 1</h1>
-                <div class="anime-meta">Languages: Hindi • English • Japanese • Tamil • Telugu | Subtitles: English |
-                    Quality: 1080p FHD</div>
+                <div class="anime-meta">
+                    <span class="meta-tag">Hindi</span>
+                    <span class="meta-tag">English</span>
+                    <span class="meta-tag">Japanese</span>
+                    <span class="meta-tag">Tamil</span>
+                    <span class="meta-tag">Telugu</span>
+                    <span class="meta-tag">1080p FHD</span>
+                </div>
                 <p class="anime-description">
                     Long Hao Chen, a pure-hearted young boy who dreams of becoming a Holy Knight in a world ravaged by
                     demons. Guided
@@ -512,6 +671,14 @@
             <div class="main-content">
                 <!-- VIDEO PLAYER -->
                 <section class="video-section">
+                    <div class="video-header">
+                        <h2>Now Playing: Episode 1 - Rise of the Supreme</h2>
+                        <div class="video-controls">
+                            <button><i class="fas fa-volume-up"></i> Audio</button>
+                            <button><i class="fas fa-closed-captioning"></i> Subtitles</button>
+                            <button><i class="fas fa-cog"></i> Settings</button>
+                        </div>
+                    </div>
                     <div class="video-player">
                         <iframe frameborder="0" type="text/html"
                             src="https://www.dailymotion.com/embed/video/k48pWBiXWpogNwxUTLK" width="100%" height="100%"
@@ -520,14 +687,16 @@
                 </section>
 
                 <div class="nav-arrows">
-                    <div class="arrow" onclick="location.href='episode2.html'">⏩</div>
+                    <div class="arrow" onclick="location.href='episode2.html'">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
                 </div>
 
                 <!-- COMMENTS SECTION -->
                 <section class="comments-section">
                     <h2>Comments</h2>
                     <div class="comment">
-                        <img src="https://via.placeholder.com/50/7c5cff/ffffff?text=U1" alt="User 1"
+                        <img src="https://via.placeholder.com/50/E50914/ffffff?text=U1" alt="User 1"
                             class="comment-avatar">
                         <div class="comment-content">
                             <h4>User Name 1</h4>
@@ -536,7 +705,7 @@
                         </div>
                     </div>
                     <div class="comment">
-                        <img src="https://via.placeholder.com/50/ff6b81/ffffff?text=U2" alt="User 2"
+                        <img src="https://via.placeholder.com/50/B20710/ffffff?text=U2" alt="User 2"
                             class="comment-avatar">
                         <div class="comment-content">
                             <h4>User Name 2</h4>
@@ -545,7 +714,7 @@
                         </div>
                     </div>
                     <div class="comment">
-                        <img src="https://via.placeholder.com/50/1e1b29/ffffff?text=U3" alt="User 3"
+                        <img src="https://via.placeholder.com/50/1A1A1A/ffffff?text=U3" alt="User 3"
                             class="comment-avatar">
                         <div class="comment-content">
                             <h4>User Name 3</h4>
@@ -564,12 +733,12 @@
             <div class="sidebar">
                 <!-- EPISODE LIST -->
                 <section class="episode-list">
-                    <h2>Episode List</h2>
+                    <h2>All Episodes</h2>
                     <div id="episodeListContainer">Loading episodes...</div>
                 </section>
 
                 <!-- CONTACT SECTION -->
-                <section class="contact-section">
+                <section class="contact-section" id="contact">
                     <h2>Contact Us</h2>
                     <form action="https://formsubmit.co/kitsuneanime436@gmail.com" method="POST" class="contact-form">
 
@@ -583,7 +752,7 @@
                         <input type="email" name="email" placeholder="Email" required>
                         <textarea name="message" placeholder="Your message..." required></textarea>
 
-                        <button type="submit">Send Message</button>
+                        <button type="submit"><i class="fas fa-paper-plane"></i> Send Message</button>
                     </form>
                 </section>
             </div>

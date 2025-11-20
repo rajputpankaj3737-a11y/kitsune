@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Solo Leveling S2 — Watch Episodes | Kitsune</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #E50914;
+            --primary-dark: #B20710;
+            --primary-light: #FF4D4D;
+            --secondary: #1A1A1A;
+            --accent: #FF3333;
+            --dark: #0F0F0F;
+            --darker: #0A0A0A;
+            --light: #F5F5F5;
+            --gray: #8A8A8A;
+            --card-bg: rgba(40, 40, 40, 0.9);
+            --glass: rgba(255, 255, 255, 0.08);
+            --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            --radius: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            color: var(--light);
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            overflow-x: hidden;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* HEADER */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 40px;
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 900;
+            font-size: 1.4rem;
+            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.5);
+            transition: var(--transition);
+        }
+
+        .logo:hover .logo-icon {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(229, 9, 20, 0.7);
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-shadow: 0 2px 12px rgba(229, 9, 20, 0.4);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border: none;
+            color: #fff;
+            padding: 12px 28px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .nav-btn:hover::before {
+            left: 100%;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(229, 9, 20, 0.6);
+        }
+
+        /* HERO BANNER */
+        .hero-banner {
+            position: relative;
+            padding: 80px 40px 60px;
+            background: linear-gradient(135deg, rgba(10, 10, 10, 0.95) 0%, rgba(26, 26, 26, 0.8) 100%);
+            overflow: hidden;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("../../Image & logo/TOS.jpg") center/cover no-repeat;
+            opacity: 0.25;
+            z-index: -1;
+            filter: brightness(0.4);
+        }
+
+        .hero-banner::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: linear-gradient(transparent, var(--darker));
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .anime-title {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--light) 0%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            line-height: 1.1;
+        }
+
+        .anime-description {
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 800px;
+            font-size: 1.2rem;
+            line-height: 1.7;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .anime-meta {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+        }
+
+        .meta-item i {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .watch-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 16px 36px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
+        }
+
+        .watch-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(229, 9, 20, 0.6);
+        }
+
+        .info-btn {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 16px 36px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .info-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+        }
+
+        /* INFO CARDS SECTION */
+        .info-section {
+            padding: 60px 40px;
+            background: var(--dark);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .info-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 30px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+        }
+
+        .info-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(229, 9, 20, 0.3);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .info-card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .info-card h3 {
+            color: var(--primary-light);
+            margin-bottom: 12px;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .info-card p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        /* EPISODES SECTION */
+        .episode-section {
+            padding: 60px 40px 80px;
+            background: var(--darker);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-header h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--primary-light);
+            position: relative;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            border-radius: 3px;
+        }
+
+        .section-header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .episode-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 40px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .episode-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-height: 600px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            padding-right: 15px;
+        }
+
+        /* Custom Scrollbar */
+        .episode-list::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .episode-list::-webkit-scrollbar-track {
+            background: var(--dark);
+            border-radius: 8px;
+        }
+
+        .episode-list::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .episode-list::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+        }
+
+        .episode-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: var(--radius);
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .episode-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(229, 9, 20, 0.15), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .episode-item:hover::before {
+            left: 100%;
+        }
+
+        .episode-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(229, 9, 20, 0.3);
+            border-color: rgba(229, 9, 20, 0.4);
+            background: rgba(50, 50, 50, 0.9);
+        }
+
+        .episode-thumbnail {
+            width: 140px;
+            height: 80px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+
+        .episode-item:hover .episode-thumbnail {
+            border-color: rgba(229, 9, 20, 0.6);
+            transform: scale(1.05);
+        }
+
+        .episode-content {
+            flex: 1;
+        }
+
+        .episode-title {
+            font-size: 1.2rem;
+            color: #fff;
+            margin-bottom: 8px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #fff 0%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .episode-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 6px;
+        }
+
+        .episode-number {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(229, 9, 20, 0.4);
+        }
+
+        .episode-duration {
+            color: var(--gray);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .episode-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .watch-now {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-light);
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .episode-item:hover .watch-now {
+            color: #fff;
+            transform: translateX(5px);
+        }
+
+        .watch-now i {
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .episode-item:hover .watch-now i {
+            transform: translateX(3px);
+        }
+
+        /* Current episode styling */
+        .episode-item.current {
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 25px rgba(229, 9, 20, 0.5);
+            background: linear-gradient(135deg, rgba(40, 40, 40, 0.95) 0%, rgba(229, 9, 20, 0.15) 100%);
+            position: relative;
+        }
+
+        .episode-item.current::after {
+            content: 'NOW PLAYING';
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(229, 9, 20, 0.4);
+        }
+
+        /* 📱 RESPONSIVE DESIGN */
+        @media (max-width: 1024px) {
+            .anime-title {
+                font-size: 3.2rem;
+            }
+            
+            .hero-banner {
+                padding: 60px 30px 40px;
+                min-height: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 14px 25px;
+            }
+
+            .logo-text {
+                font-size: 1.5rem;
+            }
+
+            .logo-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn {
+                padding: 10px 22px;
+                font-size: 0.95rem;
+            }
+
+            .hero-banner {
+                padding: 50px 20px 30px;
+                min-height: 350px;
+            }
+
+            .anime-title {
+                font-size: 2.5rem;
+            }
+
+            .anime-description {
+                font-size: 1.1rem;
+            }
+
+            .info-section,
+            .episode-section {
+                padding: 40px 25px;
+            }
+
+            .section-header h2 {
+                font-size: 2.2rem;
+            }
+
+            .episode-container {
+                padding: 25px;
+            }
+
+            .episode-item {
+                gap: 15px;
+                padding: 18px;
+            }
+
+            .episode-thumbnail {
+                width: 120px;
+                height: 70px;
+            }
+
+            .episode-title {
+                font-size: 1.1rem;
+            }
+
+            .episode-list {
+                max-height: 500px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .anime-title {
+                font-size: 2rem;
+            }
+            
+            .anime-meta {
+                gap: 20px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .watch-btn,
+            .info-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .episode-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .episode-content {
+                width: 100%;
+            }
+            
+            .episode-meta {
+                justify-content: center;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .anime-title {
+                font-size: 1.8rem;
+            }
+            
+            header {
+                padding: 12px 20px;
+            }
+            
+            .hero-banner {
+                padding: 40px 15px 25px;
+            }
+            
+            .info-section,
+            .episode-section {
+                padding: 30px 15px;
+            }
+            
+            .episode-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <a href="../../home.html" class="logo">
+            <div class="logo-icon">K</div>
+            <div class="logo-text">Kitsune</div>
+        </a>
+        <button class="nav-btn" onclick="location.href='../../home.html'">
+            <i class="fas fa-home"></i> Home
+        </button>
+    </header>
+
+    <!-- HERO BANNER -->
+    <section class="hero-banner">
+        <div class="hero-content">
+            <h1 class="anime-title">Solo Leveling(Season 2)</h1>
+            <p class="anime-description">
+                They say whatever doesn’t kill you makes you stronger, but that’s not the case 
+                for the world’s weakest hunter Sung Jinwoo. After being brutally slaughtered by 
+                monsters in a high-ranking dungeon, Jinwoo came back with the System, a program 
+                only he could see, that’s leveling him up in every way. Now, he’s inspired to discover 
+                the secrets behind his powers and the dungeon that spawned them.
+            </p>
+            <div class="anime-meta">
+                <div class="meta-item">
+                    <i class="fas fa-language"></i>
+                    <span>Japanese</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-closed-captioning"></i>
+                    <span>English Subtitles</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-hd"></i>
+                    <span>1080p FHD Quality</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-play-circle"></i>
+                    <span>50+ Episodes</span>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <button class="watch-btn" onclick="location.href='episode1.html'">
+                    <i class="fas fa-play"></i>
+                    Watch Now
+                </button>
+                <button class="info-btn">
+                    <i class="fas fa-info-circle"></i>
+                    More Info
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- INFO CARDS SECTION -->
+    <section class="info-section">
+        <div class="info-grid">
+            <div class="info-card">
+                <i class="fas fa-language"></i>
+                <h3>Audio Languages</h3>
+                <p>Chinese (Original)<br>Japanese Dub Available</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-closed-captioning"></i>
+                <h3>Subtitles</h3>
+                <p>English, Spanish, French<br>German, Portuguese</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-hd"></i>
+                <h3>Video Quality</h3>
+                <p>1080p FHD • 720p HD<br>480p SD Available</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-calendar"></i>
+                <h3>Release Info</h3>
+                <p>2023 • Ongoing<br>New episodes weekly</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- EPISODES SECTION -->
+    <section class="episode-section">
+        <div class="section-header">
+            <h2>Episode List</h2>
+            <p>Watch all episodes of Throne Of Seal in high quality</p>
+        </div>
+        <div class="episode-container">
+            <div id="episodeListContainer"></div>
+        </div>
+    </section>
+
+    <script>
+        fetch('episodes.html')
+            .then(res => res.text())
+            .then(html => {
+                // ✅ Load the HTML content from episodes.html
+                const container = document.getElementById("episodeListContainer");
+                container.innerHTML = html;
+
+                // ✅ Execute the <script> tag inside episodes.html manually
+                const temp = document.createElement("div");
+                temp.innerHTML = html;
+                const scriptTag = temp.querySelector("script");
+                if (scriptTag) {
+                    const newScript = document.createElement("script");
+                    newScript.textContent = scriptTag.textContent;
+                    document.body.appendChild(newScript);
+                }
+            })
+            .catch(() => {
+                document.getElementById("episodeListContainer").innerHTML =
+                    "<p style='color:#bbb;text-align:center;padding:40px;'>⚠ Failed to load episode list. Please try again later.</p>";
+            });
+
+        // Add some sample episode data for demonstration
+        document.addEventListener('DOMContentLoaded', function() {
+            const episodeContainer = document.getElementById('episodeListContainer');
+            
+            // If no episodes are loaded, show sample data
+            if (episodeContainer.innerHTML.trim() === '') {
+                episodeContainer.innerHTML = `
+                    <div class="episode-list">
+                        ${Array.from({length: 10}, (_, i) => `
+                            <div class="episode-item ${i === 0 ? 'current' : ''}">
+                                <img src="https://via.placeholder.com/140x80/1a1a1a/ffffff?text=Episode+${i+1}" 
+                                     alt="Episode ${i+1}" class="episode-thumbnail">
+                                <div class="episode-content">
+                                    <h4 class="episode-title">Episode ${i+1}: The Beginning of Destiny</h4>
+                                    <div class="episode-meta">
+                                        <span class="episode-number">EP ${i+1}</span>
+                                        <span class="episode-duration">24 min</span>
+                                    </div>
+                                    <p class="episode-description">Long Hao Chen begins his journey as a Holy Knight apprentice...</p>
+                                    <div class="watch-now">
+                                        <span>Watch Now</span>
+                                        <i class="fas fa-chevron-right"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+
+</html>
