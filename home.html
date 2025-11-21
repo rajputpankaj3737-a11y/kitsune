@@ -1218,91 +1218,149 @@
     }
 
     /* ===== MOBILE HEADER OPTIMIZATION ===== */
-    /* ===== MOBILE NETFLIX-STYLE OPTIMIZATION ===== */
+    /* ===== MOBILE REDESIGN - NETFLIX STYLE ===== */
 @media (max-width: 768px) {
-    /* Base mobile optimizations */
+    /* Base mobile reset */
     body {
-        padding-bottom: 70px;
+        padding-bottom: 60px;
         -webkit-overflow-scrolling: touch;
         background: #000 !important;
+        margin: 0;
     }
 
     /* Netflix-style header */
     header {
-        padding: 8px 0;
-        background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%) !important;
+        padding: 8px 0 !important;
+        background: #000 !important;
         backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
         border-bottom: none !important;
-        transition: all 0.3s ease;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
     }
 
     header.scrolled {
         background: #000 !important;
-        padding: 8px 0;
+        padding: 8px 0 !important;
     }
 
-    /* Netflix-style compact navbar */
+    /* Compact navbar layout */
     .navbar {
-        padding: 0 10px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 8px;
+        padding: 0 15px;
+        gap: 10px;
+        height: 44px;
     }
 
+    /* Logo - Left side */
     .logo {
-        flex-shrink: 0;
+        display: flex;
+        align-items: center;
         gap: 8px;
+        flex-shrink: 0;
+        text-decoration: none;
     }
 
     .logo-icon {
         width: 28px !important;
         height: 28px !important;
-        font-size: 0.8rem !important;
+        background: #E50914 !important;
         border-radius: 4px !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .logo-icon img {
+        width: 80% !important;
+        height: 80% !important;
+        object-fit: contain !important;
     }
 
     .logo-text {
-        font-size: 1.3rem !important;
+        font-size: 1.4rem !important;
         font-weight: 900 !important;
         color: #E50914 !important;
+        text-shadow: 0 2px 4px rgba(229, 9, 20, 0.3);
     }
 
-    /* Netflix-style search bar */
+    /* Search - Center */
     .search-container {
         flex: 1;
-        max-width: 160px;
-        margin-top: 0 !important;
+        max-width: 180px;
+        margin: 0 !important;
+    }
+
+    .search-box {
+        width: 100%;
+        position: relative;
     }
 
     .search-box input {
         width: 100%;
-        padding: 8px 12px;
+        padding: 8px 35px 8px 12px;
+        background: rgba(255, 255, 255, 0.1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        border-radius: 20px !important;
+        color: #fff;
         font-size: 0.8rem;
-        background: rgba(255,255,255,0.1) !important;
-        border: 1px solid rgba(255,255,255,0.2) !important;
-        border-radius: 4px !important;
+        transition: all 0.3s ease;
     }
 
     .search-box input:focus {
-        width: 100%;
-        background: rgba(255,255,255,0.15) !important;
+        background: rgba(255, 255, 255, 0.15) !important;
         border-color: #E50914 !important;
+        outline: none;
     }
 
-    /* Netflix-style profile button */
+    .search-box i {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.8rem;
+    }
+
+    /* Profile - Right side */
+    .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+    }
+
+    .user-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
     .profile-btn {
-        padding: 4px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
         background: transparent !important;
         border: none !important;
+        padding: 4px !important;
+        text-decoration: none;
     }
 
     .profile-avatar {
-        width: 28px !important;
-        height: 28px !important;
-        font-size: 0.7rem !important;
+        width: 30px !important;
+        height: 30px !important;
         background: #E50914 !important;
+        border-radius: 50% !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        font-size: 0.8rem;
     }
 
     .profile-name {
@@ -1311,6 +1369,11 @@
 
     /* Hide desktop navigation */
     .nav-links {
+        display: none !important;
+    }
+
+    /* Hide hamburger menu */
+    .hamburger {
         display: none !important;
     }
 
@@ -1337,7 +1400,7 @@
         color: #999;
         transition: all 0.3s ease;
         flex: 1;
-        padding: 6px 0;
+        padding: 4px 0;
         font-size: 0.7rem;
     }
 
@@ -1354,34 +1417,16 @@
         font-weight: 500;
     }
 
-    /* Netflix-style hero section */
+    /* Content spacing adjustment */
     .today-releases-hero {
-        padding-top: 50px !important;
-        background: linear-gradient(180deg, #000 0%, #1a1a1a 100%) !important;
+        padding-top: 70px !important;
     }
 
-    .today-releases-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-        margin-bottom: 20px;
+    section {
+        padding: 30px 0 !important;
     }
 
-    .today-releases-header h1 {
-        font-size: 1.6rem !important;
-        color: #fff !important;
-        background: none !important;
-        -webkit-text-fill-color: #fff !important;
-        margin: 0 !important;
-    }
-
-    .view-all {
-        color: #E50914 !important;
-        font-size: 0.9rem;
-        font-weight: 600;
-    }
-
-    /* Netflix-style anime grid */
+    /* Netflix-style anime cards */
     .anime-grid {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 12px;
@@ -1391,27 +1436,16 @@
         background: #2F2F2F !important;
         border-radius: 8px !important;
         border: none !important;
+        overflow: hidden;
         transition: transform 0.3s ease;
     }
 
-    .anime-card:hover {
-        transform: scale(1.05) !important;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.5) !important;
+    .anime-card:active {
+        transform: scale(0.98);
     }
 
     .card-image {
-        height: 180px !important;
-        border-radius: 8px 8px 0 0 !important;
-    }
-
-    .card-image img {
-        border-radius: 8px 8px 0 0 !important;
-    }
-
-    .card-badge {
-        background: #E50914 !important;
-        font-size: 0.6rem;
-        padding: 3px 6px;
+        height: 160px !important;
     }
 
     .card-content {
@@ -1424,23 +1458,7 @@
         margin-bottom: 6px !important;
     }
 
-    .card-meta {
-        font-size: 0.7rem !important;
-        margin-bottom: 8px !important;
-    }
-
-    .card-rating {
-        font-size: 0.7rem !important;
-        color: #FFD700 !important;
-    }
-
-    .card-description {
-        font-size: 0.75rem !important;
-        color: #ccc !important;
-        line-height: 1.3 !important;
-    }
-
-    /* Netflix-style genres */
+    /* Genres grid */
     .genres-grid {
         grid-template-columns: repeat(3, 1fr) !important;
         gap: 10px;
@@ -1453,242 +1471,107 @@
         padding: 20px 10px !important;
     }
 
-    .genre-icon {
-        font-size: 1.8rem !important;
-        color: #E50914 !important;
-    }
-
-    .genre-card h3 {
-        font-size: 0.9rem !important;
-        color: #fff !important;
-    }
-
-    .genre-count {
-        font-size: 0.7rem !important;
-        color: #999 !important;
-    }
-
-    /* Netflix-style section headers */
-    .section-header h2 {
-        font-size: 1.4rem !important;
-        color: #fff !important;
-    }
-
-    .section-header p {
-        font-size: 0.85rem !important;
-        color: #ccc !important;
-    }
-
-    /* Netflix-style footer */
-    footer {
-        background: #000 !important;
-        margin-bottom: 70px;
-        padding: 40px 0 20px !important;
-    }
-
-    .footer-content {
-        grid-template-columns: 1fr !important;
-        gap: 25px;
-    }
-
-    .footer-column h3 {
-        color: #fff !important;
-        font-size: 1.1rem !important;
-    }
-
-    .footer-links a {
-        color: #999 !important;
-        font-size: 0.85rem !important;
-    }
-
-    .footer-links a:hover {
-        color: #E50914 !important;
-    }
-
-    /* Search results Netflix-style */
+    /* Search results styling */
     .search-results {
         background: #2F2F2F !important;
         border: none !important;
         border-radius: 8px !important;
-        max-height: 300px;
+        margin-top: 8px !important;
     }
 
     .search-result-item {
-        background: #2F2F2F !important;
         border-bottom: 1px solid #444 !important;
     }
 
-    .search-result-item:hover {
-        background: #3F3F3F !important;
-    }
-
-    .search-result-title {
-        color: #fff !important;
-    }
-
-    /* Profile modal Netflix-style */
-    .profile-modal {
-        background: rgba(0,0,0,0.9) !important;
-    }
-
-    .profile-content {
-        background: #2F2F2F !important;
-        border: none !important;
-        border-radius: 12px !important;
-    }
-
-    .profile-header h2 {
-        color: #fff !important;
-    }
-
-    .profile-value {
-        color: #fff !important;
-        border-bottom: 1px solid #444 !important;
-    }
-
-    .btn-signout {
-        background: #E50914 !important;
-        color: #fff !important;
-        border: none !important;
-        border-radius: 4px !important;
-    }
-
-    /* Improved touch targets */
-    .anime-card, .genre-card, .nav-item {
-        cursor: pointer;
-        -webkit-tap-highlight-color: transparent;
-    }
-
-    /* Smooth scrolling */
-    html {
-        scroll-behavior: smooth;
-    }
-
-    /* Hide scrollbars but keep functionality */
-    .trending-slider::-webkit-scrollbar {
-        display: none;
-    }
-
-    /* Mobile animations */
-    .fade-in {
-        animation: netflixFadeIn 0.4s ease forwards;
-    }
-
-    @keyframes netflixFadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    /* Footer adjustment */
+    footer {
+        margin-bottom: 60px;
     }
 }
 
-/* ===== SMALL MOBILE OPTIMIZATION (Netflix-style) ===== */
+/* ===== SMALL MOBILE OPTIMIZATION ===== */
 @media (max-width: 380px) {
-    .anime-grid {
-        grid-template-columns: 1fr !important;
-        gap: 10px;
+    .navbar {
+        padding: 0 12px;
     }
-    
-    .genres-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 8px;
-    }
-    
+
     .search-container {
-        max-width: 140px;
+        max-width: 150px;
     }
-    
+
     .logo-text {
-        font-size: 1.1rem !important;
+        font-size: 1.2rem !important;
     }
-    
+
     .logo-icon {
         width: 26px !important;
         height: 26px !important;
     }
-    
-    .container {
-        padding: 0 12px;
+
+    .profile-avatar {
+        width: 28px !important;
+        height: 28px !important;
     }
-    
-    .card-image {
-        height: 200px !important;
+
+    .anime-grid {
+        grid-template-columns: 1fr !important;
     }
-    
-    .today-releases-header h1 {
-        font-size: 1.4rem !important;
-    }
-    
-    .section-header h2 {
-        font-size: 1.2rem !important;
+
+    .genres-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
     }
 }
 
 /* ===== EXTRA SMALL DEVICES ===== */
 @media (max-width: 320px) {
     .navbar {
-        padding: 0 8px;
+        padding: 0 10px;
     }
-    
+
     .search-container {
-        max-width: 120px;
+        max-width: 130px;
     }
-    
+
     .search-box input {
-        padding: 6px 10px;
+        padding: 6px 30px 6px 10px;
         font-size: 0.75rem;
     }
-    
-    .anime-grid {
-        gap: 8px;
-    }
-    
-    .card-image {
-        height: 180px !important;
-    }
-    
-    .genre-card {
-        padding: 15px 8px !important;
-    }
-    
-    .genre-icon {
-        font-size: 1.5rem !important;
+
+    .logo-text {
+        font-size: 1.1rem !important;
     }
 }
 
-/* ===== NETFLIX-STYLE ENHANCEMENTS ===== */
+/* ===== HEADER LAYOUT FIXES ===== */
 @media (max-width: 768px) {
-    /* Netflix red accent throughout */
-    .nav-item.active,
-    .view-all:hover,
-    .footer-links a:hover,
-    .genre-card:hover .genre-icon {
-        color: #E50914 !important;
+    /* Ensure proper header layout */
+    .navbar > * {
+        flex-shrink: 0;
     }
-    
-    /* Netflix card hover effects */
-    .anime-card:active {
-        transform: scale(0.98);
+
+    /* Logo section */
+    .navbar > .logo {
+        width: auto;
     }
-    
-    /* Netflix-style loading skeleton (optional) */
-    .skeleton {
-        background: linear-gradient(90deg, #2F2F2F 25%, #3F3F3F 50%, #2F2F2F 75%);
-        background-size: 200% 100%;
-        animation: loading 1.5s infinite;
+
+    /* Search section */
+    .navbar > .nav-actions {
+        flex: 1;
+        justify-content: flex-end;
     }
-    
-    @keyframes loading {
-        0% {
-            background-position: 200% 0;
-        }
-        100% {
-            background-position: -200% 0;
-        }
+
+    .search-container {
+        margin: 0 auto;
+    }
+
+    /* Remove any existing margins/padding that might break layout */
+    .nav-actions .search-container {
+        order: 0;
+        margin-top: 0 !important;
+    }
+
+    .user-actions {
+        order: 1;
     }
 }
   </style>
