@@ -90,8 +90,10 @@ header {
   font-size: 2rem;
   font-weight: 800;
   background: linear-gradient(90deg, #ff0000, #ff3333);
-  -webkit-background-clip: text;
+  background-clip: text;            /* standard */
+  -webkit-background-clip: text;    /* Safari/WebKit */
   -webkit-text-fill-color: transparent;
+  color: transparent;               /* fallback for validators/old browsers */
   letter-spacing: 1.5px;
   text-shadow: 0 2px 10px rgba(255, 0, 0, 0.3);
 }
@@ -193,8 +195,10 @@ header {
   font-size: 3.5rem;
   margin-bottom: 25px;
   background: linear-gradient(90deg, #ff0000, #ff3333);
-  -webkit-background-clip: text;
+  background-clip: text;            /* standard */
+  -webkit-background-clip: text;    /* Safari/WebKit */
   -webkit-text-fill-color: transparent;
+  color: transparent;               /* fallback */
   font-weight: 800;
   line-height: 1.2;
   letter-spacing: -0.5px;

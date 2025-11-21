@@ -3,75 +3,29 @@
 
 <head>
   <script>
-  // Fixed Auth Guard - Only redirect from signin page
-  (function () {
-    const currentPath = window.location.pathname;
-    
-    // If we're on signin.html and user is logged in, redirect to index
-    if (currentPath.includes('signin.html')) {
-      const user = localStorage.getItem('kitsune_user');
-      if (user) {
-        window.location.href = 'index.html';
-        return;
-      }
-    }
-    
-    // If we're NOT on signin.html and user is NOT logged in, redirect to signin
-    if (!currentPath.includes('signin.html')) {
-      const user = localStorage.getItem('kitsune_user');
-      if (!user) {
-        window.location.href = 'signin.html';
-        return;
-      }
-    }
-  })();
-</script>
-  <script>
-  // Enhanced navigation and history management
-  document.addEventListener('DOMContentLoaded', function() {
-    // Prevent browser back button from breaking navigation
-    window.history.replaceState({ page: 'index' }, '', 'index.html');
-    
-    // Update all internal links to use proper navigation
-    document.querySelectorAll('a[href="#"]').forEach(link => {
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
-        window.history.pushState({ page: 'index' }, '', 'index.html');
-        window.scrollTo(0, 0);
-      });
-    });
-
-    // Handle browser back/forward buttons
-    window.addEventListener('popstate', function(event) {
-      // Always ensure we stay on index.html when using back button
-      if (!window.location.pathname.includes('index.html') && 
-          !window.location.pathname.includes('signin.html')) {
-        window.history.replaceState({ page: 'index' }, '', 'index.html');
-      }
-    });
-  });
-</script>
-<script>
-  // Handle page refresh and direct URL access
-  (function() {
-    const currentPath = window.location.pathname;
+    // Fixed Auth Guard - Only redirect from signin page
+(function () {
+  const currentPath = window.location.pathname;
+  
+  // If we're on signin.html and user is logged in, redirect to index
+  if (currentPath.includes('signin.html')) {
     const user = localStorage.getItem('kitsune_user');
-    
-    // If user is logged in but URL is not index.html, redirect to index
-    if (user && !currentPath.includes('index.html') && !currentPath.includes('signin.html')) {
-      window.history.replaceState({}, '', 'index.html');
+    if (user) {
+      window.location.href = 'index.html';
+      return;
     }
-    
-    // If page is refreshed, ensure we're on the correct page
-    if (currentPath.endsWith('/') || currentPath === window.location.origin + '/') {
-      if (user) {
-        window.history.replaceState({}, '', 'index.html');
-      } else {
-        window.history.replaceState({}, '', 'signin.html');
-      }
+  }
+  
+  // If we're NOT on signin.html and user is NOT logged in, redirect to signin
+  if (!currentPath.includes('signin.html')) {
+    const user = localStorage.getItem('kitsune_user');
+    if (!user) {
+      window.location.href = 'signin.html';
+      return;
     }
-  })();
-</script>
+  }
+})();
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kitsune - Premium Anime Streaming</title>
@@ -1931,94 +1885,6 @@
   </footer>
 
   <script>
-    // Sample anime data (replace with your actual JSON data)
-    const animeData = [
-      {
-        "title": "Martial Master",
-        "type": "DONGHUA • Ep 01 • Sub",
-        "genre": "Action, Martial Arts",
-        "image": "Image & logo/Martial Master.webp",
-        "link": "donghua/Martial  Master/episode.html"
-      },
-      {
-        "title": "Soul Land 2",
-        "type": "DONGHUA • Ep 125 [4K] • Sub",
-        "genre": "Action, Adventure, Fantasy",
-        "image": "Image & logo/Soul_land 2.jpg",
-        "link": "donghua/Soul Land 2/episode.html"
-      },
-      {
-        "title": "Throne Of Seal",
-        "type": "DONGHUA • Ep 01 [4K] • Sub",
-        "genre": "Action, Fantasy, Adventure",
-        "image": "Image & logo/TOS.jpg",
-        "link": "donghua/Throne Of Seal/episode.html"
-      },
-      {
-        "title": "Renegade Immortal",
-        "type": "DONGHUA • Ep 01 • Sub",
-        "genre": "Action, Adventure",
-        "image": "Image & logo/Renegade_Immortal.jpg",
-        "link": "donghua/Renegade Immortal/episode.html"
-      },
-      {
-        "title": "Perfect World",
-        "type": "DONGHUA • Ep 239 [4K] • Sub",
-        "genre": "Action, Fantasy",
-        "image": "Image & logo/perfect world.jpg",
-        "link": "donghua/Perfect World/episode.html"
-      },
-      {
-        "title": "The Demon Hunter",
-        "type": "Anime • Ep 01 • Sub",
-        "genre": "Action, Fantasy",
-        "image": "Image & logo/The Demon Hunter.png",
-        "link": "donghua/The Demon Hunter/episode.html"
-      },
-      {
-        "title": "Battle Through The Heavens",
-        "type": "DONGHUA • Ep 167 • Sub",
-        "genre": "Action, Adventure",
-        "image": "Image & logo/BTTH.jpg",
-        "link": "donghua/Battle Through The Heavens/episode.html"
-      },
-      {
-        "title": "Apotheosis",
-        "type": "DONGHUA • Ep 40 • Sub",
-        "genre": "Action, Fantasy",
-        "image": "Image & logo/Apotheosis.png",
-        "link": "donghua/Apotheosis/episode.html"
-      },
-      {
-        "title": "Against The Sky Supreme",
-        "type": "DONGHUA • Ep 40 [4K] • Sub",
-        "genre": "Action, Adventure, Fantasy",
-        "image": "Image & logo/Against_The_Sky_Supreme.webp",
-        "link": "donghua/Against the sky supreme/episode.html"
-      },
-      {
-        "title": "The Great Ruler",
-        "type": "DONGHUA • Ep 27 [4K] • Sub",
-        "genre": "Action, Fantasy",
-        "image": "Image & logo/The great Ruler.jpg",
-        "link": "donghua/The great Ruler/episode.html"
-      },
-      {
-        "title": "Solo Leveling(S2)",
-        "type": "DONGHUA • Ep 12 [4K] • Sub",
-        "genre": "Action",
-        "image": "Image & logo/Solo Leveling.jpg",
-        "link": "janime/Solo Leveling 2/episode.html"
-      },
-      {
-        "title": "The Angel Next Door Spoils Me Rotten",
-        "type": "DONGHUA • Ep 27 [4K] • Sub",
-        "genre": "Action, Fantasy",
-        "image": "Image & logo/The angel next door spoils me rotten.jpg",
-        "link": "Image & logo/The angel next door spoils me rotten.jpg"
-      }
-    ];
-
     // DOM Elements
     const searchInput = document.getElementById('searchInput');
     const searchResults = document.getElementById('searchResults');
@@ -2039,14 +1905,17 @@
     const profileJoinDate = document.getElementById('profileJoinDate');
     const signOutBtn = document.getElementById('signOutBtn');
 
+    // Global variable to store anime data
+    let animeData = [];
+
     // Header scroll effect
     window.addEventListener('scroll', function () {
-      const header = document.getElementById('header');
-      if (window.scrollY > 100) {
-        header.classList.add('scrolled');
-      } else {
-        header.classList.remove('scrolled');
-      }
+        const header = document.getElementById('header');
+        if (window.scrollY > 100) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
     });
 
     // Mobile menu toggle
@@ -2054,291 +1923,289 @@
     const navLinks = document.querySelector('.nav-links');
 
     hamburger.addEventListener('click', function () {
-      navLinks.classList.toggle('active');
-      hamburger.classList.toggle('active');
+        navLinks.classList.toggle('active');
+        hamburger.classList.toggle('active');
     });
 
     // Profile Modal functionality
     function initProfileModal() {
-      // Load user data from localStorage
-      const userData = JSON.parse(localStorage.getItem('kitsune_user') || '{}');
+        // Load user data from localStorage
+        const userData = JSON.parse(localStorage.getItem('kitsune_user') || '{}');
+        
+        console.log('User Data:', userData);
 
-      // Set profile data
-      if (userData.displayName) {
-        profileDisplayName.textContent = userData.displayName;
-        document.querySelector('.profile-name').textContent = userData.displayName;
-      }
+        // Set profile data
+        if (userData.displayName) {
+            profileDisplayName.textContent = userData.displayName;
+            document.querySelector('.profile-name').textContent = userData.displayName;
+        } else if (userData.name) {
+            profileDisplayName.textContent = userData.name;
+            document.querySelector('.profile-name').textContent = userData.name;
+        }
 
-      if (userData.email) {
-        profileEmail.textContent = userData.email;
-      }
+        if (userData.email) {
+            profileEmail.textContent = userData.email;
+        }
 
-      if (userData.username) {
-        profileUsername.textContent = `@${userData.username}`;
-      }
+        if (userData.username) {
+            profileUsername.textContent = `@${userData.username}`;
+        } else if (userData.email) {
+            profileUsername.textContent = `@${userData.email.split('@')[0]}`;
+        }
 
-      // Set profile image
-      const savedProfileImage = localStorage.getItem('kitsune_profile_image');
-      if (savedProfileImage) {
-        profileImage.src = savedProfileImage;
-        profileAvatar.innerHTML = `<img src="${savedProfileImage}" alt="Profile">`;
-      } else if (userData.photoURL) {
-        profileImage.src = userData.photoURL;
-        profileAvatar.innerHTML = `<img src="${userData.photoURL}" alt="Profile">`;
-      }
+        // Set profile image
+        const savedProfileImage = localStorage.getItem('kitsune_profile_image');
+        
+        if (savedProfileImage) {
+            setProfileImage(savedProfileImage);
+        } else if (userData.photoURL) {
+            setProfileImage(userData.photoURL);
+            localStorage.setItem('kitsune_profile_image', userData.photoURL);
+        } else if (userData.picture) {
+            setProfileImage(userData.picture);
+            localStorage.setItem('kitsune_profile_image', userData.picture);
+        } else if (userData.avatar) {
+            setProfileImage(userData.avatar);
+            localStorage.setItem('kitsune_profile_image', userData.avatar);
+        } else {
+            setDefaultAvatar();
+        }
 
-      // Set join date
-      const joinDate = userData.joinDate || new Date().toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
-      profileJoinDate.textContent = joinDate;
+        // Set join date
+        const joinDate = userData.joinDate || userData.createdAt || new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        profileJoinDate.textContent = joinDate;
+    }
+
+    // Helper function to set profile image
+    function setProfileImage(imageUrl) {
+        profileImage.src = imageUrl;
+        profileAvatar.innerHTML = `<img src="${imageUrl}" alt="Profile" style="width: 100%; height: 100%; object-fit: cover;">`;
+    }
+
+    // Helper function for default avatar
+    function setDefaultAvatar() {
+        const displayName = document.getElementById('profileDisplayName').textContent;
+        const initials = displayName ? displayName.charAt(0).toUpperCase() : 'U';
+        
+        profileAvatar.innerHTML = `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: var(--primary); color: white; font-weight: 600; font-size: 0.9rem;">${initials}</div>`;
+        profileImage.src = '';
     }
 
     // Open profile modal
     profileBtn.addEventListener('click', function (e) {
-      e.preventDefault();
-      profileModal.classList.add('active');
-      document.body.style.overflow = 'hidden';
+        e.preventDefault();
+        profileModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
     });
 
     // Close profile modal
     profileClose.addEventListener('click', function () {
-      profileModal.classList.remove('active');
-      document.body.style.overflow = 'auto';
+        profileModal.classList.remove('active');
+        document.body.style.overflow = 'auto';
     });
 
     // Close modal when clicking outside
     profileModal.addEventListener('click', function (e) {
-      if (e.target === profileModal) {
-        profileModal.classList.remove('active');
-        document.body.style.overflow = 'auto';
-      }
+        if (e.target === profileModal) {
+            profileModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
     });
 
     // Profile image change functionality
     profileImageEdit.addEventListener('click', function () {
-      profileImageInput.click();
+        profileImageInput.click();
     });
 
     profileImageInput.addEventListener('change', function (e) {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (event) {
-          const imageUrl = event.target.result;
-          profileImage.src = imageUrl;
-          profileAvatar.innerHTML = `<img src="${imageUrl}" alt="Profile">`;
-
-          // Save to localStorage
-          localStorage.setItem('kitsune_profile_image', imageUrl);
-        };
-        reader.readAsDataURL(file);
-      }
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                const imageUrl = event.target.result;
+                profileImage.src = imageUrl;
+                profileAvatar.innerHTML = `<img src="${imageUrl}" alt="Profile">`;
+                localStorage.setItem('kitsune_profile_image', imageUrl);
+            };
+            reader.readAsDataURL(file);
+        }
     });
 
     // Sign out functionality
     signOutBtn.addEventListener('click', function () {
-      localStorage.removeItem('kitsune_user');
-      localStorage.removeItem('kitsune_profile_image');
-      window.location.href = 'signin.html';
+        localStorage.removeItem('kitsune_user');
+        localStorage.removeItem('kitsune_profile_image');
+        window.location.href = 'signin.html';
     });
 
+    // Load anime data from JSON file
+    async function loadAnimeData() {
+        try {
+            const response = await fetch('searchData.json');
+            if (!response.ok) {
+                throw new Error('Failed to load anime data');
+            }
+            animeData = await response.json();
+            
+            // Sort by newest first (assuming newer episodes have higher numbers)
+            animeData.sort((a, b) => {
+                const getEpisodeNum = (type) => {
+                    const match = type.match(/Ep\s*(\d+)/);
+                    return match ? parseInt(match[1]) : 0;
+                };
+                return getEpisodeNum(b.type) - getEpisodeNum(a.type);
+            });
+            
+            populateAnimeSections();
+        } catch (error) {
+            console.error('Error loading anime data:', error);
+            // Fallback to empty array
+            animeData = [];
+            populateAnimeSections();
+        }
+    }
+
+    // Populate anime sections
+    function populateAnimeSections() {
+        // Today's Releases - Latest 6 anime
+        const todayReleases = animeData.slice(0, 6);
+        populateAnimeGrid(todayReleases, todayReleasesHeroGrid);
+
+        // Featured Anime - Up to 24 anime (all available or max 24)
+        const featuredAnime = animeData.slice(0, 24);
+        populateAnimeGrid(featuredAnime, animeGrid);
+    }
+
     // Populate anime grid
-    function populateAnimeGrid(animeList, gridElement, limit = null) {
-      gridElement.innerHTML = '';
+    function populateAnimeGrid(animeList, gridElement) {
+        gridElement.innerHTML = '';
 
-      const displayList = limit ? animeList.slice(0, limit) : animeList;
-
-      displayList.forEach(anime => {
-        const animeCard = document.createElement('div');
-        animeCard.className = 'anime-card fade-in';
-        animeCard.innerHTML = `
-                    <div class="card-image">
-                        <img src="${anime.image}" alt="${anime.title}" onerror="this.src='https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
-                        <div class="card-badge">NEW</div>
-                    </div>
-                    <div class="card-content">
-                        <h3>${anime.title}</h3>
-                        <div class="card-meta">
-                            <span>${anime.genre}</span>
-                            <div class="card-rating">
-                                <i class="fas fa-star"></i>
-                                <span>9.8</span>
-                            </div>
+        animeList.forEach(anime => {
+            const animeCard = document.createElement('div');
+            animeCard.className = 'anime-card fade-in';
+            animeCard.innerHTML = `
+                <div class="card-image">
+                    <img src="${anime.image}" alt="${anime.title}" onerror="this.src='https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
+                    <div class="card-badge">NEW</div>
+                </div>
+                <div class="card-content">
+                    <h3>${anime.title}</h3>
+                    <div class="card-meta">
+                        <span>${anime.genre}</span>
+                        <div class="card-rating">
+                            <i class="fas fa-star"></i>
+                            <span>9.8</span>
                         </div>
-                        <p class="card-description">${anime.type}</p>
                     </div>
-                `;
+                    <p class="card-description">${anime.type}</p>
+                </div>
+            `;
 
-        // Add click event to navigate to anime page
-        animeCard.addEventListener('click', function () {
-          window.location.href = anime.link;
+            // Add click event to navigate to anime page
+            animeCard.addEventListener('click', function () {
+                window.location.href = anime.link;
+            });
+
+            gridElement.appendChild(animeCard);
         });
-
-        gridElement.appendChild(animeCard);
-      });
     }
 
     // Search functionality
     function performSearch(query) {
-      const normalizedQuery = query.toLowerCase().trim();
+        const normalizedQuery = query.toLowerCase().trim();
 
-      if (normalizedQuery === '') {
-        searchResults.classList.remove('active');
-        return;
-      }
+        if (normalizedQuery === '') {
+            searchResults.classList.remove('active');
+            return;
+        }
 
-      const filteredAnime = animeData.filter(anime => {
-        return anime.title.toLowerCase().includes(normalizedQuery) ||
-          anime.genre.toLowerCase().includes(normalizedQuery) ||
-          anime.type.toLowerCase().includes(normalizedQuery);
-      });
+        const filteredAnime = animeData.filter(anime => {
+            return anime.title.toLowerCase().includes(normalizedQuery) ||
+                anime.genre.toLowerCase().includes(normalizedQuery) ||
+                anime.type.toLowerCase().includes(normalizedQuery);
+        });
 
-      displaySearchResults(filteredAnime);
+        displaySearchResults(filteredAnime);
     }
 
     // Display search results
     function displaySearchResults(results) {
-      searchResults.innerHTML = '';
+        searchResults.innerHTML = '';
 
-      if (results.length === 0) {
-        searchResults.innerHTML = '<div class="no-results">No anime found matching your search</div>';
-      } else {
-        results.forEach(anime => {
-          const resultItem = document.createElement('a');
-          resultItem.className = 'search-result-item';
-          resultItem.href = anime.link;
-          resultItem.innerHTML = `
-                        <div class="search-result-image">
-                            <img src="${anime.image}" alt="${anime.title}" onerror="this.src='https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
-                        </div>
-                        <div class="search-result-content">
-                            <div class="search-result-title">${anime.title}</div>
-                            <div class="search-result-type">${anime.type}</div>
-                            <div class="search-result-genre">${anime.genre}</div>
-                        </div>
-                    `;
-          searchResults.appendChild(resultItem);
-        });
-      }
+        if (results.length === 0) {
+            searchResults.innerHTML = '<div class="no-results">No anime found matching your search</div>';
+        } else {
+            results.forEach(anime => {
+                const resultItem = document.createElement('a');
+                resultItem.className = 'search-result-item';
+                resultItem.href = anime.link;
+                resultItem.innerHTML = `
+                    <div class="search-result-image">
+                        <img src="${anime.image}" alt="${anime.title}" onerror="this.src='https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
+                    </div>
+                    <div class="search-result-content">
+                        <div class="search-result-title">${anime.title}</div>
+                        <div class="search-result-type">${anime.type}</div>
+                        <div class="search-result-genre">${anime.genre}</div>
+                    </div>
+                `;
+                searchResults.appendChild(resultItem);
+            });
+        }
 
-      searchResults.classList.add('active');
+        searchResults.classList.add('active');
     }
 
     // Event listeners for search
     searchInput.addEventListener('input', function () {
-      performSearch(this.value);
+        performSearch(this.value);
     });
 
     searchInput.addEventListener('focus', function () {
-      if (this.value.trim() !== '') {
-        performSearch(this.value);
-      }
+        if (this.value.trim() !== '') {
+            performSearch(this.value);
+        }
     });
 
     // Close search results when clicking outside
     document.addEventListener('click', function (event) {
-      if (!event.target.closest('.search-container')) {
-        searchResults.classList.remove('active');
-      }
+        if (!event.target.closest('.search-container')) {
+            searchResults.classList.remove('active');
+        }
     });
 
     // Initialize the page
     document.addEventListener('DOMContentLoaded', function () {
-      // Initialize profile modal with user data
-      initProfileModal();
+        // Initialize profile modal with user data
+        initProfileModal();
 
-      // Populate anime grids
-      populateAnimeGrid(animeData, animeGrid);
-      populateAnimeGrid(animeData.slice(0, 6), todayReleasesHeroGrid, 6);
+        // Load anime data from JSON file
+        loadAnimeData();
 
-      // Animation on scroll
-      const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-      };
+        // Animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
 
-      const observer = new IntersectionObserver(function (entries) {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('fade-in');
-          }
+        const observer = new IntersectionObserver(function (entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all elements with fade-in class
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
         });
-      }, observerOptions);
-
-      // Observe all elements with fade-in class
-      document.querySelectorAll('.fade-in').forEach(el => {
-        observer.observe(el);
-      });
     });
-  </script>
-  <script>
-    // Search functionality
-    function performSearch(query) {
-      const normalizedQuery = query.toLowerCase().trim();
-
-      if (normalizedQuery === '') {
-        searchResults.classList.remove('active');
-        return;
-      }
-
-      const filteredAnime = animeData.filter(anime => {
-        return anime.title.toLowerCase().includes(normalizedQuery) ||
-          anime.genre.toLowerCase().includes(normalizedQuery) ||
-          anime.type.toLowerCase().includes(normalizedQuery);
-      });
-
-      displaySearchResults(filteredAnime);
-    }
-
-    // Display search results
-    function displaySearchResults(results) {
-      searchResults.innerHTML = '';
-
-      if (results.length === 0) {
-        searchResults.innerHTML = '<div class="no-results">No anime found matching your search</div>';
-      } else {
-        results.forEach(anime => {
-          const resultItem = document.createElement('a');
-          resultItem.className = 'search-result-item';
-          resultItem.href = anime.link;
-          resultItem.innerHTML = `
-                        <div class="search-result-image">
-                            <img src="${anime.image}" alt="${anime.title}" onerror="this.src='https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
-                        </div>
-                        <div class="search-result-content">
-                            <div class="search-result-title">${anime.title}</div>
-                            <div class="search-result-type">${anime.type}</div>
-                            <div class="search-result-genre">${anime.genre}</div>
-                        </div>
-                    `;
-          searchResults.appendChild(resultItem);
-        });
-      }
-
-      searchResults.classList.add('active');
-    }
-
-    // Event listeners for search
-    searchInput.addEventListener('input', function () {
-      performSearch(this.value);
-    });
-
-    searchInput.addEventListener('focus', function () {
-      if (this.value.trim() !== '') {
-        performSearch(this.value);
-      }
-    });
-
-    // Close search results when clicking outside
-    document.addEventListener('click', function (event) {
-      if (!event.target.closest('.search-container')) {
-        searchResults.classList.remove('active');
-      }
-    });
-  </script>
+</script>
 </body>
 
 </html>
