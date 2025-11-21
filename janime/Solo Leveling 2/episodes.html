@@ -237,10 +237,21 @@
   const list = document.getElementById("episodeList");
   let currentEpisode = 1;
 
+  // Get current episode from URL
   const path = window.location.pathname;
   const match = path.match(/episode(\d+)/i);
   if (match) currentEpisode = parseInt(match[1]);
+  
+  // Check if we have a stored scroll position for this series
+  const scrollKey = 'kitsune_episode_scroll_' + window.location.pathname.split('/').slice(-2, -1)[0];
+  const savedScrollEpisode = localStorage.getItem(scrollKey);
+  
+  // If we have a saved scroll position and it's not the current episode, use it
+  if (savedScrollEpisode && parseInt(savedScrollEpisode) !== currentEpisode) {
+    currentEpisode = parseInt(savedScrollEpisode);
+  }
 
+  // Render episodes
   episodes.forEach(ep => {
     const div = document.createElement("div");
     div.className = "episode-item";
@@ -262,7 +273,27 @@
       </div>
     `;
     
-    div.onclick = () => window.location.href = ep.file;
+    div.onclick = () => {
+      // Save the clicked episode number to localStorage
+      localStorage.setItem(scrollKey, ep.number.toString());
+      // Navigate to the episode
+      window.location.href = ep.file;
+    };
     list.appendChild(div);
   });
+
+  // Scroll to current episode after a short delay to ensure DOM is ready
+  setTimeout(() => {
+    const currentEpisodeElement = document.querySelector('.episode-item.current');
+    if (currentEpisodeElement) {
+      // Get the parent container (episode list)
+      const episodeListContainer = document.querySelector('.episode-list');
+      if (episodeListContainer) {
+        // Calculate the position to scroll to
+        const scrollPosition = currentEpisodeElement.offsetTop - episodeListContainer.offsetTop - 20;
+        // Scroll to the current episode
+        episodeListContainer.scrollTop = scrollPosition;
+      }
+    }
+  }, 100);
 </script>
