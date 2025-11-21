@@ -555,66 +555,298 @@
         }
 
         /* 📱 RESPONSIVE DESIGN */
-        @media (max-width: 1024px) {
-            .anime-title {
-                font-size: 3.2rem;
-            }
-            
-            .hero-banner {
-                padding: 60px 30px 40px;
-                min-height: 400px;
-            }
-        }
-
+        /* 📱 MOBILE-FIRST RESPONSIVE ENHANCEMENTS */
         @media (max-width: 768px) {
+
+            /* Global mobile adjustments */
+            body {
+                -webkit-tap-highlight-color: transparent;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* Enhanced header for mobile */
             header {
-                padding: 14px 25px;
+                padding: 12px 20px;
+                position: fixed;
+                width: 100%;
+                top: 0;
+                background: rgba(10, 10, 10, 0.95);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border-bottom: 1px solid rgba(229, 9, 20, 0.3);
+                z-index: 1000;
             }
 
             .logo-text {
-                font-size: 1.5rem;
+                font-size: 1.4rem;
             }
 
             .logo-icon {
-                width: 36px;
-                height: 36px;
-                font-size: 1.2rem;
+                width: 32px;
+                height: 32px;
+                font-size: 1rem;
             }
 
             .nav-btn {
-                padding: 10px 22px;
-                font-size: 0.95rem;
+                padding: 10px 18px;
+                font-size: 0.9rem;
+                border-radius: 25px;
             }
 
+            /* Adjust hero banner for mobile */
             .hero-banner {
-                padding: 50px 20px 30px;
-                min-height: 350px;
+                padding: 100px 20px 40px;
+                min-height: auto;
+                margin-top: 60px;
             }
 
             .anime-title {
-                font-size: 2.5rem;
+                font-size: 2.2rem;
+                line-height: 1.2;
+                margin-bottom: 15px;
             }
 
             .anime-description {
+                font-size: 1rem;
+                line-height: 1.6;
+                margin-bottom: 25px;
+            }
+
+            .anime-meta {
+                gap: 15px;
+                margin-bottom: 30px;
+            }
+
+            .meta-item {
+                font-size: 0.9rem;
+            }
+
+            .meta-item i {
+                font-size: 1rem;
+            }
+
+            /* Action buttons optimized for touch */
+            .action-buttons {
+                flex-direction: column;
+                width: 100%;
+                gap: 15px;
+            }
+
+            .watch-btn,
+            .info-btn {
+                width: 100%;
+                padding: 16px 24px;
+                font-size: 1rem;
+                justify-content: center;
+                border-radius: 14px;
+                min-height: 54px;
+            }
+
+            /* Info cards grid for mobile */
+            .info-section {
+                padding: 40px 20px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .info-card {
+                padding: 25px 20px;
+                border-radius: 14px;
+            }
+
+            .info-card i {
+                font-size: 2rem;
+                margin-bottom: 15px;
+            }
+
+            .info-card h3 {
+                font-size: 1.2rem;
+            }
+
+            .info-card p {
+                font-size: 1rem;
+            }
+
+            /* Episode section mobile optimization */
+            .episode-section {
+                padding: 40px 20px 60px;
+            }
+
+            .section-header {
+                margin-bottom: 35px;
+            }
+
+            .section-header h2 {
+                font-size: 1.8rem;
+            }
+
+            .section-header p {
+                font-size: 1rem;
+            }
+
+            .episode-container {
+                padding: 25px 20px;
+                border-radius: 14px;
+            }
+
+            .episode-list {
+                max-height: 70vh;
+                gap: 15px;
+                padding-right: 10px;
+            }
+
+            /* Episode items optimized for touch */
+            .episode-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+                padding: 18px;
+                border-radius: 14px;
+                min-height: auto;
+            }
+
+            .episode-thumbnail {
+                width: 100%;
+                height: 120px;
+                border-radius: 10px;
+            }
+
+            .episode-content {
+                width: 100%;
+            }
+
+            .episode-title {
                 font-size: 1.1rem;
+                margin-bottom: 10px;
+            }
+
+            .episode-meta {
+                justify-content: center;
+                margin-bottom: 8px;
+            }
+
+            .episode-description {
+                font-size: 0.9rem;
+                margin-bottom: 10px;
+            }
+
+            .watch-now {
+                justify-content: center;
+                font-size: 0.9rem;
+            }
+
+            /* Current episode indicator for mobile */
+            .episode-item.current::after {
+                top: 8px;
+                right: 8px;
+                padding: 4px 8px;
+                font-size: 0.7rem;
+            }
+
+            /* Custom scrollbar for mobile */
+            .episode-list::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            /* Mobile-specific touch enhancements */
+            .watch-btn,
+            .info-btn,
+            .episode-item,
+            .nav-btn {
+                cursor: pointer;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+
+            /* Prevent text selection on interactive elements */
+            .watch-btn,
+            .info-btn,
+            .nav-btn {
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+
+            /* iOS Safari specific fixes */
+            @supports (-webkit-touch-callout: none) {
+                .hero-banner::before {
+                    background-attachment: scroll;
+                }
+            }
+        }
+
+        /* 📱 SMARTPHONE-SPECIFIC ENHANCEMENTS */
+        @media (max-width: 480px) {
+            header {
+                padding: 10px 15px;
+            }
+
+            .hero-banner {
+                padding: 90px 15px 30px;
+            }
+
+            .anime-title {
+                font-size: 1.8rem;
+            }
+
+            .anime-description {
+                font-size: 0.95rem;
             }
 
             .info-section,
             .episode-section {
-                padding: 40px 25px;
-            }
-
-            .section-header h2 {
-                font-size: 2.2rem;
+                padding: 30px 15px;
             }
 
             .episode-container {
-                padding: 25px;
+                padding: 20px 15px;
             }
 
             .episode-item {
-                gap: 15px;
-                padding: 18px;
+                padding: 15px;
+            }
+
+            .episode-thumbnail {
+                height: 100px;
+            }
+
+            /* Enhanced touch targets for very small screens */
+            .watch-btn,
+            .info-btn {
+                min-height: 50px;
+            }
+
+            .episode-item {
+                min-height: 60px;
+            }
+        }
+
+        /* 📱 LANDSCAPE ORIENTATION OPTIMIZATIONS */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .hero-banner {
+                min-height: 300px;
+                padding: 80px 20px 30px;
+            }
+
+            .anime-title {
+                font-size: 1.8rem;
+            }
+
+            .episode-list {
+                max-height: 50vh;
+            }
+
+            .episode-item {
+                flex-direction: row;
+                text-align: left;
             }
 
             .episode-thumbnail {
@@ -622,74 +854,118 @@
                 height: 70px;
             }
 
-            .episode-title {
-                font-size: 1.1rem;
-            }
-
-            .episode-list {
-                max-height: 500px;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .anime-title {
-                font-size: 2rem;
-            }
-            
-            .anime-meta {
-                gap: 20px;
-            }
-            
-            .action-buttons {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .watch-btn,
-            .info-btn {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .episode-item {
-                flex-direction: column;
-                text-align: center;
-                gap: 15px;
-            }
-            
             .episode-content {
-                width: 100%;
+                width: auto;
             }
-            
+
             .episode-meta {
-                justify-content: center;
+                justify-content: flex-start;
             }
-            
-            .info-grid {
-                grid-template-columns: 1fr;
+
+            .watch-now {
+                justify-content: flex-start;
             }
         }
 
-        @media (max-width: 480px) {
-            .anime-title {
-                font-size: 1.8rem;
+        /* 📱 ENHANCED TOUCH INTERACTIONS */
+        @media (max-width: 768px) {
+
+            /* Ripple effect for buttons */
+            .watch-btn,
+            .info-btn,
+            .nav-btn {
+                position: relative;
+                overflow: hidden;
+                transform: translate3d(0, 0, 0);
             }
-            
-            header {
-                padding: 12px 20px;
+
+            .watch-btn:after,
+            .info-btn:after,
+            .nav-btn:after {
+                content: "";
+                display: block;
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                pointer-events: none;
+                background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+                background-repeat: no-repeat;
+                background-position: 50%;
+                transform: scale(10, 10);
+                opacity: 0;
+                transition: transform .5s, opacity 1s;
             }
-            
-            .hero-banner {
-                padding: 40px 15px 25px;
+
+            .watch-btn:active:after,
+            .info-btn:active:after,
+            .nav-btn:active:after {
+                transform: scale(0, 0);
+                opacity: .2;
+                transition: 0s;
             }
-            
-            .info-section,
-            .episode-section {
-                padding: 30px 15px;
+
+            /* Enhanced episode item interactions */
+            .episode-item {
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
             }
-            
+
+            .episode-item:active {
+                transform: scale(0.98);
+            }
+
+            /* Improved scrolling performance */
+            .episode-list {
+                -webkit-overflow-scrolling: touch;
+                transform: translate3d(0, 0, 0);
+            }
+        }
+
+        /* 📱 DARK MODE ENHANCEMENTS FOR MOBILE */
+        @media (max-width: 768px) {
+
+            /* Ensure good contrast on mobile screens */
+            .anime-description,
+            .episode-description,
+            .section-header p {
+                color: rgba(255, 255, 255, 0.85);
+            }
+
+            /* Enhanced shadows for depth on mobile */
+            .info-card,
             .episode-container {
-                padding: 20px;
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            }
+
+            /* Better visibility for current episode */
+            .episode-item.current {
+                box-shadow: 0 0 20px rgba(229, 9, 20, 0.6);
+            }
+        }
+
+        /* 📱 ACCESSIBILITY IMPROVEMENTS FOR MOBILE */
+        @media (max-width: 768px) {
+
+            /* Ensure minimum touch target size */
+            .watch-btn,
+            .info-btn,
+            .nav-btn,
+            .episode-item {
+                min-height: 44px;
+            }
+
+            /* Increase font size for better readability */
+            body {
+                font-size: 16px;
+            }
+
+            /* Focus states for accessibility */
+            .watch-btn:focus,
+            .info-btn:focus,
+            .nav-btn:focus {
+                outline: 2px solid var(--primary-light);
+                outline-offset: 2px;
             }
         }
     </style>
@@ -713,10 +989,10 @@
         <div class="hero-content">
             <h1 class="anime-title">Solo Leveling(Season 2)</h1>
             <p class="anime-description">
-                They say whatever doesn’t kill you makes you stronger, but that’s not the case 
-                for the world’s weakest hunter Sung Jinwoo. After being brutally slaughtered by 
-                monsters in a high-ranking dungeon, Jinwoo came back with the System, a program 
-                only he could see, that’s leveling him up in every way. Now, he’s inspired to discover 
+                They say whatever doesn’t kill you makes you stronger, but that’s not the case
+                for the world’s weakest hunter Sung Jinwoo. After being brutally slaughtered by
+                monsters in a high-ranking dungeon, Jinwoo came back with the System, a program
+                only he could see, that’s leveling him up in every way. Now, he’s inspired to discover
                 the secrets behind his powers and the dungeon that spawned them.
             </p>
             <div class="anime-meta">
@@ -811,21 +1087,21 @@
             });
 
         // Add some sample episode data for demonstration
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const episodeContainer = document.getElementById('episodeListContainer');
-            
+
             // If no episodes are loaded, show sample data
             if (episodeContainer.innerHTML.trim() === '') {
                 episodeContainer.innerHTML = `
                     <div class="episode-list">
-                        ${Array.from({length: 10}, (_, i) => `
+                        ${Array.from({ length: 10 }, (_, i) => `
                             <div class="episode-item ${i === 0 ? 'current' : ''}">
-                                <img src="https://via.placeholder.com/140x80/1a1a1a/ffffff?text=Episode+${i+1}" 
-                                     alt="Episode ${i+1}" class="episode-thumbnail">
+                                <img src="https://via.placeholder.com/140x80/1a1a1a/ffffff?text=Episode+${i + 1}" 
+                                     alt="Episode ${i + 1}" class="episode-thumbnail">
                                 <div class="episode-content">
-                                    <h4 class="episode-title">Episode ${i+1}: The Beginning of Destiny</h4>
+                                    <h4 class="episode-title">Episode ${i + 1}: The Beginning of Destiny</h4>
                                     <div class="episode-meta">
-                                        <span class="episode-number">EP ${i+1}</span>
+                                        <span class="episode-number">EP ${i + 1}</span>
                                         <span class="episode-duration">24 min</span>
                                     </div>
                                     <p class="episode-description">Long Hao Chen begins his journey as a Holy Knight apprentice...</p>
