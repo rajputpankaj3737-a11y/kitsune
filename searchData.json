@@ -36,7 +36,7 @@
   },
   {
     "title": "The Demon Hunter",
-    "type": "Anime • Ep 01 • Sub",
+    "type": "Anime • Ep 02 • Sub",
     "genre": "Action, Fantasy",
     "image": "Image & logo/The Demon Hunter.png",
     "link": "donghua/The Demon Hunter/episode.html"
@@ -57,37 +57,44 @@
   },
   {
     "title": "Against The Sky Supreme",
-    "type": "DONGHUA • Ep 40 [4K] • Sub",
+    "type": "DONGHUA • Ep 41 [4K] • Sub",
     "genre": "Action, Adventure, Fantasy",
     "image": "Image & logo/Against_The_Sky_Supreme.webp",
     "link": "donghua/Against the sky supreme/episode.html"
   },
   {
     "title": "The Great Ruler",
-    "type": "DONGHUA • Ep 27 [4K] • Sub",
+    "type": "DONGHUA • Ep 45 [4K] • Sub",
     "genre": "Action, Fantasy",
     "image": "Image & logo/The great Ruler.jpg",
     "link": "donghua/The great Ruler/episode.html"
   },
   {
     "title": "Solo Leveling(S2)",
-    "type": "DONGHUA • Ep 12 [4K] • Sub",
+    "type": "DONGHUA • Ep 04 [4K] • Sub",
     "genre": "Action",
     "image": "Image & logo/Solo Leveling.jpg",
     "link": "janime/Solo Leveling 2/episode.html"
   },
   {
     "title": "The Angel Next Door Spoils Me Rotten",
-    "type": "DONGHUA • Ep 27 [4K] • Sub",
+    "type": "DONGHUA • Ep 12 [4K] • Sub",
     "genre": "Action, Fantasy",
     "image": "Image & logo/The angel next door spoils me rotten.jpg",
     "link": "janime/The Angel Next Door Spoils Me Wrotten/episode.html"
   },
   {
     "title": "One Hundred Years Of Qi Refining",
-    "type": "DONGHUA • Ep 27 [4K] • Sub",
+    "type": "DONGHUA • Ep 240 [4K] • Sub",
     "genre": "Action, Fantasy",
     "image": "Image & logo/OHYOQR.jpg",
     "link": "donghua/One Hundred Year Of Qi Refining/episode.html"
+  },
+  {
+    "title": "Death Note",
+    "type": "DONGHUA • Ep 01 [4K] • Sub",
+    "genre": "Action",
+    "image": "Image & logo/death note.jpg",
+    "link": "janime/Death Note/episode.html"
   }
 ]

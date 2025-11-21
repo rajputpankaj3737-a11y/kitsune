@@ -1018,6 +1018,25 @@
       font-size: 0.9rem;
     }
 
+    .updated-badge {
+    background: #FF6B00; /* Orange for new episodes */
+}
+
+.new-badge {
+    background: var(--primary); /* Red for new anime */
+}
+
+.search-update-indicator {
+    display: inline-block;
+    background: #FF6B00;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    margin-left: 8px;
+    font-weight: 600;
+}
+
     /* ===== RESPONSIVE DESIGN ===== */
     @media (max-width: 1400px) {
       .anime-grid {
@@ -2042,6 +2061,12 @@
         window.location.href = 'signin.html';
     });
 
+    // Extract episode number from type field
+    function extractEpisodeNumber(typeString) {
+        const episodeMatch = typeString.match(/Ep\s*(\d+)/i);
+        return episodeMatch ? parseInt(episodeMatch[1]) : 0;
+    }
+
     // Load anime data from JSON file
     async function loadAnimeData() {
         try {
@@ -2049,16 +2074,10 @@
             if (!response.ok) {
                 throw new Error('Failed to load anime data');
             }
-            animeData = await response.json();
+            const newAnimeData = await response.json();
             
-            // Sort by newest first (assuming newer episodes have higher numbers)
-            animeData.sort((a, b) => {
-                const getEpisodeNum = (type) => {
-                    const match = type.match(/Ep\s*(\d+)/);
-                    return match ? parseInt(match[1]) : 0;
-                };
-                return getEpisodeNum(b.type) - getEpisodeNum(a.type);
-            });
+            // Process and maintain permanent order
+            animeData = maintainPermanentOrder(newAnimeData);
             
             populateAnimeSections();
         } catch (error) {
@@ -2069,28 +2088,110 @@
         }
     }
 
+    // Maintain permanent order with episode update tracking
+    function maintainPermanentOrder(newAnimeData) {
+        // Get stored order from localStorage
+        const storedOrder = JSON.parse(localStorage.getItem('kitsune_anime_order') || '[]');
+        const previousEpisodes = JSON.parse(localStorage.getItem('kitsune_previous_episodes') || '{}');
+        
+        // Create a map of new anime by title for easy lookup
+        const newAnimeMap = new Map();
+        newAnimeData.forEach(anime => {
+            newAnimeMap.set(anime.title, anime);
+        });
+
+        // Track updated anime
+        const updatedAnime = [];
+        const hasNewEpisodeMap = new Map();
+
+        // Check for episode updates
+        newAnimeData.forEach(anime => {
+            const currentEpisode = extractEpisodeNumber(anime.type);
+            const previousEpisode = previousEpisodes[anime.title] || 0;
+            const hasNewEpisode = currentEpisode > previousEpisode;
+            
+            hasNewEpisodeMap.set(anime.title, hasNewEpisode);
+            
+            if (hasNewEpisode) {
+                updatedAnime.push(anime.title);
+            }
+        });
+
+        // Build the new order
+        let newOrder = [];
+
+        // Step 1: Add updated anime to the top (in the order they were updated)
+        updatedAnime.forEach(animeTitle => {
+            if (newAnimeMap.has(animeTitle)) {
+                newOrder.push(animeTitle);
+            }
+        });
+
+        // Step 2: Add remaining anime from stored order
+        storedOrder.forEach(animeTitle => {
+            if (newAnimeMap.has(animeTitle) && !updatedAnime.includes(animeTitle)) {
+                newOrder.push(animeTitle);
+            }
+        });
+
+        // Step 3: Add any new anime that aren't in stored order (added to JSON)
+        newAnimeData.forEach(anime => {
+            if (!newOrder.includes(anime.title)) {
+                newOrder.unshift(anime.title); // Add new anime to the top
+            }
+        });
+
+        // Convert titles back to full anime objects with update info
+        const finalAnimeData = newOrder.map(title => {
+            const anime = newAnimeMap.get(title);
+            return {
+                ...anime,
+                hasNewEpisode: hasNewEpisodeMap.get(title) || false,
+                episodeNumber: extractEpisodeNumber(anime.type)
+            };
+        });
+
+        // Store the new order and episodes for next time
+        localStorage.setItem('kitsune_anime_order', JSON.stringify(newOrder));
+        
+        // Update stored episodes
+        const newEpisodeData = {};
+        newAnimeData.forEach(anime => {
+            newEpisodeData[anime.title] = extractEpisodeNumber(anime.type);
+        });
+        localStorage.setItem('kitsune_previous_episodes', JSON.stringify(newEpisodeData));
+
+        return finalAnimeData;
+    }
+
     // Populate anime sections
     function populateAnimeSections() {
-        // Today's Releases - Latest 6 anime
+        // Today's Releases - First 6 anime
         const todayReleases = animeData.slice(0, 6);
         populateAnimeGrid(todayReleases, todayReleasesHeroGrid);
 
-        // Featured Anime - Up to 24 anime (all available or max 24)
+        // Featured Anime - First 24 anime
         const featuredAnime = animeData.slice(0, 24);
         populateAnimeGrid(featuredAnime, animeGrid);
     }
 
-    // Populate anime grid
+    // Populate anime grid with update indicators
     function populateAnimeGrid(animeList, gridElement) {
         gridElement.innerHTML = '';
 
         animeList.forEach(anime => {
             const animeCard = document.createElement('div');
             animeCard.className = 'anime-card fade-in';
+            
+            // Show "NEW EP" badge for anime with new episodes, "NEW" for new anime
+            const showBadge = true;
+            const badgeText = anime.hasNewEpisode ? 'NEW EP' : 'NEW';
+            const badgeClass = anime.hasNewEpisode ? 'updated-badge' : 'new-badge';
+            
             animeCard.innerHTML = `
                 <div class="card-image">
                     <img src="${anime.image}" alt="${anime.title}" onerror="this.src='https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
-                    <div class="card-badge">NEW</div>
+                    ${showBadge ? `<div class="card-badge ${badgeClass}">${badgeText}</div>` : ''}
                 </div>
                 <div class="card-content">
                     <h3>${anime.title}</h3>
@@ -2143,12 +2244,16 @@
                 const resultItem = document.createElement('a');
                 resultItem.className = 'search-result-item';
                 resultItem.href = anime.link;
+                
+                // Add update indicator in search results
+                const updateIndicator = anime.hasNewEpisode ? '<div class="search-update-indicator">NEW EP</div>' : '';
+                
                 resultItem.innerHTML = `
                     <div class="search-result-image">
                         <img src="${anime.image}" alt="${anime.title}" onerror="this.src='https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
                     </div>
                     <div class="search-result-content">
-                        <div class="search-result-title">${anime.title}</div>
+                        <div class="search-result-title">${anime.title} ${updateIndicator}</div>
                         <div class="search-result-type">${anime.type}</div>
                         <div class="search-result-genre">${anime.genre}</div>
                     </div>
@@ -2178,6 +2283,16 @@
         }
     });
 
+    // Clear order tracking (useful for testing)
+    function clearOrderTracking() {
+        localStorage.removeItem('kitsune_anime_order');
+        localStorage.removeItem('kitsune_previous_episodes');
+        console.log('Order tracking cleared - will create new order from JSON');
+        setTimeout(() => {
+            window.location.reload();
+        }, 1000);
+    }
+
     // Initialize the page
     document.addEventListener('DOMContentLoaded', function () {
         // Initialize profile modal with user data
@@ -2204,6 +2319,10 @@
         document.querySelectorAll('.fade-in').forEach(el => {
             observer.observe(el);
         });
+
+        // For testing: Add this to console
+        window.clearOrderTracking = clearOrderTracking;
+        console.log('To reset order, run: clearOrderTracking()');
     });
 </script>
 </body>
