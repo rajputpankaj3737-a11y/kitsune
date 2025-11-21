@@ -1223,377 +1223,422 @@
     }
 
     /* ===== MOBILE HEADER OPTIMIZATION ===== */
-    /* ===== MOBILE-FIRST RESPONSIVE DESIGN ===== */
-    @media (max-width: 768px) {
+    /* ===== MOBILE REDESIGN - NETFLIX STYLE ===== */
+@media (max-width: 768px) {
+    /* Base mobile reset */
+    body {
+        padding-bottom: 60px;
+        -webkit-overflow-scrolling: touch;
+        background: #000 !important;
+        margin: 0;
+    }
 
-      /* Base mobile adjustments */
-      body {
-        font-size: 14px;
-      }
-
-      .container {
-        padding: 0 15px;
-      }
-
-      section {
-        padding: 40px 0;
-      }
-
-      /* Typography for mobile */
-      h1 {
-        font-size: 2rem;
-        line-height: 1.1;
-      }
-
-      h2 {
-        font-size: 1.6rem;
-      }
-
-      h3 {
-        font-size: 1.2rem;
-      }
-
-      /* Header mobile optimization */
-      header {
-        padding: 12px 0;
-      }
-
-      .navbar {
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-
-      .logo-text {
-        font-size: 1.4rem;
-      }
-
-      .logo-icon {
-        width: 32px;
-        height: 32px;
-        font-size: 1rem;
-      }
-
-      /* Mobile navigation */
-      .nav-links {
-        display: none;
+    /* Netflix-style header */
+    header {
+        padding: 8px 0 !important;
+        background: #000 !important;
+        backdrop-filter: none !important;
+        border-bottom: none !important;
         position: fixed;
-        top: 70px;
+        top: 0;
         left: 0;
         width: 100%;
-        background: var(--darker);
-        flex-direction: column;
-        padding: 20px;
-        gap: 15px;
-        z-index: 999;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-      }
+        z-index: 1000;
+    }
 
-      .nav-links.active {
+    header.scrolled {
+        background: #000 !important;
+        padding: 8px 0 !important;
+    }
+
+    /* Compact navbar layout */
+    .navbar {
         display: flex;
-      }
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 15px;
+        gap: 10px;
+        height: 44px;
+    }
 
-      .nav-links a {
-        padding: 12px 15px;
-        border-radius: 8px;
-        background: rgba(255, 255, 255, 0.05);
-        transition: var(--transition);
-      }
+    /* Logo only - Left side (remove text) */
+    .logo {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        text-decoration: none;
+    }
 
-      .nav-links a:hover {
-        background: rgba(229, 9, 20, 0.2);
-      }
+    .logo-icon {
+        width: 32px !important;
+        height: 32px !important;
+        background: #E50914 !important;
+        border-radius: 6px !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(229, 9, 20, 0.4);
+    }
 
-      .nav-links a::after {
-        display: none;
-      }
+    .logo-icon img {
+        width: 85% !important;
+        height: 85% !important;
+        object-fit: contain !important;
+    }
 
-      /* Mobile search */
-      .search-container {
-        order: 3;
+    /* Hide logo text */
+    .logo-text {
+        display: none !important;
+    }
+
+    /* Search - Center (increased width) */
+    .search-container {
+        flex: 1;
+        max-width: 220px;
+        margin: 0 !important;
+        position: static !important; /* Prevent movement on focus */
+    }
+
+    .search-box {
         width: 100%;
-        margin-top: 15px;
-      }
+        position: relative;
+    }
 
-      .search-box input {
+    .search-box input {
         width: 100%;
-        padding: 12px 45px 12px 15px;
-        font-size: 1rem;
-      }
+        padding: 10px 40px 10px 15px;
+        background: rgba(255, 255, 255, 0.15) !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        border-radius: 25px !important;
+        color: #fff;
+        font-size: 0.85rem;
+        transition: all 0.3s ease;
+        position: static !important; /* Keep position fixed */
+    }
 
-      .search-box input:focus {
-        width: 100%;
-      }
+    .search-box input:focus {
+        background: rgba(255, 255, 255, 0.2) !important;
+        border-color: #E50914 !important;
+        outline: none;
+        transform: none !important; /* Prevent movement */
+        width: 100% !important; /* Keep same width */
+    }
 
-      .search-results {
-        width: 100%;
-        max-height: 70vh;
-        border-radius: 0 0 12px 12px;
-      }
+    .search-box i {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.9rem;
+        pointer-events: none;
+    }
 
-      /* Mobile profile */
-      .profile-btn .profile-name {
-        display: none;
-      }
+    /* Right side actions */
+    .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-shrink: 0;
+    }
 
-      .profile-btn {
+    .user-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    /* Three line menu icon */
+    .menu-toggle {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        cursor: pointer;
         padding: 6px;
-      }
+        background: transparent;
+        border: none;
+    }
 
-      .hamburger {
-        display: flex;
-      }
+    .menu-toggle span {
+        width: 18px;
+        height: 2px;
+        background: #fff;
+        border-radius: 1px;
+        transition: all 0.3s ease;
+    }
 
-      .hamburger.active span:nth-child(1) {
+    .menu-toggle.active span:nth-child(1) {
         transform: rotate(45deg) translate(6px, 6px);
-      }
+    }
 
-      .hamburger.active span:nth-child(2) {
+    .menu-toggle.active span:nth-child(2) {
         opacity: 0;
-      }
+    }
 
-      .hamburger.active span:nth-child(3) {
+    .menu-toggle.active span:nth-child(3) {
         transform: rotate(-45deg) translate(6px, -6px);
-      }
+    }
 
-      /* Today's Releases Hero Section - Mobile */
-      .today-releases-hero {
-        padding-top: 90px;
-      }
+    /* Profile button */
+    .profile-btn {
+        display: flex;
+        align-items: center;
+        background: transparent !important;
+        border: none !important;
+        padding: 4px !important;
+        text-decoration: none;
+    }
 
-      .today-releases-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-        margin-bottom: 25px;
-      }
+    .profile-avatar {
+        width: 32px !important;
+        height: 32px !important;
+        background: #E50914 !important;
+        border-radius: 50% !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        font-size: 0.85rem;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+    }
 
-      .today-releases-header h1 {
-        font-size: 1.8rem;
-      }
+    .profile-name {
+        display: none !important;
+    }
 
-      .view-all {
-        align-self: flex-end;
-      }
+    /* Hide desktop navigation */
+    .nav-links {
+        display: none !important;
+    }
 
-      /* Anime Grid - Mobile */
-      .anime-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
-      }
+    /* Hide hamburger menu */
+    .hamburger {
+        display: none !important;
+    }
 
-      .card-image {
-        height: 180px;
-      }
+    /* Fix search results position */
+    .search-results {
+        position: absolute !important;
+        top: 100% !important;
+        left: 0 !important;
+        width: 100% !important;
+        margin-top: 8px !important;
+        z-index: 1001;
+        background: #2F2F2F !important;
+        border: none !important;
+        border-radius: 8px !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
 
-      .card-content {
-        padding: 12px;
-      }
-
-      .card-content h3 {
-        font-size: 0.95rem;
-      }
-
-      .card-description {
-        font-size: 0.75rem;
-      }
-
-      /* Trending Section - Mobile */
-      .trending-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-        margin-bottom: 25px;
-      }
-
-      .section-controls {
-        align-self: flex-end;
-      }
-
-      .trending-item {
-        min-width: 150px;
-      }
-
-      .trending-image {
-        height: 120px;
-      }
-
-      /* Genres Section - Mobile */
-      .genres-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
-      }
-
-      .genre-card {
-        padding: 20px 10px;
-      }
-
-      .genre-icon {
-        font-size: 1.8rem;
-      }
-
-      .genre-card h3 {
-        font-size: 1.1rem;
-      }
-
-      /* Profile Modal - Mobile */
-      .profile-content {
-        width: 95%;
-        padding: 20px;
-      }
-
-      .profile-image-container {
-        width: 80px;
-        height: 80px;
-      }
-
-      .profile-image {
-        width: 80px;
-        height: 80px;
-      }
-
-      /* Footer - Mobile */
-      .footer-content {
-        grid-template-columns: 1fr;
-        gap: 30px;
-      }
-
-      .footer-about {
-        margin-bottom: 0;
-      }
-
-      .footer-bottom p {
-        font-size: 0.8rem;
-      }
-
-      /* Mobile-specific improvements */
-      .mobile-hidden {
-        display: none;
-      }
-
-      /* Bottom navigation for mobile (optional) */
-      .mobile-bottom-nav {
+    /* Netflix-style bottom navigation */
+    .bottom-nav {
         position: fixed;
         bottom: 0;
         left: 0;
         width: 100%;
-        background: var(--darker);
+        background: #000;
+        border-top: 1px solid #333;
         display: flex;
         justify-content: space-around;
-        padding: 10px 0;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
         z-index: 1000;
-      }
+    }
 
-      .mobile-nav-item {
+    .nav-item {
         display: flex;
         flex-direction: column;
         align-items: center;
-        color: rgba(255, 255, 255, 0.6);
+        gap: 4px;
         text-decoration: none;
+        color: #999;
+        transition: all 0.3s ease;
+        flex: 1;
+        padding: 4px 0;
         font-size: 0.7rem;
-        transition: var(--transition);
-      }
-
-      .mobile-nav-item.active,
-      .mobile-nav-item:hover {
-        color: var(--primary);
-      }
-
-      .mobile-nav-icon {
-        font-size: 1.2rem;
-        margin-bottom: 4px;
-      }
-
-      /* Adjust padding for bottom nav */
-      body.has-bottom-nav {
-        padding-bottom: 70px;
-      }
     }
 
-    /* Extra small devices */
-    @media (max-width: 480px) {
-      .anime-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .genres-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .trending-item {
-        min-width: 140px;
-      }
-
-      .card-image {
-        height: 200px;
-      }
-
-      .today-releases-header h1 {
-        font-size: 1.6rem;
-      }
-
-      .section-header h2 {
-        font-size: 1.4rem;
-      }
+    .nav-item.active {
+        color: #E50914;
     }
 
-    /* Mobile landscape optimization */
-    @media (max-width: 768px) and (orientation: landscape) {
-      .today-releases-hero {
-        padding-top: 80px;
-      }
-
-      .anime-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-
-      .card-image {
-        height: 150px;
-      }
-
-      .search-results {
-        max-height: 60vh;
-      }
+    .nav-item i {
+        font-size: 1.1rem;
     }
 
-    /* High-resolution mobile devices */
-    @media (max-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
-
-      .logo-icon,
-      .profile-avatar,
-      .card-image img,
-      .trending-image img {
-        image-rendering: -webkit-optimize-contrast;
-      }
+    .nav-item span {
+        font-size: 0.65rem;
+        font-weight: 500;
     }
 
-    /* Dark mode consistency */
-    @media (max-width: 768px) {
-      .search-box input {
-        background: rgba(255, 255, 255, 0.1);
-      }
-
-      .nav-links a:hover {
-        background: rgba(229, 9, 20, 0.15);
-      }
+    /* Content spacing adjustment */
+    .today-releases-hero {
+        padding-top: 70px !important;
     }
 
-    /* Mobile animations */
-    @media (max-width: 768px) {
+    section {
+        padding: 30px 0 !important;
+    }
 
-      .anime-card,
-      .genre-card,
-      .trending-item {
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-      }
+    /* Netflix-style anime cards */
+    .anime-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px;
+    }
 
-      .anime-card:active,
-      .genre-card:active,
-      .trending-item:active {
+    .anime-card {
+        background: #2F2F2F !important;
+        border-radius: 8px !important;
+        border: none !important;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+
+    .anime-card:active {
         transform: scale(0.98);
-      }
     }
+
+    .card-image {
+        height: 160px !important;
+    }
+
+    .card-content {
+        padding: 12px !important;
+    }
+
+    .card-content h3 {
+        font-size: 0.9rem !important;
+        color: #fff !important;
+        margin-bottom: 6px !important;
+    }
+
+    /* Genres grid */
+    .genres-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 10px;
+    }
+
+    .genre-card {
+        background: #2F2F2F !important;
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 20px 10px !important;
+    }
+
+    .search-result-item {
+        border-bottom: 1px solid #444 !important;
+    }
+
+    /* Footer adjustment */
+    footer {
+        margin-bottom: 60px;
+    }
+}
+
+/* ===== SMALL MOBILE OPTIMIZATION ===== */
+@media (max-width: 380px) {
+    .navbar {
+        padding: 0 12px;
+    }
+
+    .search-container {
+        max-width: 200px;
+    }
+
+    .logo-icon {
+        width: 30px !important;
+        height: 30px !important;
+    }
+
+    .profile-avatar {
+        width: 30px !important;
+        height: 30px !important;
+    }
+
+    .menu-toggle {
+        padding: 5px;
+    }
+
+    .menu-toggle span {
+        width: 16px;
+    }
+
+    .anime-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .genres-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+/* ===== EXTRA SMALL DEVICES ===== */
+@media (max-width: 320px) {
+    .navbar {
+        padding: 0 10px;
+    }
+
+    .search-container {
+        max-width: 180px;
+    }
+
+    .search-box input {
+        padding: 8px 35px 8px 12px;
+        font-size: 0.8rem;
+    }
+
+    .logo-icon {
+        width: 28px !important;
+        height: 28px !important;
+    }
+}
+
+/* ===== HEADER LAYOUT FIXES ===== */
+@media (max-width: 768px) {
+    /* Ensure proper header layout */
+    .navbar > * {
+        flex-shrink: 0;
+    }
+
+    /* Logo section */
+    .navbar > .logo {
+        width: auto;
+    }
+
+    /* Search section - prevent movement */
+    .navbar > .nav-actions {
+        flex: 1;
+        justify-content: flex-end;
+        position: relative;
+    }
+
+    .search-container {
+        position: relative !important;
+        transform: none !important;
+    }
+
+    /* Remove any existing margins/padding that might break layout */
+    .nav-actions .search-container {
+        order: 0;
+        margin-top: 0 !important;
+        position: static !important;
+    }
+
+    .user-actions {
+        order: 1;
+    }
+
+    /* Fix for search input focus issues */
+    .search-box {
+        position: relative !important;
+    }
+    
+    .search-box input {
+        position: relative !important;
+        transform: none !important;
+        transition: border-color 0.3s ease, background-color 0.3s ease !important;
+    }
+}
   </style>
 </head>
 
@@ -2185,95 +2230,6 @@
       document.querySelectorAll('.fade-in').forEach(el => {
         observer.observe(el);
       });
-    });
-  </script>
-
-  <script>
-    // Mobile navigation toggle
-    const hamburger = document.getElementById('hamburger');
-    const navLinks = document.querySelector('.nav-links');
-
-    hamburger.addEventListener('click', function () {
-      navLinks.classList.toggle('active');
-      hamburger.classList.toggle('active');
-
-      // Close search results when opening mobile menu
-      if (navLinks.classList.contains('active')) {
-        searchResults.classList.remove('active');
-      }
-    });
-
-    // Close mobile menu when clicking on a link
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('active');
-        hamburger.classList.remove('active');
-      });
-    });
-
-    // Touch-friendly interactions
-    document.addEventListener('touchstart', function () { }, { passive: true });
-
-    // Optional: Add bottom navigation for mobile
-    function addMobileBottomNav() {
-      if (window.innerWidth <= 768) {
-        const bottomNav = document.createElement('div');
-        bottomNav.className = 'mobile-bottom-nav';
-        bottomNav.innerHTML = `
-      <a href="#today-releases" class="mobile-nav-item">
-        <i class="fas fa-home mobile-nav-icon"></i>
-        <span>Home</span>
-      </a>
-      <a href="#browse" class="mobile-nav-item">
-        <i class="fas fa-compass mobile-nav-icon"></i>
-        <span>Browse</span>
-      </a>
-      <a href="#genres" class="mobile-nav-item">
-        <i class="fas fa-th-large mobile-nav-icon"></i>
-        <span>Genres</span>
-      </a>
-      <a href="#" class="mobile-nav-item" id="mobileProfileBtn">
-        <i class="fas fa-user mobile-nav-icon"></i>
-        <span>Profile</span>
-      </a>
-    `;
-
-        document.body.appendChild(bottomNav);
-        document.body.classList.add('has-bottom-nav');
-
-        // Add click handler for mobile profile button
-        document.getElementById('mobileProfileBtn').addEventListener('click', function (e) {
-          e.preventDefault();
-          profileModal.classList.add('active');
-          document.body.style.overflow = 'hidden';
-        });
-
-        // Highlight active nav item
-        const navItems = document.querySelectorAll('.mobile-nav-item');
-        navItems.forEach(item => {
-          item.addEventListener('click', function () {
-            navItems.forEach(i => i.classList.remove('active'));
-            this.classList.add('active');
-          });
-        });
-      }
-    }
-
-    // Initialize mobile features
-    document.addEventListener('DOMContentLoaded', function () {
-      addMobileBottomNav();
-
-      // Adjust layout for mobile
-      if (window.innerWidth <= 768) {
-        // Any mobile-specific initialization
-      }
-    });
-
-    // Handle orientation changes
-    window.addEventListener('orientationchange', function () {
-      setTimeout(() => {
-        // Refresh any layout-dependent elements
-      }, 300);
     });
   </script>
   <script>
