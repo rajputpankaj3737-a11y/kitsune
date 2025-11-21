@@ -749,14 +749,19 @@
       font-size: 0.8rem;
       line-height: 1.4;
       display: -webkit-box;
-      display: box;                    /* Standard property */
-      -webkit-line-clamp: 2;          /* WebKit */
-      line-clamp: 2;                  /* Standard property */
+      display: box;
+      /* Standard property */
+      -webkit-line-clamp: 2;
+      /* WebKit */
+      line-clamp: 2;
+      /* Standard property */
       -webkit-box-orient: vertical;
-      box-orient: vertical;           /* Standard property */
+      box-orient: vertical;
+      /* Standard property */
       overflow: hidden;
-      max-height: 2.8em;              /* Fallback: 2 lines × 1.4 line height */
-}
+      max-height: 2.8em;
+      /* Fallback: 2 lines × 1.4 line height */
+    }
 
     /* ===== TRENDING NOW SECTION ===== */
     .trending-now {
@@ -1218,170 +1223,377 @@
     }
 
     /* ===== MOBILE HEADER OPTIMIZATION ===== */
-    /* ===== MOBILE SIDEBAR MENU ===== */
-@media (max-width: 768px) {
-    /* Three line menu icon - MOBILE ONLY */
-    .menu-toggle {
-        display: flex !important;
-        flex-direction: column;
-        gap: 3px;
-        cursor: pointer;
-        padding: 6px;
-        background: transparent;
-        border: none;
-    }
+    /* ===== MOBILE-FIRST RESPONSIVE DESIGN ===== */
+    @media (max-width: 768px) {
 
-    .menu-toggle span {
-        width: 18px;
-        height: 2px;
-        background: #fff;
-        border-radius: 1px;
-        transition: all 0.3s ease;
-    }
+      /* Base mobile adjustments */
+      body {
+        font-size: 14px;
+      }
 
-    .menu-toggle.active span:nth-child(1) {
-        transform: rotate(45deg) translate(6px, 6px);
-    }
+      .container {
+        padding: 0 15px;
+      }
 
-    .menu-toggle.active span:nth-child(2) {
-        opacity: 0;
-    }
+      section {
+        padding: 40px 0;
+      }
 
-    .menu-toggle.active span:nth-child(3) {
-        transform: rotate(-45deg) translate(6px, -6px);
-    }
+      /* Typography for mobile */
+      h1 {
+        font-size: 2rem;
+        line-height: 1.1;
+      }
 
-    /* Mobile Sidebar Menu - MOBILE ONLY */
-    .mobile-sidebar {
-        position: fixed;
-        top: 0;
-        left: -280px;
-        width: 280px;
-        height: 100%;
-        background: #000;
-        z-index: 2000;
-        transition: left 0.3s ease;
-        border-right: 1px solid #333;
-        overflow-y: auto;
-    }
+      h2 {
+        font-size: 1.6rem;
+      }
 
-    .mobile-sidebar.active {
-        left: 0;
-    }
+      h3 {
+        font-size: 1.2rem;
+      }
 
-    .sidebar-header {
-        padding: 60px 20px 20px;
-        border-bottom: 1px solid #333;
-        background: #111;
-    }
+      /* Header mobile optimization */
+      header {
+        padding: 12px 0;
+      }
 
-    .sidebar-header .logo {
-        display: flex;
-        align-items: center;
+      .navbar {
+        flex-wrap: wrap;
         gap: 10px;
-    }
+      }
 
-    .sidebar-header .logo-icon {
-        width: 40px !important;
-        height: 40px !important;
-    }
+      .logo-text {
+        font-size: 1.4rem;
+      }
 
-    .sidebar-header .logo-text {
-        display: block !important;
-        font-size: 1.5rem;
-        color: #E50914;
-        font-weight: 900;
-    }
-
-    .sidebar-menu {
-        padding: 20px 0;
-    }
-
-    .sidebar-item {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        padding: 15px 20px;
-        color: #fff;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        border-left: 4px solid transparent;
+      .logo-icon {
+        width: 32px;
+        height: 32px;
         font-size: 1rem;
-        font-weight: 500;
-    }
+      }
 
-    .sidebar-item.active,
-    .sidebar-item:hover {
-        background: #1a1a1a;
-        border-left-color: #E50914;
-        color: #E50914;
-    }
-
-    .sidebar-item i {
-        width: 20px;
-        text-align: center;
-        font-size: 1.1rem;
-    }
-
-    .sidebar-overlay {
+      /* Mobile navigation */
+      .nav-links {
+        display: none;
         position: fixed;
-        top: 0;
+        top: 70px;
         left: 0;
         width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.7);
-        z-index: 1999;
+        background: var(--darker);
+        flex-direction: column;
+        padding: 20px;
+        gap: 15px;
+        z-index: 999;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .nav-links a {
+        padding: 12px 15px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        transition: var(--transition);
+      }
+
+      .nav-links a:hover {
+        background: rgba(229, 9, 20, 0.2);
+      }
+
+      .nav-links a::after {
         display: none;
+      }
+
+      /* Mobile search */
+      .search-container {
+        order: 3;
+        width: 100%;
+        margin-top: 15px;
+      }
+
+      .search-box input {
+        width: 100%;
+        padding: 12px 45px 12px 15px;
+        font-size: 1rem;
+      }
+
+      .search-box input:focus {
+        width: 100%;
+      }
+
+      .search-results {
+        width: 100%;
+        max-height: 70vh;
+        border-radius: 0 0 12px 12px;
+      }
+
+      /* Mobile profile */
+      .profile-btn .profile-name {
+        display: none;
+      }
+
+      .profile-btn {
+        padding: 6px;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .hamburger.active span:nth-child(1) {
+        transform: rotate(45deg) translate(6px, 6px);
+      }
+
+      .hamburger.active span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .hamburger.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(6px, -6px);
+      }
+
+      /* Today's Releases Hero Section - Mobile */
+      .today-releases-hero {
+        padding-top: 90px;
+      }
+
+      .today-releases-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 25px;
+      }
+
+      .today-releases-header h1 {
+        font-size: 1.8rem;
+      }
+
+      .view-all {
+        align-self: flex-end;
+      }
+
+      /* Anime Grid - Mobile */
+      .anime-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+      }
+
+      .card-image {
+        height: 180px;
+      }
+
+      .card-content {
+        padding: 12px;
+      }
+
+      .card-content h3 {
+        font-size: 0.95rem;
+      }
+
+      .card-description {
+        font-size: 0.75rem;
+      }
+
+      /* Trending Section - Mobile */
+      .trending-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 25px;
+      }
+
+      .section-controls {
+        align-self: flex-end;
+      }
+
+      .trending-item {
+        min-width: 150px;
+      }
+
+      .trending-image {
+        height: 120px;
+      }
+
+      /* Genres Section - Mobile */
+      .genres-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+      }
+
+      .genre-card {
+        padding: 20px 10px;
+      }
+
+      .genre-icon {
+        font-size: 1.8rem;
+      }
+
+      .genre-card h3 {
+        font-size: 1.1rem;
+      }
+
+      /* Profile Modal - Mobile */
+      .profile-content {
+        width: 95%;
+        padding: 20px;
+      }
+
+      .profile-image-container {
+        width: 80px;
+        height: 80px;
+      }
+
+      .profile-image {
+        width: 80px;
+        height: 80px;
+      }
+
+      /* Footer - Mobile */
+      .footer-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .footer-about {
+        margin-bottom: 0;
+      }
+
+      .footer-bottom p {
+        font-size: 0.8rem;
+      }
+
+      /* Mobile-specific improvements */
+      .mobile-hidden {
+        display: none;
+      }
+
+      /* Bottom navigation for mobile (optional) */
+      .mobile-bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: var(--darker);
+        display: flex;
+        justify-content: space-around;
+        padding: 10px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        z-index: 1000;
+      }
+
+      .mobile-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: rgba(255, 255, 255, 0.6);
+        text-decoration: none;
+        font-size: 0.7rem;
+        transition: var(--transition);
+      }
+
+      .mobile-nav-item.active,
+      .mobile-nav-item:hover {
+        color: var(--primary);
+      }
+
+      .mobile-nav-icon {
+        font-size: 1.2rem;
+        margin-bottom: 4px;
+      }
+
+      /* Adjust padding for bottom nav */
+      body.has-bottom-nav {
+        padding-bottom: 70px;
+      }
     }
 
-    .sidebar-overlay.active {
-        display: block;
+    /* Extra small devices */
+    @media (max-width: 480px) {
+      .anime-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .genres-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .trending-item {
+        min-width: 140px;
+      }
+
+      .card-image {
+        height: 200px;
+      }
+
+      .today-releases-header h1 {
+        font-size: 1.6rem;
+      }
+
+      .section-header h2 {
+        font-size: 1.4rem;
+      }
     }
 
-    /* Hide desktop navigation in mobile */
-    .nav-links {
-        display: none !important;
-    }
-}
+    /* Mobile landscape optimization */
+    @media (max-width: 768px) and (orientation: landscape) {
+      .today-releases-hero {
+        padding-top: 80px;
+      }
 
-/* ===== HIDE MOBILE ELEMENTS ON DESKTOP ===== */
-@media (min-width: 769px) {
-    .menu-toggle {
-        display: none !important;
-    }
-    
-    .mobile-sidebar {
-        display: none !important;
-    }
-    
-    .sidebar-overlay {
-        display: none !important;
-    }
-}
+      .anime-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
 
-/* ===== SMALL MOBILE OPTIMIZATION ===== */
-@media (max-width: 380px) {
-    .menu-toggle {
-        padding: 5px;
+      .card-image {
+        height: 150px;
+      }
+
+      .search-results {
+        max-height: 60vh;
+      }
     }
 
-    .menu-toggle span {
-        width: 16px;
+    /* High-resolution mobile devices */
+    @media (max-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
+
+      .logo-icon,
+      .profile-avatar,
+      .card-image img,
+      .trending-image img {
+        image-rendering: -webkit-optimize-contrast;
+      }
     }
 
-    .mobile-sidebar {
-        width: 260px;
-        left: -260px;
-    }
-}
+    /* Dark mode consistency */
+    @media (max-width: 768px) {
+      .search-box input {
+        background: rgba(255, 255, 255, 0.1);
+      }
 
-/* ===== EXTRA SMALL DEVICES ===== */
-@media (max-width: 320px) {
-    .mobile-sidebar {
-        width: 240px;
-        left: -240px;
+      .nav-links a:hover {
+        background: rgba(229, 9, 20, 0.15);
+      }
     }
-}
+
+    /* Mobile animations */
+    @media (max-width: 768px) {
+
+      .anime-card,
+      .genre-card,
+      .trending-item {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .anime-card:active,
+      .genre-card:active,
+      .trending-item:active {
+        transform: scale(0.98);
+      }
+    }
   </style>
 </head>
 
@@ -1404,37 +1616,6 @@
           <li><a href="#genres">Genres</a></li>
           <li><a href="#browse">Browse</a></li>
         </ul>
-
-        <!-- Mobile Sidebar Menu - Hidden on Desktop -->
-<div class="mobile-sidebar">
-    <div class="sidebar-header">
-        <a href="#" class="logo">
-            <div class="logo-icon">
-                <img src="Image & logo/kitsune logo.jpg" alt="Kitsune Logo" style="width: 100%; height: 100%; object-fit: contain;">
-            </div>
-            <div class="logo-text">Kitsune</div>
-        </a>
-    </div>
-    <div class="sidebar-menu">
-        <a href="#home" class="sidebar-item">
-            <i class="fas fa-home"></i>
-            <span>Home</span>
-        </a>
-        <a href="#today-releases" class="sidebar-item">
-            <i class="fas fa-calendar-day"></i>
-            <span>Today's Releases</span>
-        </a>
-        <a href="#genres" class="sidebar-item">
-            <i class="fas fa-th-large"></i>
-            <span>Genres</span>
-        </a>
-        <a href="#browse" class="sidebar-item">
-            <i class="fas fa-compass"></i>
-            <span>Browse</span>
-        </a>
-    </div>
-</div>
-<div class="sidebar-overlay"></div>
 
         <div class="nav-actions">
           <div class="search-container">
@@ -1473,7 +1654,7 @@
       <button class="profile-close" id="profileClose">
         <i class="fas fa-times"></i>
       </button>
-      
+
       <div class="profile-header">
         <div class="profile-image-container">
           <img src="" alt="Profile" class="profile-image" id="profileImage">
@@ -1756,7 +1937,7 @@
     const searchResults = document.getElementById('searchResults');
     const animeGrid = document.getElementById('animeGrid');
     const todayReleasesHeroGrid = document.getElementById('todayReleasesHeroGrid');
-    
+
     // Profile Modal Elements
     const profileBtn = document.getElementById('profileBtn');
     const profileModal = document.getElementById('profileModal');
@@ -1794,21 +1975,21 @@
     function initProfileModal() {
       // Load user data from localStorage
       const userData = JSON.parse(localStorage.getItem('kitsune_user') || '{}');
-      
+
       // Set profile data
       if (userData.displayName) {
         profileDisplayName.textContent = userData.displayName;
         document.querySelector('.profile-name').textContent = userData.displayName;
       }
-      
+
       if (userData.email) {
         profileEmail.textContent = userData.email;
       }
-      
+
       if (userData.username) {
         profileUsername.textContent = `@${userData.username}`;
       }
-      
+
       // Set profile image
       const savedProfileImage = localStorage.getItem('kitsune_profile_image');
       if (savedProfileImage) {
@@ -1818,31 +1999,31 @@
         profileImage.src = userData.photoURL;
         profileAvatar.innerHTML = `<img src="${userData.photoURL}" alt="Profile">`;
       }
-      
+
       // Set join date
-      const joinDate = userData.joinDate || new Date().toLocaleDateString('en-US', { 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
+      const joinDate = userData.joinDate || new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
       });
       profileJoinDate.textContent = joinDate;
     }
 
     // Open profile modal
-    profileBtn.addEventListener('click', function(e) {
+    profileBtn.addEventListener('click', function (e) {
       e.preventDefault();
       profileModal.classList.add('active');
       document.body.style.overflow = 'hidden';
     });
 
     // Close profile modal
-    profileClose.addEventListener('click', function() {
+    profileClose.addEventListener('click', function () {
       profileModal.classList.remove('active');
       document.body.style.overflow = 'auto';
     });
 
     // Close modal when clicking outside
-    profileModal.addEventListener('click', function(e) {
+    profileModal.addEventListener('click', function (e) {
       if (e.target === profileModal) {
         profileModal.classList.remove('active');
         document.body.style.overflow = 'auto';
@@ -1850,19 +2031,19 @@
     });
 
     // Profile image change functionality
-    profileImageEdit.addEventListener('click', function() {
+    profileImageEdit.addEventListener('click', function () {
       profileImageInput.click();
     });
 
-    profileImageInput.addEventListener('change', function(e) {
+    profileImageInput.addEventListener('change', function (e) {
       const file = e.target.files[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = function(event) {
+        reader.onload = function (event) {
           const imageUrl = event.target.result;
           profileImage.src = imageUrl;
           profileAvatar.innerHTML = `<img src="${imageUrl}" alt="Profile">`;
-          
+
           // Save to localStorage
           localStorage.setItem('kitsune_profile_image', imageUrl);
         };
@@ -1871,7 +2052,7 @@
     });
 
     // Sign out functionality
-    signOutBtn.addEventListener('click', function() {
+    signOutBtn.addEventListener('click', function () {
       localStorage.removeItem('kitsune_user');
       localStorage.removeItem('kitsune_profile_image');
       window.location.href = 'signin.html';
@@ -1981,7 +2162,7 @@
     document.addEventListener('DOMContentLoaded', function () {
       // Initialize profile modal with user data
       initProfileModal();
-      
+
       // Populate anime grids
       populateAnimeGrid(animeData, animeGrid);
       populateAnimeGrid(animeData.slice(0, 6), todayReleasesHeroGrid, 6);
@@ -2008,42 +2189,93 @@
   </script>
 
   <script>
-// Mobile sidebar functionality - Only runs on mobile
-if (window.innerWidth <= 768) {
-    document.addEventListener('DOMContentLoaded', function() {
-        const menuToggle = document.querySelector('.menu-toggle');
-        const mobileSidebar = document.querySelector('.mobile-sidebar');
-        const sidebarOverlay = document.querySelector('.sidebar-overlay');
-        
-        if (menuToggle && mobileSidebar && sidebarOverlay) {
-            menuToggle.addEventListener('click', function() {
-                mobileSidebar.classList.toggle('active');
-                sidebarOverlay.classList.toggle('active');
-                menuToggle.classList.toggle('active');
-                document.body.style.overflow = mobileSidebar.classList.contains('active') ? 'hidden' : 'auto';
-            });
-            
-            sidebarOverlay.addEventListener('click', function() {
-                mobileSidebar.classList.remove('active');
-                sidebarOverlay.classList.remove('active');
-                menuToggle.classList.remove('active');
-                document.body.style.overflow = 'auto';
-            });
-            
-            // Close sidebar when clicking menu items
-            document.querySelectorAll('.sidebar-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    mobileSidebar.classList.remove('active');
-                    sidebarOverlay.classList.remove('active');
-                    menuToggle.classList.remove('active');
-                    document.body.style.overflow = 'auto';
-                });
-            });
-        }
-    });
-}
-</script>
+    // Mobile navigation toggle
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.querySelector('.nav-links');
 
+    hamburger.addEventListener('click', function () {
+      navLinks.classList.toggle('active');
+      hamburger.classList.toggle('active');
+
+      // Close search results when opening mobile menu
+      if (navLinks.classList.contains('active')) {
+        searchResults.classList.remove('active');
+      }
+    });
+
+    // Close mobile menu when clicking on a link
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+        hamburger.classList.remove('active');
+      });
+    });
+
+    // Touch-friendly interactions
+    document.addEventListener('touchstart', function () { }, { passive: true });
+
+    // Optional: Add bottom navigation for mobile
+    function addMobileBottomNav() {
+      if (window.innerWidth <= 768) {
+        const bottomNav = document.createElement('div');
+        bottomNav.className = 'mobile-bottom-nav';
+        bottomNav.innerHTML = `
+      <a href="#today-releases" class="mobile-nav-item">
+        <i class="fas fa-home mobile-nav-icon"></i>
+        <span>Home</span>
+      </a>
+      <a href="#browse" class="mobile-nav-item">
+        <i class="fas fa-compass mobile-nav-icon"></i>
+        <span>Browse</span>
+      </a>
+      <a href="#genres" class="mobile-nav-item">
+        <i class="fas fa-th-large mobile-nav-icon"></i>
+        <span>Genres</span>
+      </a>
+      <a href="#" class="mobile-nav-item" id="mobileProfileBtn">
+        <i class="fas fa-user mobile-nav-icon"></i>
+        <span>Profile</span>
+      </a>
+    `;
+
+        document.body.appendChild(bottomNav);
+        document.body.classList.add('has-bottom-nav');
+
+        // Add click handler for mobile profile button
+        document.getElementById('mobileProfileBtn').addEventListener('click', function (e) {
+          e.preventDefault();
+          profileModal.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        });
+
+        // Highlight active nav item
+        const navItems = document.querySelectorAll('.mobile-nav-item');
+        navItems.forEach(item => {
+          item.addEventListener('click', function () {
+            navItems.forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+          });
+        });
+      }
+    }
+
+    // Initialize mobile features
+    document.addEventListener('DOMContentLoaded', function () {
+      addMobileBottomNav();
+
+      // Adjust layout for mobile
+      if (window.innerWidth <= 768) {
+        // Any mobile-specific initialization
+      }
+    });
+
+    // Handle orientation changes
+    window.addEventListener('orientationchange', function () {
+      setTimeout(() => {
+        // Refresh any layout-dependent elements
+      }, 300);
+    });
+  </script>
   <script>
     // Search functionality
     function performSearch(query) {
