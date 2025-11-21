@@ -394,8 +394,8 @@
             box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
         }
 
-        /* COMMENTS SECTION */
-        .comments-section {
+        /* ANIME LIST SECTION */
+        .anime-list-section {
             background: var(--card-bg);
             border-radius: var(--radius);
             padding: 30px;
@@ -405,19 +405,19 @@
             transition: var(--transition);
         }
 
-        .comments-section:hover {
+        .anime-list-section:hover {
             border-color: rgba(229, 9, 20, 0.2);
         }
 
-        .comments-section h2 {
-            margin-bottom: 20px;
+        .anime-list-section h2 {
+            margin-bottom: 25px;
             color: var(--primary-light);
             font-size: 1.4rem;
             position: relative;
             display: inline-block;
         }
 
-        .comments-section h2::after {
+        .anime-list-section h2::after {
             content: '';
             position: absolute;
             bottom: -8px;
@@ -428,87 +428,97 @@
             border-radius: 2px;
         }
 
-        .comment {
-            display: flex;
-            gap: 15px;
-            padding: 20px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        .anime-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .anime-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius);
+            overflow: hidden;
             transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            position: relative;
         }
 
-        .comment:hover {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 8px;
-            padding: 20px 15px;
-            margin: 0 -15px;
+        .anime-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: rgba(229, 9, 20, 0.3);
         }
 
-        .comment:last-child {
-            border-bottom: none;
+        .anime-card-image {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            position: relative;
         }
 
-        .comment-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+        .anime-card-image img {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            border: 2px solid rgba(229, 9, 20, 0.3);
             transition: var(--transition);
         }
 
-        .comment:hover .comment-avatar {
-            border-color: rgba(229, 9, 20, 0.6);
+        .anime-card:hover .anime-card-image img {
             transform: scale(1.05);
         }
 
-        .comment-content h4 {
-            font-size: 1rem;
-            margin-bottom: 5px;
-            color: var(--light);
-        }
-
-        .comment-content p {
-            color: rgba(255, 255, 255, 0.7);
-            line-height: 1.5;
-        }
-
-        .post-comment {
-            margin-top: 20px;
-            display: flex;
-            gap: 15px;
-        }
-
-        .post-comment input {
-            flex-grow: 1;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 12px;
-            color: var(--light);
-            transition: var(--transition);
-        }
-
-        .post-comment input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.2);
-        }
-
-        .post-comment button {
+        .anime-card-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
             background: var(--primary);
-            border: none;
-            color: #fff;
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
             font-weight: 600;
-            transition: var(--transition);
+            z-index: 2;
         }
 
-        .post-comment button:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
+        .anime-card-content {
+            padding: 15px;
+        }
+
+        .anime-card-content h3 {
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--light);
+        }
+
+        .anime-card-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.75rem;
+            color: var(--gray);
+        }
+
+        .anime-card-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #FFD700;
+            font-size: 0.75rem;
+        }
+
+        .anime-card-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.75rem;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            max-height: 2.8em;
         }
 
         /* FOOTER */
@@ -614,6 +624,10 @@
             .video-player {
                 height: 300px;
             }
+
+            .anime-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         @media (max-width: 600px) {
@@ -628,12 +642,16 @@
                 justify-content: space-between;
             }
 
-            .post-comment {
-                flex-direction: column;
-            }
-
             .nav-arrows {
                 justify-content: center;
+            }
+
+            .anime-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .anime-card-image {
+                height: 200px;
             }
         }
     </style>
@@ -668,10 +686,10 @@
                     <span class="meta-tag">1080p FHD</span>
                 </div>
                 <p class="anime-description">
-                    They say whatever doesn’t kill you makes you stronger, but that’s not the case 
-                for the world’s weakest hunter Sung Jinwoo. After being brutally slaughtered by 
+                    They say whatever doesn't kill you makes you stronger, but that's not the case 
+                for the world's weakest hunter Sung Jinwoo. After being brutally slaughtered by 
                 monsters in a high-ranking dungeon, Jinwoo came back with the System, a program 
-                only he could see, that’s leveling him up in every way. Now, he’s inspired to discover 
+                only he could see, that's leveling him up in every way. Now, he's inspired to discover 
                 the secrets behind his powers and the dungeon that spawned them.
                 </p>
             </div>
@@ -704,36 +722,11 @@
                     </div>
                 </div>
 
-                <!-- COMMENTS SECTION -->
-                <section class="comments-section">
-                    <h2>Comments</h2>
-                    <div class="comment">
-                        <img src="https://via.placeholder.com/50/E50914/ffffff?text=U1" alt="User 1"
-                            class="comment-avatar">
-                        <div class="comment-content">
-                            <h4>AnimeFan42</h4>
-                            <p>The animation in this episode was absolutely stunning! The battle sequences were so well choreographed.</p>
-                        </div>
-                    </div>
-                    <div class="comment">
-                        <img src="https://via.placeholder.com/50/B20710/ffffff?text=U2" alt="User 2"
-                            class="comment-avatar">
-                        <div class="comment-content">
-                            <h4>SealWatcher</h4>
-                            <p>I love how they're developing Long Hao Chen's character. His determination is really inspiring!</p>
-                        </div>
-                    </div>
-                    <div class="comment">
-                        <img src="https://via.placeholder.com/50/1A1A1A/ffffff?text=U3" alt="User 3"
-                            class="comment-avatar">
-                        <div class="comment-content">
-                            <h4>CelestialViewer</h4>
-                            <p>The celestial realm design is breathtaking. Can't wait to see more of this world!</p>
-                        </div>
-                    </div>
-                    <div class="post-comment">
-                        <input type="text" placeholder="Add a comment...">
-                        <button>Post Comment</button>
+                <!-- ANIME LIST SECTION -->
+                <section class="anime-list-section">
+                    <h2>More Anime You Might Like</h2>
+                    <div class="anime-row" id="animeRow">
+                        <!-- Anime will be loaded dynamically -->
                     </div>
                 </section>
             </div>
@@ -742,7 +735,6 @@
             <div class="sidebar">
                 <!-- EPISODE LIST -->
                 <section class="episode-list">
-                    <h2>All Episodes</h2>
                     <div id="episodeListContainer">Loading episodes...</div>
                 </section>
 
@@ -750,10 +742,8 @@
                 <section class="contact-section" id="contact">
                     <h2>Contact Us</h2>
                     <form action="https://formsubmit.co/kitsuneanime436@gmail.com" method="POST" class="contact-form">
-
                         <!-- Redirect after sending -->
                         <input type="hidden" name="_next" value="https://rajputpankaj3737-a11y.github.io/kitsune/donghua/Throne%20Of%20Seal/thank-you.html">
-
                         <!-- Disable captcha -->
                         <input type="hidden" name="_captcha" value="false">
 
@@ -771,28 +761,134 @@
     <footer>© 2025 Kitsune | All rights reserved.</footer>
 
     <script>
-        fetch('episodes.html')
-            .then(res => res.text())
-            .then(html => {
-                const container = document.getElementById("episodeListContainer");
-                container.innerHTML = html;
+        // Load episodes
+        function loadEpisodes() {
+            fetch('episodes.html')
+                .then(res => res.text())
+                .then(html => {
+                    const container = document.getElementById("episodeListContainer");
+                    container.innerHTML = html;
 
-                // Run the embedded script manually after HTML insertion
-                const temp = document.createElement("div");
-                temp.innerHTML = html;
-                const scriptTag = temp.querySelector("script");
+                    // Run the embedded script manually after HTML insertion
+                    const temp = document.createElement("div");
+                    temp.innerHTML = html;
+                    const scriptTag = temp.querySelector("script");
 
-                if (scriptTag) {
-                    const newScript = document.createElement("script");
-                    newScript.textContent = scriptTag.textContent;
-                    document.body.appendChild(newScript);
+                    if (scriptTag) {
+                        const newScript = document.createElement("script");
+                        newScript.textContent = scriptTag.textContent;
+                        document.body.appendChild(newScript);
+                    }
+                })
+                .catch(() => {
+                    document.getElementById("episodeListContainer").innerHTML =
+                        "<p style='color:#bbb;'>Failed to load episode list.</p>";
+                });
+        }
+
+        // Load anime data for the anime row
+        async function loadAnimeForRow() {
+            try {
+                const response = await fetch('../../searchData.json');
+                if (!response.ok) {
+                    throw new Error('Failed to load anime data');
                 }
-            })
-            .catch(() => {
-                document.getElementById("episodeListContainer").innerHTML =
-                    "<p style='color:#bbb;'>Failed to load episode list.</p>";
-            });
+                const animeData = await response.json();
+                
+                // Get the stored order from localStorage (same as home page)
+                const storedOrder = JSON.parse(localStorage.getItem('kitsune_anime_order') || '[]');
+                
+                let animeToShow = [];
+                
+                if (storedOrder.length > 0) {
+                    // Use the same order as home page
+                    const animeMap = new Map();
+                    animeData.forEach(anime => {
+                        animeMap.set(anime.title, anime);
+                    });
+                    
+                    // Get first 3 anime from stored order
+                    animeToShow = storedOrder.slice(0, 3).map(title => animeMap.get(title)).filter(Boolean);
+                } else {
+                    // Fallback: show first 3 anime from JSON (reversed for newest first)
+                    animeToShow = animeData.reverse().slice(0, 3);
+                }
+                
+                populateAnimeRow(animeToShow);
+            } catch (error) {
+                console.error('Error loading anime data:', error);
+                // Show fallback content
+                document.getElementById('animeRow').innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--gray);">
+                        <i class="fas fa-exclamation-circle" style="font-size: 2rem; margin-bottom: 15px;"></i>
+                        <p>Failed to load anime recommendations</p>
+                    </div>
+                `;
+            }
+        }
 
+        function populateAnimeRow(animeList) {
+            const animeRow = document.getElementById('animeRow');
+            animeRow.innerHTML = '';
+
+            animeList.forEach(anime => {
+                const animeCard = document.createElement('div');
+                animeCard.className = 'anime-card';
+                
+                // Fix the image path based on current location
+                let imagePath = anime.image;
+                
+                // If we're in a subdirectory (episode page), adjust the image path
+                const currentPath = window.location.pathname;
+                if (currentPath.includes('/donghua/') || currentPath.includes('/janime/')) {
+                    // We're in an episode page, need to go up two levels for images
+                    if (!imagePath.startsWith('../') && !imagePath.startsWith('http')) {
+                        imagePath = '../../' + imagePath;
+                    }
+                }
+                
+                animeCard.innerHTML = `
+                    <div class="anime-card-image">
+                        <img src="${imagePath}" alt="${anime.title}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
+                        <div class="anime-card-badge">NEW</div>
+                    </div>
+                    <div class="anime-card-content">
+                        <h3>${anime.title}</h3>
+                        <div class="anime-card-meta">
+                            <span>${anime.genre.split(',')[0]}</span>
+                            <div class="anime-card-rating">
+                                <i class="fas fa-star"></i>
+                                <span>9.8</span>
+                            </div>
+                        </div>
+                        <p class="anime-card-description">${anime.type}</p>
+                    </div>
+                `;
+
+                // Add click event to navigate to anime page - ROBUST LINK FIX
+                animeCard.addEventListener('click', function () {
+                    // Get current page path to determine correct navigation
+                    const currentPath = window.location.pathname;
+                    
+                    // Check if we're in a subdirectory structure
+                    if (currentPath.includes('/donghua/') || currentPath.includes('/janime/')) {
+                        // We're in an episode page, need to go up two levels to reach home
+                        window.location.href = '../../' + anime.link;
+                    } else {
+                        // We're on home page or other location
+                        window.location.href = anime.link;
+                    }
+                });
+
+                animeRow.appendChild(animeCard);
+            });
+        }
+
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadEpisodes();
+            loadAnimeForRow();
+        });
     </script>
 </body>
 

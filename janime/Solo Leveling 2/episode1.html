@@ -91,20 +91,13 @@
 
         .nav-links a {
             text-decoration: none;
-            color: rgba(255, 255, 255, 0.8);
+            color: #fff;
             font-weight: 500;
             padding: 10px 20px;
             border-radius: 50px;
             transition: var(--transition);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            background: var(--glass);
-        }
-
-        .nav-links a:hover {
-            color: var(--primary-light);
-            background: rgba(229, 9, 20, 0.2);
-            border-color: rgba(229, 9, 20, 0.3);
-            transform: translateY(-2px);
+            background: red;
         }
 
         /* MAIN CONTENT */
@@ -394,8 +387,8 @@
             box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
         }
 
-        /* COMMENTS SECTION */
-        .comments-section {
+        /* ANIME LIST SECTION */
+        .anime-list-section {
             background: var(--card-bg);
             border-radius: var(--radius);
             padding: 30px;
@@ -405,19 +398,19 @@
             transition: var(--transition);
         }
 
-        .comments-section:hover {
+        .anime-list-section:hover {
             border-color: rgba(229, 9, 20, 0.2);
         }
 
-        .comments-section h2 {
-            margin-bottom: 20px;
+        .anime-list-section h2 {
+            margin-bottom: 25px;
             color: var(--primary-light);
             font-size: 1.4rem;
             position: relative;
             display: inline-block;
         }
 
-        .comments-section h2::after {
+        .anime-list-section h2::after {
             content: '';
             position: absolute;
             bottom: -8px;
@@ -428,87 +421,107 @@
             border-radius: 2px;
         }
 
-        .comment {
-            display: flex;
-            gap: 15px;
-            padding: 20px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        .anime-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .anime-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius);
+            overflow: hidden;
             transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            position: relative;
         }
 
-        .comment:hover {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 8px;
-            padding: 20px 15px;
-            margin: 0 -15px;
+        .anime-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: rgba(229, 9, 20, 0.3);
         }
 
-        .comment:last-child {
-            border-bottom: none;
+        .anime-card-image {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            position: relative;
         }
 
-        .comment-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+        .anime-card-image img {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            border: 2px solid rgba(229, 9, 20, 0.3);
             transition: var(--transition);
         }
 
-        .comment:hover .comment-avatar {
-            border-color: rgba(229, 9, 20, 0.6);
+        .anime-card:hover .anime-card-image img {
             transform: scale(1.05);
         }
 
-        .comment-content h4 {
-            font-size: 1rem;
-            margin-bottom: 5px;
-            color: var(--light);
-        }
-
-        .comment-content p {
-            color: rgba(255, 255, 255, 0.7);
-            line-height: 1.5;
-        }
-
-        .post-comment {
-            margin-top: 20px;
-            display: flex;
-            gap: 15px;
-        }
-
-        .post-comment input {
-            flex-grow: 1;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 12px;
-            color: var(--light);
-            transition: var(--transition);
-        }
-
-        .post-comment input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.2);
-        }
-
-        .post-comment button {
+        .anime-card-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
             background: var(--primary);
-            border: none;
-            color: #fff;
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
             font-weight: 600;
-            transition: var(--transition);
+            z-index: 2;
         }
 
-        .post-comment button:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
+        .anime-card-content {
+            padding: 15px;
+        }
+
+        .anime-card-content h3 {
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--light);
+        }
+
+        .anime-card-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.75rem;
+            color: var(--gray);
+        }
+
+        .anime-card-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #FFD700;
+            font-size: 0.75rem;
+        }
+
+        .anime-card-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.75rem;
+            line-height: 1.4;
+            margin: 0;
+            /* multi-line clamp (WebKit) + standard/fallbacks */
+            display: -webkit-box;
+            display: box;
+            display: block;
+            -webkit-box-orient: vertical;
+            box-orient: vertical;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            /* single-line fallback */
+            word-break: break-word;
+            max-height: calc(1.4em * 2);
+            /* 2 lines fallback */
         }
 
         /* FOOTER */
@@ -544,83 +557,391 @@
             background: var(--primary-dark);
         }
 
-        /* Next Episode Arrow */
-        .nav-arrows {
-            display: flex;
-            justify-content: flex-end;
-            gap: 20px;
-            margin: 20px 0 40px;
-        }
-
-        .arrow {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+        /* Next Button */
+        .next-button {
             background: var(--primary);
+            border: none;
+            color: white;
+            padding: 15px 40px;
+            min-width: 460px;
+            width: auto;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #fff;
-            font-size: 1.4rem;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+            /* horizontally center content */
+            text-align: center;
+            /* fallback for inline text */
+            gap: 8px;
         }
 
-        .arrow:hover {
-            background: var(--primary-dark);
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.6);
+        /* optional: keep layout correct on small screens */
+        .next-button-container {
+            left: auto;
+            /* avoid overflow if left positioning breaks after width change */
+            right: 20px;
+            /* align to right edge instead */
         }
 
-        /* RESPONSIVE */
-        @media (max-width: 900px) {
-            .content-grid {
-                grid-template-columns: 1fr;
-            }
+        /*adjust for mobile*/
+        /* MOBILE RESPONSIVE STYLES */
+@media (max-width: 768px) {
+    /* General mobile adjustments */
+    body {
+        font-size: 14px;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-text-size-adjust: 100%;
+    }
+    
+    /* 1. Keep header as it is - only minor adjustments */
+    header {
+        padding: 12px 15px;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        backdrop-filter: blur(20px);
+        background: rgba(10, 10, 10, 0.98);
+    }
+    
+    .nav-links {
+        gap: 8px;
+    }
+    
+    .nav-links a {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+    
+    /* Main container mobile */
+    .main-container {
+        padding: 15px;
+    }
+    
+    /* 2. Anime info section - side by side layout */
+    .anime-info-section {
+        flex-direction: row;
+        padding: 15px;
+        gap: 15px;
+        margin-bottom: 20px;
+        align-items: flex-start;
+    }
+    
+    .poster {
+        width: 120px;
+        height: 180px;
+        flex-shrink: 0;
+    }
+    
+    .anime-details {
+        width: calc(100% - 135px);
+        flex: 1;
+    }
+    
+    .anime-title {
+        font-size: 1.4rem;
+        text-align: left;
+        margin-bottom: 8px;
+    }
+    
+    .anime-meta {
+        justify-content: flex-start;
+        gap: 6px;
+        margin-bottom: 10px;
+    }
+    
+    .meta-tag {
+        font-size: 0.7rem;
+        padding: 3px 8px;
+    }
+    
+    .anime-description {
+        font-size: 0.85rem;
+        line-height: 1.5;
+    }
+    
+    /* Content grid mobile */
+    .content-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    /* Video player mobile */
+    .video-section {
+        margin-bottom: 20px;
+        border-radius: 10px;
+    }
+    
+    .video-header {
+        padding: 15px;
+    }
+    
+    .video-header h2 {
+        font-size: 1.1rem;
+    }
+    
+    .video-player {
+        height: 200px;
+    }
+    
+    /* 4. Episode list mobile */
+    .episode-list {
+        padding: 15px;
+        max-height: 300px;
+        margin-bottom: 15px;
+    }
+    
+    .episode-list h2 {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+    }
+    
+    /* 3. Next button alignment */
+    .next-button-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+    
+    .next-button {
+        min-width: 200px;
+        width: auto;
+        padding: 14px 30px;
+        font-size: 1rem;
+        border-radius: 8px;
+    }
+    
+    /* 6. Contact section mobile */
+    .contact-section {
+        padding: 15px;
+    }
+    
+    .contact-section h2 {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+    }
+    
+    .contact-form input,
+    .contact-form textarea {
+        padding: 12px;
+        font-size: 16px;
+    }
+    
+    .contact-form button {
+        padding: 12px;
+        font-size: 0.95rem;
+    }
+    
+    /* 5. Anime list section - horizontal scroll */
+    .anime-list-section {
+        padding: 15px;
+        margin-top: 20px;
+        overflow: hidden;
+    }
+    
+    .anime-list-section h2 {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+    }
+    
+    .anime-row {
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 15px;
+        padding-bottom: 10px;
+        scrollbar-width: thin;
+        scrollbar-color: var(--primary) var(--dark);
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .anime-row::-webkit-scrollbar {
+        height: 6px;
+    }
+    
+    .anime-row::-webkit-scrollbar-track {
+        background: var(--dark);
+        border-radius: 3px;
+    }
+    
+    .anime-row::-webkit-scrollbar-thumb {
+        background: var(--primary);
+        border-radius: 3px;
+    }
+    
+    .anime-card {
+        min-width: 280px;
+        flex-shrink: 0;
+    }
+    
+    .anime-card-image {
+        height: 160px;
+    }
+    
+    .anime-card-content {
+        padding: 12px;
+    }
+    
+    .anime-card-content h3 {
+        font-size: 0.95rem;
+    }
+    
+    /* Footer mobile */
+    footer {
+        padding: 20px 15px;
+        font-size: 0.8rem;
+        margin-top: 25px;
+    }
+    
+    /* Mobile touch improvements */
+    .nav-links a:active {
+        transform: scale(0.95);
+        background: var(--primary-dark);
+    }
+    
+    .video-controls button:active,
+    .contact-form button:active,
+    .next-button:active {
+        transform: scale(0.98);
+    }
+    
+    .anime-card:active {
+        transform: scale(0.98);
+    }
+}
 
-            .anime-info-section {
-                flex-direction: column;
-            }
+/* Small mobile devices */
+@media (max-width: 480px) {
+    /* 2. Compact anime info for very small screens */
+    .anime-info-section {
+        padding: 12px;
+        gap: 12px;
+    }
+    
+    .poster {
+        width: 100px;
+        height: 150px;
+    }
+    
+    .anime-details {
+        width: calc(100% - 112px);
+    }
+    
+    .anime-title {
+        font-size: 1.2rem;
+    }
+    
+    .anime-meta {
+        gap: 4px;
+    }
+    
+    .meta-tag {
+        font-size: 0.65rem;
+        padding: 2px 6px;
+    }
+    
+    .anime-description {
+        font-size: 0.8rem;
+    }
+    
+    /* 4. Episode list compact */
+    .episode-list {
+        padding: 12px;
+        max-height: 250px;
+    }
+    
+    /* 5. Anime cards smaller for mobile */
+    .anime-card {
+        min-width: 250px;
+    }
+    
+    .anime-card-image {
+        height: 140px;
+    }
+    
+    /* Video player smaller */
+    .video-player {
+        height: 180px;
+    }
+    
+    /* Header compact */
+    .nav-links a {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+}
 
-            .poster,
-            .anime-details {
-                width: 100%;
-            }
+/* Tablet adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .content-grid {
+        grid-template-columns: 1.5fr 1fr;
+        gap: 25px;
+    }
+    
+    .video-player {
+        height: 400px;
+    }
+    
+    /* 5. Keep 2 columns for tablet */
+    .anime-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
 
-            .nav-links {
-                gap: 15px;
-            }
+/* Mobile landscape orientation */
+@media (max-height: 500px) and (orientation: landscape) {
+    .video-player {
+        height: 180px;
+    }
+    
+    .episode-list {
+        max-height: 150px;
+    }
+    
+    header {
+        padding: 8px 15px;
+    }
+}
 
-            header {
-                padding: 15px 20px;
-            }
+/* Prevent horizontal scroll on mobile */
+@media (max-width: 768px) {
+    html, body {
+        overflow-x: hidden;
+        width: 100%;
+    }
+    
+    .main-container {
+        width: 100%;
+        max-width: 100%;
+    }
+}
 
-            .main-container {
-                padding: 20px 15px;
-            }
-
-            .video-player {
-                height: 300px;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .video-header {
-                flex-direction: column;
-                gap: 15px;
-                align-items: flex-start;
-            }
-
-            .video-controls {
-                width: 100%;
-                justify-content: space-between;
-            }
-
-            .post-comment {
-                flex-direction: column;
-            }
-        }
+/* Mobile touch targets improvement */
+@media (max-width: 768px) {
+    button, 
+    .anime-card,
+    .nav-links a {
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+    }
+    
+    /* Increase touch targets */
+    .video-controls button,
+    .contact-form button,
+    .next-button {
+        min-height: 44px;
+    }
+    
+    .nav-links a {
+        min-height: 36px;
+        display: flex;
+        align-items: center;
+    }
+}
     </style>
 </head>
 
@@ -653,11 +974,11 @@
                     <span class="meta-tag">1080p FHD</span>
                 </div>
                 <p class="anime-description">
-                    They say whatever doesn’t kill you makes you stronger, but that’s not the case 
-                for the world’s weakest hunter Sung Jinwoo. After being brutally slaughtered by 
-                monsters in a high-ranking dungeon, Jinwoo came back with the System, a program 
-                only he could see, that’s leveling him up in every way. Now, he’s inspired to discover 
-                the secrets behind his powers and the dungeon that spawned them.
+                    They say whatever doesn't kill you makes you stronger, but that's not the case
+                    for the world's weakest hunter Sung Jinwoo. After being brutally slaughtered by
+                    monsters in a high-ranking dungeon, Jinwoo came back with the System, a program
+                    only he could see, that's leveling him up in every way. Now, he's inspired to discover
+                    the secrets behind his powers and the dungeon that spawned them.
                 </p>
             </div>
         </section>
@@ -669,56 +990,18 @@
                 <section class="video-section">
                     <div class="video-header">
                         <h2>Now Playing: Episode 1 - Rise of the Supreme</h2>
-                        <div class="video-controls">
-                            <button><i class="fas fa-volume-up"></i> Audio</button>
-                            <button><i class="fas fa-closed-captioning"></i> Subtitles</button>
-                            <button><i class="fas fa-cog"></i> Settings</button>
-                        </div>
                     </div>
                     <div class="video-player">
-                        <iframe width="100%" height="100%" src="https://short.icu/kinzR1NaJ" frameborder="0" allowfullscreen=""></iframe>
+                        <iframe width="100%" height="100%" src="https://short.icu/kinzR1NaJ" frameborder="0"
+                            allowfullscreen=""></iframe>
                     </div>
                 </section>
 
-                <div class="nav-arrows">
-                    <div class="arrow" onclick="location.href='episode2.html'">
-                        <i class="fas fa-arrow-right"></i>
-                    </div>
-                </div>
-
-                <!-- COMMENTS SECTION -->
-                <section class="comments-section">
-                    <h2>Comments</h2>
-                    <div class="comment">
-                        <img src="https://via.placeholder.com/50/E50914/ffffff?text=U1" alt="User 1"
-                            class="comment-avatar">
-                        <div class="comment-content">
-                            <h4>User Name 1</h4>
-                            <p>This episode was amazing! The animation quality is top-notch and the story is getting
-                                really interesting.</p>
-                        </div>
-                    </div>
-                    <div class="comment">
-                        <img src="https://via.placeholder.com/50/B20710/ffffff?text=U2" alt="User 2"
-                            class="comment-avatar">
-                        <div class="comment-content">
-                            <h4>User Name 2</h4>
-                            <p>I've been waiting for this sequel for so long! It doesn't disappoint. Can't wait for the
-                                next episode.</p>
-                        </div>
-                    </div>
-                    <div class="comment">
-                        <img src="https://via.placeholder.com/50/1A1A1A/ffffff?text=U3" alt="User 3"
-                            class="comment-avatar">
-                        <div class="comment-content">
-                            <h4>User Name 3</h4>
-                            <p>The character development in this episode was fantastic. Really looking forward to seeing
-                                how the story progresses.</p>
-                        </div>
-                    </div>
-                    <div class="post-comment">
-                        <input type="text" placeholder="Add a comment...">
-                        <button>Post Comment</button>
+                <!-- ANIME LIST SECTION -->
+                <section class="anime-list-section">
+                    <h2>More Anime You Might Like</h2>
+                    <div class="anime-row" id="animeRow">
+                        <!-- Anime will be loaded dynamically -->
                     </div>
                 </section>
             </div>
@@ -727,18 +1010,23 @@
             <div class="sidebar">
                 <!-- EPISODE LIST -->
                 <section class="episode-list">
-                    <h2>All Episodes</h2>
                     <div id="episodeListContainer">Loading episodes...</div>
                 </section>
+
+                <!-- NEXT BUTTON -->
+                <div class="next-button-container">
+                    <button class="next-button" onclick="location.href='episode2.html'">
+                        NEXT
+                    </button>
+                </div>
 
                 <!-- CONTACT SECTION -->
                 <section class="contact-section" id="contact">
                     <h2>Contact Us</h2>
                     <form action="https://formsubmit.co/kitsuneanime436@gmail.com" method="POST" class="contact-form">
-
                         <!-- Redirect after sending -->
-                        <input type="hidden" name="_next" value="https://rajputpankaj3737-a11y.github.io/kitsune/donghua/Throne%20Of%20Seal/thank-you.html">
-
+                        <input type="hidden" name="_next"
+                            value="https://rajputpankaj3737-a11y.github.io/kitsune/donghua/Throne%20Of%20Seal/thank-you.html">
                         <!-- Disable captcha -->
                         <input type="hidden" name="_captcha" value="false">
 
@@ -756,28 +1044,134 @@
     <footer>© 2025 Kitsune | All rights reserved.</footer>
 
     <script>
-        fetch('episodes.html')
-            .then(res => res.text())
-            .then(html => {
-                const container = document.getElementById("episodeListContainer");
-                container.innerHTML = html;
+        // Load episodes
+        function loadEpisodes() {
+            fetch('episodes.html')
+                .then(res => res.text())
+                .then(html => {
+                    const container = document.getElementById("episodeListContainer");
+                    container.innerHTML = html;
 
-                // Run the embedded script manually after HTML insertion
-                const temp = document.createElement("div");
-                temp.innerHTML = html;
-                const scriptTag = temp.querySelector("script");
+                    // Run the embedded script manually after HTML insertion
+                    const temp = document.createElement("div");
+                    temp.innerHTML = html;
+                    const scriptTag = temp.querySelector("script");
 
-                if (scriptTag) {
-                    const newScript = document.createElement("script");
-                    newScript.textContent = scriptTag.textContent;
-                    document.body.appendChild(newScript);
+                    if (scriptTag) {
+                        const newScript = document.createElement("script");
+                        newScript.textContent = scriptTag.textContent;
+                        document.body.appendChild(newScript);
+                    }
+                })
+                .catch(() => {
+                    document.getElementById("episodeListContainer").innerHTML =
+                        "<p style='color:#bbb;'>Failed to load episode list.</p>";
+                });
+        }
+
+        // Load anime data for the anime row
+        async function loadAnimeForRow() {
+            try {
+                const response = await fetch('../../searchData.json');
+                if (!response.ok) {
+                    throw new Error('Failed to load anime data');
                 }
-            })
-            .catch(() => {
-                document.getElementById("episodeListContainer").innerHTML =
-                    "<p style='color:#bbb;'>Failed to load episode list.</p>";
-            });
+                const animeData = await response.json();
 
+                // Get the stored order from localStorage (same as home page)
+                const storedOrder = JSON.parse(localStorage.getItem('kitsune_anime_order') || '[]');
+
+                let animeToShow = [];
+
+                if (storedOrder.length > 0) {
+                    // Use the same order as home page
+                    const animeMap = new Map();
+                    animeData.forEach(anime => {
+                        animeMap.set(anime.title, anime);
+                    });
+
+                    // Get first 3 anime from stored order
+                    animeToShow = storedOrder.slice(0, 3).map(title => animeMap.get(title)).filter(Boolean);
+                } else {
+                    // Fallback: show first 3 anime from JSON (reversed for newest first)
+                    animeToShow = animeData.reverse().slice(0, 3);
+                }
+
+                populateAnimeRow(animeToShow);
+            } catch (error) {
+                console.error('Error loading anime data:', error);
+                // Show fallback content
+                document.getElementById('animeRow').innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--gray);">
+                        <i class="fas fa-exclamation-circle" style="font-size: 2rem; margin-bottom: 15px;"></i>
+                        <p>Failed to load anime recommendations</p>
+                    </div>
+                `;
+            }
+        }
+
+        function populateAnimeRow(animeList) {
+            const animeRow = document.getElementById('animeRow');
+            animeRow.innerHTML = '';
+
+            animeList.forEach(anime => {
+                const animeCard = document.createElement('div');
+                animeCard.className = 'anime-card';
+
+                // Fix the image path based on current location
+                let imagePath = anime.image;
+
+                // If we're in a subdirectory (episode page), adjust the image path
+                const currentPath = window.location.pathname;
+                if (currentPath.includes('/donghua/') || currentPath.includes('/janime/')) {
+                    // We're in an episode page, need to go up two levels for images
+                    if (!imagePath.startsWith('../') && !imagePath.startsWith('http')) {
+                        imagePath = '../../' + imagePath;
+                    }
+                }
+
+                animeCard.innerHTML = `
+            <div class="anime-card-image">
+                <img src="${imagePath}" alt="${anime.title}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
+                <div class="anime-card-badge">NEW</div>
+            </div>
+            <div class="anime-card-content">
+                <h3>${anime.title}</h3>
+                <div class="anime-card-meta">
+                    <span>${anime.genre.split(',')[0]}</span>
+                    <div class="anime-card-rating">
+                        <i class="fas fa-star"></i>
+                        <span>9.8</span>
+                    </div>
+                </div>
+                <p class="anime-card-description">${anime.type}</p>
+            </div>
+        `;
+
+                // Add click event to navigate to anime page - ROBUST LINK FIX
+                animeCard.addEventListener('click', function () {
+                    // Get current page path to determine correct navigation
+                    const currentPath = window.location.pathname;
+
+                    // Check if we're in a subdirectory structure
+                    if (currentPath.includes('/donghua/') || currentPath.includes('/janime/')) {
+                        // We're in an episode page, need to go up two levels to reach home
+                        window.location.href = '../../' + anime.link;
+                    } else {
+                        // We're on home page or other location
+                        window.location.href = anime.link;
+                    }
+                });
+
+                animeRow.appendChild(animeCard);
+            });
+        }
+
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', function () {
+            loadEpisodes();
+            loadAnimeForRow();
+        });
     </script>
 </body>
 
