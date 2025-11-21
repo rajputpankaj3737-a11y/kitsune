@@ -1218,134 +1218,11 @@
     }
 
     /* ===== MOBILE HEADER OPTIMIZATION ===== */
-    /* ===== MOBILE REDESIGN - NETFLIX STYLE ===== */
+    /* ===== MOBILE SIDEBAR MENU ===== */
 @media (max-width: 768px) {
-    /* Base mobile reset */
-    body {
-        padding-bottom: 60px;
-        -webkit-overflow-scrolling: touch;
-        background: #000 !important;
-        margin: 0;
-    }
-
-    /* Netflix-style header */
-    header {
-        padding: 8px 0 !important;
-        background: #000 !important;
-        backdrop-filter: none !important;
-        border-bottom: none !important;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 1000;
-    }
-
-    header.scrolled {
-        background: #000 !important;
-        padding: 8px 0 !important;
-    }
-
-    /* Compact navbar layout */
-    .navbar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 15px;
-        gap: 10px;
-        height: 44px;
-    }
-
-    /* Logo only - Left side (remove text) */
-    .logo {
-        display: flex;
-        align-items: center;
-        flex-shrink: 0;
-        text-decoration: none;
-    }
-
-    .logo-icon {
-        width: 32px !important;
-        height: 32px !important;
-        background: #E50914 !important;
-        border-radius: 6px !important;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 2px 8px rgba(229, 9, 20, 0.4);
-    }
-
-    .logo-icon img {
-        width: 85% !important;
-        height: 85% !important;
-        object-fit: contain !important;
-    }
-
-    /* Hide logo text */
-    .logo-text {
-        display: none !important;
-    }
-
-    /* Search - Center (increased width) */
-    .search-container {
-        flex: 1;
-        max-width: 220px;
-        margin: 0 !important;
-        position: static !important; /* Prevent movement on focus */
-    }
-
-    .search-box {
-        width: 100%;
-        position: relative;
-    }
-
-    .search-box input {
-        width: 100%;
-        padding: 10px 40px 10px 15px;
-        background: rgba(255, 255, 255, 0.15) !important;
-        border: 1px solid rgba(255, 255, 255, 0.3) !important;
-        border-radius: 25px !important;
-        color: #fff;
-        font-size: 0.85rem;
-        transition: all 0.3s ease;
-        position: static !important; /* Keep position fixed */
-    }
-
-    .search-box input:focus {
-        background: rgba(255, 255, 255, 0.2) !important;
-        border-color: #E50914 !important;
-        outline: none;
-        transform: none !important; /* Prevent movement */
-        width: 100% !important; /* Keep same width */
-    }
-
-    .search-box i {
-        position: absolute;
-        right: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: rgba(255, 255, 255, 0.7);
-        font-size: 0.9rem;
-        pointer-events: none;
-    }
-
-    /* Right side actions */
-    .nav-actions {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        flex-shrink: 0;
-    }
-
-    .user-actions {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    /* Three line menu icon */
+    /* Three line menu icon - MOBILE ONLY */
     .menu-toggle {
-        display: flex;
+        display: flex !important;
         flex-direction: column;
         gap: 3px;
         cursor: pointer;
@@ -1374,182 +1251,116 @@
         transform: rotate(-45deg) translate(6px, -6px);
     }
 
-    /* Profile button */
-    .profile-btn {
-        display: flex;
-        align-items: center;
-        background: transparent !important;
-        border: none !important;
-        padding: 4px !important;
-        text-decoration: none;
-    }
-
-    .profile-avatar {
-        width: 32px !important;
-        height: 32px !important;
-        background: #E50914 !important;
-        border-radius: 50% !important;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-weight: 600;
-        font-size: 0.85rem;
-        border: 2px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .profile-name {
-        display: none !important;
-    }
-
-    /* Hide desktop navigation */
-    .nav-links {
-        display: none !important;
-    }
-
-    /* Hide hamburger menu */
-    .hamburger {
-        display: none !important;
-    }
-
-    /* Fix search results position */
-    .search-results {
-        position: absolute !important;
-        top: 100% !important;
-        left: 0 !important;
-        width: 100% !important;
-        margin-top: 8px !important;
-        z-index: 1001;
-        background: #2F2F2F !important;
-        border: none !important;
-        border-radius: 8px !important;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-    }
-
-    /* Netflix-style bottom navigation */
-    .bottom-nav {
+    /* Mobile Sidebar Menu - MOBILE ONLY */
+    .mobile-sidebar {
         position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
+        top: 0;
+        left: -280px;
+        width: 280px;
+        height: 100%;
         background: #000;
-        border-top: 1px solid #333;
-        display: flex;
-        justify-content: space-around;
-        padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
-        z-index: 1000;
+        z-index: 2000;
+        transition: left 0.3s ease;
+        border-right: 1px solid #333;
+        overflow-y: auto;
     }
 
-    .nav-item {
+    .mobile-sidebar.active {
+        left: 0;
+    }
+
+    .sidebar-header {
+        padding: 60px 20px 20px;
+        border-bottom: 1px solid #333;
+        background: #111;
+    }
+
+    .sidebar-header .logo {
         display: flex;
-        flex-direction: column;
         align-items: center;
-        gap: 4px;
-        text-decoration: none;
-        color: #999;
-        transition: all 0.3s ease;
-        flex: 1;
-        padding: 4px 0;
-        font-size: 0.7rem;
-    }
-
-    .nav-item.active {
-        color: #E50914;
-    }
-
-    .nav-item i {
-        font-size: 1.1rem;
-    }
-
-    .nav-item span {
-        font-size: 0.65rem;
-        font-weight: 500;
-    }
-
-    /* Content spacing adjustment */
-    .today-releases-hero {
-        padding-top: 70px !important;
-    }
-
-    section {
-        padding: 30px 0 !important;
-    }
-
-    /* Netflix-style anime cards */
-    .anime-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 12px;
-    }
-
-    .anime-card {
-        background: #2F2F2F !important;
-        border-radius: 8px !important;
-        border: none !important;
-        overflow: hidden;
-        transition: transform 0.3s ease;
-    }
-
-    .anime-card:active {
-        transform: scale(0.98);
-    }
-
-    .card-image {
-        height: 160px !important;
-    }
-
-    .card-content {
-        padding: 12px !important;
-    }
-
-    .card-content h3 {
-        font-size: 0.9rem !important;
-        color: #fff !important;
-        margin-bottom: 6px !important;
-    }
-
-    /* Genres grid */
-    .genres-grid {
-        grid-template-columns: repeat(3, 1fr) !important;
         gap: 10px;
     }
 
-    .genre-card {
-        background: #2F2F2F !important;
-        border: none !important;
-        border-radius: 8px !important;
-        padding: 20px 10px !important;
+    .sidebar-header .logo-icon {
+        width: 40px !important;
+        height: 40px !important;
     }
 
-    .search-result-item {
-        border-bottom: 1px solid #444 !important;
+    .sidebar-header .logo-text {
+        display: block !important;
+        font-size: 1.5rem;
+        color: #E50914;
+        font-weight: 900;
     }
 
-    /* Footer adjustment */
-    footer {
-        margin-bottom: 60px;
+    .sidebar-menu {
+        padding: 20px 0;
+    }
+
+    .sidebar-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 15px 20px;
+        color: #fff;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    .sidebar-item.active,
+    .sidebar-item:hover {
+        background: #1a1a1a;
+        border-left-color: #E50914;
+        color: #E50914;
+    }
+
+    .sidebar-item i {
+        width: 20px;
+        text-align: center;
+        font-size: 1.1rem;
+    }
+
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 1999;
+        display: none;
+    }
+
+    .sidebar-overlay.active {
+        display: block;
+    }
+
+    /* Hide desktop navigation in mobile */
+    .nav-links {
+        display: none !important;
+    }
+}
+
+/* ===== HIDE MOBILE ELEMENTS ON DESKTOP ===== */
+@media (min-width: 769px) {
+    .menu-toggle {
+        display: none !important;
+    }
+    
+    .mobile-sidebar {
+        display: none !important;
+    }
+    
+    .sidebar-overlay {
+        display: none !important;
     }
 }
 
 /* ===== SMALL MOBILE OPTIMIZATION ===== */
 @media (max-width: 380px) {
-    .navbar {
-        padding: 0 12px;
-    }
-
-    .search-container {
-        max-width: 200px;
-    }
-
-    .logo-icon {
-        width: 30px !important;
-        height: 30px !important;
-    }
-
-    .profile-avatar {
-        width: 30px !important;
-        height: 30px !important;
-    }
-
     .menu-toggle {
         padding: 5px;
     }
@@ -1558,80 +1369,17 @@
         width: 16px;
     }
 
-    .anime-grid {
-        grid-template-columns: 1fr !important;
-    }
-
-    .genres-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
+    .mobile-sidebar {
+        width: 260px;
+        left: -260px;
     }
 }
 
 /* ===== EXTRA SMALL DEVICES ===== */
 @media (max-width: 320px) {
-    .navbar {
-        padding: 0 10px;
-    }
-
-    .search-container {
-        max-width: 180px;
-    }
-
-    .search-box input {
-        padding: 8px 35px 8px 12px;
-        font-size: 0.8rem;
-    }
-
-    .logo-icon {
-        width: 28px !important;
-        height: 28px !important;
-    }
-}
-
-/* ===== HEADER LAYOUT FIXES ===== */
-@media (max-width: 768px) {
-    /* Ensure proper header layout */
-    .navbar > * {
-        flex-shrink: 0;
-    }
-
-    /* Logo section */
-    .navbar > .logo {
-        width: auto;
-    }
-
-    /* Search section - prevent movement */
-    .navbar > .nav-actions {
-        flex: 1;
-        justify-content: flex-end;
-        position: relative;
-    }
-
-    .search-container {
-        position: relative !important;
-        transform: none !important;
-    }
-
-    /* Remove any existing margins/padding that might break layout */
-    .nav-actions .search-container {
-        order: 0;
-        margin-top: 0 !important;
-        position: static !important;
-    }
-
-    .user-actions {
-        order: 1;
-    }
-
-    /* Fix for search input focus issues */
-    .search-box {
-        position: relative !important;
-    }
-    
-    .search-box input {
-        position: relative !important;
-        transform: none !important;
-        transition: border-color 0.3s ease, background-color 0.3s ease !important;
+    .mobile-sidebar {
+        width: 240px;
+        left: -240px;
     }
 }
   </style>
@@ -1656,6 +1404,37 @@
           <li><a href="#genres">Genres</a></li>
           <li><a href="#browse">Browse</a></li>
         </ul>
+
+        <!-- Mobile Sidebar Menu - Hidden on Desktop -->
+<div class="mobile-sidebar">
+    <div class="sidebar-header">
+        <a href="#" class="logo">
+            <div class="logo-icon">
+                <img src="Image & logo/kitsune logo.jpg" alt="Kitsune Logo" style="width: 100%; height: 100%; object-fit: contain;">
+            </div>
+            <div class="logo-text">Kitsune</div>
+        </a>
+    </div>
+    <div class="sidebar-menu">
+        <a href="#home" class="sidebar-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="#today-releases" class="sidebar-item">
+            <i class="fas fa-calendar-day"></i>
+            <span>Today's Releases</span>
+        </a>
+        <a href="#genres" class="sidebar-item">
+            <i class="fas fa-th-large"></i>
+            <span>Genres</span>
+        </a>
+        <a href="#browse" class="sidebar-item">
+            <i class="fas fa-compass"></i>
+            <span>Browse</span>
+        </a>
+    </div>
+</div>
+<div class="sidebar-overlay"></div>
 
         <div class="nav-actions">
           <div class="search-container">
@@ -2227,6 +2006,44 @@
       });
     });
   </script>
+
+  <script>
+// Mobile sidebar functionality - Only runs on mobile
+if (window.innerWidth <= 768) {
+    document.addEventListener('DOMContentLoaded', function() {
+        const menuToggle = document.querySelector('.menu-toggle');
+        const mobileSidebar = document.querySelector('.mobile-sidebar');
+        const sidebarOverlay = document.querySelector('.sidebar-overlay');
+        
+        if (menuToggle && mobileSidebar && sidebarOverlay) {
+            menuToggle.addEventListener('click', function() {
+                mobileSidebar.classList.toggle('active');
+                sidebarOverlay.classList.toggle('active');
+                menuToggle.classList.toggle('active');
+                document.body.style.overflow = mobileSidebar.classList.contains('active') ? 'hidden' : 'auto';
+            });
+            
+            sidebarOverlay.addEventListener('click', function() {
+                mobileSidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+                menuToggle.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+            
+            // Close sidebar when clicking menu items
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    mobileSidebar.classList.remove('active');
+                    sidebarOverlay.classList.remove('active');
+                    menuToggle.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                });
+            });
+        }
+    });
+}
+</script>
+
   <script>
     // Search functionality
     function performSearch(query) {
