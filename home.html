@@ -1256,43 +1256,42 @@
         height: 44px;
     }
 
-    /* Logo - Left side */
+    /* Logo only - Left side (remove text) */
     .logo {
         display: flex;
         align-items: center;
-        gap: 8px;
         flex-shrink: 0;
         text-decoration: none;
     }
 
     .logo-icon {
-        width: 28px !important;
-        height: 28px !important;
+        width: 32px !important;
+        height: 32px !important;
         background: #E50914 !important;
-        border-radius: 4px !important;
+        border-radius: 6px !important;
         display: flex;
         align-items: center;
         justify-content: center;
+        box-shadow: 0 2px 8px rgba(229, 9, 20, 0.4);
     }
 
     .logo-icon img {
-        width: 80% !important;
-        height: 80% !important;
+        width: 85% !important;
+        height: 85% !important;
         object-fit: contain !important;
     }
 
+    /* Hide logo text */
     .logo-text {
-        font-size: 1.4rem !important;
-        font-weight: 900 !important;
-        color: #E50914 !important;
-        text-shadow: 0 2px 4px rgba(229, 9, 20, 0.3);
+        display: none !important;
     }
 
-    /* Search - Center */
+    /* Search - Center (increased width) */
     .search-container {
         flex: 1;
-        max-width: 180px;
+        max-width: 220px;
         margin: 0 !important;
+        position: static !important; /* Prevent movement on focus */
     }
 
     .search-box {
@@ -1302,48 +1301,83 @@
 
     .search-box input {
         width: 100%;
-        padding: 8px 35px 8px 12px;
-        background: rgba(255, 255, 255, 0.1) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        border-radius: 20px !important;
+        padding: 10px 40px 10px 15px;
+        background: rgba(255, 255, 255, 0.15) !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        border-radius: 25px !important;
         color: #fff;
-        font-size: 0.8rem;
+        font-size: 0.85rem;
         transition: all 0.3s ease;
+        position: static !important; /* Keep position fixed */
     }
 
     .search-box input:focus {
-        background: rgba(255, 255, 255, 0.15) !important;
+        background: rgba(255, 255, 255, 0.2) !important;
         border-color: #E50914 !important;
         outline: none;
+        transform: none !important; /* Prevent movement */
+        width: 100% !important; /* Keep same width */
     }
 
     .search-box i {
         position: absolute;
-        right: 12px;
+        right: 15px;
         top: 50%;
         transform: translateY(-50%);
-        color: rgba(255, 255, 255, 0.6);
-        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.9rem;
+        pointer-events: none;
     }
 
-    /* Profile - Right side */
+    /* Right side actions */
     .nav-actions {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 12px;
         flex-shrink: 0;
     }
 
     .user-actions {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 12px;
     }
 
+    /* Three line menu icon */
+    .menu-toggle {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        cursor: pointer;
+        padding: 6px;
+        background: transparent;
+        border: none;
+    }
+
+    .menu-toggle span {
+        width: 18px;
+        height: 2px;
+        background: #fff;
+        border-radius: 1px;
+        transition: all 0.3s ease;
+    }
+
+    .menu-toggle.active span:nth-child(1) {
+        transform: rotate(45deg) translate(6px, 6px);
+    }
+
+    .menu-toggle.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .menu-toggle.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(6px, -6px);
+    }
+
+    /* Profile button */
     .profile-btn {
         display: flex;
         align-items: center;
-        gap: 6px;
         background: transparent !important;
         border: none !important;
         padding: 4px !important;
@@ -1351,8 +1385,8 @@
     }
 
     .profile-avatar {
-        width: 30px !important;
-        height: 30px !important;
+        width: 32px !important;
+        height: 32px !important;
         background: #E50914 !important;
         border-radius: 50% !important;
         display: flex;
@@ -1360,7 +1394,8 @@
         justify-content: center;
         color: white;
         font-weight: 600;
-        font-size: 0.8rem;
+        font-size: 0.85rem;
+        border: 2px solid rgba(255, 255, 255, 0.1);
     }
 
     .profile-name {
@@ -1375,6 +1410,20 @@
     /* Hide hamburger menu */
     .hamburger {
         display: none !important;
+    }
+
+    /* Fix search results position */
+    .search-results {
+        position: absolute !important;
+        top: 100% !important;
+        left: 0 !important;
+        width: 100% !important;
+        margin-top: 8px !important;
+        z-index: 1001;
+        background: #2F2F2F !important;
+        border: none !important;
+        border-radius: 8px !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     }
 
     /* Netflix-style bottom navigation */
@@ -1471,14 +1520,6 @@
         padding: 20px 10px !important;
     }
 
-    /* Search results styling */
-    .search-results {
-        background: #2F2F2F !important;
-        border: none !important;
-        border-radius: 8px !important;
-        margin-top: 8px !important;
-    }
-
     .search-result-item {
         border-bottom: 1px solid #444 !important;
     }
@@ -1496,21 +1537,25 @@
     }
 
     .search-container {
-        max-width: 150px;
-    }
-
-    .logo-text {
-        font-size: 1.2rem !important;
+        max-width: 200px;
     }
 
     .logo-icon {
-        width: 26px !important;
-        height: 26px !important;
+        width: 30px !important;
+        height: 30px !important;
     }
 
     .profile-avatar {
-        width: 28px !important;
-        height: 28px !important;
+        width: 30px !important;
+        height: 30px !important;
+    }
+
+    .menu-toggle {
+        padding: 5px;
+    }
+
+    .menu-toggle span {
+        width: 16px;
     }
 
     .anime-grid {
@@ -1529,16 +1574,17 @@
     }
 
     .search-container {
-        max-width: 130px;
+        max-width: 180px;
     }
 
     .search-box input {
-        padding: 6px 30px 6px 10px;
-        font-size: 0.75rem;
+        padding: 8px 35px 8px 12px;
+        font-size: 0.8rem;
     }
 
-    .logo-text {
-        font-size: 1.1rem !important;
+    .logo-icon {
+        width: 28px !important;
+        height: 28px !important;
     }
 }
 
@@ -1554,24 +1600,38 @@
         width: auto;
     }
 
-    /* Search section */
+    /* Search section - prevent movement */
     .navbar > .nav-actions {
         flex: 1;
         justify-content: flex-end;
+        position: relative;
     }
 
     .search-container {
-        margin: 0 auto;
+        position: relative !important;
+        transform: none !important;
     }
 
     /* Remove any existing margins/padding that might break layout */
     .nav-actions .search-container {
         order: 0;
         margin-top: 0 !important;
+        position: static !important;
     }
 
     .user-actions {
         order: 1;
+    }
+
+    /* Fix for search input focus issues */
+    .search-box {
+        position: relative !important;
+    }
+    
+    .search-box input {
+        position: relative !important;
+        transform: none !important;
+        transition: border-color 0.3s ease, background-color 0.3s ease !important;
     }
 }
   </style>
