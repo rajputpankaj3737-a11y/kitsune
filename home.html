@@ -2198,15 +2198,26 @@
     }
 
     // Populate anime sections
+        // Populate anime sections
     function populateAnimeSections() {
         // Today's Releases - First 6 anime
         const todayReleases = animeData.slice(0, 6);
         populateAnimeGrid(todayReleases, todayReleasesHeroGrid);
 
-        // Featured Anime - First 24 anime
-        const featuredAnime = animeData.slice(0, 24);
+        // Featured Anime - Limit to 14 on mobile, 24 on desktop
+        const featuredAnimeLimit = window.innerWidth <= 768 ? 14 : 24;
+        const featuredAnime = animeData.slice(0, featuredAnimeLimit);
         populateAnimeGrid(featuredAnime, animeGrid);
     }
+
+    // Add resize listener to update on screen size changes
+    window.addEventListener('resize', function() {
+        if (animeData.length > 0) {
+            const featuredAnimeLimit = window.innerWidth <= 768 ? 14 : 24;
+            const featuredAnime = animeData.slice(0, featuredAnimeLimit);
+            populateAnimeGrid(featuredAnime, animeGrid);
+        }
+    });
 
     // Populate anime grid with update indicators
     function populateAnimeGrid(animeList, gridElement) {
