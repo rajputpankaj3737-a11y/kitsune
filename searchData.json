@@ -41,7 +41,7 @@
   },
   {
     "title": "The Demon Hunter",
-    "type": "Anime • Ep 02 [4k] • Sub",
+    "type": "Anime • Ep 05 [4k] • Sub",
     "genre": "Action, Fantasy",
     "image": "Image & logo/The Demon Hunter.png",
     "link": "donghua/The Demon Hunter/episode1.html",
@@ -49,7 +49,7 @@
   },
   {
     "title": "Battle Through The Heavens",
-    "type": "DONGHUA • Ep 170 [4k] • Sub",
+    "type": "DONGHUA • Ep 173 [4k] • Sub",
     "genre": "Action, Adventure",
     "image": "Image & logo/BTTH.jpg",
     "link": "donghua/Battle Through The Heavens/episode1.html",
@@ -65,7 +65,7 @@
   },
   {
     "title": "Against The Sky Supreme",
-    "type": "DONGHUA • Ep 90 [4K] • Sub",
+    "type": "DONGHUA • Ep 100 [4K] • Sub",
     "genre": "Action, Adventure, Fantasy",
     "image": "Image & logo/Against_The_Sky_Supreme.webp",
     "link": "donghua/Against the sky supreme/episode1.html",
@@ -73,7 +73,7 @@
   },
   {
     "title": "The Great Ruler",
-    "type": "DONGHUA • Ep 45 [4K] • Sub",
+    "type": "DONGHUA • Ep 46 [4K] • Sub",
     "genre": "Action, Fantasy",
     "image": "Image & logo/The great Ruler.jpg",
     "link": "donghua/The great Ruler/episode1.html",
@@ -97,7 +97,7 @@
   },
   {
     "title": "One Hundred Years Of Qi Refining",
-    "type": "DONGHUA • Ep 241 [4K] • Sub",
+    "type": "DONGHUA • Ep 242 [4K] • Sub",
     "genre": "Action, Fantasy",
     "image": "Image & logo/OHYOQR.jpg",
     "link": "donghua/One Hundred Year Of Qi Refining/episode1.html",
@@ -109,6 +109,6 @@
     "genre": "Action",
     "image": "Image & logo/death note.jpg",
     "link": "janime/Death Note/episode1.html",
-    "status": "completed"
+    "status": "ongoing"
   }
 ]
