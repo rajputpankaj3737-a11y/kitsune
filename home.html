@@ -2063,8 +2063,31 @@
 
     // Extract episode number from type field
     function extractEpisodeNumber(typeString) {
+        if (!typeString) return 0;
         const episodeMatch = typeString.match(/Ep\s*(\d+)/i);
         return episodeMatch ? parseInt(episodeMatch[1]) : 0;
+    }
+
+    // Enhanced episode status checker with completed support
+    function checkEpisodeStatus(anime) {
+        // Priority 1: Check if anime is completed
+        if (anime.status === 'completed') {
+            return 'COMPLETED';
+        }
+        
+        // Priority 2: If anime has a new episode, show "NEW EP"
+        if (anime.hasNewEpisode) {
+            return 'NEW EP';
+        }
+        
+        // Priority 3: If anime has more than 3 episodes, show "ONGOING"
+        const episodeNumber = extractEpisodeNumber(anime.type);
+        if (episodeNumber > 3) {
+            return 'ONGOING';
+        }
+        
+        // Priority 4: Otherwise show "NEW"
+        return 'NEW';
     }
 
     // Load anime data from JSON file
@@ -2104,16 +2127,23 @@
         const updatedAnime = [];
         const hasNewEpisodeMap = new Map();
 
-        // Check for episode updates
+        // Check for episode updates (only for ongoing anime)
         newAnimeData.forEach(anime => {
-            const currentEpisode = extractEpisodeNumber(anime.type);
-            const previousEpisode = previousEpisodes[anime.title] || 0;
-            const hasNewEpisode = currentEpisode > previousEpisode;
-            
-            hasNewEpisodeMap.set(anime.title, hasNewEpisode);
-            
-            if (hasNewEpisode) {
-                updatedAnime.push(anime.title);
+            // Only track episode updates for ongoing anime, not completed ones
+            // If status field doesn't exist, treat as ongoing
+            if (!anime.status || anime.status !== 'completed') {
+                const currentEpisode = extractEpisodeNumber(anime.type);
+                const previousEpisode = previousEpisodes[anime.title] || 0;
+                const hasNewEpisode = currentEpisode > previousEpisode;
+                
+                hasNewEpisodeMap.set(anime.title, hasNewEpisode);
+                
+                if (hasNewEpisode) {
+                    updatedAnime.push(anime.title);
+                }
+            } else {
+                // Completed anime don't get new episode badges
+                hasNewEpisodeMap.set(anime.title, false);
             }
         });
 
@@ -2154,10 +2184,13 @@
         // Store the new order and episodes for next time
         localStorage.setItem('kitsune_anime_order', JSON.stringify(newOrder));
         
-        // Update stored episodes
+        // Update stored episodes (only for ongoing anime)
         const newEpisodeData = {};
         newAnimeData.forEach(anime => {
-            newEpisodeData[anime.title] = extractEpisodeNumber(anime.type);
+            // If status field doesn't exist, treat as ongoing
+            if (!anime.status || anime.status !== 'completed') {
+                newEpisodeData[anime.title] = extractEpisodeNumber(anime.type);
+            }
         });
         localStorage.setItem('kitsune_previous_episodes', JSON.stringify(newEpisodeData));
 
@@ -2183,10 +2216,19 @@
             const animeCard = document.createElement('div');
             animeCard.className = 'anime-card fade-in';
             
-            // Show "NEW EP" badge for anime with new episodes, "NEW" for new anime
+            // Determine badge text based on status and updates
+            const badgeText = checkEpisodeStatus(anime);
             const showBadge = true;
-            const badgeText = anime.hasNewEpisode ? 'NEW EP' : 'NEW';
-            const badgeClass = anime.hasNewEpisode ? 'updated-badge' : 'new-badge';
+            
+            // Determine badge class
+            let badgeClass = 'new-badge';
+            if (badgeText === 'NEW EP') {
+                badgeClass = 'updated-badge';
+            } else if (badgeText === 'COMPLETED') {
+                badgeClass = 'updated-badge'; // Uses same style as NEW EP
+            } else if (badgeText === 'ONGOING') {
+                badgeClass = 'new-badge';
+            }
             
             animeCard.innerHTML = `
                 <div class="card-image">
@@ -2245,9 +2287,12 @@
                 resultItem.className = 'search-result-item';
                 resultItem.href = anime.link;
                 
-                // Add update indicator in search results
-                const updateIndicator = anime.hasNewEpisode ? '<div class="search-update-indicator">NEW EP</div>' : '';
-                
+                // Determine badge text for search results
+                const badgeText = checkEpisodeStatus(anime);
+                const updateIndicator = badgeText === 'NEW EP' ? '<div class="search-update-indicator">NEW EP</div>' : 
+                                      badgeText === 'ONGOING' ? '<div class="search-update-indicator">ONGOING</div>' :
+                                      badgeText === 'COMPLETED' ? '<div class="search-update-indicator">COMPLETED</div>' : '';
+                    
                 resultItem.innerHTML = `
                     <div class="search-result-image">
                         <img src="${anime.image}" alt="${anime.title}" onerror="this.src='https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
