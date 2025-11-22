@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Throne Of Seal — Episode 2 | Kitsune</title>
+    <title>Solo Leveling S2 — Episode 2 | Kitsune</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -589,11 +589,12 @@
         }
 
         .nav-button.previous {
-            background: var(--secondary);
+            background: red;
+            color: white;
         }
 
         .nav-button.previous:hover {
-            background: #333;
+            background: red;
         }
 
         /* MOBILE RESPONSIVE STYLES - MODERN ANIME APP REDESIGN */
@@ -1003,10 +1004,10 @@
                     <span class="meta-tag">1080p FHD</span>
                 </div>
                 <p class="anime-description">
-                    In this episode, Jinwoo continues his journey to become stronger as he faces new challenges
-                    and discovers more about the mysterious System. With each battle, he grows more powerful,
-                    but also uncovers more questions about the origin of his abilities and the dungeons that
-                    have appeared in the world. The stakes are higher than ever as Jinwoo pushes his limits.
+                    Jinwoo continues his journey as he faces new challenges and discovers the true potential
+                    of the System. With each battle, he grows stronger and uncovers more secrets about the
+                    mysterious dungeons that have appeared in the world. The stakes are higher than ever as
+                    Jinwoo pushes his limits to become the ultimate hunter.
                 </p>
             </div>
         </section>
@@ -1042,10 +1043,10 @@
 
                 <!-- NAVIGATION BUTTONS -->
                 <div class="nav-buttons-container">
-                    <button class="nav-button previous" onclick="location.href='episode1.html'">
+                    <button class="nav-button previous" onclick="goToPreviousEpisode(1)">
                         <i class="fas fa-arrow-left"></i> PREVIOUS
                     </button>
-                    <button class="nav-button" onclick="location.href='episode3.html'">
+                    <button class="nav-button" onclick="goToNextEpisode(3)">
                         NEXT <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
@@ -1091,12 +1092,41 @@
                         const newScript = document.createElement("script");
                         newScript.textContent = scriptTag.textContent;
                         document.body.appendChild(newScript);
+                        
+                        // Refresh the episode list highlighting after loading
+                        setTimeout(() => {
+                            refreshEpisodeHighlighting();
+                        }, 200);
                     }
                 })
                 .catch(() => {
                     document.getElementById("episodeListContainer").innerHTML =
                         "<p style='color:#bbb;'>Failed to load episode list.</p>";
                 });
+        }
+
+        // Function to refresh episode highlighting
+        function refreshEpisodeHighlighting() {
+            const currentEpisode = localStorage.getItem('kitsune_current_watching_episode') || '2';
+            
+            // Remove current class from all episodes
+            document.querySelectorAll('.episode-item').forEach(item => {
+                item.classList.remove('current');
+            });
+            
+            // Add current class to current episode
+            const currentEpisodeElement = document.querySelector(`.episode-item:nth-child(${currentEpisode})`);
+            if (currentEpisodeElement) {
+                currentEpisodeElement.classList.add('current');
+                
+                // Scroll to current episode
+                setTimeout(() => {
+                    currentEpisodeElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }, 300);
+            }
         }
 
         // Load anime data for the anime row
@@ -1196,11 +1226,35 @@
                 animeRow.appendChild(animeCard);
             });
         }
-
+        
+        // Set current episode when page loads
+        localStorage.setItem('kitsune_current_watching_episode', '2');
+        
+        // Function for next button
+        function goToNextEpisode(episodeNumber) {
+            localStorage.setItem('kitsune_current_watching_episode', episodeNumber.toString());
+            window.location.href = 'episode' + episodeNumber + '.html';
+        }
+        
+        // Function for previous button
+        function goToPreviousEpisode(episodeNumber) {
+            localStorage.setItem('kitsune_current_watching_episode', episodeNumber.toString());
+            window.location.href = 'episode' + episodeNumber + '.html';
+        }
+        
         // Initialize everything when page loads
         document.addEventListener('DOMContentLoaded', function () {
             loadEpisodes();
             loadAnimeForRow();
+        });
+
+        // Refresh episode highlighting when the page becomes visible (when returning from other pages)
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                setTimeout(() => {
+                    refreshEpisodeHighlighting();
+                }, 100);
+            }
         });
     </script>
 </body>
