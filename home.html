@@ -2112,90 +2112,128 @@
     }
 
     // Maintain permanent order with episode update tracking
-    function maintainPermanentOrder(newAnimeData) {
-        // Get stored order from localStorage
-        const storedOrder = JSON.parse(localStorage.getItem('kitsune_anime_order') || '[]');
-        const previousEpisodes = JSON.parse(localStorage.getItem('kitsune_previous_episodes') || '{}');
+    // Universal permanent order tracking - works on all domains
+function maintainPermanentOrder(newAnimeData) {
+    // Universal storage keys (same for all domains)
+    const orderKey = `kitsune_anime_order`;
+    const episodesKey = `kitsune_previous_episodes`;
+
+    // Get stored order from localStorage
+    let storedOrder = [];
+    let previousEpisodes = {};
+    
+    try {
+        storedOrder = JSON.parse(localStorage.getItem(orderKey) || '[]');
+        previousEpisodes = JSON.parse(localStorage.getItem(episodesKey) || '{}');
         
-        // Create a map of new anime by title for easy lookup
-        const newAnimeMap = new Map();
-        newAnimeData.forEach(anime => {
-            newAnimeMap.set(anime.title, anime);
-        });
+        console.log('Loaded stored order:', storedOrder.length, 'items');
+        console.log('Loaded previous episodes:', Object.keys(previousEpisodes).length, 'anime');
+    } catch (e) {
+        console.log('Initializing new order tracking');
+        storedOrder = [];
+        previousEpisodes = {};
+    }
 
-        // Track updated anime
-        const updatedAnime = [];
-        const hasNewEpisodeMap = new Map();
+    // Create a map of new anime by title for easy lookup
+    const newAnimeMap = new Map();
+    newAnimeData.forEach(anime => {
+        newAnimeMap.set(anime.title, anime);
+    });
 
-        // Check for episode updates (only for ongoing anime)
-        newAnimeData.forEach(anime => {
-            // Only track episode updates for ongoing anime, not completed ones
-            // If status field doesn't exist, treat as ongoing
-            if (!anime.status || anime.status !== 'completed') {
-                const currentEpisode = extractEpisodeNumber(anime.type);
-                const previousEpisode = previousEpisodes[anime.title] || 0;
-                const hasNewEpisode = currentEpisode > previousEpisode;
-                
-                hasNewEpisodeMap.set(anime.title, hasNewEpisode);
-                
-                if (hasNewEpisode) {
-                    updatedAnime.push(anime.title);
-                }
-            } else {
-                // Completed anime don't get new episode badges
-                hasNewEpisodeMap.set(anime.title, false);
+    // Track updated anime
+    const updatedAnime = [];
+    const hasNewEpisodeMap = new Map();
+
+    // Check for episode updates
+    newAnimeData.forEach(anime => {
+        if (!anime.status || anime.status !== 'completed') {
+            const currentEpisode = extractEpisodeNumber(anime.type);
+            const previousEpisode = previousEpisodes[anime.title] || 0;
+            const hasNewEpisode = currentEpisode > previousEpisode;
+            
+            hasNewEpisodeMap.set(anime.title, hasNewEpisode);
+            
+            if (hasNewEpisode) {
+                console.log(`📢 New episode detected: ${anime.title} - Ep ${previousEpisode} → Ep ${currentEpisode}`);
+                updatedAnime.push(anime.title);
             }
-        });
+        } else {
+            hasNewEpisodeMap.set(anime.title, false);
+        }
+    });
 
-        // Build the new order
-        let newOrder = [];
+    console.log('Found updated anime:', updatedAnime);
 
-        // Step 1: Add updated anime to the top (in the order they were updated)
-        updatedAnime.forEach(animeTitle => {
-            if (newAnimeMap.has(animeTitle)) {
-                newOrder.push(animeTitle);
-            }
-        });
+    // Build the new order
+    let newOrder = [];
 
-        // Step 2: Add remaining anime from stored order
-        storedOrder.forEach(animeTitle => {
-            if (newAnimeMap.has(animeTitle) && !updatedAnime.includes(animeTitle)) {
-                newOrder.push(animeTitle);
-            }
-        });
+    // Step 1: Add updated anime to the top (maintain their order from storedOrder)
+    const updatedInOrder = storedOrder.filter(title => updatedAnime.includes(title));
+    newOrder.push(...updatedInOrder);
 
-        // Step 3: Add any new anime that aren't in stored order (added to JSON)
-        newAnimeData.forEach(anime => {
-            if (!newOrder.includes(anime.title)) {
-                newOrder.unshift(anime.title); // Add new anime to the top
-            }
-        });
+    // Step 2: Add remaining anime from stored order (excluding updated ones)
+    storedOrder.forEach(animeTitle => {
+        if (newAnimeMap.has(animeTitle) && !updatedAnime.includes(animeTitle)) {
+            newOrder.push(animeTitle);
+        }
+    });
 
-        // Convert titles back to full anime objects with update info
-        const finalAnimeData = newOrder.map(title => {
-            const anime = newAnimeMap.get(title);
-            return {
-                ...anime,
-                hasNewEpisode: hasNewEpisodeMap.get(title) || false,
-                episodeNumber: extractEpisodeNumber(anime.type)
-            };
-        });
+    // Step 3: Add any new anime that aren't in stored order
+    newAnimeData.forEach(anime => {
+        if (!newOrder.includes(anime.title)) {
+            console.log(`🆕 New anime added: ${anime.title}`);
+            newOrder.unshift(anime.title);
+        }
+    });
 
-        // Store the new order and episodes for next time
-        localStorage.setItem('kitsune_anime_order', JSON.stringify(newOrder));
+    // Step 4: Remove anime that no longer exist in JSON
+    newOrder = newOrder.filter(title => newAnimeMap.has(title));
+
+    console.log('Final order:', newOrder);
+
+    // Convert titles back to full anime objects
+    const finalAnimeData = newOrder.map(title => {
+        const anime = newAnimeMap.get(title);
+        return {
+            ...anime,
+            hasNewEpisode: hasNewEpisodeMap.get(title) || false,
+            episodeNumber: extractEpisodeNumber(anime.type)
+        };
+    });
+
+    // Store the new order and episodes
+    try {
+        localStorage.setItem(orderKey, JSON.stringify(newOrder));
         
-        // Update stored episodes (only for ongoing anime)
         const newEpisodeData = {};
         newAnimeData.forEach(anime => {
-            // If status field doesn't exist, treat as ongoing
             if (!anime.status || anime.status !== 'completed') {
                 newEpisodeData[anime.title] = extractEpisodeNumber(anime.type);
             }
         });
-        localStorage.setItem('kitsune_previous_episodes', JSON.stringify(newEpisodeData));
-
-        return finalAnimeData;
+        localStorage.setItem(episodesKey, JSON.stringify(newEpisodeData));
+        
+        console.log('✅ Order tracking updated successfully');
+        
+    } catch (error) {
+        console.error('❌ Error saving to localStorage:', error);
     }
+
+    return finalAnimeData;
+}
+
+// Universal reset function for both local and GitHub
+function resetOrderTrackingUniversal() {
+    localStorage.removeItem('kitsune_anime_order');
+    localStorage.removeItem('kitsune_previous_episodes');
+    console.log('🔄 Order tracking reset - refreshing page...');
+    setTimeout(() => {
+        window.location.reload();
+    }, 1000);
+}
+
+// Add to your debug tools
+window.resetOrderTrackingUniversal = resetOrderTrackingUniversal;
 
     // Populate anime sections
         // Populate anime sections
