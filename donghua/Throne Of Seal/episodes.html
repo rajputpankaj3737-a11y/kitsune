@@ -192,44 +192,86 @@
   const episodes = [
     { 
       number: 1, 
-      title: "Rise of the Supreme", 
-      thumb: "../../Image & logo/TOS.jpg", 
+      title: "The Angel Next Door Spoils Me Rotten", 
+      thumb: "../../Image & logo/The angel next door spoils me rotten.jpg", 
       file: "episode1.html",
       duration: "24:15"
     },
     { 
       number: 2, 
-      title: "Battle of the Celestial Realm", 
-      thumb: "../../Image & logo/TOS.jpg", 
+      title: "The Angel Next Door Spoils Me Rotten", 
+      thumb: "../../Image & logo/The angel next door spoils me rotten.jpg", 
       file: "episode2.html",
       duration: "23:48"
     },
     { 
       number: 3, 
-      title: "Heavenly Tribulation", 
-      thumb: "../../Image & logo/TOS.jpg", 
+      title: "The Angel Next Door Spoils Me Rotten", 
+      thumb: "../../Image & logo/The angel next door spoils me rotten.jpg", 
       file: "episode3.html",
       duration: "25:32"
     },
     { 
       number: 4, 
-      title: "Immortal Awakening", 
-      thumb: "../../Image & logo/TOS.jpg", 
+      title: "The Angel Next Door Spoils Me Rotten", 
+      thumb: "../../Image & logo/The angel next door spoils me rotten.jpg", 
       file: "episode4.html",
       duration: "22:56"
     },
     { 
       number: 5, 
-      title: "Divine Conflict", 
-      thumb: "../../Image & logo/TOS.jpg", 
+      title: "The Angel Next Door Spoils Me Rotten", 
+      thumb: "../../Image & logo/The angel next door spoils me rotten.jpg", 
       file: "episode5.html",
       duration: "26:11"
-    },
+    }, 
     { 
       number: 6, 
-      title: "The Fall of Heaven", 
-      thumb: "../../Image & logo/TOS.jpg", 
+      title: "The Angel Next Door Spoils Me Rotten", 
+      thumb: "../../Image & logo/The angel next door spoils me rotten.jpg", 
       file: "episode6.html",
+      duration: "24:43"
+    },
+    { 
+      number: 7, 
+      title: "The Angel Next Door Spoils Me Rotten", 
+      thumb: "../../Image & logo/The angel next door spoils me rotten.jpg", 
+      file: "episode7.html",
+      duration: "24:43"
+    },
+    { 
+      number: 8, 
+      title: "The Angel Next Door Spoils Me Rotten", 
+      thumb: "../../Image & logo/The angel next door spoils me rotten.jpg", 
+      file: "episode8.html",
+      duration: "24:43"
+    },
+    { 
+      number: 9, 
+      title: "The Angel Next Door Spoils Me Rotten", 
+      thumb: "../../Image & logo/The angel next door spoils me rotten.jpg", 
+      file: "episode9.html",
+      duration: "24:43"
+    },
+    { 
+      number: 10, 
+      title: "The Angel Next Door Spoils Me Rotten", 
+      thumb: "../../Image & logo/The angel next door spoils me rotten.jpg", 
+      file: "episode10.html",
+      duration: "24:43"
+    },
+    { 
+      number: 11, 
+      title: "The Angel Next Door Spoils Me Rotten", 
+      thumb: "../../Image & logo/The angel next door spoils me rotten.jpg", 
+      file: "episode11.html",
+      duration: "24:43"
+    },
+    { 
+      number: 12, 
+      title: "The Angel Next Door Spoils Me Rotten", 
+      thumb: "../../Image & logo/The angel next door spoils me rotten.jpg", 
+      file: "episode12.html",
       duration: "24:43"
     }
   ];
@@ -237,16 +279,57 @@
   const list = document.getElementById("episodeList");
   let currentEpisode = 1;
 
-  const path = window.location.pathname;
-  const match = path.match(/episode(\d+)/i);
-  if (match) currentEpisode = parseInt(match[1]);
+  // Simple function to get current episode
+  function getCurrentEpisode() {
+    // Get from localStorage - this is the key to making it work
+    const currentEpisodeKey = 'kitsune_current_watching_episode';
+    const savedEpisode = localStorage.getItem(currentEpisodeKey);
+    
+    if (savedEpisode) {
+      return parseInt(savedEpisode);
+    }
+    
+    // Fallback: try to detect from URL
+    const path = window.location.pathname;
+    const match = path.match(/episode(\d+)/i);
+    if (match) return parseInt(match[1]);
+    
+    return 1;
+  }
 
+  // Function to update episode list highlighting
+  function updateEpisodeHighlighting() {
+    currentEpisode = getCurrentEpisode();
+    
+    // Remove current class from all episodes
+    document.querySelectorAll('.episode-item').forEach(item => {
+      item.classList.remove('current');
+    });
+    
+    // Add current class to current episode
+    const currentEpisodeElement = document.querySelector(`.episode-item:nth-child(${currentEpisode})`);
+    if (currentEpisodeElement) {
+      currentEpisodeElement.classList.add('current');
+    }
+  }
+
+  // Function to scroll to current episode
+  function scrollToCurrentEpisode() {
+    setTimeout(() => {
+      const currentEpisodeElement = document.querySelector('.episode-item.current');
+      if (currentEpisodeElement) {
+        currentEpisodeElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
+        });
+      }
+    }, 300);
+  }
+
+  // Render episodes
   episodes.forEach(ep => {
     const div = document.createElement("div");
     div.className = "episode-item";
-    if (ep.number === currentEpisode) {
-      div.classList.add("current");
-    }
     
     div.innerHTML = `
       <img src="${ep.thumb}" alt="Episode ${ep.number}">
@@ -262,7 +345,18 @@
       </div>
     `;
     
-    div.onclick = () => window.location.href = ep.file;
+    div.onclick = () => {
+      // Save the clicked episode as current watching episode
+      localStorage.setItem('kitsune_current_watching_episode', ep.number.toString());
+      // Navigate to the episode
+      window.location.href = ep.file;
+    };
     list.appendChild(div);
   });
+
+  // Initialize when page loads
+  setTimeout(() => {
+    updateEpisodeHighlighting();
+    scrollToCurrentEpisode();
+  }, 100);
 </script>

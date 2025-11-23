@@ -282,14 +282,28 @@
       <a href="../../home.html" class="btn btn-primary">
         <i class="fas fa-home"></i> Back to Home
       </a>
-      <a href="#" class="btn btn-secondary">
+      <button id="continueWatching" class="btn btn-secondary">
         <i class="fas fa-play-circle"></i> Continue Watching
-      </a>
+      </button>
     </div>
   </div>
   
   <div class="footer fade-in">
     <p>&copy; 2023 Kitsune Streaming. All rights reserved. <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
   </div>
+
+  <script>
+    // Simple Continue Watching functionality
+    document.getElementById('continueWatching').addEventListener('click', function() {
+      // Check if there's a previous page in browser history
+      if (document.referrer && document.referrer !== window.location.href) {
+        // Go back to the previous page (where user came from)
+        window.history.back();
+      } else {
+        // If no previous page exists, redirect to home
+        window.location.href = '../../home.html';
+      }
+    });
+  </script>
 </body>
 </html>
