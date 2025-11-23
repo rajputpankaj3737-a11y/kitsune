@@ -1,46 +1,295 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Message Sent | Kitsune</title>
-<style>
-  body {
-    background: linear-gradient(180deg, #0f172a, #1e1b29);
-    color: white;
-    font-family: Poppins, sans-serif;
-    text-align: center;
-    padding-top: 100px;
-  }
-  h1 {
-    font-size: 2.2rem;
-    background: linear-gradient(90deg, #ff6b81, #7c5cff);
-    background-clip: text;            /* Standard property */
-    -webkit-background-clip: text;    /* Safari/WebKit support */
-    -webkit-text-fill-color: transparent;
-    color: transparent;               /* Fallback */
-}
-  p {
-    font-size: 1rem;
-    color: #b5bfda;
-    margin-top: 10px;
-  }
-  .btn {
-    margin-top: 20px;
-    padding: 10px 25px;
-    border-radius: 10px;
-    background: linear-gradient(90deg, #ff6b81, #7c5cff);
-    color: white;
-    font-weight: 600;
-    text-decoration: none;
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Message Sent | Kitsune</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* ===== CSS RESET & BASE STYLES ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #E50914;
+      --primary-dark: #B20710;
+      --primary-light: #FF4D4D;
+      --secondary: #1A1A1A;
+      --accent: #FF3333;
+      --dark: #0F0F0F;
+      --darker: #0A0A0A;
+      --light: #F5F5F5;
+      --gray: #8A8A8A;
+      --card-bg: rgba(40, 40, 40, 0.8);
+      --glass: rgba(255, 255, 255, 0.08);
+      --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      --radius: 10px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+      color: var(--light);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    /* ===== SUCCESS CONTAINER ===== */
+    .success-container {
+      max-width: 600px;
+      width: 100%;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 50px 40px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .success-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    }
+
+    /* ===== SUCCESS ICON ===== */
+    .success-icon {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 30px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4);
+    }
+
+    .success-icon i {
+      font-size: 3rem;
+      color: white;
+    }
+
+    /* ===== TYPOGRAPHY ===== */
+    .success-container h1 {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .success-container p {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+
+    .success-details {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 30px;
+      border-left: 3px solid var(--primary);
+    }
+
+    .success-details p {
+      margin-bottom: 10px;
+      font-size: 1rem;
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: var(--transition);
+      border: none;
+      cursor: pointer;
+      font-size: 1.1rem;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(229, 9, 20, 0.6);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: white;
+      border: 2px solid var(--glass);
+      margin-left: 15px;
+    }
+
+    .btn-secondary:hover {
+      background: var(--glass);
+      transform: translateY(-3px);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+
+    .footer a {
+      color: var(--primary-light);
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: fadeInUp 0.8s ease forwards;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+
+    /* ===== RESPONSIVE DESIGN ===== */
+    @media (max-width: 768px) {
+      .success-container {
+        padding: 40px 25px;
+      }
+      
+      .success-container h1 {
+        font-size: 2rem;
+      }
+      
+      .success-container p {
+        font-size: 1.1rem;
+      }
+      
+      .btn {
+        padding: 12px 24px;
+        font-size: 1rem;
+      }
+      
+      .button-group {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .btn-secondary {
+        margin-left: 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .success-container {
+        padding: 30px 20px;
+      }
+      
+      .success-icon {
+        width: 80px;
+        height: 80px;
+      }
+      
+      .success-icon i {
+        font-size: 2.5rem;
+      }
+      
+      .success-container h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
 </head>
 <body>
-
-<h1>Message Sent Successfully!</h1>
-<p>Thank you for contacting Kitsune. We will respond soon.</p>
-
-<a class="btn" href="../../home.html">Go Back Home</a>
-
+  <div class="success-container fade-in">
+    <div class="success-icon pulse">
+      <i class="fas fa-check"></i>
+    </div>
+    
+    <h1>Message Received!</h1>
+    <p>Thank you for contacting Kitsune. Our team has received your message and will respond within 24 hours.</p>
+    
+    <div class="success-details">
+      <p><i class="fas fa-clock"></i> Response Time: Within 24 hours</p>
+      <p><i class="fas fa-envelope"></i> Check your email for updates</p>
+      <p><i class="fas fa-headset"></i> Premium support for all users</p>
+    </div>
+    
+    <div class="button-group">
+      <a href="../../home.html" class="btn btn-primary">
+        <i class="fas fa-home"></i> Back to Home
+      </a>
+      <a href="#" class="btn btn-secondary">
+        <i class="fas fa-play-circle"></i> Continue Watching
+      </a>
+    </div>
+  </div>
+  
+  <div class="footer fade-in">
+    <p>&copy; 2023 Kitsune Streaming. All rights reserved. <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+  </div>
 </body>
 </html>
