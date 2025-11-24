@@ -342,6 +342,70 @@
       animation: fadeIn 0.3s ease;
     }
 
+    /* ===== SEARCH RESULT RATINGS STYLING ===== */
+    .search-result-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      gap: 10px;
+    }
+
+    .search-result-genre {
+      font-size: 0.8rem;
+      color: var(--gray);
+      flex: 1;
+    }
+
+    .search-result-rating {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: #FFD700;
+      font-size: 0.8rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .search-result-rating i {
+      font-size: 0.7rem;
+    }
+
+    /* Update search result content layout */
+    .search-result-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .search-result-title {
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: white;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .search-result-type {
+      font-size: 0.8rem;
+      color: var(--primary);
+      margin-bottom: 3px;
+    }
+
+    /* Ensure search result items have proper spacing */
+    .search-result-item {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      color: inherit;
+    }
+
     @keyframes fadeIn {
       from {
         opacity: 0;
@@ -2368,7 +2432,7 @@
       displaySearchResults(filteredAnime);
     }
 
-    // Display search results
+    // Display search results with ratings
     function displaySearchResults(results) {
       searchResults.innerHTML = '';
 
@@ -2386,6 +2450,9 @@
             badgeText === 'ONGOING' ? '<div class="search-update-indicator">ONGOING</div>' :
               badgeText === 'COMPLETED' ? '<div class="search-update-indicator">COMPLETED</div>' : '';
 
+          // Use actual rating from JSON data
+          const rating = anime.rating || 9.8;
+
           resultItem.innerHTML = `
                 <div class="search-result-image">
                     <img src="${anime.image}" alt="${anime.title}" onerror="this.src='https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
@@ -2393,7 +2460,13 @@
                 <div class="search-result-content">
                     <div class="search-result-title">${anime.title} ${updateIndicator}</div>
                     <div class="search-result-type">${anime.type}</div>
-                    <div class="search-result-genre">${anime.genre}</div>
+                    <div class="search-result-meta">
+                        <span class="search-result-genre">${anime.genre}</span>
+                        <div class="search-result-rating">
+                            <i class="fas fa-star"></i>
+                            <span>${rating}</span>
+                        </div>
+                    </div>
                 </div>
             `;
           searchResults.appendChild(resultItem);
