@@ -4,27 +4,27 @@
 <head>
   <script>
     // Fixed Auth Guard - Only redirect from signin page
-(function () {
-  const currentPath = window.location.pathname;
-  
-  // If we're on signin.html and user is logged in, redirect to index
-  if (currentPath.includes('signin.html')) {
-    const user = localStorage.getItem('kitsune_user');
-    if (user) {
-      window.location.href = 'index.html';
-      return;
-    }
-  }
-  
-  // If we're NOT on signin.html and user is NOT logged in, redirect to signin
-  if (!currentPath.includes('signin.html')) {
-    const user = localStorage.getItem('kitsune_user');
-    if (!user) {
-      window.location.href = 'signin.html';
-      return;
-    }
-  }
-})();
+    (function () {
+      const currentPath = window.location.pathname;
+
+      // If we're on signin.html and user is logged in, redirect to index
+      if (currentPath.includes('signin.html')) {
+        const user = localStorage.getItem('kitsune_user');
+        if (user) {
+          window.location.href = 'index.html';
+          return;
+        }
+      }
+
+      // If we're NOT on signin.html and user is NOT logged in, redirect to signin
+      if (!currentPath.includes('signin.html')) {
+        const user = localStorage.getItem('kitsune_user');
+        if (!user) {
+          window.location.href = 'signin.html';
+          return;
+        }
+      }
+    })();
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1019,23 +1019,25 @@
     }
 
     .updated-badge {
-    background: #FF6B00; /* Orange for new episodes */
-}
+      background: #FF6B00;
+      /* Orange for new episodes */
+    }
 
-.new-badge {
-    background: var(--primary); /* Red for new anime */
-}
+    .new-badge {
+      background: var(--primary);
+      /* Red for new anime */
+    }
 
-.search-update-indicator {
-    display: inline-block;
-    background: #FF6B00;
-    color: white;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 0.7rem;
-    margin-left: 8px;
-    font-weight: 600;
-}
+    .search-update-indicator {
+      display: inline-block;
+      background: #FF6B00;
+      color: white;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      margin-left: 8px;
+      font-weight: 600;
+    }
 
     /* ===== RESPONSIVE DESIGN ===== */
     @media (max-width: 1400px) {
@@ -1239,17 +1241,18 @@
 
     /* ===== MOBILE HEADER OPTIMIZATION ===== */
     /* ===== MOBILE REDESIGN - NETFLIX STYLE ===== */
-@media (max-width: 768px) {
-    /* Base mobile reset */
-    body {
+    @media (max-width: 768px) {
+
+      /* Base mobile reset */
+      body {
         padding-bottom: 60px;
         -webkit-overflow-scrolling: touch;
         background: #000 !important;
         margin: 0;
-    }
+      }
 
-    /* Netflix-style header */
-    header {
+      /* Netflix-style header */
+      header {
         padding: 8px 0 !important;
         background: #000 !important;
         backdrop-filter: none !important;
@@ -1259,32 +1262,32 @@
         left: 0;
         width: 100%;
         z-index: 1000;
-    }
+      }
 
-    header.scrolled {
+      header.scrolled {
         background: #000 !important;
         padding: 8px 0 !important;
-    }
+      }
 
-    /* Compact navbar layout */
-    .navbar {
+      /* Compact navbar layout */
+      .navbar {
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 0 15px;
         gap: 10px;
         height: 44px;
-    }
+      }
 
-    /* Logo only - Left side (remove text) */
-    .logo {
+      /* Logo only - Left side (remove text) */
+      .logo {
         display: flex;
         align-items: center;
         flex-shrink: 0;
         text-decoration: none;
-    }
+      }
 
-    .logo-icon {
+      .logo-icon {
         width: 32px !important;
         height: 32px !important;
         background: #E50914 !important;
@@ -1293,33 +1296,34 @@
         align-items: center;
         justify-content: center;
         box-shadow: 0 2px 8px rgba(229, 9, 20, 0.4);
-    }
+      }
 
-    .logo-icon img {
+      .logo-icon img {
         width: 85% !important;
         height: 85% !important;
         object-fit: contain !important;
-    }
+      }
 
-    /* Hide logo text */
-    .logo-text {
+      /* Hide logo text */
+      .logo-text {
         display: none !important;
-    }
+      }
 
-    /* Search - Center (increased width) */
-    .search-container {
+      /* Search - Center (increased width) */
+      .search-container {
         flex: 1;
         max-width: 220px;
         margin: 0 !important;
-        position: static !important; /* Prevent movement on focus */
-    }
+        position: static !important;
+        /* Prevent movement on focus */
+      }
 
-    .search-box {
+      .search-box {
         width: 100%;
         position: relative;
-    }
+      }
 
-    .search-box input {
+      .search-box input {
         width: 100%;
         padding: 10px 40px 10px 15px;
         background: rgba(255, 255, 255, 0.15) !important;
@@ -1328,18 +1332,21 @@
         color: #fff;
         font-size: 0.85rem;
         transition: all 0.3s ease;
-        position: static !important; /* Keep position fixed */
-    }
+        position: static !important;
+        /* Keep position fixed */
+      }
 
-    .search-box input:focus {
+      .search-box input:focus {
         background: rgba(255, 255, 255, 0.2) !important;
         border-color: #E50914 !important;
         outline: none;
-        transform: none !important; /* Prevent movement */
-        width: 100% !important; /* Keep same width */
-    }
+        transform: none !important;
+        /* Prevent movement */
+        width: 100% !important;
+        /* Keep same width */
+      }
 
-    .search-box i {
+      .search-box i {
         position: absolute;
         right: 15px;
         top: 50%;
@@ -1347,24 +1354,24 @@
         color: rgba(255, 255, 255, 0.7);
         font-size: 0.9rem;
         pointer-events: none;
-    }
+      }
 
-    /* Right side actions */
-    .nav-actions {
+      /* Right side actions */
+      .nav-actions {
         display: flex;
         align-items: center;
         gap: 12px;
         flex-shrink: 0;
-    }
+      }
 
-    .user-actions {
+      .user-actions {
         display: flex;
         align-items: center;
         gap: 12px;
-    }
+      }
 
-    /* Three line menu icon */
-    .menu-toggle {
+      /* Three line menu icon */
+      .menu-toggle {
         display: flex;
         flex-direction: column;
         gap: 3px;
@@ -1372,39 +1379,39 @@
         padding: 6px;
         background: transparent;
         border: none;
-    }
+      }
 
-    .menu-toggle span {
+      .menu-toggle span {
         width: 18px;
         height: 2px;
         background: #fff;
         border-radius: 1px;
         transition: all 0.3s ease;
-    }
+      }
 
-    .menu-toggle.active span:nth-child(1) {
+      .menu-toggle.active span:nth-child(1) {
         transform: rotate(45deg) translate(6px, 6px);
-    }
+      }
 
-    .menu-toggle.active span:nth-child(2) {
+      .menu-toggle.active span:nth-child(2) {
         opacity: 0;
-    }
+      }
 
-    .menu-toggle.active span:nth-child(3) {
+      .menu-toggle.active span:nth-child(3) {
         transform: rotate(-45deg) translate(6px, -6px);
-    }
+      }
 
-    /* Profile button */
-    .profile-btn {
+      /* Profile button */
+      .profile-btn {
         display: flex;
         align-items: center;
         background: transparent !important;
         border: none !important;
         padding: 4px !important;
         text-decoration: none;
-    }
+      }
 
-    .profile-avatar {
+      .profile-avatar {
         width: 32px !important;
         height: 32px !important;
         background: #E50914 !important;
@@ -1416,24 +1423,24 @@
         font-weight: 600;
         font-size: 0.85rem;
         border: 2px solid rgba(255, 255, 255, 0.1);
-    }
+      }
 
-    .profile-name {
+      .profile-name {
         display: none !important;
-    }
+      }
 
-    /* Hide desktop navigation */
-    .nav-links {
+      /* Hide desktop navigation */
+      .nav-links {
         display: none !important;
-    }
+      }
 
-    /* Hide hamburger menu */
-    .hamburger {
+      /* Hide hamburger menu */
+      .hamburger {
         display: none !important;
-    }
+      }
 
-    /* Fix search results position */
-    .search-results {
+      /* Fix search results position */
+      .search-results {
         position: absolute !important;
         top: 100% !important;
         left: 0 !important;
@@ -1444,10 +1451,10 @@
         border: none !important;
         border-radius: 8px !important;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-    }
+      }
 
-    /* Netflix-style bottom navigation */
-    .bottom-nav {
+      /* Netflix-style bottom navigation */
+      .bottom-nav {
         position: fixed;
         bottom: 0;
         left: 0;
@@ -1458,9 +1465,9 @@
         justify-content: space-around;
         padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
         z-index: 1000;
-    }
+      }
 
-    .nav-item {
+      .nav-item {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -1471,189 +1478,190 @@
         flex: 1;
         padding: 4px 0;
         font-size: 0.7rem;
-    }
+      }
 
-    .nav-item.active {
+      .nav-item.active {
         color: #E50914;
-    }
+      }
 
-    .nav-item i {
+      .nav-item i {
         font-size: 1.1rem;
-    }
+      }
 
-    .nav-item span {
+      .nav-item span {
         font-size: 0.65rem;
         font-weight: 500;
-    }
+      }
 
-    /* Content spacing adjustment */
-    .today-releases-hero {
+      /* Content spacing adjustment */
+      .today-releases-hero {
         padding-top: 70px !important;
-    }
+      }
 
-    section {
+      section {
         padding: 30px 0 !important;
-    }
+      }
 
-    /* Netflix-style anime cards */
-    .anime-grid {
+      /* Netflix-style anime cards */
+      .anime-grid {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 12px;
-    }
+      }
 
-    .anime-card {
+      .anime-card {
         background: #2F2F2F !important;
         border-radius: 8px !important;
         border: none !important;
         overflow: hidden;
         transition: transform 0.3s ease;
-    }
+      }
 
-    .anime-card:active {
+      .anime-card:active {
         transform: scale(0.98);
-    }
+      }
 
-    .card-image {
+      .card-image {
         height: 160px !important;
-    }
+      }
 
-    .card-content {
+      .card-content {
         padding: 12px !important;
-    }
+      }
 
-    .card-content h3 {
+      .card-content h3 {
         font-size: 0.9rem !important;
         color: #fff !important;
         margin-bottom: 6px !important;
-    }
+      }
 
-    /* Genres grid */
-    .genres-grid {
+      /* Genres grid */
+      .genres-grid {
         grid-template-columns: repeat(3, 1fr) !important;
         gap: 10px;
-    }
+      }
 
-    .genre-card {
+      .genre-card {
         background: #2F2F2F !important;
         border: none !important;
         border-radius: 8px !important;
         padding: 20px 10px !important;
-    }
+      }
 
-    .search-result-item {
+      .search-result-item {
         border-bottom: 1px solid #444 !important;
-    }
+      }
 
-    /* Footer adjustment */
-    footer {
+      /* Footer adjustment */
+      footer {
         margin-bottom: 60px;
+      }
     }
-}
 
-/* ===== SMALL MOBILE OPTIMIZATION ===== */
-@media (max-width: 380px) {
-    .navbar {
+    /* ===== SMALL MOBILE OPTIMIZATION ===== */
+    @media (max-width: 380px) {
+      .navbar {
         padding: 0 12px;
-    }
+      }
 
-    .search-container {
+      .search-container {
         max-width: 200px;
-    }
+      }
 
-    .logo-icon {
+      .logo-icon {
         width: 30px !important;
         height: 30px !important;
-    }
+      }
 
-    .profile-avatar {
+      .profile-avatar {
         width: 30px !important;
         height: 30px !important;
-    }
+      }
 
-    .menu-toggle {
+      .menu-toggle {
         padding: 5px;
-    }
+      }
 
-    .menu-toggle span {
+      .menu-toggle span {
         width: 16px;
-    }
+      }
 
-    .anime-grid {
+      .anime-grid {
         grid-template-columns: 1fr !important;
-    }
+      }
 
-    .genres-grid {
+      .genres-grid {
         grid-template-columns: repeat(2, 1fr) !important;
+      }
     }
-}
 
-/* ===== EXTRA SMALL DEVICES ===== */
-@media (max-width: 320px) {
-    .navbar {
+    /* ===== EXTRA SMALL DEVICES ===== */
+    @media (max-width: 320px) {
+      .navbar {
         padding: 0 10px;
-    }
+      }
 
-    .search-container {
+      .search-container {
         max-width: 180px;
-    }
+      }
 
-    .search-box input {
+      .search-box input {
         padding: 8px 35px 8px 12px;
         font-size: 0.8rem;
-    }
+      }
 
-    .logo-icon {
+      .logo-icon {
         width: 28px !important;
         height: 28px !important;
+      }
     }
-}
 
-/* ===== HEADER LAYOUT FIXES ===== */
-@media (max-width: 768px) {
-    /* Ensure proper header layout */
-    .navbar > * {
+    /* ===== HEADER LAYOUT FIXES ===== */
+    @media (max-width: 768px) {
+
+      /* Ensure proper header layout */
+      .navbar>* {
         flex-shrink: 0;
-    }
+      }
 
-    /* Logo section */
-    .navbar > .logo {
+      /* Logo section */
+      .navbar>.logo {
         width: auto;
-    }
+      }
 
-    /* Search section - prevent movement */
-    .navbar > .nav-actions {
+      /* Search section - prevent movement */
+      .navbar>.nav-actions {
         flex: 1;
         justify-content: flex-end;
         position: relative;
-    }
+      }
 
-    .search-container {
+      .search-container {
         position: relative !important;
         transform: none !important;
-    }
+      }
 
-    /* Remove any existing margins/padding that might break layout */
-    .nav-actions .search-container {
+      /* Remove any existing margins/padding that might break layout */
+      .nav-actions .search-container {
         order: 0;
         margin-top: 0 !important;
         position: static !important;
-    }
+      }
 
-    .user-actions {
+      .user-actions {
         order: 1;
-    }
+      }
 
-    /* Fix for search input focus issues */
-    .search-box {
+      /* Fix for search input focus issues */
+      .search-box {
         position: relative !important;
-    }
-    
-    .search-box input {
+      }
+
+      .search-box input {
         position: relative !important;
         transform: none !important;
         transition: border-color 0.3s ease, background-color 0.3s ease !important;
+      }
     }
-}
   </style>
 </head>
 
@@ -1905,413 +1913,416 @@
 
   <script>
     // DOM Elements
-const searchInput = document.getElementById('searchInput');
-const searchResults = document.getElementById('searchResults');
-const animeGrid = document.getElementById('animeGrid');
-const todayReleasesHeroGrid = document.getElementById('todayReleasesHeroGrid');
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+    const animeGrid = document.getElementById('animeGrid');
+    const todayReleasesHeroGrid = document.getElementById('todayReleasesHeroGrid');
 
-// Profile Modal Elements
-const profileBtn = document.getElementById('profileBtn');
-const profileModal = document.getElementById('profileModal');
-const profileClose = document.getElementById('profileClose');
-const profileImage = document.getElementById('profileImage');
-const profileAvatar = document.getElementById('profileAvatar');
-const profileImageEdit = document.getElementById('profileImageEdit');
-const profileImageInput = document.getElementById('profileImageInput');
-const profileDisplayName = document.getElementById('profileDisplayName');
-const profileUsername = document.getElementById('profileUsername');
-const profileEmail = document.getElementById('profileEmail');
-const profileJoinDate = document.getElementById('profileJoinDate');
-const signOutBtn = document.getElementById('signOutBtn');
+    // Profile Modal Elements
+    const profileBtn = document.getElementById('profileBtn');
+    const profileModal = document.getElementById('profileModal');
+    const profileClose = document.getElementById('profileClose');
+    const profileImage = document.getElementById('profileImage');
+    const profileAvatar = document.getElementById('profileAvatar');
+    const profileImageEdit = document.getElementById('profileImageEdit');
+    const profileImageInput = document.getElementById('profileImageInput');
+    const profileDisplayName = document.getElementById('profileDisplayName');
+    const profileUsername = document.getElementById('profileUsername');
+    const profileEmail = document.getElementById('profileEmail');
+    const profileJoinDate = document.getElementById('profileJoinDate');
+    const signOutBtn = document.getElementById('signOutBtn');
 
-// Global variable to store anime data
-let animeData = [];
+    // Global variable to store anime data
+    let animeData = [];
 
-// Header scroll effect
-window.addEventListener('scroll', function () {
-    const header = document.getElementById('header');
-    if (window.scrollY > 100) {
+    // Header scroll effect
+    window.addEventListener('scroll', function () {
+      const header = document.getElementById('header');
+      if (window.scrollY > 100) {
         header.classList.add('scrolled');
-    } else {
+      } else {
         header.classList.remove('scrolled');
-    }
-});
+      }
+    });
 
-// Mobile menu toggle
-const hamburger = document.getElementById('hamburger');
-const navLinks = document.querySelector('.nav-links');
+    // Mobile menu toggle
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.querySelector('.nav-links');
 
-hamburger.addEventListener('click', function () {
-    navLinks.classList.toggle('active');
-    hamburger.classList.toggle('active');
-});
+    hamburger.addEventListener('click', function () {
+      navLinks.classList.toggle('active');
+      hamburger.classList.toggle('active');
+    });
 
-// Profile Modal functionality
-function initProfileModal() {
-    // Load user data from localStorage
-    const userData = JSON.parse(localStorage.getItem('kitsune_user') || '{}');
-    
-    console.log('User Data:', userData);
+    // Profile Modal functionality
+    function initProfileModal() {
+      // Load user data from localStorage
+      const userData = JSON.parse(localStorage.getItem('kitsune_user') || '{}');
 
-    // Set profile data
-    if (userData.displayName) {
+      console.log('User Data:', userData);
+
+      // Set profile data
+      if (userData.displayName) {
         profileDisplayName.textContent = userData.displayName;
         document.querySelector('.profile-name').textContent = userData.displayName;
-    } else if (userData.name) {
+      } else if (userData.name) {
         profileDisplayName.textContent = userData.name;
         document.querySelector('.profile-name').textContent = userData.name;
-    }
+      }
 
-    if (userData.email) {
+      if (userData.email) {
         profileEmail.textContent = userData.email;
-    }
+      }
 
-    if (userData.username) {
+      if (userData.username) {
         profileUsername.textContent = `@${userData.username}`;
-    } else if (userData.email) {
+      } else if (userData.email) {
         profileUsername.textContent = `@${userData.email.split('@')[0]}`;
-    }
+      }
 
-    // Set profile image
-    const savedProfileImage = localStorage.getItem('kitsune_profile_image');
-    
-    if (savedProfileImage) {
+      // Set profile image
+      const savedProfileImage = localStorage.getItem('kitsune_profile_image');
+
+      if (savedProfileImage) {
         setProfileImage(savedProfileImage);
-    } else if (userData.photoURL) {
+      } else if (userData.photoURL) {
         setProfileImage(userData.photoURL);
         localStorage.setItem('kitsune_profile_image', userData.photoURL);
-    } else if (userData.picture) {
+      } else if (userData.picture) {
         setProfileImage(userData.picture);
         localStorage.setItem('kitsune_profile_image', userData.picture);
-    } else if (userData.avatar) {
+      } else if (userData.avatar) {
         setProfileImage(userData.avatar);
         localStorage.setItem('kitsune_profile_image', userData.avatar);
-    } else {
+      } else {
         setDefaultAvatar();
-    }
+      }
 
-    // Set join date
-    const joinDate = userData.joinDate || userData.createdAt || new Date().toLocaleDateString('en-US', {
+      // Set join date
+      const joinDate = userData.joinDate || userData.createdAt || new Date().toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
         day: 'numeric'
+      });
+      profileJoinDate.textContent = joinDate;
+    }
+
+    // Helper function to set profile image
+    function setProfileImage(imageUrl) {
+      profileImage.src = imageUrl;
+      profileAvatar.innerHTML = `<img src="${imageUrl}" alt="Profile" style="width: 100%; height: 100%; object-fit: cover;">`;
+    }
+
+    // Helper function for default avatar
+    function setDefaultAvatar() {
+      const displayName = document.getElementById('profileDisplayName').textContent;
+      const initials = displayName ? displayName.charAt(0).toUpperCase() : 'U';
+
+      profileAvatar.innerHTML = `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: var(--primary); color: white; font-weight: 600; font-size: 0.9rem;">${initials}</div>`;
+      profileImage.src = '';
+    }
+
+    // Open profile modal
+    profileBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      profileModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
     });
-    profileJoinDate.textContent = joinDate;
-}
 
-// Helper function to set profile image
-function setProfileImage(imageUrl) {
-    profileImage.src = imageUrl;
-    profileAvatar.innerHTML = `<img src="${imageUrl}" alt="Profile" style="width: 100%; height: 100%; object-fit: cover;">`;
-}
+    // Close profile modal
+    profileClose.addEventListener('click', function () {
+      profileModal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    });
 
-// Helper function for default avatar
-function setDefaultAvatar() {
-    const displayName = document.getElementById('profileDisplayName').textContent;
-    const initials = displayName ? displayName.charAt(0).toUpperCase() : 'U';
-    
-    profileAvatar.innerHTML = `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: var(--primary); color: white; font-weight: 600; font-size: 0.9rem;">${initials}</div>`;
-    profileImage.src = '';
-}
-
-// Open profile modal
-profileBtn.addEventListener('click', function (e) {
-    e.preventDefault();
-    profileModal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-});
-
-// Close profile modal
-profileClose.addEventListener('click', function () {
-    profileModal.classList.remove('active');
-    document.body.style.overflow = 'auto';
-});
-
-// Close modal when clicking outside
-profileModal.addEventListener('click', function (e) {
-    if (e.target === profileModal) {
+    // Close modal when clicking outside
+    profileModal.addEventListener('click', function (e) {
+      if (e.target === profileModal) {
         profileModal.classList.remove('active');
         document.body.style.overflow = 'auto';
-    }
-});
+      }
+    });
 
-// Profile image change functionality
-profileImageEdit.addEventListener('click', function () {
-    profileImageInput.click();
-});
+    // Profile image change functionality
+    profileImageEdit.addEventListener('click', function () {
+      profileImageInput.click();
+    });
 
-profileImageInput.addEventListener('change', function (e) {
-    const file = e.target.files[0];
-    if (file) {
+    profileImageInput.addEventListener('change', function (e) {
+      const file = e.target.files[0];
+      if (file) {
         const reader = new FileReader();
         reader.onload = function (event) {
-            const imageUrl = event.target.result;
-            profileImage.src = imageUrl;
-            profileAvatar.innerHTML = `<img src="${imageUrl}" alt="Profile">`;
-            localStorage.setItem('kitsune_profile_image', imageUrl);
+          const imageUrl = event.target.result;
+          profileImage.src = imageUrl;
+          profileAvatar.innerHTML = `<img src="${imageUrl}" alt="Profile">`;
+          localStorage.setItem('kitsune_profile_image', imageUrl);
         };
         reader.readAsDataURL(file);
+      }
+    });
+
+    // Sign out functionality
+    signOutBtn.addEventListener('click', function () {
+      localStorage.removeItem('kitsune_user');
+      localStorage.removeItem('kitsune_profile_image');
+      window.location.href = 'signin.html';
+    });
+
+    // Extract episode number from type field
+    function extractEpisodeNumber(typeString) {
+      if (!typeString) return 0;
+      const episodeMatch = typeString.match(/Ep\s*(\d+)/i);
+      return episodeMatch ? parseInt(episodeMatch[1]) : 0;
     }
-});
 
-// Sign out functionality
-signOutBtn.addEventListener('click', function () {
-    localStorage.removeItem('kitsune_user');
-    localStorage.removeItem('kitsune_profile_image');
-    window.location.href = 'signin.html';
-});
-
-// Extract episode number from type field
-function extractEpisodeNumber(typeString) {
-    if (!typeString) return 0;
-    const episodeMatch = typeString.match(/Ep\s*(\d+)/i);
-    return episodeMatch ? parseInt(episodeMatch[1]) : 0;
-}
-
-// Enhanced episode status checker with completed support
-function checkEpisodeStatus(anime) {
-    // Priority 1: Check if anime is completed
-    if (anime.status === 'completed') {
+    // Enhanced episode status checker with completed support
+    function checkEpisodeStatus(anime) {
+      // Priority 1: Check if anime is completed
+      if (anime.status === 'completed') {
         return 'COMPLETED';
-    }
-    
-    // Priority 2: If anime has a new episode, show "NEW EP"
-    if (anime.hasNewEpisode) {
+      }
+
+      // Priority 2: If anime has a new episode, show "NEW EP"
+      if (anime.hasNewEpisode) {
         return 'NEW EP';
-    }
-    
-    // Priority 3: If anime has more than 3 episodes, show "ONGOING"
-    const episodeNumber = extractEpisodeNumber(anime.type);
-    if (episodeNumber > 3) {
+      }
+
+      // Priority 3: If anime has more than 3 episodes, show "ONGOING"
+      const episodeNumber = extractEpisodeNumber(anime.type);
+      if (episodeNumber > 3) {
         return 'ONGOING';
+      }
+
+      // Priority 4: Otherwise show "NEW"
+      return 'NEW';
     }
-    
-    // Priority 4: Otherwise show "NEW"
-    return 'NEW';
-}
 
-// Handle initial load and migration from old keys
-function initializeOrderSystem() {
-    const oldOrderKey = 'kitsune_anime_order';
-    const oldEpisodesKey = 'kitsune_previous_episodes';
-    const newOrderKey = 'kitsune_anime_order_v2';
-    const newEpisodesKey = 'kitsune_previous_episodes_v2';
+    // Handle initial load and migration from old keys
+    function initializeOrderSystem() {
+      const oldOrderKey = 'kitsune_anime_order';
+      const oldEpisodesKey = 'kitsune_previous_episodes';
+      const newOrderKey = 'kitsune_anime_order_v2';
+      const newEpisodesKey = 'kitsune_previous_episodes_v2';
 
-    // Migrate from old keys if they exist
-    if (localStorage.getItem(oldOrderKey) && !localStorage.getItem(newOrderKey)) {
+      // Migrate from old keys if they exist
+      if (localStorage.getItem(oldOrderKey) && !localStorage.getItem(newOrderKey)) {
         const oldOrder = localStorage.getItem(oldOrderKey);
         const oldEpisodes = localStorage.getItem(oldEpisodesKey);
-        
+
         localStorage.setItem(newOrderKey, oldOrder);
         localStorage.setItem(newEpisodesKey, oldEpisodes);
-        
+
         console.log('✅ Migrated from old order system');
+      }
     }
-}
 
-// Universal permanent order tracking - works across all deployments
-function maintainPermanentOrder(newAnimeData) {
-    // Use a fixed key that works everywhere
-    const orderKey = `kitsune_anime_order_v2`;
-    const episodesKey = `kitsune_previous_episodes_v2`;
+    // Universal permanent order tracking - works across all deployments
+    function maintainPermanentOrder(newAnimeData) {
+      // Use a fixed key that works everywhere
+      const orderKey = `kitsune_anime_order_v2`;
+      const episodesKey = `kitsune_previous_episodes_v2`;
 
-    // Get stored order from localStorage
-    let storedOrder = [];
-    let previousEpisodes = {};
-    
-    try {
+      // Get stored order from localStorage
+      let storedOrder = [];
+      let previousEpisodes = {};
+
+      try {
         storedOrder = JSON.parse(localStorage.getItem(orderKey) || '[]');
         previousEpisodes = JSON.parse(localStorage.getItem(episodesKey) || '{}');
-        
+
         console.log('Loaded stored order:', storedOrder.length, 'items');
-    } catch (e) {
+      } catch (e) {
         console.log('Initializing new order tracking');
         storedOrder = [];
         previousEpisodes = {};
-    }
+      }
 
-    // Create a map of new anime by title for easy lookup
-    const newAnimeMap = new Map();
-    newAnimeData.forEach(anime => {
+      // Create a map of new anime by title for easy lookup
+      const newAnimeMap = new Map();
+      newAnimeData.forEach(anime => {
         newAnimeMap.set(anime.title, anime);
-    });
+      });
 
-    // Track updated anime and episode changes
-    const updatedAnime = [];
-    const hasNewEpisodeMap = new Map();
+      // Track updated anime and episode changes
+      const updatedAnime = [];
+      const hasNewEpisodeMap = new Map();
 
-    // Check for episode updates
-    newAnimeData.forEach(anime => {
+      // Check for episode updates
+      newAnimeData.forEach(anime => {
         if (!anime.status || anime.status !== 'completed') {
-            const currentEpisode = extractEpisodeNumber(anime.type);
-            const previousEpisode = previousEpisodes[anime.title] || 0;
-            const hasNewEpisode = currentEpisode > previousEpisode;
-            
-            hasNewEpisodeMap.set(anime.title, hasNewEpisode);
-            
-            if (hasNewEpisode) {
-                console.log(`📢 New episode detected: ${anime.title} - Ep ${previousEpisode} → Ep ${currentEpisode}`);
-                updatedAnime.push(anime.title);
-            }
+          const currentEpisode = extractEpisodeNumber(anime.type);
+          const previousEpisode = previousEpisodes[anime.title] || 0;
+          const hasNewEpisode = currentEpisode > previousEpisode;
+
+          hasNewEpisodeMap.set(anime.title, hasNewEpisode);
+
+          if (hasNewEpisode) {
+            console.log(`📢 New episode detected: ${anime.title} - Ep ${previousEpisode} → Ep ${currentEpisode}`);
+            updatedAnime.push(anime.title);
+          }
         } else {
-            hasNewEpisodeMap.set(anime.title, false);
+          hasNewEpisodeMap.set(anime.title, false);
         }
-    });
+      });
 
-    console.log('Found updated anime:', updatedAnime);
+      console.log('Found updated anime:', updatedAnime);
 
-    // Build the new order - SIMPLIFIED APPROACH
-    let newOrder = [];
+      // Build the new order - SIMPLIFIED APPROACH
+      let newOrder = [];
 
-    // Step 1: Add anime with new episodes to the top
-    updatedAnime.forEach(title => {
+      // Step 1: Add anime with new episodes to the top
+      updatedAnime.forEach(title => {
         if (newAnimeMap.has(title) && !newOrder.includes(title)) {
-            newOrder.push(title);
+          newOrder.push(title);
         }
-    });
+      });
 
-    // Step 2: Add remaining anime from stored order
-    storedOrder.forEach(title => {
+      // Step 2: Add remaining anime from stored order
+      storedOrder.forEach(title => {
         if (newAnimeMap.has(title) && !newOrder.includes(title)) {
-            newOrder.push(title);
+          newOrder.push(title);
         }
-    });
+      });
 
-    // Step 3: Add any completely new anime
-    newAnimeData.forEach(anime => {
+      // Step 3: Add any completely new anime
+      newAnimeData.forEach(anime => {
         if (!newOrder.includes(anime.title)) {
-            console.log(`🆕 New anime added: ${anime.title}`);
-            newOrder.push(anime.title);
+          console.log(`🆕 New anime added: ${anime.title}`);
+          newOrder.push(anime.title);
         }
-    });
+      });
 
-    console.log('Final order:', newOrder);
+      console.log('Final order:', newOrder);
 
-    // Convert titles back to full anime objects with proper order
-    const finalAnimeData = newOrder.map(title => {
+      // Convert titles back to full anime objects with proper order
+      const finalAnimeData = newOrder.map(title => {
         const anime = newAnimeMap.get(title);
         return {
-            ...anime,
-            hasNewEpisode: hasNewEpisodeMap.get(title) || false,
-            episodeNumber: extractEpisodeNumber(anime.type)
+          ...anime,
+          hasNewEpisode: hasNewEpisodeMap.get(title) || false,
+          episodeNumber: extractEpisodeNumber(anime.type)
         };
-    });
+      });
 
-    // Store the new order and episodes
-    try {
+      // Store the new order and episodes
+      try {
         localStorage.setItem(orderKey, JSON.stringify(newOrder));
-        
+
         // Update episode tracking
         const newEpisodeData = {};
         newAnimeData.forEach(anime => {
-            if (!anime.status || anime.status !== 'completed') {
-                newEpisodeData[anime.title] = extractEpisodeNumber(anime.type);
-            }
+          if (!anime.status || anime.status !== 'completed') {
+            newEpisodeData[anime.title] = extractEpisodeNumber(anime.type);
+          }
         });
         localStorage.setItem(episodesKey, JSON.stringify(newEpisodeData));
-        
+
         console.log('✅ Order tracking updated successfully');
-        
-    } catch (error) {
+
+      } catch (error) {
         console.error('❌ Error saving to localStorage:', error);
+      }
+
+      return finalAnimeData;
     }
 
-    return finalAnimeData;
-}
-
-// Universal reset function - SAFE IMPLEMENTATION
-function resetOrderTrackingUniversal() {
-    // Only remove the specific keys we use for ordering
-    const keysToRemove = [
+    // Universal reset function - SAFE IMPLEMENTATION
+    function resetOrderTrackingUniversal() {
+      // Only remove the specific keys we use for ordering
+      const keysToRemove = [
         'kitsune_anime_order',
-        'kitsune_previous_episodes', 
+        'kitsune_previous_episodes',
         'kitsune_anime_order_v2',
         'kitsune_previous_episodes_v2'
-    ];
-    
-    keysToRemove.forEach(key => {
+      ];
+
+      keysToRemove.forEach(key => {
         localStorage.removeItem(key);
         console.log(`🗑️ Removed: ${key}`);
-    });
-    
-    console.log('🔄 Order tracking reset - refreshing page...');
-    setTimeout(() => {
-        window.location.reload();
-    }, 1000);
-}
+      });
 
-// Load anime data from JSON file
-async function loadAnimeData() {
-    try {
+      console.log('🔄 Order tracking reset - refreshing page...');
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    }
+
+    // Load anime data from JSON file
+    async function loadAnimeData() {
+      try {
         // Initialize order system first
         initializeOrderSystem();
-        
+
         const response = await fetch('searchData.json');
         if (!response.ok) {
-            throw new Error('Failed to load anime data');
+          throw new Error('Failed to load anime data');
         }
         const newAnimeData = await response.json();
-        
+
         // Process and maintain permanent order
         animeData = maintainPermanentOrder(newAnimeData);
-        
+
         populateAnimeSections();
-    } catch (error) {
+      } catch (error) {
         console.error('Error loading anime data:', error);
         // Fallback: use JSON order directly
         const response = await fetch('searchData.json');
         const newAnimeData = await response.json();
         animeData = newAnimeData.map(anime => ({
-            ...anime,
-            episodeNumber: extractEpisodeNumber(anime.type)
+          ...anime,
+          episodeNumber: extractEpisodeNumber(anime.type)
         }));
         populateAnimeSections();
+      }
     }
-}
 
-// Populate anime sections
-function populateAnimeSections() {
-    // Today's Releases - First 6 anime
-    const todayReleases = animeData.slice(0, 6);
-    populateAnimeGrid(todayReleases, todayReleasesHeroGrid);
+    // Populate anime sections
+    function populateAnimeSections() {
+      // Today's Releases - First 6 anime
+      const todayReleases = animeData.slice(0, 6);
+      populateAnimeGrid(todayReleases, todayReleasesHeroGrid);
 
-    // Featured Anime - Limit to 14 on mobile, 24 on desktop
-    const featuredAnimeLimit = window.innerWidth <= 768 ? 14 : 24;
-    const featuredAnime = animeData.slice(0, featuredAnimeLimit);
-    populateAnimeGrid(featuredAnime, animeGrid);
-}
+      // Featured Anime - Limit to 14 on mobile, 24 on desktop
+      const featuredAnimeLimit = window.innerWidth <= 768 ? 14 : 24;
+      const featuredAnime = animeData.slice(0, featuredAnimeLimit);
+      populateAnimeGrid(featuredAnime, animeGrid);
+    }
 
-// Add resize listener to update on screen size changes
-window.addEventListener('resize', function() {
-    if (animeData.length > 0) {
+    // Add resize listener to update on screen size changes
+    window.addEventListener('resize', function () {
+      if (animeData.length > 0) {
         const featuredAnimeLimit = window.innerWidth <= 768 ? 14 : 24;
         const featuredAnime = animeData.slice(0, featuredAnimeLimit);
         populateAnimeGrid(featuredAnime, animeGrid);
-    }
-});
+      }
+    });
 
-// Populate anime grid with update indicators
-function populateAnimeGrid(animeList, gridElement) {
-    gridElement.innerHTML = '';
+    // Populate anime grid with update indicators and ratings
+    function populateAnimeGrid(animeList, gridElement) {
+      gridElement.innerHTML = '';
 
-    animeList.forEach(anime => {
+      animeList.forEach(anime => {
         const animeCard = document.createElement('div');
         animeCard.className = 'anime-card fade-in';
-        
+
         // Determine badge text based on status and updates
         const badgeText = checkEpisodeStatus(anime);
         const showBadge = true;
-        
+
         // Determine badge class
         let badgeClass = 'new-badge';
         if (badgeText === 'NEW EP') {
-            badgeClass = 'updated-badge';
+          badgeClass = 'updated-badge';
         } else if (badgeText === 'COMPLETED') {
-            badgeClass = 'updated-badge'; // Uses same style as NEW EP
+          badgeClass = 'updated-badge';
         } else if (badgeText === 'ONGOING') {
-            badgeClass = 'new-badge';
+          badgeClass = 'new-badge';
         }
-        
+
+        // Use actual rating from JSON data
+        const rating = anime.rating || 9.8;
+
         animeCard.innerHTML = `
             <div class="card-image">
                 <img src="${anime.image}" alt="${anime.title}" onerror="this.src='https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
@@ -2323,7 +2334,7 @@ function populateAnimeGrid(animeList, gridElement) {
                     <span>${anime.genre}</span>
                     <div class="card-rating">
                         <i class="fas fa-star"></i>
-                        <span>9.8</span>
+                        <span>${rating}</span>
                     </div>
                 </div>
                 <p class="card-description">${anime.type}</p>
@@ -2332,50 +2343,50 @@ function populateAnimeGrid(animeList, gridElement) {
 
         // Add click event to navigate to anime page
         animeCard.addEventListener('click', function () {
-            window.location.href = anime.link;
+          window.location.href = anime.link;
         });
 
         gridElement.appendChild(animeCard);
-    });
-}
-
-// Search functionality
-function performSearch(query) {
-    const normalizedQuery = query.toLowerCase().trim();
-
-    if (normalizedQuery === '') {
-        searchResults.classList.remove('active');
-        return;
+      });
     }
 
-    const filteredAnime = animeData.filter(anime => {
+    // Search functionality
+    function performSearch(query) {
+      const normalizedQuery = query.toLowerCase().trim();
+
+      if (normalizedQuery === '') {
+        searchResults.classList.remove('active');
+        return;
+      }
+
+      const filteredAnime = animeData.filter(anime => {
         return anime.title.toLowerCase().includes(normalizedQuery) ||
-            anime.genre.toLowerCase().includes(normalizedQuery) ||
-            anime.type.toLowerCase().includes(normalizedQuery);
-    });
+          anime.genre.toLowerCase().includes(normalizedQuery) ||
+          anime.type.toLowerCase().includes(normalizedQuery);
+      });
 
-    displaySearchResults(filteredAnime);
-}
+      displaySearchResults(filteredAnime);
+    }
 
-// Display search results
-function displaySearchResults(results) {
-    searchResults.innerHTML = '';
+    // Display search results
+    function displaySearchResults(results) {
+      searchResults.innerHTML = '';
 
-    if (results.length === 0) {
+      if (results.length === 0) {
         searchResults.innerHTML = '<div class="no-results">No anime found matching your search</div>';
-    } else {
+      } else {
         results.forEach(anime => {
-            const resultItem = document.createElement('a');
-            resultItem.className = 'search-result-item';
-            resultItem.href = anime.link;
-            
-            // Determine badge text for search results
-            const badgeText = checkEpisodeStatus(anime);
-            const updateIndicator = badgeText === 'NEW EP' ? '<div class="search-update-indicator">NEW EP</div>' : 
-                                  badgeText === 'ONGOING' ? '<div class="search-update-indicator">ONGOING</div>' :
-                                  badgeText === 'COMPLETED' ? '<div class="search-update-indicator">COMPLETED</div>' : '';
-                
-            resultItem.innerHTML = `
+          const resultItem = document.createElement('a');
+          resultItem.className = 'search-result-item';
+          resultItem.href = anime.link;
+
+          // Determine badge text for search results
+          const badgeText = checkEpisodeStatus(anime);
+          const updateIndicator = badgeText === 'NEW EP' ? '<div class="search-update-indicator">NEW EP</div>' :
+            badgeText === 'ONGOING' ? '<div class="search-update-indicator">ONGOING</div>' :
+              badgeText === 'COMPLETED' ? '<div class="search-update-indicator">COMPLETED</div>' : '';
+
+          resultItem.innerHTML = `
                 <div class="search-result-image">
                     <img src="${anime.image}" alt="${anime.title}" onerror="this.src='https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
                 </div>
@@ -2385,62 +2396,62 @@ function displaySearchResults(results) {
                     <div class="search-result-genre">${anime.genre}</div>
                 </div>
             `;
-            searchResults.appendChild(resultItem);
+          searchResults.appendChild(resultItem);
         });
+      }
+
+      searchResults.classList.add('active');
     }
 
-    searchResults.classList.add('active');
-}
-
-// Event listeners for search
-searchInput.addEventListener('input', function () {
-    performSearch(this.value);
-});
-
-searchInput.addEventListener('focus', function () {
-    if (this.value.trim() !== '') {
-        performSearch(this.value);
-    }
-});
-
-// Close search results when clicking outside
-document.addEventListener('click', function (event) {
-    if (!event.target.closest('.search-container')) {
-        searchResults.classList.remove('active');
-    }
-});
-
-// Initialize the page
-document.addEventListener('DOMContentLoaded', function () {
-    // Initialize profile modal with user data
-    initProfileModal();
-
-    // Load anime data from JSON file
-    loadAnimeData();
-
-    // Animation on scroll
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver(function (entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('fade-in');
-            }
-        });
-    }, observerOptions);
-
-    // Observe all elements with fade-in class
-    document.querySelectorAll('.fade-in').forEach(el => {
-        observer.observe(el);
+    // Event listeners for search
+    searchInput.addEventListener('input', function () {
+      performSearch(this.value);
     });
 
-    // For testing: Add reset function to console
-    window.kitsuneResetOrder = resetOrderTrackingUniversal;
-    console.log('To reset order tracking, run: kitsuneResetOrder()');
-});
+    searchInput.addEventListener('focus', function () {
+      if (this.value.trim() !== '') {
+        performSearch(this.value);
+      }
+    });
+
+    // Close search results when clicking outside
+    document.addEventListener('click', function (event) {
+      if (!event.target.closest('.search-container')) {
+        searchResults.classList.remove('active');
+      }
+    });
+
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', function () {
+      // Initialize profile modal with user data
+      initProfileModal();
+
+      // Load anime data from JSON file
+      loadAnimeData();
+
+      // Animation on scroll
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('fade-in');
+          }
+        });
+      }, observerOptions);
+
+      // Observe all elements with fade-in class
+      document.querySelectorAll('.fade-in').forEach(el => {
+        observer.observe(el);
+      });
+
+      // For testing: Add reset function to console
+      window.kitsuneResetOrder = resetOrderTrackingUniversal;
+      console.log('To reset order tracking, run: kitsuneResetOrder()');
+    });
   </script>
 </body>
 
