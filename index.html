@@ -648,20 +648,15 @@
     }
 
     /* ===== RESPONSIVE DESIGN ===== */
-    /* ===== MOBILE RESPONSIVE STYLES ===== */
+  /* ===== MOBILE RESPONSIVE STYLES ===== */
 @media (max-width: 768px) {
-  /* Hide CTA section on mobile */
-  .cta {
+  /* Hide CTA section and popular titles section on mobile */
+  .cta,
+  .content-showcase {
     display: none;
   }
   
-  /* Adjust popular titles to show 2 items per row */
-  .showcase-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-  }
-  
-  /* Features section - 4 items in one row */
+  /* Features section - 4 items in one row with horizontal scroll */
   .features-grid {
     grid-template-columns: repeat(4, 1fr);
     gap: 15px;
@@ -747,23 +742,6 @@
     justify-content: center;
   }
   
-  /* Mobile content showcase */
-  .showcase-item {
-    margin-bottom: 0;
-  }
-  
-  .showcase-content {
-    padding: 15px;
-  }
-  
-  .showcase-content h3 {
-    font-size: 1rem;
-  }
-  
-  .showcase-meta {
-    font-size: 0.8rem;
-  }
-  
   /* Mobile footer */
   .footer-content {
     grid-template-columns: 1fr;
@@ -828,11 +806,6 @@
   
   .feature-card p {
     font-size: 0.75rem;
-  }
-  
-  .showcase-grid {
-    grid-template-columns: 1fr;
-    gap: 15px;
   }
   
   .hero h1 {
