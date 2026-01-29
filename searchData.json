@@ -19,7 +19,7 @@
   },
   {
     "title": "Throne Of Seal",
-    "type": "DONGHUA • Ep 12 [4K] • Sub",
+    "type": "DONGHUA • Ep 50 [4K] • Sub",
     "genre": "Action, Fantasy, Adventure",
     "image": "Image & logo/TOS.jpg",
     "link": "donghua/Throne Of Seal/episode1.html",
@@ -28,7 +28,7 @@
   },
   {
     "title": "Renegade Immortal",
-    "type": "DONGHUA • Ep 01 [4k] • Sub",
+    "type": "DONGHUA • Ep 25[4k] • Sub",
     "genre": "Action, Adventure",
     "image": "Image & logo/Renegade_Immortal.jpg",
     "link": "donghua/Renegade Immortal/episode1.html",
@@ -121,6 +121,237 @@
     "type": "DONGHUA • Ep 06 [4K] • Sub",
     "genre": "Action",
     "image": "Image & logo/death note.jpg",
+    "link": "janime/Death Note/episode1.html",
+    "status": "ongoing",
+    "rating": 9.8
+  },
+  {
+    "title": "Return of the Divine Emperor",
+    "type": "DONGHUA • Ep 02 [4K] • Sub",
+    "genre": "Action",
+    "image": "Image & logo/Return of the divine emperor.webp",
+    "link": "janime/Death Note/episode1.html",
+    "status": "ongoing",
+    "rating": 9.8
+  },
+  {
+    "title": "World Defying Dan God",
+    "type": "DONGHUA • Ep 03 [4K] • Sub",
+    "genre": "Action",
+    "image": "Image & logo/world defying dan god.jpg",
+    "link": "janime/Death Note/episode1.html",
+    "status": "ongoing",
+    "rating": 9.8
+  },
+  {
+    "title": "Lingwu Continent",
+    "type": "DONGHUA • Ep 50 [4K] • Sub",
+    "genre": "Action",
+    "image": "Image & logo/lingwu continent.webp",
+    "link": "janime/Death Note/episode1.html",
+    "status": "ongoing",
+    "rating": 9.8
+  },
+  {
+    "title": "Shrouding The Heavens",
+    "type": "DONGHUA • Ep 20 [4K] • Sub",
+    "genre": "Action",
+    "image": "Image & logo/shrouding the heavens.webp",
+    "link": "janime/Death Note/episode1.html",
+    "status": "ongoing",
+    "rating": 9.8
+  },{
+    "title": "Immortal Doctor in Modern City",
+    "type": "DONGHUA • Ep 45 [4K] • Sub",
+    "genre": "Action",
+    "image": "Image & logo/immortal doctor in modern city.jpg",
+    "link": "janime/Death Note/episode1.html",
+    "status": "ongoing",
+    "rating": 9.8
+  },
+  {
+    "title": "Peerless Battle Spirit",
+    "type": "DONGHUA • Ep 45 [4K] • Sub",
+    "genre": "Action",
+    "image": "Image & logo/peerless battle spirit.webp",
+    "link": "janime/Death Note/episode1.html",
+    "status": "ongoing",
+    "rating": 9.8
+  },
+  {
+    "title": "The Great Ruler(Season 2)",
+    "type": "DONGHUA • Ep 01 [4K] • Sub",
+    "genre": "Action",
+    "image": "Image & logo/the great ruler s2.png",
+    "link": "janime/Death Note/episode1.html",
+    "status": "ongoing",
+    "rating": 9.8
+  },
+  {
+    "title": "Beyond The Timescape",
+    "type": "DONGHUA • Ep 06 [4K] • Sub",
+    "genre": "Action",
+    "image": "Image & logo/beyond the timescape.jpg",
+    "link": "janime/Death Note/episode1.html",
+    "status": "ongoing",
+    "rating": 9.8
+  },
+  {
+    "title": "Tales of Herding Gods",
+    "type": "DONGHUA • Ep 06 [4K] • Sub",
+    "genre": "Action",
+    "image": "Image & logo/tales of herding gods.jpg",
+    "link": "janime/Death Note/episode1.html",
+    "status": "ongoing",
+    "rating": 9.8
+  },
+  {
+    "title": "The Other Side of Deep Space",
+    "type": "DONGHUA • Ep 06 [4K] • Sub",
+    "genre": "Action",
+    "image": "Image & logo/the other side of deep space.webp",
+    "link": "janime/Death Note/episode1.html",
+    "status": "ongoing",
+    "rating": 9.8
+  },
+  {
+    "title": "Immortality(Season 1)",
+    "type": "DONGHUA • Ep 06 [4K] • Sub",
+    "genre": "Action",
+    "image": "Image & logo/immortality season 1.jpg",
+    "link": "janime/Death Note/episode1.html",
+    "status": "ongoing",
+    "rating": 9.8
+  },
+  {
+    "title": "Immortality(Season 2)",
+    "type": "DONGHUA • Ep 06 [4K] • Sub",
+    "genre": "Action",
+    "image": "Image & logo/immortality season 2.webp",
+    "link": "janime/Death Note/episode1.html",
+    "status": "ongoing",
+    "rating": 9.8
+  },
+  {
+    "title": "Immortality(Season 3)",
+    "type": "DONGHUA • Ep 06 [4K] • Sub",
+    "genre": "Action",
+    "image": "Image & logo/immortality season 3.jpg",
+    "link": "janime/Death Note/episode1.html",
+    "status": "ongoing",
+    "rating": 9.8
+  },{
+    "title": "Immortality(Season 4)",
+    "type": "DONGHUA • Ep 06 [4K] • Sub",
+    "genre": "Action",
+    "image": "Image & logo/immortality season 4.jpg",
+    "link": "janime/Death Note/episode1.html",
+    "status": "ongoing",
+    "rating": 9.8
+  },
+  {
+    "title": "Immortality(Season 5)",
+    "type": "DONGHUA • Ep 06 [4K] • Sub",
+    "genre": "Action",
+    "image": "Image & logo/immortality season 5.webp",
+    "link": "janime/Death Note/episode1.html",
+    "status": "ongoing",
+    "rating": 9.8
+  },
+  {
+    "title": "Tomb of Fallen Gods(Season 1)",
+    "type": "DONGHUA • Ep 06 [4K] • Sub",
+    "genre": "Action",
+    "image": "Image & logo/tomb of fallen gods s1.jpg",
+    "link": "janime/Death Note/episode1.html",
+    "status": "ongoing",
+    "rating": 9.8
+  },
+  {
+    "title": "Tomb of Fallen Gods(Season 2)",
+    "type": "DONGHUA • Ep 06 [4K] • Sub",
+    "genre": "Action",
+    "image": "Image & logo/tomb of fallen gods s2.jpg",
+    "link": "janime/Death Note/episode1.html",
+    "status": "ongoing",
+    "rating": 9.8
+  },
+  {
+    "title": "Tomb of Fallen Gods(Season 3)",
+    "type": "DONGHUA • Ep 06 [4K] • Sub",
+    "genre": "Action",
+    "image": "Image & logo/tomb of fallen gods s3.jpg",
+    "link": "janime/Death Note/episode1.html",
+    "status": "ongoing",
+    "rating": 9.8
+  },
+  {
+    "title": "Supreme Over The Sky",
+    "type": "DONGHUA • Ep 06 [4K] • Sub",
+    "genre": "Action",
+    "image": "Image & logo/supreme over the sky.jpg",
+    "link": "janime/Death Note/episode1.html",
+    "status": "ongoing",
+    "rating": 9.8
+  },
+  {
+    "title": "The Divine Emperor of Destiny",
+    "type": "DONGHUA • Ep 06 [4K] • Sub",
+    "genre": "Action",
+    "image": "Image & logo/the divine emperor of destiny.jpg",
+    "link": "janime/Death Note/episode1.html",
+    "status": "ongoing",
+    "rating": 9.8
+  },
+  {
+    "title": "Ten Thousand Worlds",
+    "type": "DONGHUA • Ep 06 [4K] • Sub",
+    "genre": "Action",
+    "image": "Image & logo/ten thousand worlds.jpg",
+    "link": "janime/Death Note/episode1.html",
+    "status": "ongoing",
+    "rating": 9.8
+  },
+  {
+    "title": "Eclipse of Illusion",
+    "type": "DONGHUA • Ep 06 [4K] • Sub",
+    "genre": "Action",
+    "image": "Image & logo/eclipse of illusion.jpg",
+    "link": "janime/Death Note/episode1.html",
+    "status": "ongoing",
+    "rating": 9.8
+  },{
+    "title": "Martial Universe(Season 1)",
+    "type": "DONGHUA • Ep 06 [4K] • Sub",
+    "genre": "Action",
+    "image": "Image & logo/martial universe s1.jpg",
+    "link": "janime/Death Note/episode1.html",
+    "status": "ongoing",
+    "rating": 9.8
+  },
+  {
+    "title": "Death Note",
+    "type": "DONGHUA • Ep 06 [4K] • Sub",
+    "genre": "Action",
+    "image": "Image & logo/death note.jpg",
+    "link": "janime/Death Note/episode1.html",
+    "status": "ongoing",
+    "rating": 9.8
+  },
+  {
+    "title": "Martial Universe(Season 2)",
+    "type": "DONGHUA • Ep 06 [4K] • Sub",
+    "genre": "Action",
+    "image": "Image & logo/martial universe s2.jpg",
+    "link": "janime/Death Note/episode1.html",
+    "status": "ongoing",
+    "rating": 9.8
+  },
+  {
+    "title": "Martial Universe(Season 3)",
+    "type": "DONGHUA • Ep 06 [4K] • Sub",
+    "genre": "Action",
+    "image": "Image & logo/martial universe s3.jpg",
     "link": "janime/Death Note/episode1.html",
     "status": "ongoing",
     "rating": 9.8

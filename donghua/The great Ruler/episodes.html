@@ -1,184 +1,362 @@
 <!-- episodes.html -->
 <style>
-    :root {
-      --bg: #071023;
-      --accent1: #ff6b81;
-      --accent2: #7c5cff;
-      --text: #e6eef8;
-      --muted: #98a0b3;
-    }
+  .episode-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(40, 40, 40, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 16px;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: pointer;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
-    }
+  .episode-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(229, 9, 20, 0.1), transparent);
+    transition: left 0.6s ease;
+  }
 
-    .episode-section {
-      max-width: 900px;
-      margin: 30px auto 80px;
-      padding: 20px;
-      background: rgba(11, 18, 32, 0.6);
-      border-radius: 16px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 0 25px rgba(124, 92, 255, 0.2);
-    }
+  .episode-item:hover::before {
+    left: 100%;
+  }
 
-    .episode-section h2 {
-      text-align: center;
-      font-size: 22px;
-      margin-bottom: 14px;
-      color: var(--accent2);
-    }
+  .episode-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(229, 9, 20, 0.3);
+    border-color: rgba(229, 9, 20, 0.3);
+    background: rgba(50, 50, 50, 0.9);
+  }
 
-    .episode-list {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      max-height: 420px;
-      overflow-y: auto;
-      scroll-behavior: smooth;
-    }
+  .episode-item img {
+    width: 120px;
+    height: 70px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    transition: var(--transition);
+  }
 
-    /* Custom Scrollbar */
-    .episode-list::-webkit-scrollbar {
-      width: 8px;
-    }
+  .episode-item:hover img {
+    border-color: rgba(229, 9, 20, 0.5);
+    transform: scale(1.05);
+  }
 
-    .episode-list::-webkit-scrollbar-thumb {
-      background: linear-gradient(180deg, var(--accent2), var(--accent1));
-      border-radius: 10px;
-    }
+  .episode-content {
+    flex: 1;
+  }
 
-    .episode-list::-webkit-scrollbar-track {
-      background: rgba(7, 10, 20, 0.6);
-    }
+  .episode-item h4 {
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 6px;
+    font-weight: 600;
+    background: linear-gradient(135deg, #fff 0%, #FF4D4D 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 
+  .episode-item .episode-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+
+  .episode-number {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(229, 9, 20, 0.4);
+  }
+
+  .episode-duration {
+    color: var(--gray);
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .episode-item .watch-now {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--primary-light);
+    font-size: 14px;
+    font-weight: 500;
+    transition: var(--transition);
+  }
+
+  .episode-item:hover .watch-now {
+    color: #fff;
+    transform: translateX(5px);
+  }
+
+  .episode-item .watch-now i {
+    font-size: 12px;
+    transition: var(--transition);
+  }
+
+  .episode-item:hover .watch-now i {
+    transform: translateX(3px);
+  }
+
+  /* Current episode styling */
+  .episode-item.current {
+    border: 2px solid var(--primary);
+    box-shadow: 0 0 20px rgba(229, 9, 20, 0.4);
+    background: linear-gradient(135deg, rgba(40, 40, 40, 0.9) 0%, rgba(229, 9, 20, 0.1) 100%);
+    position: relative;
+  }
+
+  .episode-item.current::after {
+    content: 'NOW PLAYING';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: var(--primary);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  /* Episode list header */
+  .episodes-header {
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  .episodes-header h2 {
+    font-size: 2rem;
+    background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+
+  .episodes-header p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+  }
+
+  /* Responsive design */
+  @media (max-width: 768px) {
     .episode-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.06);
       padding: 12px;
-      border-radius: 12px;
-      transition: all 0.25s ease;
-      cursor: pointer;
+      gap: 12px;
     }
-
-    .episode-item:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 0 15px rgba(124, 92, 255, 0.5);
-      background: rgba(255, 255, 255, 0.08);
-    }
-
+    
     .episode-item img {
-      width: 110px;
-      height: 65px;
-      border-radius: 8px;
-      object-fit: cover;
+      width: 100px;
+      height: 60px;
     }
-
+    
     .episode-item h4 {
-      font-size: 15px;
-      color: var(--text);
-      margin-bottom: 4px;
+      font-size: 14px;
     }
-
-    .episode-item span {
-      font-size: 13px;
-      color: var(--muted);
+    
+    .episodes-header h2 {
+      font-size: 1.5rem;
     }
-
-    /* 📱 MOBILE FIXES */
-    @media (max-width: 768px) {
-      .episode-section {
-        width: 92%;
-        padding: 15px;
-      }
-
-      .episode-item {
-        gap: 10px;
-        padding: 10px;
-      }
-
-      .episode-item img {
-        width: 80px;
-        height: 50px;
-      }
-
-      .episode-item h4 {
-        font-size: 13px;
-      }
-
-      .episode-item span {
-        font-size: 12px;
-      }
+    
+    .episode-item.current::after {
+      font-size: 9px;
+      padding: 3px 6px;
     }
-  </style>
+  }
+</style>
 
-<div class="episode-section">
-  <h2>Episodes</h2>
-  <div id="episodeList" class="episode-list"></div>
+<div class="episodes-header">
+  <p>Continue your journey through the series</p>
 </div>
+
+<div id="episodeList"></div>
 
 <script>
   const episodes = [
-    { number: "1-3", title: "Rise of the Supreme", thumb: "../../Image & logo/The great Ruler.jpg", file: "episode1.html" },
-    { number: 4, title: "Battle of the Celestial Realm", thumb: "../../Image & logo/The great Ruler.jpg", file: "episode4.html" },
-    { number: 5, title: "Heavenly Tribulation", thumb: "../../Image & logo/The great Ruler.jpg", file: "episode5.html" },
-    { number: 6, title: "Immortal Awakening", thumb: "../../Image & logo/The great Ruler.jpg", file: "episode6.html" },
-    { number: 7, title: "Divine Conflict", thumb: "../../Image & logo/The great Ruler.jpg", file: "episode7.html" },
-    { number: 8, title: "The Fall of Heaven", thumb: "../../Image & logo/The great Ruler.jpg", file: "episode8.html" }
+    { 
+      number: 1, 
+      title: "Throne Of Seal", 
+      thumb: "../../Image & logo/TOS.jpg", 
+      file: "episode1.html",
+      duration: "24:15"
+    },
+    { 
+      number: 2, 
+      title: "Throne Of Seal", 
+      thumb: "../../Image & logo/TOS.jpg", 
+      file: "episode2.html",
+      duration: "23:48"
+    },
+    { 
+      number: 3, 
+      title: "Throne Of Seal", 
+      thumb: "../../Image & logo/TOS.jpg", 
+      file: "episode3.html",
+      duration: "25:32"
+    },
+    { 
+      number: 4, 
+      title: "Throne Of Seal", 
+      thumb: "../../Image & logo/TOS.jpg", 
+      file: "episode4.html",
+      duration: "22:56"
+    },
+    { 
+      number: 5, 
+      title: "Throne Of Seal", 
+      thumb: "../../Image & logo/TOS.jpg", 
+      file: "episode5.html",
+      duration: "26:11"
+    }, 
+    { 
+      number: 6, 
+      title: "Throne Of Seal", 
+      thumb: "../../Image & logo/TOS.jpg", 
+      file: "episode6.html",
+      duration: "24:43"
+    },
+    { 
+      number: 7, 
+      title: "ThThrone Of Seal", 
+      thumb: "../../Image & logo/TOS.jpg", 
+      file: "episode7.html",
+      duration: "24:43"
+    },
+    { 
+      number: 8, 
+      title: "Throne Of Seal", 
+      thumb: "../../Image & logo/TOS.jpg", 
+      file: "episode8.html",
+      duration: "24:43"
+    },
+    { 
+      number: 9, 
+      title: "Throne Of Seal", 
+      thumb: "../../Image & logo/TOS.jpg", 
+      file: "episode9.html",
+      duration: "24:43"
+    },
+    { 
+      number: 10, 
+      title: "Throne Of Seal", 
+      thumb: "../../Image & logo/TOS.jpg", 
+      file: "episode10.html",
+      duration: "24:43"
+    },
+    { 
+      number: 11, 
+      title: "Throne Of Seal", 
+      thumb: "../../Image & logo/TOS.jpg", 
+      file: "episode11.html",
+      duration: "24:43"
+    },
+    { 
+      number: 12, 
+      title: "Throne Of Seal", 
+      thumb: "../../Image & logo/TOS.jpg", 
+      file: "episode12.html",
+      duration: "24:43"
+    }
   ];
 
   const list = document.getElementById("episodeList");
-  let currentEpisode = 1; // default
+  let currentEpisode = 1;
 
-  // Detect current episode from URL
-  const path = window.location.pathname;
-  const match = path.match(/episode(\d+)/i);
-  if (match) currentEpisode = parseInt(match[1]);
+  // Simple function to get current episode
+  function getCurrentEpisode() {
+    // Get from localStorage - this is the key to making it work
+    const currentEpisodeKey = 'kitsune_current_watching_episode';
+    const savedEpisode = localStorage.getItem(currentEpisodeKey);
+    
+    if (savedEpisode) {
+      return parseInt(savedEpisode);
+    }
+    
+    // Fallback: try to detect from URL
+    const path = window.location.pathname;
+    const match = path.match(/episode(\d+)/i);
+    if (match) return parseInt(match[1]);
+    
+    return 1;
+  }
 
-  // Build list
+  // Function to update episode list highlighting
+  function updateEpisodeHighlighting() {
+    currentEpisode = getCurrentEpisode();
+    
+    // Remove current class from all episodes
+    document.querySelectorAll('.episode-item').forEach(item => {
+      item.classList.remove('current');
+    });
+    
+    // Add current class to current episode
+    const currentEpisodeElement = document.querySelector(`.episode-item:nth-child(${currentEpisode})`);
+    if (currentEpisodeElement) {
+      currentEpisodeElement.classList.add('current');
+    }
+  }
+
+  // Function to scroll to current episode
+  function scrollToCurrentEpisode() {
+    setTimeout(() => {
+      const currentEpisodeElement = document.querySelector('.episode-item.current');
+      if (currentEpisodeElement) {
+        currentEpisodeElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
+        });
+      }
+    }, 300);
+  }
+
+  // Render episodes
   episodes.forEach(ep => {
     const div = document.createElement("div");
     div.className = "episode-item";
+    
     div.innerHTML = `
-        <img src="${ep.thumb}" alt="Episode ${ep.number}">
-        <div>
-            <h4>Episode ${ep.number}: ${ep.title}</h4>
-            <span>Watch Now →</span>
+      <img src="${ep.thumb}" alt="Episode ${ep.number}">
+      <div class="episode-content">
+        <div class="episode-meta">
+          <span class="episode-number">EP ${ep.number}</span>
+          <span class="episode-duration">${ep.duration}</span>
         </div>
+        <h4>${ep.title}</h4>
+        <div class="watch-now">
+          Watch Now <i class="fas fa-chevron-right"></i>
+        </div>
+      </div>
     `;
-    div.onclick = () => window.location.href = ep.file;
-
-    // Highlight current episode - handles both ranges and single numbers
-    if (typeof ep.number === 'string') {
-        const [start, end] = ep.number.split('-').map(Number);
-        if (currentEpisode >= start && currentEpisode <= end) {
-            div.style.border = "1px solid #ff6b81";
-            div.style.boxShadow = "0 0 10px rgba(255,107,129,0.6)";
-            div.style.background = "rgba(255,255,255,0.1)";
-        }
-    } else if (ep.number === currentEpisode) {
-        div.style.border = "1px solid #ff6b81";
-        div.style.boxShadow = "0 0 10px rgba(255,107,129,0.6)";
-        div.style.background = "rgba(255,255,255,0.1)";
-    }
-
+    
+    div.onclick = () => {
+      // Save the clicked episode as current watching episode
+      localStorage.setItem('kitsune_current_watching_episode', ep.number.toString());
+      // Navigate to the episode
+      window.location.href = ep.file;
+    };
     list.appendChild(div);
-});
-
-  // Scroll to current episode
-  window.addEventListener("load", () => {
-    const active = list.querySelector(".episode-item:nth-child(" + currentEpisode + ")");
-    if (active) {
-      active.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-      });
-    }
   });
+
+  // Initialize when page loads
+  setTimeout(() => {
+    updateEpisodeHighlighting();
+    scrollToCurrentEpisode();
+  }, 100);
 </script>
