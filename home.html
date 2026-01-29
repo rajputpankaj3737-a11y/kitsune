@@ -292,51 +292,120 @@
       gap: 20px;
     }
 
-    /* ===== SEARCH BAR STYLES ===== */
+    /* ===== NEW: SEARCH ICON & EXPANDING SEARCH BAR STYLES ===== */
     .search-container {
       position: relative;
       display: flex;
       align-items: center;
     }
 
-    .search-box {
-      position: relative;
+    /* Search Icon Button */
+    .search-icon-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 8px;
+      transition: var(--transition);
       display: flex;
       align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      z-index: 10;
+    }
+
+    .search-icon-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--primary-light);
+      transform: scale(1.05);
+    }
+
+    .search-icon-btn.active {
+      color: var(--primary);
+      background: rgba(229, 9, 20, 0.1);
+    }
+
+    /* Expanding Search Box */
+    .search-box {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      width: 0;
+      height: 40px;
+      overflow: hidden;
+      transition: var(--transition);
+      border-radius: 50px;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      opacity: 0;
+      visibility: hidden;
+      z-index: 9;
+    }
+
+    .search-box.expanded {
+      width: 300px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 0, 0, 0.2);
+      opacity: 1;
+      visibility: visible;
     }
 
     .search-box input {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 0, 0, 0.2);
-      border-radius: 50px;
-      padding: 10px 20px;
+      width: 100%;
+      padding: 0 45px 0 20px;
+      border: none;
+      background: transparent;
       color: white;
-      width: 250px;
-      transition: var(--transition);
       font-family: inherit;
-      font-size: 0.9rem;
-    }
-
-    .search-box input:focus {
+      font-size: 0.95rem;
+      transition: var(--transition);
       outline: none;
-      border-color: var(--primary);
-      width: 300px;
-      box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.2);
+      flex: 1;
+      opacity: 0;
     }
 
-    .search-box i {
+    .search-box.expanded input {
+      opacity: 1;
+      padding: 10px 45px 10px 20px;
+    }
+
+    /* Search Close Button (inside search box) */
+    .search-close-btn {
       position: absolute;
       right: 15px;
-      color: var(--gray);
-      pointer-events: none;
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1rem;
+      cursor: pointer;
+      opacity: 0;
+      transition: var(--transition);
+      display: none;
+      z-index: 11;
+    }
+
+    .search-box.expanded .search-close-btn {
+      display: block;
+      opacity: 1;
+    }
+
+    .search-close-btn:hover {
+      color: var(--primary);
     }
 
     /* Search Results Dropdown */
     .search-results {
       position: absolute;
       top: 100%;
-      left: 0;
-      width: 100%;
+      right: 0;
+      width: 400px;
+      max-width: 90vw;
       background: var(--dark);
       border-radius: 12px;
       box-shadow: var(--shadow);
@@ -352,6 +421,18 @@
     .search-results.active {
       display: block;
       animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* ===== SEARCH RESULT RATINGS STYLING ===== */
@@ -418,29 +499,6 @@
       color: inherit;
     }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .search-result-item {
-      display: flex;
-      align-items: center;
-      padding: 15px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      cursor: pointer;
-      transition: var(--transition);
-      text-decoration: none;
-      color: inherit;
-    }
-
     .search-result-item:last-child {
       border-bottom: none;
     }
@@ -462,27 +520,6 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-    }
-
-    .search-result-content {
-      flex: 1;
-    }
-
-    .search-result-title {
-      font-weight: 600;
-      margin-bottom: 5px;
-      color: white;
-    }
-
-    .search-result-type {
-      font-size: 0.8rem;
-      color: var(--primary);
-      margin-bottom: 3px;
-    }
-
-    .search-result-genre {
-      font-size: 0.8rem;
-      color: var(--gray);
     }
 
     .no-results {
@@ -1369,6 +1406,10 @@
       .anime-grid {
         grid-template-columns: repeat(4, 1fr);
       }
+
+      .search-box.expanded {
+        width: 250px;
+      }
     }
 
     @media (max-width: 992px) {
@@ -1384,10 +1425,6 @@
         gap: 20px;
       }
 
-      .search-box input {
-        width: 200px;
-      }
-
       .today-releases-header h2 {
         font-size: 2rem;
       }
@@ -1398,6 +1435,10 @@
 
       .anime-grid {
         grid-template-columns: repeat(3, 1fr);
+      }
+
+      .search-box.expanded {
+        width: 220px;
       }
     }
 
@@ -1426,14 +1467,46 @@
         order: 3;
         width: 100%;
         margin-top: 20px;
+        position: static;
+      }
+
+      .search-icon-btn {
+        display: none;
+      }
+
+      .search-box {
+        position: static;
+        transform: none;
+        width: 100%;
+        height: auto;
+        justify-content: flex-start;
+        opacity: 1;
+        visibility: visible;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 25px;
       }
 
       .search-box input {
+        opacity: 1;
+        padding: 10px 40px 10px 15px;
+      }
+
+      .search-close-btn {
+        right: 15px;
+        opacity: 1;
+        display: block;
+      }
+
+      .search-box.expanded {
         width: 100%;
+        background: rgba(255, 255, 255, 0.15);
       }
 
       .search-results {
         width: 100%;
+        right: auto;
+        left: 0;
       }
 
       .profile-btn .profile-name {
@@ -1496,6 +1569,10 @@
       .cta-content h2 {
         font-size: 2rem;
       }
+
+      .search-box.expanded {
+        width: 100%;
+      }
     }
 
     /* ===== ANIMATIONS ===== */
@@ -1545,7 +1622,6 @@
       background: var(--primary-dark);
     }
 
-    /* ===== MOBILE HEADER OPTIMIZATION ===== */
     /* ===== MOBILE REDESIGN - NETFLIX STYLE ===== */
     @media (max-width: 768px) {
 
@@ -1615,51 +1691,51 @@
         display: none !important;
       }
 
-      /* Search - Center (increased width) */
+      /* Search - Mobile (always visible) */
       .search-container {
         flex: 1;
-        max-width: 220px;
+        max-width: none;
         margin: 0 !important;
         position: static !important;
-        /* Prevent movement on focus */
+        justify-content: flex-end;
       }
 
       .search-box {
-        width: 100%;
-        position: relative;
-      }
-
-      .search-box input {
-        width: 100%;
-        padding: 10px 40px 10px 15px;
+        position: static !important;
+        width: 100% !important;
+        height: 36px !important;
         background: rgba(255, 255, 255, 0.15) !important;
         border: 1px solid rgba(255, 255, 255, 0.3) !important;
         border-radius: 25px !important;
-        color: #fff;
-        font-size: 0.85rem;
-        transition: all 0.3s ease;
-        position: static !important;
-        /* Keep position fixed */
-      }
-
-      .search-box input:focus {
-        background: rgba(255, 255, 255, 0.2) !important;
-        border-color: #E50914 !important;
-        outline: none;
+        opacity: 1 !important;
+        visibility: visible !important;
         transform: none !important;
-        /* Prevent movement */
-        width: 100% !important;
-        /* Keep same width */
       }
 
-      .search-box i {
-        position: absolute;
-        right: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: rgba(255, 255, 255, 0.7);
-        font-size: 0.9rem;
-        pointer-events: none;
+      .search-box input {
+        opacity: 1 !important;
+        padding: 8px 40px 8px 15px !important;
+        font-size: 0.85rem;
+      }
+
+      .search-close-btn {
+        right: 15px !important;
+        opacity: 1 !important;
+        display: block !important;
+        color: rgba(255, 255, 255, 0.7) !important;
+      }
+
+      /* Search Results - Mobile */
+      .search-results {
+        position: fixed !important;
+        top: 120px !important;
+        left: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        max-height: calc(100vh - 120px) !important;
+        border-radius: 0 !important;
+        border: none !important;
+        background: #1A1A1A !important;
       }
 
       /* Right side actions */
@@ -1674,37 +1750,6 @@
         display: flex;
         align-items: center;
         gap: 12px;
-      }
-
-      /* Three line menu icon */
-      .menu-toggle {
-        display: flex;
-        flex-direction: column;
-        gap: 3px;
-        cursor: pointer;
-        padding: 6px;
-        background: transparent;
-        border: none;
-      }
-
-      .menu-toggle span {
-        width: 18px;
-        height: 2px;
-        background: #fff;
-        border-radius: 1px;
-        transition: all 0.3s ease;
-      }
-
-      .menu-toggle.active span:nth-child(1) {
-        transform: rotate(45deg) translate(6px, 6px);
-      }
-
-      .menu-toggle.active span:nth-child(2) {
-        opacity: 0;
-      }
-
-      .menu-toggle.active span:nth-child(3) {
-        transform: rotate(-45deg) translate(6px, -6px);
       }
 
       /* Profile button */
@@ -1743,60 +1788,6 @@
       /* Hide hamburger menu */
       .hamburger {
         display: none !important;
-      }
-
-      /* Fix search results position */
-      .search-results {
-        position: absolute !important;
-        top: 100% !important;
-        left: 0 !important;
-        width: 100% !important;
-        margin-top: 8px !important;
-        z-index: 1001;
-        background: #2F2F2F !important;
-        border: none !important;
-        border-radius: 8px !important;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-      }
-
-      /* Netflix-style bottom navigation */
-      .bottom-nav {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background: #000;
-        border-top: 1px solid #333;
-        display: flex;
-        justify-content: space-around;
-        padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
-        z-index: 1000;
-      }
-
-      .nav-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 4px;
-        text-decoration: none;
-        color: #999;
-        transition: all 0.3s ease;
-        flex: 1;
-        padding: 4px 0;
-        font-size: 0.7rem;
-      }
-
-      .nav-item.active {
-        color: #E50914;
-      }
-
-      .nav-item i {
-        font-size: 1.1rem;
-      }
-
-      .nav-item span {
-        font-size: 0.65rem;
-        font-weight: 500;
       }
 
       /* Content spacing adjustment */
@@ -1869,10 +1860,6 @@
         padding: 0 12px;
       }
 
-      .search-container {
-        max-width: 200px;
-      }
-
       .logo-icon {
         width: 30px !important;
         height: 30px !important;
@@ -1906,66 +1893,9 @@
         padding: 0 10px;
       }
 
-      .search-container {
-        max-width: 180px;
-      }
-
-      .search-box input {
-        padding: 8px 35px 8px 12px;
-        font-size: 0.8rem;
-      }
-
       .logo-icon {
         width: 28px !important;
         height: 28px !important;
-      }
-    }
-
-    /* ===== HEADER LAYOUT FIXES ===== */
-    @media (max-width: 768px) {
-
-      /* Ensure proper header layout */
-      .navbar>* {
-        flex-shrink: 0;
-      }
-
-      /* Logo section */
-      .navbar>.logo {
-        width: auto;
-      }
-
-      /* Search section - prevent movement */
-      .navbar>.nav-actions {
-        flex: 1;
-        justify-content: flex-end;
-        position: relative;
-      }
-
-      .search-container {
-        position: relative !important;
-        transform: none !important;
-      }
-
-      /* Remove any existing margins/padding that might break layout */
-      .nav-actions .search-container {
-        order: 0;
-        margin-top: 0 !important;
-        position: static !important;
-      }
-
-      .user-actions {
-        order: 1;
-      }
-
-      /* Fix for search input focus issues */
-      .search-box {
-        position: relative !important;
-      }
-
-      .search-box input {
-        position: relative !important;
-        transform: none !important;
-        transition: border-color 0.3s ease, background-color 0.3s ease !important;
       }
     }
   </style>
@@ -1992,18 +1922,28 @@
         </ul>
 
         <div class="nav-actions">
+          <!-- Search Container with Icon Button -->
           <div class="search-container">
-            <div class="search-box">
-              <input type="text" id="searchInput" placeholder="Search anime...">
+            <!-- Search Icon Button -->
+            <button class="search-icon-btn" id="searchIconBtn">
               <i class="fas fa-search"></i>
+            </button>
+            
+            <!-- Expanding Search Box -->
+            <div class="search-box" id="searchBox">
+              <input type="text" id="searchInput" placeholder="Search anime...">
+              <button class="search-close-btn" id="searchCloseBtn">
+                <i class="fas fa-times"></i>
+              </button>
             </div>
+            
+            <!-- Search Results Dropdown -->
             <div class="search-results" id="searchResults">
               <!-- Search results will be populated here -->
             </div>
           </div>
 
           <div class="user-actions">
-            <!-- Notification bell removed as requested -->
             <a href="#" class="profile-btn" id="profileBtn">
               <div class="profile-avatar" id="profileAvatar">
                 <i class="fas fa-user"></i>
@@ -2233,9 +2173,13 @@
     </div>
   </footer>
 
-    <script>
+  <script>
     // DOM Elements
+    const searchIconBtn = document.getElementById('searchIconBtn');
+    const searchIcon = searchIconBtn.querySelector('i');
+    const searchBox = document.getElementById('searchBox');
     const searchInput = document.getElementById('searchInput');
+    const searchCloseBtn = document.getElementById('searchCloseBtn');
     const searchResults = document.getElementById('searchResults');
     const featuredAnimeGrid = document.getElementById('featuredAnimeGrid');
     const todayReleasesGrid = document.getElementById('todayReleasesGrid');
@@ -2287,6 +2231,84 @@
       hamburger.classList.toggle('active');
     });
 
+    // ===== UPDATED: SEARCH ICON FUNCTIONALITY =====
+    searchIconBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const isExpanded = searchBox.classList.contains('expanded');
+      
+      if (!isExpanded) {
+        // Open search box
+        searchBox.classList.add('expanded');
+        searchIconBtn.classList.add('active');
+        // Change icon to close (X)
+        searchIcon.classList.remove('fa-search');
+        searchIcon.classList.add('fa-times');
+        
+        // Focus on input field
+        setTimeout(() => {
+          searchInput.focus();
+        }, 300);
+        
+        // Show search results if there's already text
+        if (searchInput.value.trim() !== '') {
+          performSearch(searchInput.value);
+        }
+      } else {
+        // Close search box
+        closeSearch();
+      }
+    });
+
+    // Close search when clicking the close button inside search box
+    searchCloseBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      closeSearch();
+    });
+
+    // Function to close search
+    function closeSearch() {
+      searchBox.classList.remove('expanded');
+      searchIconBtn.classList.remove('active');
+      searchResults.classList.remove('active');
+      searchInput.value = '';
+      
+      // Change icon back to search
+      searchIcon.classList.remove('fa-times');
+      searchIcon.classList.add('fa-search');
+    }
+
+    // Close search when clicking outside (desktop only)
+    document.addEventListener('click', function (event) {
+      const isClickInsideSearchContainer = event.target.closest('.search-container');
+      const isSearchBoxExpanded = searchBox.classList.contains('expanded');
+      
+      if (!isClickInsideSearchContainer && isSearchBoxExpanded && window.innerWidth > 768) {
+        closeSearch();
+      }
+    });
+
+    // Close search on Escape key
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && searchBox.classList.contains('expanded')) {
+        closeSearch();
+      }
+    });
+
+    // Search input functionality
+    searchInput.addEventListener('input', function () {
+      performSearch(this.value);
+    });
+
+    // Show search results when input is focused (if there's text)
+    searchInput.addEventListener('focus', function () {
+      if (this.value.trim() !== '') {
+        performSearch(this.value);
+      }
+    });
+
     // Profile Modal functionality
     function initProfileModal() {
       // Load user data from localStorage
@@ -2307,9 +2329,8 @@
         profileEmail.textContent = userData.email;
       }
 
-      // ===== CHANGE 2: Remove extra @ from username =====
+      // Remove extra @ from username
       if (userData.username) {
-        // Remove any @ symbols at the beginning, then add one @
         const cleanUsername = userData.username.replace(/^@+/, '');
         profileUsername.textContent = `@${cleanUsername}`;
       } else if (userData.email) {
@@ -2337,14 +2358,13 @@
         setDefaultAvatar();
       }
 
-      // ===== CHANGE 3: Set Member Since from first login date =====
+      // Set Member Since from first login date
       const firstLoginDate = localStorage.getItem('kitsune_first_login_date') || new Date().toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
         day: 'numeric'
       });
       
-      // Update profile join date
       profileJoinDate.textContent = firstLoginDate;
       
       // Also update user data if needed
@@ -3102,35 +3122,6 @@
       searchResults.classList.add('active');
     }
 
-    // Event listeners for search
-    searchInput.addEventListener('input', function () {
-      performSearch(this.value);
-    });
-
-    searchInput.addEventListener('focus', function () {
-      if (this.value.trim() !== '') {
-        performSearch(this.value);
-      }
-    });
-
-    // Close search results when clicking outside
-    document.addEventListener('click', function (event) {
-      if (!event.target.closest('.search-container')) {
-        searchResults.classList.remove('active');
-      }
-    });
-
-    // Reset function for testing
-    function resetEpisodeTracking() {
-      localStorage.removeItem('kitsune_episode_tracking_v2');
-      localStorage.removeItem('kitsune_today_releases');
-      localStorage.removeItem('kitsune_today_timestamp');
-      console.log('Episode tracking reset. Refreshing page...');
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
-    }
-
     // Initialize the page
     document.addEventListener('DOMContentLoaded', function () {
       // Initialize profile modal with user data
@@ -3159,7 +3150,15 @@
       });
 
       // Add reset function to console for testing
-      window.resetKitsuneTracking = resetEpisodeTracking;
+      window.resetKitsuneTracking = function() {
+        localStorage.removeItem('kitsune_episode_tracking_v2');
+        localStorage.removeItem('kitsune_today_releases');
+        localStorage.removeItem('kitsune_today_timestamp');
+        console.log('Episode tracking reset. Refreshing page...');
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      };
       console.log('To reset episode tracking, run: resetKitsuneTracking()');
     });
   </script>
