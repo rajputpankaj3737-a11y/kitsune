@@ -36,6 +36,20 @@
         localStorage.setItem('kitsune_first_login_date', currentDate);
         console.log('First login date stored:', currentDate);
       }
+
+      // ===== NEW: Initialize Theme from localStorage =====
+      function initializeTheme() {
+        const savedTheme = localStorage.getItem('kitsune_theme');
+        if (savedTheme === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+          document.body.classList.add('light-theme');
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          document.body.classList.remove('light-theme');
+        }
+      }
+
+      initializeTheme();
     })();
   </script>
   <meta charset="UTF-8">
@@ -51,6 +65,7 @@
     }
 
     :root {
+      /* === DARK THEME COLORS === */
       --primary: #E50914;
       --primary-dark: #B20710;
       --primary-light: #FF4D4D;
@@ -66,6 +81,55 @@
       --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
       --radius: 10px;
       --mobile-header-height: 60px;
+
+      /* === LIGHT THEME COLORS === */
+      --light-bg-primary: #FFFFFF;
+      --light-bg-secondary: #F8F9FA;
+      --light-bg-tertiary: #F1F3F5;
+      --light-text-primary: #212529;
+      --light-text-secondary: #495057;
+      --light-text-tertiary: #868E96;
+      --light-border-color: rgba(0, 0, 0, 0.1);
+      --light-card-bg: rgba(248, 249, 250, 0.9);
+      --light-card-border: rgba(0, 0, 0, 0.08);
+      --light-glass: rgba(0, 0, 0, 0.05);
+      --light-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    :root[data-theme="dark"] {
+      --bg-primary: var(--darker);
+      --bg-secondary: var(--dark);
+      --bg-tertiary: var(--secondary);
+      --text-primary: var(--light);
+      --text-secondary: rgba(255, 255, 255, 0.8);
+      --text-tertiary: var(--gray);
+      --border-color: rgba(255, 255, 255, 0.1);
+      --card-bg-color: var(--card-bg);
+      --card-border: rgba(255, 255, 255, 0.05);
+      --input-bg: rgba(255, 255, 255, 0.15);
+      --input-border: rgba(255, 0, 0, 0.2);
+      --input-text: #FFFFFF;
+      --glass-color: var(--glass);
+      --current-shadow: var(--shadow);
+      --footer-bg: var(--darker);
+    }
+
+    :root[data-theme="light"] {
+      --bg-primary: var(--light-bg-primary);
+      --bg-secondary: var(--light-bg-secondary);
+      --bg-tertiary: var(--light-bg-tertiary);
+      --text-primary: var(--light-text-primary);
+      --text-secondary: var(--light-text-secondary);
+      --text-tertiary: var(--light-text-tertiary);
+      --border-color: var(--light-border-color);
+      --card-bg-color: var(--light-card-bg);
+      --card-border: var(--light-card-border);
+      --input-bg: var(--light-input-bg);
+      --input-border: var(--light-input-border);
+      --input-text: var(--light-text-primary);
+      --glass-color: var(--light-glass);
+      --current-shadow: var(--light-shadow);
+      --footer-bg: var(--light-bg-secondary);
     }
 
     html {
@@ -74,11 +138,11 @@
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: var(--darker);
-      color: var(--light);
+      background: var(--bg-primary);
+      color: var(--text-primary);
       line-height: 1.6;
       overflow-x: hidden;
-      background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     /* ===== TYPOGRAPHY ===== */
@@ -121,12 +185,12 @@
 
     h3 {
       font-size: 1.5rem;
-      color: var(--light);
+      color: var(--text-primary);
     }
 
     p {
       margin-bottom: 1.5rem;
-      color: rgba(255, 255, 255, 0.8);
+      color: var(--text-secondary);
     }
 
     /* ===== LAYOUT COMPONENTS ===== */
@@ -186,14 +250,14 @@
 
     .btn-secondary {
       background: transparent;
-      color: white;
-      border: 2px solid var(--glass);
+      color: var(--text-primary);
+      border: 2px solid var(--border-color);
     }
 
     .btn-secondary:hover {
-      background: var(--glass);
+      background: var(--glass-color);
       transform: translateY(-3px);
-      border-color: rgba(255, 255, 255, 0.2);
+      border-color: rgba(229, 9, 20, 0.3);
     }
 
     .btn-lg {
@@ -210,14 +274,18 @@
       z-index: 1000;
       padding: 18px 0;
       transition: var(--transition);
-      background: rgba(10, 10, 10, 0.95);
+      background: rgba(var(--darker-rgb, 10, 10, 10), 0.95);
       backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255, 0, 0, 0.1);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    :root[data-theme="light"] header {
+      background: rgba(255, 255, 255, 0.95);
     }
 
     header.scrolled {
       padding: 12px 0;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+      box-shadow: var(--current-shadow);
     }
 
     .navbar {
@@ -261,7 +329,7 @@
     }
 
     .nav-links a {
-      color: rgba(255, 255, 255, 0.8);
+      color: var(--text-secondary);
       text-decoration: none;
       font-weight: 500;
       transition: var(--transition);
@@ -293,6 +361,81 @@
       gap: 20px;
     }
 
+    /* ===== THEME TOGGLE SWITCH ===== */
+    .theme-toggle-container {
+      display: flex;
+      align-items: center;
+      margin-right: 5px;
+    }
+
+    .theme-toggle-checkbox {
+      display: none;
+    }
+
+    .theme-toggle-label {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+      width: 50px;
+      height: 26px;
+      background: var(--glass-color);
+      border-radius: 50px;
+      border: 1px solid var(--border-color);
+      padding: 2px;
+      transition: var(--transition);
+    }
+
+    .theme-toggle-label:hover {
+      border-color: var(--primary);
+    }
+
+    .theme-toggle-slider {
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      left: 2px;
+    }
+
+    .theme-toggle-checkbox:checked+.theme-toggle-label .theme-toggle-slider {
+      transform: translateX(24px);
+      background: #FFD700;
+    }
+
+    .theme-toggle-icon {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0 5px;
+      pointer-events: none;
+    }
+
+    .theme-toggle-icon i {
+      font-size: 0.7rem;
+      transition: var(--transition);
+    }
+
+    .theme-toggle-icon .fa-moon {
+      color: #FFD700;
+    }
+
+    .theme-toggle-icon .fa-sun {
+      color: #FFA500;
+    }
+
+    .theme-toggle-checkbox:checked+.theme-toggle-label .fa-moon {
+      opacity: 0.5;
+    }
+
+    .theme-toggle-checkbox:not(:checked)+.theme-toggle-label .fa-sun {
+      opacity: 0.5;
+    }
+
     /* ===== FIXED: SEARCH ICON & EXPANDING SEARCH BAR STYLES ===== */
     .search-container {
       position: relative;
@@ -304,7 +447,7 @@
     .search-icon-btn {
       background: transparent;
       border: none;
-      color: rgba(255, 255, 255, 0.8);
+      color: var(--text-secondary);
       font-size: 1.2rem;
       cursor: pointer;
       padding: 8px;
@@ -362,10 +505,18 @@
 
     .search-box.expanded {
       width: 300px;
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 0, 0, 0.2);
+      background: var(--bg-tertiary);
+      border: 1px solid var(--input-border);
       opacity: 1;
       visibility: visible;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      z-index: 1001;
+    }
+
+    :root[data-theme="light"] .search-box.expanded {
+      background: var(--light-bg-primary);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     }
 
     .search-box input {
@@ -373,7 +524,7 @@
       padding: 0 45px 0 20px;
       border: none;
       background: transparent;
-      color: white;
+      color: var(--input-text);
       font-family: inherit;
       font-size: 0.95rem;
       transition: var(--transition);
@@ -393,7 +544,7 @@
       right: 15px;
       background: none;
       border: none;
-      color: rgba(255, 255, 255, 0.7);
+      color: var(--text-tertiary);
       font-size: 1rem;
       cursor: pointer;
       transition: var(--transition);
@@ -417,15 +568,15 @@
       right: 0;
       width: 400px;
       max-width: 90vw;
-      background: var(--dark);
+      background: var(--bg-tertiary);
       border-radius: 12px;
-      box-shadow: var(--shadow);
+      box-shadow: var(--current-shadow);
       margin-top: 10px;
       max-height: 400px;
       overflow-y: auto;
       z-index: 1001;
       display: none;
-      border: 1px solid rgba(255, 0, 0, 0.1);
+      border: 1px solid var(--border-color);
       backdrop-filter: blur(10px);
     }
 
@@ -439,6 +590,7 @@
         opacity: 0;
         transform: translateY(-10px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
@@ -456,7 +608,7 @@
 
     .search-result-genre {
       font-size: 0.8rem;
-      color: var(--gray);
+      color: var(--text-tertiary);
       flex: 1;
     }
 
@@ -484,7 +636,7 @@
     .search-result-title {
       font-weight: 600;
       margin-bottom: 5px;
-      color: white;
+      color: var(--text-primary);
       display: flex;
       align-items: center;
       flex-wrap: wrap;
@@ -502,7 +654,7 @@
       display: flex;
       align-items: center;
       padding: 15px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid var(--border-color);
       cursor: pointer;
       transition: var(--transition);
       text-decoration: none;
@@ -535,7 +687,7 @@
     .no-results {
       padding: 20px;
       text-align: center;
-      color: var(--gray);
+      color: var(--text-tertiary);
     }
 
     .user-actions {
@@ -549,11 +701,11 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      background: var(--glass);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--glass-color);
+      border: 1px solid var(--border-color);
       border-radius: 50px;
       padding: 6px 12px 6px 6px;
-      color: white;
+      color: var(--text-primary);
       text-decoration: none;
       transition: var(--transition);
       cursor: pointer;
@@ -599,7 +751,7 @@
     .hamburger span {
       width: 25px;
       height: 3px;
-      background: white;
+      background: var(--text-primary);
       border-radius: 2px;
       transition: var(--transition);
     }
@@ -612,7 +764,7 @@
       margin-bottom: 40px;
       border-radius: var(--radius);
       overflow: hidden;
-      background: var(--dark);
+      background: var(--bg-tertiary);
     }
 
     .anime-carousel {
@@ -633,12 +785,16 @@
       background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(20, 20, 20, 0.7) 100%);
     }
 
+    :root[data-theme="light"] .carousel-slide {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 240, 240, 0.8) 100%);
+    }
+
     .carousel-image {
       width: 250px;
       height: 350px;
       border-radius: 12px;
       overflow: hidden;
-      box-shadow: var(--shadow);
+      box-shadow: var(--current-shadow);
       flex-shrink: 0;
       margin-right: 40px;
       position: relative;
@@ -661,7 +817,7 @@
     .carousel-content h3 {
       font-size: 2.5rem;
       margin-bottom: 15px;
-      color: white;
+      color: var(--text-primary);
     }
 
     .carousel-meta {
@@ -692,7 +848,7 @@
     .carousel-description {
       font-size: 1.1rem;
       line-height: 1.6;
-      color: rgba(255, 255, 255, 0.9);
+      color: var(--text-secondary);
       margin-bottom: 25px;
       max-height: 120px;
       overflow: hidden;
@@ -724,6 +880,10 @@
       z-index: 1;
     }
 
+    :root[data-theme="light"] .carousel-backdrop {
+      opacity: 0.2;
+    }
+
     /* Carousel auto-slide indicator */
     .carousel-progress {
       position: absolute;
@@ -742,6 +902,10 @@
       background: rgba(255, 255, 255, 0.3);
       transition: all 0.3s ease;
       cursor: pointer;
+    }
+
+    :root[data-theme="light"] .progress-dot {
+      background: rgba(0, 0, 0, 0.3);
     }
 
     .progress-dot.active {
@@ -780,6 +944,7 @@
     }
 
     @media (max-width: 768px) {
+
       /* ===== FIXED: MOBILE CAROUSEL - POSTER WITH GRADIENT OVERLAY ===== */
       .anime-carousel-container {
         height: 320px;
@@ -819,6 +984,10 @@
         background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.5) 50%, transparent 100%);
       }
 
+      :root[data-theme="light"] .carousel-image::after {
+        background: linear-gradient(to top, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.5) 50%, transparent 100%);
+      }
+
       .carousel-image img {
         width: 100%;
         height: 100%;
@@ -839,7 +1008,7 @@
       .carousel-content h3 {
         font-size: 1.6rem;
         margin-bottom: 10px;
-        color: white;
+        color: var(--text-primary);
         text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
       }
 
@@ -861,7 +1030,8 @@
       }
 
       .carousel-description {
-        display: none; /* Hide description on mobile */
+        display: none;
+        /* Hide description on mobile */
       }
 
       .carousel-badge {
@@ -923,13 +1093,13 @@
     }
 
     .profile-content {
-      background: var(--dark);
+      background: var(--bg-tertiary);
       border-radius: var(--radius);
       padding: 30px;
       width: 90%;
       max-width: 400px;
-      box-shadow: var(--shadow);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: var(--current-shadow);
+      border: 1px solid var(--border-color);
       position: relative;
     }
 
@@ -939,7 +1109,7 @@
       right: 15px;
       background: none;
       border: none;
-      color: var(--gray);
+      color: var(--text-tertiary);
       font-size: 1.2rem;
       cursor: pointer;
       transition: var(--transition);
@@ -967,7 +1137,7 @@
       border-radius: 50%;
       object-fit: cover;
       border: 3px solid var(--primary);
-      background: var(--card-bg);
+      background: var(--card-bg-color);
     }
 
     .profile-image-edit {
@@ -983,7 +1153,7 @@
       justify-content: center;
       color: white;
       cursor: pointer;
-      border: 2px solid var(--dark);
+      border: 2px solid var(--bg-tertiary);
       transition: var(--transition);
     }
 
@@ -1006,16 +1176,16 @@
 
     .profile-label {
       display: block;
-      color: var(--gray);
+      color: var(--text-tertiary);
       font-size: 0.8rem;
       margin-bottom: 5px;
     }
 
     .profile-value {
-      color: white;
+      color: var(--text-primary);
       font-weight: 500;
       padding: 8px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid var(--border-color);
     }
 
     .profile-actions {
@@ -1043,12 +1213,12 @@
     /* ===== HERO CAROUSEL SECTION (MOVED BEFORE TODAY'S RELEASES) ===== */
     .hero-carousel-section {
       padding-top: 120px;
-      background: linear-gradient(135deg, rgba(10, 10, 10, 0.9) 0%, rgba(26, 26, 26, 0.7) 100%);
+      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
     }
 
     /* ===== TODAY'S RELEASES SECTION (MOVED AFTER CAROUSEL) ===== */
     .today-releases-section {
-      background: var(--dark);
+      background: var(--bg-secondary);
       position: relative;
     }
 
@@ -1082,7 +1252,7 @@
 
     /* ===== ANIME SECTIONS ===== */
     .anime-section {
-      background: var(--dark);
+      background: var(--bg-tertiary);
       position: relative;
     }
 
@@ -1093,18 +1263,18 @@
     }
 
     .anime-card {
-      background: var(--card-bg);
+      background: var(--card-bg-color);
       border-radius: var(--radius);
       overflow: hidden;
       transition: var(--transition);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
       position: relative;
       cursor: pointer;
     }
 
     .anime-card:hover {
       transform: translateY(-8px);
-      box-shadow: var(--shadow);
+      box-shadow: var(--current-shadow);
       border-color: rgba(229, 9, 20, 0.3);
     }
 
@@ -1148,7 +1318,7 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      color: var(--light);
+      color: var(--text-primary);
     }
 
     .card-meta {
@@ -1156,7 +1326,7 @@
       justify-content: space-between;
       margin-bottom: 10px;
       font-size: 0.8rem;
-      color: var(--gray);
+      color: var(--text-tertiary);
     }
 
     .card-rating {
@@ -1168,22 +1338,14 @@
     }
 
     .card-description {
-      color: rgba(255, 255, 255, 0.7);
+      color: var(--text-secondary);
       font-size: 0.8rem;
       line-height: 1.4;
       display: -webkit-box;
-      display: box;
-      /* Standard property */
       -webkit-line-clamp: 2;
-      /* WebKit */
-      line-clamp: 2;
-      /* Standard property */
       -webkit-box-orient: vertical;
-      box-orient: vertical;
-      /* Standard property */
       overflow: hidden;
       max-height: 2.8em;
-      /* Fallback: 2 lines × 1.4 line height */
     }
 
     /* ===== TRENDING NOW SECTION ===== */
@@ -1208,18 +1370,19 @@
       width: 36px;
       height: 36px;
       border-radius: 50%;
-      background: var(--glass);
+      background: var(--glass-color);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
+      color: var(--text-primary);
       cursor: pointer;
       transition: var(--transition);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--border-color);
     }
 
     .control-btn:hover {
       background: var(--primary);
+      color: white;
     }
 
     .trending-slider {
@@ -1237,16 +1400,16 @@
 
     .trending-item {
       min-width: 200px;
-      background: var(--card-bg);
+      background: var(--card-bg-color);
       border-radius: var(--radius);
       overflow: hidden;
       transition: var(--transition);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
     }
 
     .trending-item:hover {
       transform: translateY(-5px);
-      box-shadow: var(--shadow);
+      box-shadow: var(--current-shadow);
     }
 
     .trending-image {
@@ -1281,13 +1444,13 @@
       display: flex;
       justify-content: space-between;
       font-size: 0.8rem;
-      color: var(--gray);
+      color: var(--text-tertiary);
       margin-bottom: 8px;
     }
 
     /* ===== GENRES SECTION ===== */
     .genres {
-      background: var(--dark);
+      background: var(--bg-secondary);
     }
 
     .genres-grid {
@@ -1297,18 +1460,22 @@
     }
 
     .genre-card {
-      background: linear-gradient(135deg, var(--card-bg) 0%, rgba(50, 50, 50, 0.7) 100%);
+      background: linear-gradient(135deg, var(--card-bg-color) 0%, rgba(50, 50, 50, 0.7) 100%);
       border-radius: var(--radius);
       padding: 25px 15px;
       text-align: center;
       transition: var(--transition);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
       cursor: pointer;
+    }
+
+    :root[data-theme="light"] .genre-card {
+      background: linear-gradient(135deg, var(--card-bg-color) 0%, rgba(220, 220, 220, 0.7) 100%);
     }
 
     .genre-card:hover {
       transform: translateY(-5px);
-      box-shadow: var(--shadow);
+      box-shadow: var(--current-shadow);
       border-color: var(--primary);
     }
 
@@ -1324,26 +1491,15 @@
     }
 
     .genre-count {
-      color: var(--gray);
+      color: var(--text-tertiary);
       font-size: 0.85rem;
-    }
-
-    .btn-outline {
-      background: transparent;
-      color: white;
-      border: 2px solid white;
-    }
-
-    .btn-outline:hover {
-      background: white;
-      color: var(--primary);
     }
 
     /* ===== FOOTER ===== */
     footer {
-      background: var(--darker);
+      background: var(--footer-bg);
       padding: 60px 0 25px;
-      border-top: 1px solid rgba(255, 0, 0, 0.1);
+      border-top: 1px solid var(--border-color);
     }
 
     .footer-content {
@@ -1391,7 +1547,7 @@
 
     .footer-about p {
       margin-bottom: 20px;
-      color: rgba(255, 255, 255, 0.7);
+      color: var(--text-secondary);
     }
 
     .social-links {
@@ -1403,17 +1559,18 @@
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background: var(--glass);
+      background: var(--glass-color);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
+      color: var(--text-primary);
       text-decoration: none;
       transition: var(--transition);
     }
 
     .social-links a:hover {
       background: var(--primary);
+      color: white;
       transform: translateY(-3px);
     }
 
@@ -1426,7 +1583,7 @@
     }
 
     .footer-links a {
-      color: rgba(255, 255, 255, 0.7);
+      color: var(--text-secondary);
       text-decoration: none;
       transition: var(--transition);
     }
@@ -1439,8 +1596,8 @@
     .footer-bottom {
       text-align: center;
       padding-top: 25px;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      color: rgba(255, 255, 255, 0.5);
+      border-top: 1px solid var(--border-color);
+      color: var(--text-tertiary);
       font-size: 0.9rem;
     }
 
@@ -1526,9 +1683,10 @@
     }
 
     @media (max-width: 768px) {
+
       /* ===== MODERN MOBILE APP DESIGN ===== */
       body {
-        background: #000000 !important;
+        background: var(--bg-primary) !important;
         font-size: 14px;
         -webkit-tap-highlight-color: transparent;
         padding-bottom: env(safe-area-inset-bottom);
@@ -1536,11 +1694,11 @@
 
       /* Modern Header - App Style */
       header {
-        background: rgba(0, 0, 0, 0.95) !important;
+        background: rgba(var(--bg-primary-rgb, 0, 0, 0), 0.95) !important;
         backdrop-filter: blur(20px);
         padding: 0 !important;
         height: var(--mobile-header-height);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid var(--border-color);
       }
 
       .navbar {
@@ -1581,6 +1739,25 @@
         display: none !important;
       }
 
+      /* Theme Toggle Mobile */
+      .theme-toggle-container {
+        margin-right: 8px;
+      }
+
+      .theme-toggle-label {
+        width: 46px;
+        height: 24px;
+      }
+
+      .theme-toggle-slider {
+        width: 20px;
+        height: 20px;
+      }
+
+      .theme-toggle-checkbox:checked+.theme-toggle-label .theme-toggle-slider {
+        transform: translateX(22px);
+      }
+
       /* Search Container - App Style */
       .search-container {
         position: static;
@@ -1597,7 +1774,7 @@
         width: 40px;
         height: 40px;
         border-radius: 0;
-        color: rgba(255, 255, 255, 0.9);
+        color: var(--text-secondary);
         font-size: 1.2rem;
       }
 
@@ -1610,7 +1787,8 @@
         margin: 0 !important;
       }
 
-      .search-icon-btn:hover, .search-icon-btn.active {
+      .search-icon-btn:hover,
+      .search-icon-btn.active {
         background: transparent !important;
         color: var(--primary-light);
         transform: scale(1.05);
@@ -1623,11 +1801,11 @@
         left: 0;
         width: 100% !important;
         height: var(--mobile-header-height);
-        background: rgba(0, 0, 0, 0.98);
+        background: rgba(var(--bg-primary-rgb, 0, 0, 0), 0.98);
         backdrop-filter: blur(20px);
         border-radius: 0 !important;
         border: none !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid var(--border-color);
         transform: none !important;
         opacity: 0;
         visibility: hidden;
@@ -1648,6 +1826,7 @@
           opacity: 0;
           transform: translateY(-20px);
         }
+
         to {
           opacity: 1;
           transform: translateY(0);
@@ -1658,7 +1837,7 @@
         opacity: 1 !important;
         padding: 12px 45px 12px 16px !important;
         font-size: 16px;
-        color: white;
+        color: var(--input-text);
         background: transparent;
         border: none;
         flex: 1;
@@ -1666,7 +1845,7 @@
       }
 
       .search-box input::placeholder {
-        color: rgba(255, 255, 255, 0.6);
+        color: var(--text-tertiary);
       }
 
       /* Search Close Button in Expanded State - MOBILE ONLY */
@@ -1676,7 +1855,7 @@
         right: 20px;
         background: none;
         border: none;
-        color: rgba(255, 255, 255, 0.8);
+        color: var(--text-tertiary);
         font-size: 1.2rem;
         width: 40px;
         height: 40px;
@@ -1702,8 +1881,8 @@
         max-height: none !important;
         border-radius: 0 !important;
         border: none !important;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        background: rgba(10, 10, 10, 0.98) !important;
+        border-top: 1px solid var(--border-color);
+        background: rgba(var(--bg-tertiary-rgb, 10, 10, 10), 0.98) !important;
         backdrop-filter: blur(20px);
         margin-top: 0 !important;
         z-index: 1001;
@@ -1730,7 +1909,7 @@
         width: 40px !important;
         height: 40px !important;
         background: linear-gradient(135deg, #E50914 0%, #B20710 100%);
-        border: 2px solid rgba(255, 255, 255, 0.2);
+        border: 2px solid var(--border-color);
         box-shadow: 0 4px 12px rgba(229, 9, 20, 0.3);
       }
 
@@ -1764,9 +1943,9 @@
       }
 
       .anime-card {
-        background: linear-gradient(145deg, #1A1A1A 0%, #0F0F0F 100%);
+        background: linear-gradient(145deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
         border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--card-border);
         overflow: hidden;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       }
@@ -1786,7 +1965,7 @@
 
       .card-content h3 {
         font-size: 0.85rem;
-        color: #FFFFFF;
+        color: var(--text-primary);
         margin-bottom: 6px;
         line-height: 1.3;
         display: -webkit-box;
@@ -1820,8 +1999,8 @@
       }
 
       .genre-card {
-        background: linear-gradient(145deg, #1A1A1A 0%, #0F0F0F 100%);
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        background: linear-gradient(145deg, var(--card-bg-color) 0%, var(--bg-secondary) 100%);
+        border: 1px solid var(--card-border);
         border-radius: 12px;
         padding: 20px 10px;
       }
@@ -1829,7 +2008,7 @@
       /* Modern Footer */
       footer {
         padding: 40px 0 30px;
-        background: #0A0A0A;
+        background: var(--footer-bg);
       }
 
       .footer-content {
@@ -1882,6 +2061,7 @@
         opacity: 0;
         transform: translateY(30px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
@@ -1910,7 +2090,7 @@
     }
 
     ::-webkit-scrollbar-track {
-      background: var(--dark);
+      background: var(--bg-secondary);
     }
 
     ::-webkit-scrollbar-thumb {
@@ -1941,6 +2121,20 @@
         font-size: 1.2rem;
       }
 
+      .theme-toggle-label {
+        width: 42px;
+        height: 22px;
+      }
+
+      .theme-toggle-slider {
+        width: 18px;
+        height: 18px;
+      }
+
+      .theme-toggle-checkbox:checked+.theme-toggle-label .theme-toggle-slider {
+        transform: translateX(20px);
+      }
+
       .search-icon-btn {
         width: 36px;
         height: 36px;
@@ -1962,27 +2156,440 @@
 
     /* Desktop: Hide search close button in search icon */
     @media (min-width: 769px) {
+
       /* Make sure search icon doesn't change to X on desktop */
       .search-icon-btn.active i {
         transform: none !important;
       }
-      
+
       .search-icon-btn i {
         /* Keep search icon always as search icon */
-        content: "\f002" !important; /* fa-search */
+        content: "\f002" !important;
+        /* fa-search */
         font-family: "Font Awesome 6 Free" !important;
         font-weight: 900 !important;
       }
-      
+
       /* Ensure only one close button shows in search box */
       .search-close-btn {
         display: none;
       }
-      
+
       .search-box.expanded .search-close-btn {
         display: block;
         opacity: 1;
       }
+    }
+
+    @media (max-width: 768px) {
+
+      /* ===== MODERN MOBILE APP DESIGN ===== */
+      body {
+        background: var(--bg-primary) !important;
+        font-size: 14px;
+        -webkit-tap-highlight-color: transparent;
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+
+      /* Modern Header - App Style */
+      header {
+        background: rgba(var(--bg-primary), 0.95) !important;
+        backdrop-filter: blur(20px);
+        padding: 0 !important;
+        height: var(--mobile-header-height);
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      :root[data-theme="light"] header {
+        background: rgba(255, 255, 255, 0.95) !important;
+      }
+
+      .navbar {
+        height: var(--mobile-header-height);
+        padding: 0 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+      }
+
+      /* Logo - App Style */
+      .logo {
+        gap: 10px;
+      }
+
+      .logo-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 9px;
+        background: linear-gradient(135deg, #E50914 0%, #B20710 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .logo-text {
+        font-size: 1.4rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #E50914 0%, #FF4D4D 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: -0.5px;
+      }
+
+      /* Hide desktop navigation */
+      .nav-links {
+        display: none !important;
+      }
+
+      /* Theme Toggle Mobile */
+      .theme-toggle-container {
+        margin-right: 8px;
+      }
+
+      .theme-toggle-label {
+        width: 46px;
+        height: 24px;
+        background: var(--glass-color);
+        border: 1px solid var(--border-color);
+      }
+
+      .theme-toggle-slider {
+        width: 20px;
+        height: 20px;
+      }
+
+      .theme-toggle-checkbox:checked+.theme-toggle-label .theme-toggle-slider {
+        transform: translateX(22px);
+      }
+
+      /* Search Container - App Style */
+      .search-container {
+        position: static;
+        display: flex;
+        align-items: center;
+      }
+
+      /* Search Icon Button - HIDDEN WHEN SEARCH BAR IS EXPANDED */
+      .search-icon-btn {
+        display: flex !important;
+        background: transparent !important;
+        border: none !important;
+        backdrop-filter: none !important;
+        width: 40px;
+        height: 40px;
+        border-radius: 0;
+        color: var(--text-secondary) !important;
+        font-size: 1.2rem;
+      }
+
+      /* Hide search icon button when search box is expanded */
+      .search-icon-btn.hidden {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        width: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+
+      .search-icon-btn:hover,
+      .search-icon-btn.active {
+        background: transparent !important;
+        color: var(--primary-light) !important;
+        transform: scale(1.05);
+      }
+
+      /* Search Box - Hidden by default, shows on click */
+      .search-box {
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        height: var(--mobile-header-height);
+        background: rgba(var(--bg-primary), 0.98) !important;
+        backdrop-filter: blur(20px);
+        border-radius: 0 !important;
+        border: none !important;
+        border-bottom: 1px solid var(--border-color);
+        transform: none !important;
+        opacity: 0;
+        visibility: hidden;
+        z-index: 1002;
+        padding: 0 16px;
+        display: flex;
+        align-items: center;
+      }
+
+      :root[data-theme="light"] .search-box {
+        background: rgba(255, 255, 255, 0.98) !important;
+      }
+
+      .search-box.expanded {
+        opacity: 1;
+        visibility: visible;
+        animation: slideDown 0.3s ease;
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .search-box input {
+        opacity: 1 !important;
+        padding: 12px 45px 12px 16px !important;
+        font-size: 16px;
+        color: var(--input-text) !important;
+        background: transparent;
+        border: none;
+        flex: 1;
+        height: 100%;
+      }
+
+      .search-box input::placeholder {
+        color: var(--text-tertiary);
+      }
+
+      /* Search Close Button in Expanded State - MOBILE ONLY */
+      .search-close-btn {
+        display: block !important;
+        opacity: 1 !important;
+        right: 20px;
+        background: none;
+        border: none;
+        color: var(--text-tertiary) !important;
+        font-size: 1.2rem;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .search-close-btn:hover {
+        color: #E50914 !important;
+        transform: scale(1.1);
+      }
+
+      /* Search Results - Full Screen for Mobile */
+      .search-results {
+        position: fixed !important;
+        top: var(--mobile-header-height) !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: calc(100vh - var(--mobile-header-height)) !important;
+        max-height: none !important;
+        border-radius: 0 !important;
+        border: none !important;
+        border-top: 1px solid var(--border-color);
+        background: rgba(var(--bg-tertiary), 0.98) !important;
+        backdrop-filter: blur(20px);
+        margin-top: 0 !important;
+        z-index: 1001;
+      }
+
+      :root[data-theme="light"] .search-results {
+        background: rgba(248, 249, 250, 0.98) !important;
+      }
+
+      /* Profile Button - App Style */
+      .user-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .profile-btn {
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+
+      .profile-avatar {
+        width: 40px !important;
+        height: 40px !important;
+        background: linear-gradient(135deg, #E50914 0%, #B20710 100%);
+        border: 2px solid var(--border-color);
+        box-shadow: 0 4px 12px rgba(229, 9, 20, 0.3);
+      }
+
+      .profile-name {
+        display: none;
+      }
+
+      /* Hide hamburger on mobile */
+      .hamburger {
+        display: none !important;
+      }
+
+      /* Modern Content Spacing */
+      .hero-carousel-section {
+        padding-top: calc(var(--mobile-header-height) + 20px) !important;
+        padding-bottom: 20px !important;
+      }
+
+      section {
+        padding: 30px 0 !important;
+      }
+
+      .container {
+        padding: 0 16px;
+      }
+
+      /* ===== FIXED: Modern Anime Grid - SHOW 3 ANIME IN EACH ROW ===== */
+      .anime-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 12px;
+      }
+
+      .anime-card {
+        background: linear-gradient(145deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
+        border-radius: 12px;
+        border: 1px solid var(--card-border);
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .anime-card:active {
+        transform: scale(0.98);
+      }
+
+      .card-image {
+        height: 160px;
+        position: relative;
+      }
+
+      .card-content {
+        padding: 10px;
+      }
+
+      .card-content h3 {
+        font-size: 0.85rem;
+        color: var(--text-primary);
+        margin-bottom: 6px;
+        line-height: 1.3;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        white-space: normal;
+        height: 2.6em;
+      }
+
+      .card-meta {
+        flex-direction: column;
+        gap: 5px;
+        margin-bottom: 8px;
+      }
+
+      .card-rating {
+        font-size: 0.75rem;
+      }
+
+      .card-description {
+        font-size: 0.75rem;
+        line-height: 1.3;
+        max-height: 2.6em;
+      }
+
+      /* Modern Genres Grid */
+      .genres-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+
+      .genre-card {
+        background: linear-gradient(145deg, var(--card-bg-color) 0%, var(--bg-secondary) 100%);
+        border: 1px solid var(--card-border);
+        border-radius: 12px;
+        padding: 20px 10px;
+      }
+
+      /* Modern Footer */
+      footer {
+        padding: 40px 0 30px;
+        background: var(--footer-bg);
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      /* Modern Section Headers */
+      .section-header h2 {
+        font-size: 1.8rem !important;
+      }
+
+      .today-releases-header h2 {
+        font-size: 1.8rem !important;
+      }
+
+      .today-releases-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      /* Search Overlay Backdrop */
+      .search-backdrop {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 999;
+        backdrop-filter: blur(5px);
+      }
+
+      :root[data-theme="light"] .search-backdrop {
+        background: rgba(0, 0, 0, 0.6);
+      }
+
+      .search-backdrop.active {
+        display: block;
+        animation: fadeIn 0.3s ease;
+      }
+
+      /* Hide desktop nav links on mobile */
+      .nav-links {
+        display: none !important;
+      }
+    }
+
+    .search-box {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      width: 0;
+      height: 40px;
+      overflow: hidden;
+      transition: var(--transition);
+      border-radius: 50px;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      opacity: 0;
+      visibility: hidden;
+      z-index: 1000;
+      /* Changed from 9 to 1000 */
     }
   </style>
 </head>
@@ -2008,13 +2615,25 @@
         </ul>
 
         <div class="nav-actions">
+          <!-- Theme Toggle Switch -->
+          <div class="theme-toggle-container">
+            <input type="checkbox" id="themeToggle" class="theme-toggle-checkbox">
+            <label for="themeToggle" class="theme-toggle-label">
+              <span class="theme-toggle-slider"></span>
+              <span class="theme-toggle-icon">
+                <i class="fas fa-moon"></i>
+                <i class="fas fa-sun"></i>
+              </span>
+            </label>
+          </div>
+
           <!-- Search Container with Icon Button -->
           <div class="search-container">
             <!-- Search Icon Button - WILL NOT CHANGE TO X -->
             <button class="search-icon-btn" id="searchIconBtn">
               <i class="fas fa-search"></i>
             </button>
-            
+
             <!-- Expanding Search Box -->
             <div class="search-box" id="searchBox">
               <input type="text" id="searchInput" placeholder="Search anime...">
@@ -2023,7 +2642,7 @@
                 <i class="fas fa-times"></i>
               </button>
             </div>
-            
+
             <!-- Search Results Dropdown -->
             <div class="search-results" id="searchResults">
               <!-- Search results will be populated here -->
@@ -2277,6 +2896,9 @@
     const animeCarousel = document.getElementById('animeCarousel');
     const carouselProgress = document.getElementById('carouselProgress');
 
+    // Theme Toggle Elements
+    const themeToggle = document.getElementById('themeToggle');
+
     // Profile Modal Elements
     const profileBtn = document.getElementById('profileBtn');
     const profileModal = document.getElementById('profileModal');
@@ -2303,6 +2925,36 @@
     // Global variable to store anime data
     let animeData = [];
 
+    // ===== THEME SWITCHING FUNCTIONALITY =====
+    function initializeThemeToggle() {
+      // Check saved theme from localStorage
+      const savedTheme = localStorage.getItem('kitsune_theme');
+
+      // Set initial state of toggle
+      if (savedTheme === 'light') {
+        themeToggle.checked = true;
+        document.documentElement.setAttribute('data-theme', 'light');
+      } else {
+        themeToggle.checked = false;
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+
+      // Add event listener for theme toggle
+      themeToggle.addEventListener('change', function () {
+        if (this.checked) {
+          // Switch to light theme
+          document.documentElement.setAttribute('data-theme', 'light');
+          localStorage.setItem('kitsune_theme', 'light');
+          console.log('Theme switched to: Light');
+        } else {
+          // Switch to dark theme
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('kitsune_theme', 'dark');
+          console.log('Theme switched to: Dark');
+        }
+      });
+    }
+
     // Header scroll effect
     window.addEventListener('scroll', function () {
       const header = document.getElementById('header');
@@ -2328,76 +2980,48 @@
     }
 
     // Desktop Search Functionality
-function openDesktopSearch() {
-  searchBox.classList.add('expanded');
-  searchIconBtn.classList.add('active');
-  searchIconBtn.classList.add('hidden'); // Add this line
-  searchInput.focus();
-}
+    function openDesktopSearch() {
+      searchBox.classList.add('expanded');
+      searchIconBtn.classList.add('active');
+      searchIconBtn.classList.add('hidden');
+      searchInput.focus();
+    }
 
-function closeDesktopSearch() {
-  searchBox.classList.remove('expanded');
-  searchIconBtn.classList.remove('active');
-  searchIconBtn.classList.remove('hidden'); // Add this line
-  searchResults.classList.remove('active');
-  searchInput.value = '';
-}
-
-// Mobile Search Functionality
-function openMobileSearch() {
-  searchBox.classList.add('expanded');
-  searchIconBtn.classList.add('active');
-  searchIconBtn.classList.add('hidden'); // Add this line
-  searchBackdrop.classList.add('active');
-  searchInput.focus();
-  
-  // On mobile, change search icon to X
-  searchIcon.classList.remove('fa-search');
-  searchIcon.classList.add('fa-times');
-  
-  document.body.style.overflow = 'hidden';
-}
-
-function closeMobileSearch() {
-  searchBox.classList.remove('expanded');
-  searchIconBtn.classList.remove('active');
-  searchIconBtn.classList.remove('hidden'); // Add this line
-  searchBackdrop.classList.remove('active');
-  searchResults.classList.remove('active');
-  searchInput.value = '';
-  
-  // On mobile, change X back to search icon
-  searchIcon.classList.remove('fa-times');
-  searchIcon.classList.add('fa-search');
-  
-  document.body.style.overflow = 'auto';
-}
+    function closeDesktopSearch() {
+      searchBox.classList.remove('expanded');
+      searchIconBtn.classList.remove('active');
+      searchIconBtn.classList.remove('hidden');
+      searchResults.classList.remove('active');
+      searchInput.value = '';
+    }
 
     // Mobile Search Functionality
     function openMobileSearch() {
       searchBox.classList.add('expanded');
       searchIconBtn.classList.add('active');
+      searchIconBtn.classList.add('hidden');
       searchBackdrop.classList.add('active');
       searchInput.focus();
-      
+
       // On mobile, change search icon to X
       searchIcon.classList.remove('fa-search');
       searchIcon.classList.add('fa-times');
-      
+
       document.body.style.overflow = 'hidden';
     }
 
     function closeMobileSearch() {
       searchBox.classList.remove('expanded');
       searchIconBtn.classList.remove('active');
+      searchIconBtn.classList.remove('hidden');
       searchBackdrop.classList.remove('active');
       searchResults.classList.remove('active');
       searchInput.value = '';
-      
+
       // On mobile, change X back to search icon
       searchIcon.classList.remove('fa-times');
       searchIcon.classList.add('fa-search');
-      
+
       document.body.style.overflow = 'auto';
     }
 
@@ -2405,9 +3029,9 @@ function closeMobileSearch() {
     searchIconBtn.addEventListener('click', function (e) {
       e.preventDefault();
       e.stopPropagation();
-      
+
       const isExpanded = searchBox.classList.contains('expanded');
-      
+
       if (isMobile()) {
         if (!isExpanded) {
           openMobileSearch();
@@ -2427,7 +3051,7 @@ function closeMobileSearch() {
     searchCloseBtn.addEventListener('click', function (e) {
       e.preventDefault();
       e.stopPropagation();
-      
+
       if (isMobile()) {
         closeMobileSearch();
       } else {
@@ -2461,10 +3085,10 @@ function closeMobileSearch() {
     // Close search when clicking outside (desktop only)
     document.addEventListener('click', function (event) {
       if (isMobile()) return;
-      
+
       const isClickInsideSearchContainer = event.target.closest('.search-container');
       const isSearchBoxExpanded = searchBox.classList.contains('expanded');
-      
+
       if (!isClickInsideSearchContainer && isSearchBoxExpanded) {
         closeDesktopSearch();
       }
@@ -2525,9 +3149,9 @@ function closeMobileSearch() {
         month: 'long',
         day: 'numeric'
       });
-      
+
       profileJoinDate.textContent = firstLoginDate;
-      
+
       // Also update user data if needed
       if (!userData.joinDate) {
         const updatedUserData = {
@@ -2634,7 +3258,7 @@ function closeMobileSearch() {
       const trackingKey = 'kitsune_episode_tracking_v2';
       const todayKey = 'kitsune_today_releases';
       const todayTimestampKey = 'kitsune_today_timestamp';
-      
+
       // Get current episode tracking
       let episodeTracking = {};
       try {
@@ -2642,7 +3266,7 @@ function closeMobileSearch() {
       } catch (e) {
         episodeTracking = {};
       }
-      
+
       // Get today's releases from storage
       let todaysReleases = [];
       try {
@@ -2650,30 +3274,30 @@ function closeMobileSearch() {
       } catch (e) {
         todaysReleases = [];
       }
-      
+
       // Get timestamp of last update
       const lastUpdateTime = localStorage.getItem(todayTimestampKey) || 0;
       const currentTime = new Date().getTime();
       const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-      
+
       // Check if we need to reset today's releases (after 24 hours)
       if (currentTime - lastUpdateTime > oneDay) {
         console.log('Resetting today releases (24 hours passed)');
         todaysReleases = [];
       }
-      
+
       console.log('Previous tracking:', episodeTracking);
       console.log('Previous today releases:', todaysReleases);
-      
+
       // Track which anime have new episodes
       const animeWithNewEpisodes = [];
       const processedAnime = newAnimeData.map(anime => {
         const currentEpisode = extractEpisodeNumber(anime.type);
         const previousEpisode = episodeTracking[anime.title] || 0;
-        
+
         // Check if this is a new episode
         const isNewEpisode = currentEpisode > previousEpisode;
-        
+
         if (isNewEpisode) {
           console.log(`📢 NEW EPISODE: ${anime.title} - Ep ${previousEpisode} → Ep ${currentEpisode}`);
           animeWithNewEpisodes.push(anime.title);
@@ -2681,13 +3305,13 @@ function closeMobileSearch() {
         } else {
           anime.hasNewEpisode = false;
         }
-        
+
         // Update tracking with current episode
         episodeTracking[anime.title] = currentEpisode;
-        
+
         return anime;
       });
-      
+
       // ===== UPDATED LOGIC: Always maintain 6 anime with proper ranking =====
       if (animeWithNewEpisodes.length > 0) {
         // Add new episode anime to the top
@@ -2697,55 +3321,55 @@ function closeMobileSearch() {
           // Add to beginning
           todaysReleases.unshift(title);
         });
-        
+
         console.log('Added new episodes to top:', animeWithNewEpisodes);
       }
-      
+
       // If we have less than 6 anime, fill with ongoing anime sorted by episode
       if (todaysReleases.length < 6) {
         const neededCount = 6 - todaysReleases.length;
-        
+
         // Get all ongoing anime
         const allOngoingAnime = processedAnime.filter(anime => anime.status !== 'completed');
-        
+
         // Filter out anime already in today's list
-        const availableAnime = allOngoingAnime.filter(anime => 
+        const availableAnime = allOngoingAnime.filter(anime =>
           !todaysReleases.includes(anime.title)
         );
-        
+
         // Sort by episode number (highest first) and then alphabetically
         const sortedAnime = [...availableAnime].sort((a, b) => {
           const episodeA = extractEpisodeNumber(a.type);
           const episodeB = extractEpisodeNumber(b.type);
-          
+
           // First sort by episode number (descending)
           if (episodeB !== episodeA) {
             return episodeB - episodeA;
           }
-          
+
           // Then sort alphabetically
           return a.title.localeCompare(b.title);
         });
-        
+
         // Add the top anime to reach 6
         const additionalTitles = sortedAnime.slice(0, neededCount).map(anime => anime.title);
         todaysReleases = [...todaysReleases, ...additionalTitles];
-        
+
         console.log('Filled with additional anime:', additionalTitles);
       }
-      
+
       // Always keep exactly 6 anime
       todaysReleases = todaysReleases.slice(0, 6);
-      
+
       // Update timestamp
       localStorage.setItem(todayTimestampKey, currentTime.toString());
-      
+
       // Save updated tracking and today's releases
       localStorage.setItem(trackingKey, JSON.stringify(episodeTracking));
       localStorage.setItem(todayKey, JSON.stringify(todaysReleases));
-      
+
       console.log('Final today releases (6 total):', todaysReleases);
-      
+
       return {
         animeData: processedAnime,
         todaysReleases: todaysReleases
@@ -2755,17 +3379,17 @@ function closeMobileSearch() {
     // ===== Get Today's Releases from storage =====
     function getTodaysReleasesFromStorage(allAnime) {
       const todayKey = 'kitsune_today_releases';
-      
+
       try {
         const storedTitles = JSON.parse(localStorage.getItem(todayKey) || '[]');
         console.log('Stored today releases titles:', storedTitles);
-        
+
         // Create a map for quick lookup
         const animeMap = new Map();
         allAnime.forEach(anime => {
           animeMap.set(anime.title, anime);
         });
-        
+
         // Get anime objects for stored titles
         const todaysAnime = [];
         for (const title of storedTitles) {
@@ -2773,7 +3397,7 @@ function closeMobileSearch() {
             todaysAnime.push(animeMap.get(title));
           }
         }
-        
+
         console.log('Today releases from storage:', todaysAnime.length, 'anime');
         return todaysAnime;
       } catch (e) {
@@ -2786,18 +3410,18 @@ function closeMobileSearch() {
     function getRandomAnimeForCarousel(animeList, count = 10) {
       // Filter out completed anime for carousel
       const ongoingAnime = animeList.filter(anime => anime.status !== 'completed');
-      
+
       if (ongoingAnime.length <= count) {
         return ongoingAnime;
       }
-      
+
       // Fisher-Yates shuffle
       const shuffled = [...ongoingAnime];
       for (let i = shuffled.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
       }
-      
+
       return shuffled.slice(0, count);
     }
 
@@ -2806,14 +3430,14 @@ function closeMobileSearch() {
       if (animeList.length <= count) {
         return [...animeList];
       }
-      
+
       // Fisher-Yates shuffle
       const shuffled = [...animeList];
       for (let i = shuffled.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
       }
-      
+
       return shuffled.slice(0, count);
     }
 
@@ -2836,9 +3460,9 @@ function closeMobileSearch() {
 
         // Determine badge text
         const badgeText = checkEpisodeStatus(anime);
-        const badgeClass = badgeText === 'NEW EP' ? 'updated-badge' : 
-                          badgeText === 'COMPLETED' ? 'updated-badge' : 
-                          badgeText === 'ONGOING' ? 'new-badge' : 'new-badge';
+        const badgeClass = badgeText === 'NEW EP' ? 'updated-badge' :
+          badgeText === 'COMPLETED' ? 'updated-badge' :
+            badgeText === 'ONGOING' ? 'new-badge' : 'new-badge';
 
         // Use actual rating from JSON data
         const rating = anime.rating || 8.5;
@@ -2876,11 +3500,11 @@ function closeMobileSearch() {
         dot.className = 'progress-dot';
         dot.dataset.index = index;
         if (index === 0) dot.classList.add('active');
-        
+
         dot.addEventListener('click', () => {
           goToSlide(index);
         });
-        
+
         carouselProgress.appendChild(dot);
       });
 
@@ -2904,7 +3528,7 @@ function closeMobileSearch() {
     function nextSlide() {
       const slides = document.querySelectorAll('.carousel-slide');
       const dots = document.querySelectorAll('.progress-dot');
-      
+
       if (slides.length === 0) return;
 
       currentSlide = (currentSlide + 1) % slides.length;
@@ -2920,7 +3544,7 @@ function closeMobileSearch() {
     function updateCarousel() {
       const slides = document.querySelectorAll('.carousel-slide');
       const dots = document.querySelectorAll('.progress-dot');
-      
+
       if (slides.length === 0) return;
 
       // Update carousel position
@@ -2944,7 +3568,7 @@ function closeMobileSearch() {
       animeCarousel.addEventListener('touchstart', touchStart);
       animeCarousel.addEventListener('touchmove', touchMove);
       animeCarousel.addEventListener('touchend', touchEnd);
-      
+
       animeCarousel.addEventListener('mousedown', mouseDown);
       animeCarousel.addEventListener('mousemove', mouseMove);
       animeCarousel.addEventListener('mouseup', mouseUp);
@@ -2962,7 +3586,7 @@ function closeMobileSearch() {
       if (!isDragging) return;
       const currentPosition = getPositionX(event);
       const diff = currentPosition - startPos;
-      
+
       if (Math.abs(diff) > 10) {
         event.preventDefault();
       }
@@ -2971,10 +3595,10 @@ function closeMobileSearch() {
     function touchEnd(event) {
       if (!isDragging) return;
       isDragging = false;
-      
+
       const currentPosition = getPositionX(event);
       const diff = currentPosition - startPos;
-      
+
       if (Math.abs(diff) > 50) {
         if (diff > 0) {
           // Swipe right - go to previous slide
@@ -2985,7 +3609,7 @@ function closeMobileSearch() {
           currentSlide = (currentSlide + 1) % slides.length;
         }
       }
-      
+
       updateCarousel();
       resetAutoSlide();
     }
@@ -3005,10 +3629,10 @@ function closeMobileSearch() {
     function mouseUp(event) {
       if (!isDragging) return;
       isDragging = false;
-      
+
       const currentPosition = event.clientX;
       const diff = currentPosition - startPos;
-      
+
       if (Math.abs(diff) > 50) {
         if (diff > 0) {
           // Swipe right - go to previous slide
@@ -3019,7 +3643,7 @@ function closeMobileSearch() {
           currentSlide = (currentSlide + 1) % slides.length;
         }
       }
-      
+
       updateCarousel();
       resetAutoSlide();
     }
@@ -3051,10 +3675,10 @@ function closeMobileSearch() {
 
         // Step 2: Create carousel with 10 random anime
         createCarousel(animeData);
-        
+
         // Step 3: Populate Today's Releases and Featured sections
         populateAnimeSections(result.todaysReleases);
-        
+
       } catch (error) {
         console.error('Error loading anime data:', error);
         // Fallback: use JSON data directly
@@ -3064,7 +3688,7 @@ function closeMobileSearch() {
           ...anime,
           episodeNumber: extractEpisodeNumber(anime.type)
         }));
-        
+
         // Create carousel with fallback data
         createCarousel(animeData);
         populateAnimeSections([]);
@@ -3074,42 +3698,42 @@ function closeMobileSearch() {
     // ===== FIXED: Populate Today's Releases (ALWAYS show exactly 6 anime) =====
     function populateTodayReleases(storedAnimeList) {
       todayReleasesGrid.innerHTML = '';
-      
+
       console.log('Stored anime for Today Releases:', storedAnimeList.length, 'anime');
 
       // Start with stored anime (anime with new episodes)
       let todaysAnime = [...storedAnimeList];
-      
+
       // If we have less than 6, fill with ongoing anime sorted by highest episode
       if (todaysAnime.length < 6) {
         const neededCount = 6 - todaysAnime.length;
-        
+
         // Get all ongoing anime
         const allOngoingAnime = animeData.filter(anime => anime.status !== 'completed');
-        
+
         // Get titles already in today's list
         const existingTitles = todaysAnime.map(anime => anime.title);
-        
+
         // Filter out anime already in today's list
         const availableAnime = allOngoingAnime.filter(anime => !existingTitles.includes(anime.title));
-        
+
         // Sort by episode number (highest first)
         const sortedByEpisode = [...availableAnime].sort((a, b) => {
           const episodeA = extractEpisodeNumber(a.type);
           const episodeB = extractEpisodeNumber(b.type);
           return episodeB - episodeA; // Highest episode first
         });
-        
+
         // Add the needed anime
         const additionalAnime = sortedByEpisode.slice(0, neededCount);
         todaysAnime = [...todaysAnime, ...additionalAnime];
-        
+
         console.log('Added', additionalAnime.length, 'more anime to reach 6 total');
       }
 
       // Ensure we have exactly 6
       todaysAnime = todaysAnime.slice(0, 6);
-      
+
       console.log('Final Today Releases (6 total):', todaysAnime.map(a => a.title));
 
       // Create cards for all 6 anime
@@ -3149,8 +3773,8 @@ function closeMobileSearch() {
         const emptyCard = document.createElement('div');
         emptyCard.className = 'anime-card empty-card';
         emptyCard.innerHTML = `
-          <div class="card-image" style="background: var(--card-bg); display: flex; align-items: center; justify-content: center;">
-            <i class="fas fa-plus" style="font-size: 2rem; color: var(--gray);"></i>
+          <div class="card-image" style="background: var(--card-bg-color); display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-plus" style="font-size: 2rem; color: var(--text-tertiary);"></i>
           </div>
           <div class="card-content">
             <h3>More Coming Soon</h3>
@@ -3215,7 +3839,7 @@ function closeMobileSearch() {
         // Re-populate sections to adjust grid layout
         const todaysReleases = getTodaysReleasesFromStorage(animeData);
         populateTodayReleases(todaysReleases);
-        
+
         const featuredAnime = getRandomFeaturedAnime(animeData, 30);
         populateFeaturedAnime(featuredAnime);
       }
@@ -3285,6 +3909,9 @@ function closeMobileSearch() {
 
     // Initialize the page
     document.addEventListener('DOMContentLoaded', function () {
+      // Initialize theme toggle
+      initializeThemeToggle();
+
       // Initialize profile modal with user data
       initProfileModal();
 
@@ -3311,7 +3938,7 @@ function closeMobileSearch() {
       });
 
       // Add reset function to console for testing
-      window.resetKitsuneTracking = function() {
+      window.resetKitsuneTracking = function () {
         localStorage.removeItem('kitsune_episode_tracking_v2');
         localStorage.removeItem('kitsune_today_releases');
         localStorage.removeItem('kitsune_today_timestamp');
@@ -3321,7 +3948,18 @@ function closeMobileSearch() {
         }, 1000);
       };
       console.log('To reset episode tracking, run: resetKitsuneTracking()');
+
+      // Add theme reset function
+      window.resetKitsuneTheme = function () {
+        localStorage.removeItem('kitsune_theme');
+        console.log('Theme preference reset. Refreshing page...');
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      };
+      console.log('To reset theme preference, run: resetKitsuneTheme()');
     });
   </script>
 </body>
+
 </html>
