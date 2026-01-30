@@ -292,7 +292,7 @@
       gap: 20px;
     }
 
-    /* ===== NEW: SEARCH ICON & EXPANDING SEARCH BAR STYLES ===== */
+    /* ===== FIXED: SEARCH ICON & EXPANDING SEARCH BAR STYLES ===== */
     .search-container {
       position: relative;
       display: flex;
@@ -326,6 +326,10 @@
     .search-icon-btn.active {
       color: var(--primary);
       background: rgba(229, 9, 20, 0.1);
+    }
+
+    .search-icon-btn i {
+      transition: var(--transition);
     }
 
     /* Expanding Search Box */
@@ -375,7 +379,7 @@
       padding: 10px 45px 10px 20px;
     }
 
-    /* Search Close Button (inside search box) */
+    /* Search Close Button (inside search box) - DESKTOP: HIDDEN */
     .search-close-btn {
       position: absolute;
       right: 15px;
@@ -388,6 +392,22 @@
       transition: var(--transition);
       display: none;
       z-index: 11;
+    }
+
+    /* On mobile, show the close button inside search box */
+    @media (max-width: 768px) {
+      .search-close-btn {
+        display: block !important;
+        opacity: 1;
+        right: 12px;
+      }
+    }
+
+    /* On desktop, hide the close button inside search box */
+    @media (min-width: 769px) {
+      .search-box .search-close-btn {
+        display: none !important;
+      }
     }
 
     .search-box.expanded .search-close-btn {
@@ -428,7 +448,6 @@
         opacity: 0;
         transform: translateY(-10px);
       }
-
       to {
         opacity: 1;
         transform: translateY(0);
@@ -1581,7 +1600,6 @@
         opacity: 0;
         transform: translateY(30px);
       }
-
       to {
         opacity: 1;
         transform: translateY(0);
@@ -1622,280 +1640,561 @@
       background: var(--primary-dark);
     }
 
-    /* ===== MOBILE REDESIGN - NETFLIX STYLE ===== */
+    /* ===== NEW: MODERN MOBILE DESIGN ===== */
     @media (max-width: 768px) {
-
-      /* Base mobile reset */
+      /* Modern Mobile Reset */
       body {
-        padding-bottom: 60px;
-        -webkit-overflow-scrolling: touch;
-        background: #000 !important;
-        margin: 0;
+        background: #000000 !important;
+        font-size: 14px;
+        -webkit-tap-highlight-color: transparent;
       }
 
-      /* Netflix-style header */
+      /* Modern Header - Clean & Minimal */
       header {
-        padding: 8px 0 !important;
-        background: #000 !important;
-        backdrop-filter: none !important;
-        border-bottom: none !important;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 1000;
+        background: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.8) 100%) !important;
+        padding: 10px 0 !important;
+        border-bottom: 1px solid rgba(229, 9, 20, 0.2) !important;
+        backdrop-filter: blur(20px);
       }
 
       header.scrolled {
-        background: #000 !important;
+        background: rgba(0, 0, 0, 0.98) !important;
         padding: 8px 0 !important;
       }
 
-      /* Compact navbar layout */
+      /* Modern Navbar Layout */
       .navbar {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0 15px;
-        gap: 10px;
-        height: 44px;
+        padding: 0 16px;
+        height: 56px;
+        gap: 12px;
       }
 
-      /* Logo only - Left side (remove text) */
+      /* Modern Logo */
       .logo {
         display: flex;
         align-items: center;
-        flex-shrink: 0;
+        gap: 8px;
         text-decoration: none;
+        flex-shrink: 0;
       }
 
       .logo-icon {
-        width: 32px !important;
-        height: 32px !important;
-        background: #E50914 !important;
-        border-radius: 6px !important;
+        width: 36px !important;
+        height: 36px !important;
+        background: linear-gradient(135deg, #E50914 0%, #B20710 100%) !important;
+        border-radius: 8px !important;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 2px 8px rgba(229, 9, 20, 0.4);
+        box-shadow: 0 4px 12px rgba(229, 9, 20, 0.4);
+        position: relative;
+        overflow: hidden;
       }
 
       .logo-icon img {
-        width: 85% !important;
-        height: 85% !important;
+        width: 90% !important;
+        height: 90% !important;
         object-fit: contain !important;
+        filter: brightness(1.1);
       }
 
-      /* Hide logo text */
+      /* Modern Logo Text */
       .logo-text {
-        display: none !important;
+        display: block !important;
+        font-size: 1.4rem !important;
+        font-weight: 800;
+        background: linear-gradient(135deg, #E50914 0%, #FF4D4D 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: -0.5px;
       }
 
-      /* Search - Mobile (always visible) */
+      /* Modern Search - Always Visible, Clean Design */
       .search-container {
         flex: 1;
         max-width: none;
         margin: 0 !important;
-        position: static !important;
+        position: relative !important;
         justify-content: flex-end;
       }
 
       .search-box {
         position: static !important;
         width: 100% !important;
-        height: 36px !important;
-        background: rgba(255, 255, 255, 0.15) !important;
-        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        height: 40px !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
         border-radius: 25px !important;
         opacity: 1 !important;
         visibility: visible !important;
         transform: none !important;
+        transition: all 0.3s ease;
+      }
+
+      .search-box:focus-within {
+        background: rgba(255, 255, 255, 0.15) !important;
+        border-color: rgba(229, 9, 20, 0.4) !important;
+        box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.1);
       }
 
       .search-box input {
         opacity: 1 !important;
-        padding: 8px 40px 8px 15px !important;
-        font-size: 0.85rem;
+        padding: 10px 45px 10px 15px !important;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.95);
+      }
+
+      .search-box input::placeholder {
+        color: rgba(255, 255, 255, 0.6);
       }
 
       .search-close-btn {
-        right: 15px !important;
+        right: 12px !important;
         opacity: 1 !important;
         display: block !important;
         color: rgba(255, 255, 255, 0.7) !important;
-      }
-
-      /* Search Results - Mobile */
-      .search-results {
-        position: fixed !important;
-        top: 120px !important;
-        left: 0 !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        max-height: calc(100vh - 120px) !important;
-        border-radius: 0 !important;
-        border: none !important;
-        background: #1A1A1A !important;
-      }
-
-      /* Right side actions */
-      .nav-actions {
+        background: none;
+        border: none;
+        width: 24px;
+        height: 24px;
         display: flex;
         align-items: center;
-        gap: 12px;
-        flex-shrink: 0;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
       }
 
+      .search-close-btn:hover {
+        color: #E50914 !important;
+        transform: scale(1.1);
+      }
+
+      /* Modern Profile Button */
       .user-actions {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 8px;
       }
 
-      /* Profile button */
       .profile-btn {
-        display: flex;
-        align-items: center;
         background: transparent !important;
         border: none !important;
         padding: 4px !important;
         text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+      }
+
+      .profile-btn:active {
+        transform: scale(0.95);
       }
 
       .profile-avatar {
-        width: 32px !important;
-        height: 32px !important;
-        background: #E50914 !important;
+        width: 36px !important;
+        height: 36px !important;
+        background: linear-gradient(135deg, #E50914 0%, #B20710 100%) !important;
         border-radius: 50% !important;
         display: flex;
         align-items: center;
         justify-content: center;
         color: white;
         font-weight: 600;
-        font-size: 0.85rem;
-        border: 2px solid rgba(255, 255, 255, 0.1);
+        font-size: 0.95rem;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
       }
 
       .profile-name {
         display: none !important;
       }
 
-      /* Hide desktop navigation */
-      .nav-links {
-        display: none !important;
-      }
-
-      /* Hide hamburger menu */
+      /* Hide Hamburger Menu */
       .hamburger {
         display: none !important;
       }
 
-      /* Content spacing adjustment */
+      /* Hide Desktop Navigation Links */
+      .nav-links {
+        display: none !important;
+      }
+
+      /* Modern Content Spacing */
       .hero-carousel-section {
-        padding-top: 70px !important;
+        padding-top: 86px !important;
+        padding-bottom: 30px !important;
       }
 
       section {
-        padding: 30px 0 !important;
+        padding: 40px 0 !important;
       }
 
-      /* Netflix-style anime cards */
+      .container {
+        padding: 0 16px;
+      }
+
+      /* Modern Anime Cards - Instagram Style Grid */
       .anime-grid {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 12px;
       }
 
       .anime-card {
-        background: #2F2F2F !important;
-        border-radius: 8px !important;
-        border: none !important;
+        background: linear-gradient(145deg, #1A1A1A 0%, #0F0F0F 100%) !important;
+        border-radius: 12px !important;
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
         overflow: hidden;
-        transition: transform 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+      }
+
+      .anime-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(229, 9, 20, 0.3), transparent);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .anime-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        border-color: rgba(229, 9, 20, 0.3) !important;
+      }
+
+      .anime-card:hover::before {
+        opacity: 1;
       }
 
       .anime-card:active {
-        transform: scale(0.98);
+        transform: translateY(-2px) scale(0.98);
       }
 
       .card-image {
-        height: 160px !important;
+        height: 180px !important;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+
+      .anime-card:hover .card-image img {
+        transform: scale(1.08);
+      }
+
+      .card-badge {
+        top: 12px;
+        right: 12px;
+        padding: 4px 10px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        border-radius: 6px;
+        z-index: 2;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
       }
 
       .card-content {
-        padding: 12px !important;
+        padding: 14px !important;
       }
 
       .card-content h3 {
-        font-size: 0.9rem !important;
-        color: #fff !important;
+        font-size: 0.95rem !important;
+        color: #FFFFFF !important;
         margin-bottom: 6px !important;
+        font-weight: 600;
+        line-height: 1.3;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
       }
 
-      /* Genres grid */
+      .card-meta {
+        font-size: 0.8rem;
+        margin-bottom: 8px;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .card-rating {
+        font-size: 0.8rem;
+        color: #FFD700;
+        font-weight: 600;
+      }
+
+      .card-description {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.5);
+        line-height: 1.4;
+        -webkit-line-clamp: 2;
+      }
+
+      /* Modern Genres Grid - App Store Style */
       .genres-grid {
         grid-template-columns: repeat(3, 1fr) !important;
-        gap: 10px;
+        gap: 12px;
       }
 
       .genre-card {
-        background: #2F2F2F !important;
+        background: linear-gradient(145deg, #1A1A1A 0%, #0F0F0F 100%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        border-radius: 12px !important;
+        padding: 20px 12px !important;
+        text-align: center;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .genre-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, rgba(229, 9, 20, 0.1), transparent);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .genre-card:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        border-color: rgba(229, 9, 20, 0.3) !important;
+      }
+
+      .genre-card:hover::before {
+        opacity: 1;
+      }
+
+      .genre-icon {
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+        color: #E50914;
+        filter: drop-shadow(0 2px 4px rgba(229, 9, 20, 0.3));
+      }
+
+      .genre-card h3 {
+        font-size: 1rem;
+        margin-bottom: 4px;
+        color: #FFFFFF;
+        font-weight: 600;
+      }
+
+      .genre-count {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      /* Modern Footer for Mobile */
+      footer {
+        background: #0A0A0A;
+        padding: 40px 0 30px;
+        margin-bottom: 0;
+        border-top: 1px solid rgba(229, 9, 20, 0.1);
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .footer-about {
+        text-align: center;
+      }
+
+      .footer-logo {
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+
+      .social-links {
+        justify-content: center;
+      }
+
+      .social-links a {
+        width: 42px;
+        height: 42px;
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(10px);
+      }
+
+      .social-links a:hover {
+        background: #E50914;
+        transform: translateY(-2px);
+      }
+
+      /* Modern Search Results */
+      .search-results {
+        position: fixed !important;
+        top: 96px !important;
+        left: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        max-height: calc(100vh - 96px) !important;
+        border-radius: 0 !important;
         border: none !important;
-        border-radius: 8px !important;
-        padding: 20px 10px !important;
+        background: #1A1A1A !important;
+        backdrop-filter: blur(20px);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
       }
 
       .search-result-item {
-        border-bottom: 1px solid #444 !important;
+        padding: 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        background: rgba(255, 255, 255, 0.02);
       }
 
-      /* Footer adjustment */
-      footer {
-        margin-bottom: 60px;
+      .search-result-item:active {
+        background: rgba(229, 9, 20, 0.1);
+      }
+
+      /* Modern Section Headers */
+      .section-header h2 {
+        font-size: 1.8rem !important;
+        color: #FFFFFF;
+      }
+
+      .section-header p {
+        font-size: 0.95rem;
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .today-releases-header h2 {
+        font-size: 1.8rem !important;
+        color: #FFFFFF;
+      }
+
+      /* Modern Carousel for Mobile */
+      .anime-carousel-container {
+        height: 320px;
+        border-radius: 16px;
+        overflow: hidden;
+        margin-bottom: 30px;
+      }
+
+      .carousel-slide {
+        padding: 20px;
+        background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(26, 26, 26, 0.8) 100%);
+      }
+
+      .carousel-image {
+        width: 140px;
+        height: 200px;
+        margin: 0 auto 20px;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      }
+
+      .carousel-content h3 {
+        font-size: 1.5rem;
+        text-align: center;
+      }
+
+      .carousel-meta {
+        justify-content: center;
+        gap: 15px;
+      }
+
+      .carousel-progress {
+        bottom: 15px;
+      }
+
+      .progress-dot {
+        width: 6px;
+        height: 6px;
+      }
+
+      /* Bottom Safe Area for Notch Phones */
+      @supports (padding-bottom: env(safe-area-inset-bottom)) {
+        body {
+          padding-bottom: env(safe-area-inset-bottom);
+        }
+        
+        footer {
+          padding-bottom: calc(30px + env(safe-area-inset-bottom));
+        }
       }
     }
 
-    /* ===== SMALL MOBILE OPTIMIZATION ===== */
+    /* ===== EXTRA SMALL DEVICES ===== */
     @media (max-width: 380px) {
       .navbar {
-        padding: 0 12px;
+        padding: 0 14px;
+        height: 52px;
       }
 
       .logo-icon {
-        width: 30px !important;
-        height: 30px !important;
+        width: 34px !important;
+        height: 34px !important;
+      }
+
+      .logo-text {
+        font-size: 1.2rem !important;
       }
 
       .profile-avatar {
-        width: 30px !important;
-        height: 30px !important;
+        width: 34px !important;
+        height: 34px !important;
       }
 
-      .menu-toggle {
-        padding: 5px;
-      }
-
-      .menu-toggle span {
-        width: 16px;
+      .search-box {
+        height: 38px !important;
       }
 
       .anime-grid {
         grid-template-columns: 1fr !important;
+        gap: 10px;
       }
 
       .genres-grid {
         grid-template-columns: repeat(2, 1fr) !important;
       }
+
+      .anime-carousel-container {
+        height: 280px;
+      }
+
+      .carousel-image {
+        width: 120px;
+        height: 170px;
+      }
+
+      .carousel-content h3 {
+        font-size: 1.3rem;
+      }
     }
 
-    /* ===== EXTRA SMALL DEVICES ===== */
     @media (max-width: 320px) {
       .navbar {
-        padding: 0 10px;
+        padding: 0 12px;
       }
 
       .logo-icon {
-        width: 28px !important;
-        height: 28px !important;
+        width: 32px !important;
+        height: 32px !important;
+      }
+
+      .logo-text {
+        font-size: 1.1rem !important;
       }
     }
   </style>
@@ -2231,7 +2530,9 @@
       hamburger.classList.toggle('active');
     });
 
-    // ===== UPDATED: SEARCH ICON FUNCTIONALITY =====
+    // ===== FIXED: SEARCH FUNCTIONALITY =====
+    // On desktop: Search icon toggles between search and close
+    // On mobile: Search box is always visible, close button clears text
     searchIconBtn.addEventListener('click', function (e) {
       e.preventDefault();
       e.stopPropagation();
@@ -2256,20 +2557,29 @@
           performSearch(searchInput.value);
         }
       } else {
-        // Close search box
-        closeSearch();
+        // Close search box and clear input
+        closeSearchAndClear();
       }
     });
 
-    // Close search when clicking the close button inside search box
+    // Close button inside search box - Only clears text on mobile
     searchCloseBtn.addEventListener('click', function (e) {
       e.preventDefault();
       e.stopPropagation();
-      closeSearch();
+      
+      if (window.innerWidth <= 768) {
+        // On mobile: Just clear the input
+        searchInput.value = '';
+        searchInput.focus();
+        searchResults.classList.remove('active');
+      } else {
+        // On desktop: Close search box
+        closeSearchAndClear();
+      }
     });
 
-    // Function to close search
-    function closeSearch() {
+    // Function to close search and clear input
+    function closeSearchAndClear() {
       searchBox.classList.remove('expanded');
       searchIconBtn.classList.remove('active');
       searchResults.classList.remove('active');
@@ -2286,14 +2596,14 @@
       const isSearchBoxExpanded = searchBox.classList.contains('expanded');
       
       if (!isClickInsideSearchContainer && isSearchBoxExpanded && window.innerWidth > 768) {
-        closeSearch();
+        closeSearchAndClear();
       }
     });
 
     // Close search on Escape key
     document.addEventListener('keydown', function (event) {
       if (event.key === 'Escape' && searchBox.classList.contains('expanded')) {
-        closeSearch();
+        closeSearchAndClear();
       }
     });
 
@@ -3163,5 +3473,4 @@
     });
   </script>
 </body>
-
 </html>
