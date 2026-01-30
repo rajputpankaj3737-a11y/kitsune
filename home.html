@@ -316,16 +316,15 @@
       width: 40px;
       height: 40px;
       z-index: 10;
-      opacity: 1;
-      visibility: visible;
     }
 
-    /* Hide search icon button when search box is expanded */
-    .search-box.expanded ~ .search-icon-btn {
+    /* FIXED: Hide search icon button when search box is expanded */
+    .search-icon-btn.hidden {
       opacity: 0;
       visibility: hidden;
       width: 0;
       padding: 0;
+      margin: 0;
     }
 
     .search-icon-btn:hover {
@@ -1329,7 +1328,6 @@
       font-size: 0.85rem;
     }
 
-
     .btn-outline {
       background: transparent;
       color: white;
@@ -1601,16 +1599,15 @@
         border-radius: 0;
         color: rgba(255, 255, 255, 0.9);
         font-size: 1.2rem;
-        opacity: 1;
-        visibility: visible;
       }
 
-      /* Hide search icon when search box is expanded */
-      .search-box.expanded ~ .search-icon-btn {
-        opacity: 0;
-        visibility: hidden;
-        width: 0;
-        padding: 0;
+      /* Hide search icon button when search box is expanded */
+      .search-icon-btn.hidden {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        width: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
       }
 
       .search-icon-btn:hover, .search-icon-btn.active {
@@ -2331,21 +2328,50 @@
     }
 
     // Desktop Search Functionality
-    function openDesktopSearch() {
-      searchBox.classList.add('expanded');
-      searchIconBtn.classList.add('active');
-      searchInput.focus();
-      
-      // On desktop, search icon stays as search icon (DOES NOT change to X)
-      // Only the close button inside search box appears
-    }
+function openDesktopSearch() {
+  searchBox.classList.add('expanded');
+  searchIconBtn.classList.add('active');
+  searchIconBtn.classList.add('hidden'); // Add this line
+  searchInput.focus();
+}
 
-    function closeDesktopSearch() {
-      searchBox.classList.remove('expanded');
-      searchIconBtn.classList.remove('active');
-      searchResults.classList.remove('active');
-      searchInput.value = '';
-    }
+function closeDesktopSearch() {
+  searchBox.classList.remove('expanded');
+  searchIconBtn.classList.remove('active');
+  searchIconBtn.classList.remove('hidden'); // Add this line
+  searchResults.classList.remove('active');
+  searchInput.value = '';
+}
+
+// Mobile Search Functionality
+function openMobileSearch() {
+  searchBox.classList.add('expanded');
+  searchIconBtn.classList.add('active');
+  searchIconBtn.classList.add('hidden'); // Add this line
+  searchBackdrop.classList.add('active');
+  searchInput.focus();
+  
+  // On mobile, change search icon to X
+  searchIcon.classList.remove('fa-search');
+  searchIcon.classList.add('fa-times');
+  
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMobileSearch() {
+  searchBox.classList.remove('expanded');
+  searchIconBtn.classList.remove('active');
+  searchIconBtn.classList.remove('hidden'); // Add this line
+  searchBackdrop.classList.remove('active');
+  searchResults.classList.remove('active');
+  searchInput.value = '';
+  
+  // On mobile, change X back to search icon
+  searchIcon.classList.remove('fa-times');
+  searchIcon.classList.add('fa-search');
+  
+  document.body.style.overflow = 'auto';
+}
 
     // Mobile Search Functionality
     function openMobileSearch() {
