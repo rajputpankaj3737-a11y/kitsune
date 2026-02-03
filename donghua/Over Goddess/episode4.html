@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Over Goddess | Kitsune</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* === DARK THEME COLORS (DEFAULT) === */
+            --primary: #E50914;
+            --primary-dark: #B20710;
+            --primary-light: #FF4D4D;
+            --secondary: #1A1A1A;
+            --accent: #FF3333;
+            --dark: #0F0F0F;
+            --darker: #0A0A0A;
+            --light: #F5F5F5;
+            --gray: #8A8A8A;
+            --card-bg: rgba(40, 40, 40, 0.8);
+            --glass: rgba(255, 255, 255, 0.08);
+            --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            --radius: 12px;
+
+            /* === LIGHT THEME COLORS === */
+            --light-bg-primary: #FFFFFF;
+            --light-bg-secondary: #F8F9FA;
+            --light-bg-tertiary: #F1F3F5;
+            --light-text-primary: #212529;
+            --light-text-secondary: #495057;
+            --light-text-tertiary: #868E96;
+            --light-border-color: rgba(0, 0, 0, 0.1);
+            --light-card-bg: rgba(248, 249, 250, 0.9);
+            --light-card-border: rgba(0, 0, 0, 0.08);
+            --light-glass: rgba(0, 0, 0, 0.05);
+            --light-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Apply theme variables based on data-theme attribute */
+        :root[data-theme="dark"] {
+            --bg-primary: var(--darker);
+            --bg-secondary: var(--dark);
+            --bg-tertiary: var(--secondary);
+            --text-primary: var(--light);
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --text-tertiary: var(--gray);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --card-bg-color: var(--card-bg);
+            --card-border: rgba(255, 255, 255, 0.05);
+            --input-bg: rgba(255, 255, 255, 0.15);
+            --input-border: rgba(255, 0, 0, 0.2);
+            --input-text: #FFFFFF;
+            --glass-color: var(--glass);
+            --current-shadow: var(--shadow);
+            --footer-bg: var(--darker);
+        }
+
+        :root[data-theme="light"] {
+            --bg-primary: var(--light-bg-primary);
+            --bg-secondary: var(--light-bg-secondary);
+            --bg-tertiary: var(--light-bg-tertiary);
+            --text-primary: var(--light-text-primary);
+            --text-secondary: var(--light-text-secondary);
+            --text-tertiary: var(--light-text-tertiary);
+            --border-color: var(--light-border-color);
+            --card-bg-color: var(--light-card-bg);
+            --card-border: var(--light-card-border);
+            --input-bg: var(--light-bg-tertiary);
+            --input-border: rgba(229, 9, 20, 0.3);
+            --input-text: var(--light-text-primary);
+            --glass-color: var(--light-glass);
+            --current-shadow: var(--light-shadow);
+            --footer-bg: var(--light-bg-secondary);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* ===== THEME TOGGLE SWITCH ===== */
+        .theme-toggle-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .theme-toggle-checkbox {
+            display: none;
+        }
+
+        .theme-toggle-label {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            width: 50px;
+            height: 26px;
+            background: var(--glass-color);
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
+            padding: 2px;
+            transition: var(--transition);
+        }
+
+        .theme-toggle-label:hover {
+            border-color: var(--primary);
+        }
+
+        .theme-toggle-slider {
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            left: 2px;
+        }
+
+        .theme-toggle-checkbox:checked+.theme-toggle-label .theme-toggle-slider {
+            transform: translateX(24px);
+            background: #FFD700;
+        }
+
+        .theme-toggle-icon {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0 5px;
+            pointer-events: none;
+        }
+
+        .theme-toggle-icon i {
+            font-size: 0.7rem;
+            transition: var(--transition);
+        }
+
+        .theme-toggle-icon .fa-moon {
+            color: #FFD700;
+        }
+
+        .theme-toggle-icon .fa-sun {
+            color: #FFA500;
+        }
+
+        .theme-toggle-checkbox:checked+.theme-toggle-label .fa-moon {
+            opacity: 0.5;
+        }
+
+        .theme-toggle-checkbox:not(:checked)+.theme-toggle-label .fa-sun {
+            opacity: 0.5;
+        }
+
+        /* HEADER */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 18px 20px;
+            background: rgba(var(--bg-primary), 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(229, 9, 20, 0.4);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        }
+
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-shadow: 0 2px 8px rgba(229, 9, 20, 0.3);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 50px;
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+            background: var(--primary);
+        }
+
+        .nav-links a:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
+        }
+
+        /* MAIN CONTENT */
+        .main-container {
+            max-width: 1400px;
+            margin: 80px auto 0;
+            padding: 40px 20px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        /* ANIME INFO SECTION */
+        .anime-info-section {
+            display: flex;
+            gap: 30px;
+            background: var(--card-bg-color);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--current-shadow);
+            border: 1px solid var(--card-border);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .anime-info-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(229, 9, 20, 0.05), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .anime-info-section:hover::before {
+            left: 100%;
+        }
+
+        .anime-info-section:hover {
+            border-color: rgba(229, 9, 20, 0.3);
+        }
+
+        .poster {
+            width: 35%;
+            border-radius: var(--radius);
+            box-shadow: 0 0 25px rgba(229, 9, 20, 0.4);
+            object-fit: cover;
+            height: 300px;
+            transition: var(--transition);
+        }
+
+        .anime-info-section:hover .poster {
+            transform: scale(1.02);
+        }
+
+        .anime-details {
+            width: 65%;
+        }
+
+        .anime-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .anime-meta {
+            color: var(--text-tertiary);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .meta-tag {
+            background: rgba(229, 9, 20, 0.2);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(229, 9, 20, 0.3);
+            transition: var(--transition);
+            color: var(--text-secondary);
+        }
+
+        .meta-tag:hover {
+            background: rgba(229, 9, 20, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .anime-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* VIDEO PLAYER */
+        .video-section {
+            background: var(--card-bg-color);
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-bottom: 30px;
+            box-shadow: var(--current-shadow);
+            border: 1px solid var(--card-border);
+            transition: var(--transition);
+        }
+
+        .video-section:hover {
+            border-color: rgba(229, 9, 20, 0.2);
+        }
+
+        .video-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .video-header h2 {
+            font-size: 1.4rem;
+            color: var(--primary-light);
+        }
+
+        .video-controls {
+            display: flex;
+            gap: 15px;
+        }
+
+        .video-controls button {
+            background: var(--glass-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .video-controls button:hover {
+            background: rgba(229, 9, 20, 0.2);
+            border-color: rgba(229, 9, 20, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .video-player {
+            width: 100%;
+            height: 500px;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+        }
+
+        .video-player iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* EPISODE LIST */
+        .episode-list {
+            background: var(--card-bg-color);
+            border-radius: var(--radius);
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--current-shadow);
+            border: 1px solid var(--card-border);
+            max-height: 500px;
+            overflow-y: auto;
+            transition: var(--transition);
+        }
+
+        .episode-list:hover {
+            border-color: rgba(229, 9, 20, 0.2);
+        }
+
+        .episode-list h2 {
+            margin-bottom: 20px;
+            color: var(--primary-light);
+            font-size: 1.4rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .episode-list h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* CONTACT SECTION */
+        .contact-section {
+            background: var(--card-bg-color);
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--current-shadow);
+            border: 1px solid var(--card-border);
+            transition: var(--transition);
+        }
+
+        .contact-section:hover {
+            border-color: rgba(229, 9, 20, 0.2);
+        }
+
+        .contact-section h2 {
+            margin-bottom: 20px;
+            color: var(--primary-light);
+            font-size: 1.4rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .contact-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--input-text);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.2);
+        }
+
+        .contact-form textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .contact-form button {
+            background: var(--primary);
+            border: none;
+            color: #fff;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .contact-form button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
+        }
+
+        /* ANIME LIST SECTION */
+        .anime-list-section {
+            background: var(--card-bg-color);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: var(--current-shadow);
+            border: 1px solid var(--card-border);
+            transition: var(--transition);
+        }
+
+        .anime-list-section:hover {
+            border-color: rgba(229, 9, 20, 0.2);
+        }
+
+        .anime-list-section h2 {
+            margin-bottom: 25px;
+            color: var(--primary-light);
+            font-size: 1.4rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .anime-list-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .anime-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .anime-card {
+            background: var(--glass-color);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid var(--card-border);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .anime-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--current-shadow);
+            border-color: rgba(229, 9, 20, 0.3);
+        }
+
+        .anime-card-image {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .anime-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .anime-card:hover .anime-card-image img {
+            transform: scale(1.05);
+        }
+
+        .anime-card-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--primary);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .anime-card-content {
+            padding: 15px;
+        }
+
+        .anime-card-content h3 {
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--text-primary);
+        }
+
+        .anime-card-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+        }
+
+        .anime-card-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #FFD700;
+            font-size: 0.75rem;
+        }
+
+        .anime-card-description {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            line-height: 1.4;
+            margin: 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-word;
+            max-height: calc(1.4em * 2);
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 30px;
+            font-size: 0.9rem;
+            color: var(--text-tertiary);
+            border-top: 1px solid var(--border-color);
+            margin-top: 50px;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+            background: var(--footer-bg);
+        }
+
+        /* SCROLLBAR */
+        .episode-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .episode-list::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+            border-radius: 4px;
+        }
+
+        .episode-list::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .episode-list::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .nav-button {
+            background: var(--primary);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            min-width: 200px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .nav-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
+        }
+
+        .nav-button.previous {
+            background: #dc3545;
+            color: white;
+        }
+
+        .nav-button.previous:hover {
+            background: #c82333;
+        }
+
+        /* ===== EPISODE LIST STYLES ===== */
+        .episode-list-container {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .episode-list-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 10px;
+            padding: 10px;
+        }
+
+        .episode-item {
+            background: var(--glass-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .episode-item:hover {
+            background: rgba(229, 9, 20, 0.1);
+            border-color: rgba(229, 9, 20, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .episode-item.current {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
+        }
+
+        .episode-item.watched {
+            background: rgba(0, 255, 0, 0.1);
+            border-color: rgba(0, 255, 0, 0.3);
+            color: #00ff00;
+        }
+
+        /* MOBILE RESPONSIVE STYLES */
+        @media (max-width: 768px) {
+            * {
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            body {
+                font-size: 15px;
+                -webkit-text-size-adjust: 100%;
+                padding: 0;
+                margin: 0;
+            }
+
+            .main-container {
+                width: 100%;
+                max-width: 100%;
+                padding: 70px 0 20px;
+                margin: 0;
+                overflow-x: hidden;
+            }
+
+            header {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                padding: 12px 16px;
+                background: rgba(var(--bg-primary), 0.98);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border-bottom: 1px solid rgba(229, 9, 20, 0.3);
+                z-index: 1000;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .nav-actions {
+                gap: 12px;
+            }
+
+            .theme-toggle-container {
+                margin-right: 0;
+            }
+
+            .theme-toggle-label {
+                width: 46px;
+                height: 24px;
+            }
+
+            .theme-toggle-slider {
+                width: 20px;
+                height: 20px;
+            }
+
+            .theme-toggle-checkbox:checked+.theme-toggle-label .theme-toggle-slider {
+                transform: translateX(22px);
+            }
+
+            .logo-text {
+                font-size: 1.4rem;
+            }
+
+            .nav-links {
+                gap: 8px;
+            }
+
+            .nav-links a {
+                padding: 8px 16px;
+                font-size: 0.85rem;
+            }
+
+            .content-grid {
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+                width: 100%;
+            }
+
+            .main-content {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                order: 1;
+            }
+
+            .sidebar {
+                display: contents;
+            }
+
+            /* CONTACT SECTION IS NOW VISIBLE ON MOBILE */
+            .contact-section {
+                order: 4;
+                width: 100%;
+                padding: 20px 16px;
+                margin: 0;
+                background: var(--bg-primary);
+                border-radius: 0;
+                border: none;
+                border-top: 1px solid var(--border-color);
+                box-shadow: none;
+            }
+
+            /* Navigation buttons visible on mobile */
+            .nav-buttons-container {
+                display: flex !important;
+                order: 3;
+                width: 100%;
+                padding: 0 16px;
+                margin: 20px 0;
+                gap: 10px;
+            }
+
+            .nav-button {
+                min-width: calc(50% - 5px);
+                padding: 12px 10px;
+                font-size: 0.9rem;
+            }
+
+            .episode-list {
+                order: 2;
+                width: 100%;
+            }
+
+            .anime-list-section {
+                order: 5;
+                width: 100%;
+            }
+
+            .anime-info-section {
+                flex-direction: row;
+                padding: 20px 16px;
+                gap: 16px;
+                margin: 0;
+                background: linear-gradient(135deg, var(--card-bg-color) 0%, rgba(30, 30, 30, 0.95) 100%);
+                border-radius: 0;
+                border-bottom: 1px solid var(--border-color);
+                box-shadow: none;
+                align-items: flex-start;
+                width: 100%;
+                order: 0;
+            }
+
+            .poster {
+                width: 120px;
+                height: 170px;
+                border-radius: 12px;
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+                flex-shrink: 0;
+            }
+
+            .anime-details {
+                flex: 1;
+                width: auto;
+            }
+
+            .anime-title {
+                font-size: 1.3rem;
+                text-align: left;
+                margin-bottom: 8px;
+                line-height: 1.3;
+            }
+
+            .anime-meta {
+                justify-content: flex-start;
+                gap: 6px;
+                margin-bottom: 10px;
+            }
+
+            .meta-tag {
+                font-size: 0.75rem;
+                padding: 4px 10px;
+                background: rgba(229, 9, 20, 0.25);
+                border: 1px solid rgba(229, 9, 20, 0.4);
+            }
+
+            .anime-description {
+                font-size: 0.85rem;
+                line-height: 1.5;
+                color: var(--text-secondary);
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                word-break: break-word;
+                max-height: calc(1.5em * 3);
+            }
+
+            .video-section {
+                margin: 0;
+                border-radius: 0;
+                background: #000;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                order: 1;
+            }
+
+            .video-header {
+                padding: 15px 16px;
+                background: rgba(0, 0, 0, 0.9);
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .video-header h2 {
+                font-size: 1.1rem;
+                color: var(--primary-light);
+                font-weight: 600;
+            }
+
+            .video-player {
+                height: 220px;
+                width: 100%;
+                background: #000;
+            }
+
+            .episode-list {
+                padding: 20px 16px;
+                margin: 0;
+                background: var(--bg-primary);
+                border-radius: 0;
+                border: none;
+                border-bottom: 1px solid var(--border-color);
+                max-height: 350px;
+                box-shadow: none;
+                width: 100%;
+            }
+
+            .episode-list h2 {
+                font-size: 1.2rem;
+                margin-bottom: 16px;
+                color: var(--text-primary);
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .episode-list h2::before {
+                content: '📺';
+                font-size: 1.1rem;
+            }
+
+            .anime-list-section {
+                padding: 20px 16px;
+                margin: 0;
+                background: var(--bg-primary);
+                border-radius: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+            }
+
+            .anime-list-section h2 {
+                font-size: 1.2rem;
+                margin-bottom: 16px;
+                color: var(--text-primary);
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .anime-list-section h2::before {
+                content: '🔥';
+                font-size: 1.1rem;
+            }
+
+            .anime-row {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 12px;
+                overflow-x: visible;
+                padding-bottom: 0;
+            }
+
+            .anime-card {
+                min-width: auto;
+                width: 100%;
+                background: var(--card-bg-color);
+                border-radius: 12px;
+                overflow: hidden;
+                border: 1px solid var(--card-border);
+                transition: all 0.3s ease;
+            }
+
+            .anime-card:active {
+                transform: scale(0.95);
+                border-color: rgba(229, 9, 20, 0.4);
+            }
+
+            .anime-card-image {
+                height: 120px;
+                position: relative;
+            }
+
+            .anime-card-badge {
+                background: var(--primary);
+                border-radius: 6px;
+                font-weight: 700;
+                font-size: 0.65rem;
+                padding: 3px 6px;
+            }
+
+            .anime-card-content {
+                padding: 10px;
+            }
+
+            .anime-card-content h3 {
+                font-size: 0.8rem;
+                font-weight: 600;
+                margin-bottom: 4px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                line-height: 1.3;
+            }
+
+            .anime-card-meta {
+                font-size: 0.7rem;
+                margin-bottom: 4px;
+                justify-content: space-between;
+            }
+
+            .anime-card-rating {
+                color: #FFD700;
+                font-weight: 600;
+                font-size: 0.7rem;
+            }
+
+            .anime-card-description {
+                font-size: 0.7rem;
+                color: var(--text-secondary);
+                line-height: 1.3;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                height: 2.6em;
+                text-overflow: ellipsis;
+                word-break: break-word;
+            }
+
+            footer {
+                padding: 25px 16px;
+                margin: 0;
+                background: var(--footer-bg);
+                border-top: 1px solid var(--border-color);
+                border-radius: 0;
+                text-align: center;
+                order: 6;
+            }
+
+            /* Mobile contact form styling */
+            .contact-section h2 {
+                font-size: 1.2rem;
+                margin-bottom: 16px;
+                color: var(--text-primary);
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .contact-section h2::before {
+                content: '📧';
+                font-size: 1.1rem;
+            }
+
+            .contact-section h2::after {
+                display: none;
+            }
+
+            .contact-form input,
+            .contact-form textarea {
+                font-size: 16px;
+                padding: 14px;
+            }
+        }
+
+        /* Small Mobile Optimization */
+        @media (max-width: 480px) {
+            .main-container {
+                padding-top: 65px;
+            }
+
+            header {
+                padding: 10px 12px;
+            }
+
+            .nav-actions {
+                gap: 8px;
+            }
+
+            .theme-toggle-label {
+                width: 42px;
+                height: 22px;
+            }
+
+            .theme-toggle-slider {
+                width: 18px;
+                height: 18px;
+            }
+
+            .theme-toggle-checkbox:checked+.theme-toggle-label .theme-toggle-slider {
+                transform: translateX(20px);
+            }
+
+            .poster {
+                width: 100px;
+                height: 140px;
+            }
+
+            .anime-title {
+                font-size: 1.1rem;
+            }
+
+            .video-player {
+                height: 200px;
+            }
+
+            .anime-row {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+
+            .anime-card-image {
+                height: 100px;
+            }
+
+            .anime-card-content {
+                padding: 8px;
+            }
+
+            .anime-card-content h3 {
+                font-size: 0.75rem;
+            }
+
+            .anime-card-description {
+                font-size: 0.65rem;
+                height: 2.4em;
+            }
+
+            .nav-button {
+                padding: 12px 8px;
+                font-size: 0.85rem;
+                min-width: calc(50% - 5px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <a href="../../home.html" class="logo">
+            <div class="logo-icon">
+                <img src="../../Image & logo/kitsune logo.jpg" alt="Kitsune Logo">
+            </div>
+            <div class="logo-text">Kitsune</div>
+        </a>
+
+        <div class="nav-actions">
+            <!-- THEME TOGGLE SWITCH - ON RIGHT SIDE -->
+            <div class="theme-toggle-container">
+                <input type="checkbox" id="themeToggle" class="theme-toggle-checkbox">
+                <label for="themeToggle" class="theme-toggle-label">
+                    <span class="theme-toggle-slider"></span>
+                    <span class="theme-toggle-icon">
+                        <i class="fas fa-moon"></i>
+                        <i class="fas fa-sun"></i>
+                    </span>
+                </label>
+            </div>
+
+            <div class="nav-links">
+                <a href="#contact">Contact Us</a>
+                <a href="../../home.html">Home</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- ANIME INFO SECTION -->
+        <section class="anime-info-section">
+            <img src="../../Image & logo/over goddess.jpg" alt="Throne Of Seal" class="poster">
+            <div class="anime-details">
+                <h1 class="anime-title">Over — Episode 04</h1>
+                <div class="anime-meta">
+                    <span class="meta-tag">Chinese</span>
+                    <span class="meta-tag">4K</span>
+                    <span class="meta-tag">Donghua</span>
+                    <span class="meta-tag">2023</span>
+                </div>
+                <p class="anime-description">
+                    “My Female Disciples Are Future Deities” (徒弟個個是大佬) follows the journey of an immortal
+                    cultivator who unintentionally becomes the mentor to several extraordinary female disciples.
+                    These disciples, each destined for greatness, come from various backgrounds and harbor immense,
+                    latent powers. As they grow under his guidance, he discovers that each disciple will one day
+                    achieve deity-like status, holding significant influence in the universe. The plot mixes humor,
+                    action, and fantasy elements, focusing on the challenges and unexpected rewards of teaching powerful
+                    yet unpredictable students.
+                </p>
+            </div>
+        </section>
+
+        <div class="content-grid">
+            <!-- MAIN CONTENT -->
+            <div class="main-content">
+                <!-- VIDEO PLAYER -->
+                <section class="video-section">
+                    <div class="video-header">
+                        <h2>Now Playing: Episode 04</h2>
+                        <div class="video-controls">
+                            <button onclick="toggleFullscreen()">
+                                <i class="fas fa-expand"></i>
+                                Fullscreen
+                            </button>
+                        </div>
+                    </div>
+                    <div class="video-player">
+                        <iframe allow="autoplay; fullscreen; picture-in-picture; web-share" class="dailymotion-player" frameborder="0" src="https://geo.dailymotion.com/player/xj8x3.html?video=k1g8d42nNWbVO2BMZYS" title="Dailymotion video player - OGep04 eng sub" height="100%" width="100%" style="opacity: 1;"></iframe>
+                    </div>
+                </section>
+
+                <!-- ANIME LIST SECTION -->
+                <section class="anime-list-section">
+                    <h2>More Anime You Might Like</h2>
+                    <div class="anime-row" id="animeRow">
+                        <!-- Anime will be loaded dynamically -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- SIDEBAR -->
+            <div class="sidebar">
+                <!-- EPISODE LIST -->
+                <section class="episode-list">
+                    <h2>Episodes</h2>
+                    <div id="episodeListContainer">Loading episodes...</div>
+                </section>
+
+                <!-- NAVIGATION BUTTONS -->
+                <div class="nav-buttons-container">
+                    <button class="nav-button previous" onclick="goToPreviousEpisode(1)">
+                        <i class="fas fa-arrow-left"></i> PREVIOUS
+                    </button>
+                    <button class="nav-button" onclick="goToNextEpisode(5)">
+                        NEXT <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- CONTACT SECTION - VISIBLE ON MOBILE TOO -->
+                <section class="contact-section" id="contact">
+                    <h2>Contact Us</h2>
+                    <form action="https://formsubmit.co/kitsuneanime436@gmail.com" method="POST" class="contact-form">
+                        <input type="hidden" name="_next"
+                            value="https://rajputpankaj3737-a11y.github.io/kitsune/donghua/Throne%20Of%20Seal/thank-you.html">
+                        <input type="hidden" name="_captcha" value="false">
+
+                        <input type="text" name="name" placeholder="Name" required>
+                        <input type="email" name="email" placeholder="Email" required>
+                        <textarea name="message" placeholder="Your message..." required></textarea>
+
+                        <button type="submit"><i class="fas fa-paper-plane"></i> Send Message</button>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <footer>© 2025 Kitsune | All rights reserved.</footer>
+
+    <script>
+        // ===== THEME MANAGEMENT SYSTEM =====
+        class ThemeManager {
+            constructor() {
+                this.themeToggle = document.getElementById('themeToggle');
+                this.init();
+            }
+
+            init() {
+                // Load saved theme from localStorage (shared with home page)
+                this.loadTheme();
+
+                // Set up theme toggle listener
+                this.themeToggle.addEventListener('change', () => {
+                    this.toggleTheme();
+                });
+
+                // Listen for theme changes from other tabs/pages
+                window.addEventListener('storage', (event) => {
+                    if (event.key === 'kitsune_theme') {
+                        console.log('Theme change detected from another page:', event.newValue);
+                        this.applyTheme(event.newValue);
+                    }
+                });
+
+                // Also listen for custom events (if needed for same-page updates)
+                window.addEventListener('kitsune-theme-change', (event) => {
+                    this.applyTheme(event.detail.theme);
+                });
+
+                console.log('Theme Manager initialized');
+            }
+
+            loadTheme() {
+                const savedTheme = localStorage.getItem('kitsune_theme');
+
+                if (savedTheme === 'light') {
+                    this.themeToggle.checked = true;
+                    this.applyTheme('light');
+                } else {
+                    this.themeToggle.checked = false;
+                    this.applyTheme('dark');
+                }
+
+                console.log('Loaded theme:', savedTheme || 'dark (default)');
+            }
+
+            toggleTheme() {
+                const newTheme = this.themeToggle.checked ? 'light' : 'dark';
+
+                // Apply theme locally
+                this.applyTheme(newTheme);
+
+                // Save to localStorage (will trigger storage event in other tabs/pages)
+                localStorage.setItem('kitsune_theme', newTheme);
+
+                // Trigger custom event for same-page updates
+                this.dispatchThemeChange(newTheme);
+
+                console.log('Theme changed to:', newTheme);
+            }
+
+            applyTheme(theme) {
+                // Set data-theme attribute on html element
+                document.documentElement.setAttribute('data-theme', theme);
+
+                // Update toggle state
+                this.themeToggle.checked = (theme === 'light');
+
+                // If you want to add a class to body as well (optional)
+                if (theme === 'light') {
+                    document.body.classList.add('light-theme');
+                    document.body.classList.remove('dark-theme');
+                } else {
+                    document.body.classList.add('dark-theme');
+                    document.body.classList.remove('light-theme');
+                }
+
+                // Force a redraw to ensure theme applies immediately
+                document.body.style.display = 'none';
+                document.body.offsetHeight; // Trigger reflow
+                document.body.style.display = '';
+            }
+
+            dispatchThemeChange(theme) {
+                const event = new CustomEvent('kitsune-theme-change', {
+                    detail: { theme: theme }
+                });
+                window.dispatchEvent(event);
+            }
+
+            // Public method to get current theme
+            getCurrentTheme() {
+                return localStorage.getItem('kitsune_theme') || 'dark';
+            }
+
+            // Public method to set theme programmatically
+            setTheme(theme) {
+                if (theme === 'light' || theme === 'dark') {
+                    this.applyTheme(theme);
+                    localStorage.setItem('kitsune_theme', theme);
+                    this.dispatchThemeChange(theme);
+                }
+            }
+        }
+
+        // ===== FULLSCREEN FUNCTIONALITY =====
+        function toggleFullscreen() {
+            const videoPlayer = document.querySelector('.video-player iframe');
+
+            if (!document.fullscreenElement) {
+                if (videoPlayer.requestFullscreen) {
+                    videoPlayer.requestFullscreen();
+                } else if (videoPlayer.webkitRequestFullscreen) {
+                    videoPlayer.webkitRequestFullscreen();
+                } else if (videoPlayer.msRequestFullscreen) {
+                    videoPlayer.msRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
+        }
+
+        // ===== EPISODE MANAGEMENT =====
+        function loadEpisodes() {
+            fetch('episodes.html')
+                .then(res => res.text())
+                .then(html => {
+                    const container = document.getElementById("episodeListContainer");
+                    container.innerHTML = html;
+
+                    // Run the embedded script manually after HTML insertion
+                    const temp = document.createElement("div");
+                    temp.innerHTML = html;
+                    const scriptTag = temp.querySelector("script");
+
+                    if (scriptTag) {
+                        const newScript = document.createElement("script");
+                        newScript.textContent = scriptTag.textContent;
+                        document.body.appendChild(newScript);
+
+                        // Refresh the episode list highlighting after loading
+                        setTimeout(() => {
+                            refreshEpisodeHighlighting();
+                        }, 200);
+                    }
+                })
+                .catch(() => {
+                    document.getElementById("episodeListContainer").innerHTML =
+                        "<p style='color:var(--text-tertiary);'>Failed to load episode list.</p>";
+                });
+        }
+
+        function refreshEpisodeHighlighting() {
+            const currentEpisode = localStorage.getItem('kitsune_current_watching_episode') || '2';
+
+            // Remove current class from all episodes
+            document.querySelectorAll('.episode-item').forEach(item => {
+                item.classList.remove('current');
+            });
+
+            // Add current class to current episode
+            const currentEpisodeElement = document.querySelector(`.episode-item:nth-child(${currentEpisode})`);
+            if (currentEpisodeElement) {
+                currentEpisodeElement.classList.add('current');
+
+                // Scroll to current episode
+                setTimeout(() => {
+                    currentEpisodeElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }, 300);
+            }
+        }
+
+        // ===== ANIME RECOMMENDATIONS =====
+        async function loadAnimeForRow() {
+            try {
+                const response = await fetch('../../searchData.json');
+                if (!response.ok) {
+                    throw new Error('Failed to load anime data');
+                }
+                const animeData = await response.json();
+
+                // Get the stored order from localStorage (same as home page)
+                const storedOrder = JSON.parse(localStorage.getItem('kitsune_anime_order') || '[]');
+
+                let animeToShow = [];
+
+                if (storedOrder.length > 0) {
+                    // Use the same order as home page
+                    const animeMap = new Map();
+                    animeData.forEach(anime => {
+                        animeMap.set(anime.title, anime);
+                    });
+
+                    // Get first 3 anime from stored order
+                    animeToShow = storedOrder.slice(0, 3).map(title => animeMap.get(title)).filter(Boolean);
+                } else {
+                    // Fallback: show first 3 anime from JSON (reversed for newest first)
+                    animeToShow = animeData.reverse().slice(0, 3);
+                }
+
+                populateAnimeRow(animeToShow);
+            } catch (error) {
+                console.error('Error loading anime data:', error);
+                // Show fallback content
+                document.getElementById('animeRow').innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-tertiary);">
+                        <i class="fas fa-exclamation-circle" style="font-size: 2rem; margin-bottom: 15px;"></i>
+                        <p>Failed to load anime recommendations</p>
+                    </div>
+                `;
+            }
+        }
+
+        function populateAnimeRow(animeList) {
+            const animeRow = document.getElementById('animeRow');
+            animeRow.innerHTML = '';
+
+            animeList.forEach(anime => {
+                const animeCard = document.createElement('div');
+                animeCard.className = 'anime-card';
+
+                // Fix the image path based on current location
+                let imagePath = anime.image;
+
+                // If we're in a subdirectory (episode page), adjust the image path
+                const currentPath = window.location.pathname;
+                if (currentPath.includes('/donghua/') || currentPath.includes('/janime/')) {
+                    // We're in an episode page, need to go up two levels for images
+                    if (!imagePath.startsWith('../') && !imagePath.startsWith('http')) {
+                        imagePath = '../../' + imagePath;
+                    }
+                }
+
+                animeCard.innerHTML = `
+            <div class="anime-card-image">
+                <img src="${imagePath}" alt="${anime.title}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
+                <div class="anime-card-badge">NEW</div>
+            </div>
+            <div class="anime-card-content">
+                <h3>${anime.title}</h3>
+                <div class="anime-card-meta">
+                    <span>${anime.genre.split(',')[0]}</span>
+                    <div class="anime-card-rating">
+                        <i class="fas fa-star"></i>
+                        <span>9.8</span>
+                    </div>
+                </div>
+                <p class="anime-card-description">${anime.type}</p>
+            </div>
+        `;
+
+                // Add click event to navigate to anime page
+                animeCard.addEventListener('click', function () {
+                    // Get current page path to determine correct navigation
+                    const currentPath = window.location.pathname;
+
+                    // Check if we're in a subdirectory structure
+                    if (currentPath.includes('/donghua/') || currentPath.includes('/janime/')) {
+                        // We're in an episode page, need to go up two levels to reach home
+                        window.location.href = '../../' + anime.link;
+                    } else {
+                        // We're on home page or other location
+                        window.location.href = anime.link;
+                    }
+                });
+
+                animeRow.appendChild(animeCard);
+            });
+        }
+
+        // ===== NAVIGATION FUNCTIONS =====
+        function goToNextEpisode(episodeNumber) {
+            localStorage.setItem('kitsune_current_watching_episode', episodeNumber.toString());
+            window.location.href = 'episode' + episodeNumber + '.html';
+        }
+
+        function goToPreviousEpisode(episodeNumber) {
+            localStorage.setItem('kitsune_current_watching_episode', episodeNumber.toString());
+            window.location.href = 'episode' + episodeNumber + '.html';
+        }
+
+        // ===== INITIALIZE EVERYTHING =====
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize Theme Manager (THEME SYNC)
+            window.themeManager = new ThemeManager();
+
+            // Load other content
+            loadEpisodes();
+            loadAnimeForRow();
+
+            // Set current episode
+            localStorage.setItem('kitsune_current_watching_episode', '2');
+
+            console.log('Episode 2 page fully loaded with theme sync enabled');
+
+            // Add theme reset function to console for debugging
+            window.resetEpisodeTheme = function () {
+                localStorage.removeItem('kitsune_theme');
+                console.log('Theme preference reset. Refreshing page...');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            };
+            console.log('To reset theme, run: resetEpisodeTheme()');
+
+            // Add function to force theme change for testing
+            window.setThemeTest = function (theme) {
+                if (theme === 'light' || theme === 'dark') {
+                    window.themeManager.setTheme(theme);
+                    console.log('Theme forced to:', theme);
+                } else {
+                    console.log('Please use: setThemeTest("light") or setThemeTest("dark")');
+                }
+            };
+        });
+
+        // Refresh episode highlighting when page becomes visible
+        document.addEventListener('visibilitychange', function () {
+            if (!document.hidden) {
+                setTimeout(() => {
+                    refreshEpisodeHighlighting();
+                }, 100);
+            }
+        });
+    </script>
+</body>
+
+</html>

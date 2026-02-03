@@ -1,0 +1,299 @@
+<!-- episodes.html -->
+<style>
+  .episode-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(40, 40, 40, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 16px;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: pointer;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .episode-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(229, 9, 20, 0.1), transparent);
+    transition: left 0.6s ease;
+  }
+
+  .episode-item:hover::before {
+    left: 100%;
+  }
+
+  .episode-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(229, 9, 20, 0.3);
+    border-color: rgba(229, 9, 20, 0.3);
+    background: rgba(50, 50, 50, 0.9);
+  }
+
+  .episode-item img {
+    width: 120px;
+    height: 70px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    transition: var(--transition);
+  }
+
+  .episode-item:hover img {
+    border-color: rgba(229, 9, 20, 0.5);
+    transform: scale(1.05);
+  }
+
+  .episode-content {
+    flex: 1;
+  }
+
+  .episode-item h4 {
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 6px;
+    font-weight: 600;
+    background: linear-gradient(135deg, #fff 0%, #FF4D4D 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .episode-item .episode-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+
+  .episode-number {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(229, 9, 20, 0.4);
+  }
+
+  .episode-duration {
+    color: var(--gray);
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .episode-item .watch-now {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--primary-light);
+    font-size: 14px;
+    font-weight: 500;
+    transition: var(--transition);
+  }
+
+  .episode-item:hover .watch-now {
+    color: #fff;
+    transform: translateX(5px);
+  }
+
+  .episode-item .watch-now i {
+    font-size: 12px;
+    transition: var(--transition);
+  }
+
+  .episode-item:hover .watch-now i {
+    transform: translateX(3px);
+  }
+
+  /* Current episode styling */
+  .episode-item.current {
+    border: 2px solid var(--primary);
+    box-shadow: 0 0 20px rgba(229, 9, 20, 0.4);
+    background: linear-gradient(135deg, rgba(40, 40, 40, 0.9) 0%, rgba(229, 9, 20, 0.1) 100%);
+    position: relative;
+  }
+
+  .episode-item.current::after {
+    content: 'NOW PLAYING';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: var(--primary);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  /* Episode list header */
+  .episodes-header {
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  .episodes-header h2 {
+    font-size: 2rem;
+    background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+
+  .episodes-header p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+  }
+
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .episode-item {
+      padding: 12px;
+      gap: 12px;
+    }
+    
+    .episode-item img {
+      width: 100px;
+      height: 60px;
+    }
+    
+    .episode-item h4 {
+      font-size: 14px;
+    }
+    
+    .episodes-header h2 {
+      font-size: 1.5rem;
+    }
+    
+    .episode-item.current::after {
+      font-size: 9px;
+      padding: 3px 6px;
+    }
+  }
+</style>
+
+<div class="episodes-header">
+  <p>Continue your journey through the series</p>
+</div>
+
+<div id="episodeList"></div>
+
+<script>
+  const episodes = [
+    { 
+      number: "1-3", 
+      title: "Over Goddess", 
+      thumb: "../../Image & logo/over goddess.jpg", 
+      file: "episode1.html",
+      duration: "27:27"
+    },
+    { 
+      number: 4, 
+      title: "Over Goddess", 
+      thumb: "../../Image & logo/over goddess.jpg", 
+      file: "episode4.html",
+      duration: "8:47"
+    },
+    { 
+      number: 5, 
+      title: "Over Goddess", 
+      thumb: "../../Image & logo/over goddess.jpg", 
+      file: "episode5.html",
+      duration: "25:32"
+    }
+  ];
+
+  const list = document.getElementById("episodeList");
+  let currentEpisode = 1;
+
+  // Simple function to get current episode
+  function getCurrentEpisode() {
+    // Get from localStorage - this is the key to making it work
+    const currentEpisodeKey = 'kitsune_current_watching_episode';
+    const savedEpisode = localStorage.getItem(currentEpisodeKey);
+    
+    if (savedEpisode) {
+      return parseInt(savedEpisode);
+    }
+    
+    // Fallback: try to detect from URL
+    const path = window.location.pathname;
+    const match = path.match(/episode(\d+)/i);
+    if (match) return parseInt(match[1]);
+    
+    return 1;
+  }
+
+  // Function to update episode list highlighting
+  function updateEpisodeHighlighting() {
+    currentEpisode = getCurrentEpisode();
+    
+    // Remove current class from all episodes
+    document.querySelectorAll('.episode-item').forEach(item => {
+      item.classList.remove('current');
+    });
+    
+    // Add current class to current episode
+    const currentEpisodeElement = document.querySelector(`.episode-item:nth-child(${currentEpisode})`);
+    if (currentEpisodeElement) {
+      currentEpisodeElement.classList.add('current');
+    }
+  }
+
+  // Function to scroll to current episode
+  function scrollToCurrentEpisode() {
+    setTimeout(() => {
+      const currentEpisodeElement = document.querySelector('.episode-item.current');
+      if (currentEpisodeElement) {
+        currentEpisodeElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
+        });
+      }
+    }, 300);
+  }
+
+  // Render episodes
+  episodes.forEach(ep => {
+    const div = document.createElement("div");
+    div.className = "episode-item";
+    
+    div.innerHTML = `
+      <img src="${ep.thumb}" alt="Episode ${ep.number}">
+      <div class="episode-content">
+        <div class="episode-meta">
+          <span class="episode-number">EP ${ep.number}</span>
+          <span class="episode-duration">${ep.duration}</span>
+        </div>
+        <h4>${ep.title}</h4>
+        <div class="watch-now">
+          Watch Now <i class="fas fa-chevron-right"></i>
+        </div>
+      </div>
+    `;
+    
+    div.onclick = () => {
+      // Save the clicked episode as current watching episode
+      localStorage.setItem('kitsune_current_watching_episode', ep.number.toString());
+      // Navigate to the episode
+      window.location.href = ep.file;
+    };
+    list.appendChild(div);
+  });
+
+  // Initialize when page loads
+  setTimeout(() => {
+    updateEpisodeHighlighting();
+    scrollToCurrentEpisode();
+  }, 100);
+</script>

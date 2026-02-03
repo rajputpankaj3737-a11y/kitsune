@@ -355,5 +355,23 @@
     "link": "janime/Death Note/episode1.html",
     "status": "ongoing",
     "rating": 9.8
+  },
+  {
+    "title": "Over Goddess(Season 1)",
+    "type": "DONGHUA • Ep 40 [4K] • Sub",
+    "genre": "Action",
+    "image": "Image & logo/over goddess.jpg",
+    "link": "donghua/Over Goddess/episode1.html",
+    "status": "completed",
+    "rating": 8.8
+  },
+  {
+    "title": "Way of Choices [Ze Tian Ji]",
+    "type": "DONGHUA • Ep 3 [4K] • Sub",
+    "genre": "Action, Fantasy, Adventure, Historical, Martial Arts",
+    "image": "Image & logo/way of choices.webp",
+    "link": "donghua/Way of Choices/episode1.html",
+    "status": "ongoing",
+    "rating": 9.0
   }
 ]
