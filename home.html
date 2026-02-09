@@ -3435,20 +3435,55 @@
       return shuffled.slice(0, count);
     }
 
-    // ===== Get Random Anime for Featured (30 anime) =====
-    function getRandomFeaturedAnime(animeList, count = 30) {
-      if (animeList.length <= count) {
-        return [...animeList];
+    // ===== NEW: Get Featured Anime for Today (Changes once per day) =====
+    function getFeaturedAnimeForToday(animeList, count = 30) {
+      const storageKey = 'kitsune_featured_anime';
+      const timestampKey = 'kitsune_featured_timestamp';
+      
+      // Get current time
+      const currentTime = new Date().getTime();
+      const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+      
+      // Get stored featured anime and timestamp
+      let storedFeatured = [];
+      let lastUpdateTime = 0;
+      
+      try {
+        storedFeatured = JSON.parse(localStorage.getItem(storageKey) || '[]');
+        lastUpdateTime = localStorage.getItem(timestampKey) || 0;
+      } catch (e) {
+        console.error('Error loading featured anime:', e);
+        storedFeatured = [];
+        lastUpdateTime = 0;
       }
-
-      // Fisher-Yates shuffle
-      const shuffled = [...animeList];
-      for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      
+      // Check if we need to generate new featured anime
+      if (currentTime - lastUpdateTime > oneDay || storedFeatured.length === 0) {
+        console.log('Generating new featured anime for today');
+        
+        if (animeList.length <= count) {
+          storedFeatured = animeList;
+        } else {
+          // Fisher-Yates shuffle
+          const shuffled = [...animeList];
+          for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+          }
+          
+          storedFeatured = shuffled.slice(0, count);
+        }
+        
+        // Save to localStorage with current timestamp
+        localStorage.setItem(storageKey, JSON.stringify(storedFeatured));
+        localStorage.setItem(timestampKey, currentTime.toString());
+        
+        console.log('Featured anime saved for today:', storedFeatured.length, 'anime');
+      } else {
+        console.log('Using stored featured anime from today');
       }
-
-      return shuffled.slice(0, count);
+      
+      return storedFeatured;
     }
 
     // ===== Carousel Functions (5 seconds interval) =====
@@ -3760,13 +3795,13 @@
       const todaysReleases = getTodaysReleasesFromStorage(animeData);
       populateTodayReleases(todaysReleases);
 
-      // ===== FEATURED ANIME =====
-      // Get random anime for featured section (changes on each refresh) - 30 ANIME
-      const featuredAnime = getRandomFeaturedAnime(animeData, 30);
+      // ===== FEATURED ANIME ===== (Now changes once per day)
+      // Get featured anime for today (30 ANIME)
+      const featuredAnime = getFeaturedAnimeForToday(animeData, 30);
       populateFeaturedAnime(featuredAnime);
     }
 
-    // Populate Featured Anime (Random selection on each refresh) - NOW SHOWS 30 ANIME
+    // Populate Featured Anime (Changes once per day) - NOW SHOWS 30 ANIME
     function populateFeaturedAnime(animeList) {
       featuredAnimeGrid.innerHTML = '';
 
@@ -3850,7 +3885,8 @@
         const todaysReleases = getTodaysReleasesFromStorage(animeData);
         populateTodayReleases(todaysReleases);
 
-        const featuredAnime = getRandomFeaturedAnime(animeData, 30);
+        // Featured anime will stay the same as it's cached for the day
+        const featuredAnime = getFeaturedAnimeForToday(animeData, 30);
         populateFeaturedAnime(featuredAnime);
       }
     });
@@ -3968,6 +4004,17 @@
         }, 1000);
       };
       console.log('To reset theme preference, run: resetKitsuneTheme()');
+
+      // Add featured anime reset function
+      window.resetKitsuneFeatured = function () {
+        localStorage.removeItem('kitsune_featured_anime');
+        localStorage.removeItem('kitsune_featured_timestamp');
+        console.log('Featured anime reset. New set will be generated on refresh...');
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      };
+      console.log('To reset featured anime (force new selection), run: resetKitsuneFeatured()');
     });
   </script>
 </body>
