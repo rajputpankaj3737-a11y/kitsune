@@ -1253,11 +1253,17 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      cursor: pointer;
     }
 
     .view-all:hover {
       color: var(--primary-light);
       transform: translateX(5px);
+    }
+
+    /* Hide view less initially */
+    .view-less {
+      display: none;
     }
 
     /* ===== ANIME SECTIONS ===== */
@@ -1270,6 +1276,11 @@
       display: grid;
       grid-template-columns: repeat(6, 1fr);
       gap: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .anime-grid.expanded {
+      grid-template-columns: repeat(6, 1fr);
     }
 
     .anime-card {
@@ -2743,10 +2754,16 @@
     <div class="container">
       <div class="today-releases-header fade-in">
         <h2>Today's Releases</h2>
-        <a href="#" class="view-all">
-          View All
-          <i class="fas fa-chevron-right"></i>
-        </a>
+        <div class="view-toggle">
+          <a href="#" class="view-all" id="viewAllBtn">
+            View All
+            <i class="fas fa-chevron-right"></i>
+          </a>
+          <a href="#" class="view-all view-less" id="viewLessBtn">
+            View Less
+            <i class="fas fa-chevron-up"></i>
+          </a>
+        </div>
       </div>
 
       <!-- Today's releases grid - Always shows anime with latest episodes -->
@@ -2905,6 +2922,8 @@
     const todayReleasesGrid = document.getElementById('todayReleasesGrid');
     const animeCarousel = document.getElementById('animeCarousel');
     const carouselProgress = document.getElementById('carouselProgress');
+    const viewAllBtn = document.getElementById('viewAllBtn');
+    const viewLessBtn = document.getElementById('viewLessBtn');
 
     // Theme Toggle Elements
     const themeToggle = document.getElementById('themeToggle');
@@ -2934,6 +2953,9 @@
 
     // Global variable to store anime data
     let animeData = [];
+
+    // State for today's releases view
+    let isTodayReleasesExpanded = false;
 
     // ===== THEME SWITCHING FUNCTIONALITY =====
     function initializeThemeToggle() {
@@ -3381,7 +3403,7 @@
         }
       }
 
-      // Ensure we have exactly 6 anime
+      // Ensure we have exactly 6 anime for the initial view
       if (todaysReleases.length < 6) {
         const neededCount = 6 - todaysReleases.length;
         
@@ -3414,7 +3436,7 @@
         console.log('Filled with additional anime:', additionalTitles);
       }
 
-      // Always keep exactly 6 anime
+      // Always keep exactly 6 anime for initial view
       todaysReleases = todaysReleases.slice(0, 6);
 
       // Save updated tracking and today's releases
@@ -3457,6 +3479,64 @@
       } catch (e) {
         console.error('Error loading today releases:', e);
         return [];
+      }
+    }
+
+    // ===== Get Last Two Days Releases =====
+    function getLastTwoDaysReleases(allAnime) {
+      const releaseHistoryKey = 'kitsune_release_history';
+      
+      try {
+        // Get release history (anime that had new episodes in the last two days)
+        const releaseHistory = JSON.parse(localStorage.getItem(releaseHistoryKey) || '[]');
+        
+        if (releaseHistory.length === 0) {
+          // If no history, return all anime sorted by episode number
+          return [...allAnime]
+            .filter(anime => anime.status !== 'completed')
+            .sort((a, b) => {
+              const episodeA = extractEpisodeNumber(a.type);
+              const episodeB = extractEpisodeNumber(b.type);
+              return episodeB - episodeA;
+            })
+            .slice(0, 18);
+        }
+
+        // Create a map for quick lookup
+        const animeMap = new Map();
+        allAnime.forEach(anime => {
+          animeMap.set(anime.title, anime);
+        });
+
+        // Get anime from release history
+        const releases = [];
+        for (const title of releaseHistory) {
+          if (animeMap.has(title)) {
+            releases.push(animeMap.get(title));
+          }
+        }
+
+        // Add some ongoing anime if we have less than 18
+        if (releases.length < 18) {
+          const neededCount = 18 - releases.length;
+          const existingTitles = releases.map(a => a.title);
+          
+          const otherAnime = allAnime
+            .filter(anime => anime.status !== 'completed' && !existingTitles.includes(anime.title))
+            .sort((a, b) => {
+              const episodeA = extractEpisodeNumber(a.type);
+              const episodeB = extractEpisodeNumber(b.type);
+              return episodeB - episodeA;
+            })
+            .slice(0, neededCount);
+          
+          releases.push(...otherAnime);
+        }
+
+        return releases.slice(0, 18);
+      } catch (e) {
+        console.error('Error getting last two days releases:', e);
+        return allAnime.slice(0, 18);
       }
     }
 
@@ -3768,6 +3848,9 @@
         // Step 3: Populate Today's Releases and Featured sections
         populateAnimeSections(result.todaysReleases);
 
+        // Step 4: Setup view toggle buttons
+        setupViewToggle();
+
       } catch (error) {
         console.error('Error loading anime data:', error);
         // Fallback: use JSON data directly
@@ -3781,10 +3864,69 @@
         // Create carousel with fallback data
         createCarousel(animeData);
         populateAnimeSections([]);
+        setupViewToggle();
       }
     }
 
-    // ===== FIXED: Populate Today's Releases (ALWAYS show exactly 6 anime) =====
+    // ===== Setup View Toggle Buttons =====
+    function setupViewToggle() {
+      viewAllBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        expandTodayReleases();
+      });
+
+      viewLessBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        collapseTodayReleases();
+      });
+    }
+
+    // ===== Expand Today's Releases (Show Last 2 Days) =====
+    function expandTodayReleases() {
+      if (isTodayReleasesExpanded) return;
+      
+      isTodayReleasesExpanded = true;
+      
+      // Hide view all button, show view less button
+      viewAllBtn.style.display = 'none';
+      viewLessBtn.style.display = 'flex';
+      
+      // Get last two days releases
+      const lastTwoDaysAnime = getLastTwoDaysReleases(animeData);
+      
+      // Populate grid with expanded view
+      todayReleasesGrid.innerHTML = '';
+      lastTwoDaysAnime.slice(0, 18).forEach(anime => {
+        const animeCard = createAnimeCard(anime);
+        todayReleasesGrid.appendChild(animeCard);
+      });
+      
+      // Add smooth scroll to section
+      document.getElementById('today-releases').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ===== Collapse Today's Releases (Show 6 Anime) =====
+    function collapseTodayReleases() {
+      if (!isTodayReleasesExpanded) return;
+      
+      isTodayReleasesExpanded = false;
+      
+      // Hide view less button, show view all button
+      viewLessBtn.style.display = 'none';
+      viewAllBtn.style.display = 'flex';
+      
+      // Get today's releases from storage
+      const todaysReleases = getTodaysReleasesFromStorage(animeData);
+      
+      // Populate grid with collapsed view
+      todayReleasesGrid.innerHTML = '';
+      todaysReleases.slice(0, 6).forEach(anime => {
+        const animeCard = createAnimeCard(anime);
+        todayReleasesGrid.appendChild(animeCard);
+      });
+    }
+
+    // ===== FIXED: Populate Today's Releases (ALWAYS show exactly 6 anime initially) =====
     function populateTodayReleases(storedAnimeList) {
       todayReleasesGrid.innerHTML = '';
 
@@ -3820,16 +3962,21 @@
         console.log('Added', additionalAnime.length, 'more anime to reach 6 total');
       }
 
-      // Ensure we have exactly 6
+      // Ensure we have exactly 6 for initial view
       todaysAnime = todaysAnime.slice(0, 6);
 
-      console.log('Final Today Releases (6 total):', todaysAnime.map(a => a.title));
+      console.log('Initial Today Releases (6 total):', todaysAnime.map(a => a.title));
 
       // Create cards for all 6 anime
       todaysAnime.forEach(anime => {
         const animeCard = createAnimeCard(anime);
         todayReleasesGrid.appendChild(animeCard);
       });
+
+      // Reset view state
+      isTodayReleasesExpanded = false;
+      viewAllBtn.style.display = 'flex';
+      viewLessBtn.style.display = 'none';
     }
 
     // Populate anime sections
@@ -3927,7 +4074,19 @@
       if (animeData.length > 0) {
         // Re-populate sections to adjust grid layout
         const todaysReleases = getTodaysReleasesFromStorage(animeData);
-        populateTodayReleases(todaysReleases);
+        
+        if (isTodayReleasesExpanded) {
+          // If expanded, show last two days
+          const lastTwoDaysAnime = getLastTwoDaysReleases(animeData);
+          todayReleasesGrid.innerHTML = '';
+          lastTwoDaysAnime.slice(0, 18).forEach(anime => {
+            const animeCard = createAnimeCard(anime);
+            todayReleasesGrid.appendChild(animeCard);
+          });
+        } else {
+          // If collapsed, show today's releases
+          populateTodayReleases(todaysReleases);
+        }
 
         // Featured anime will stay the same as it's cached for the day
         const featuredAnime = getFeaturedAnimeForToday(animeData, 30);
