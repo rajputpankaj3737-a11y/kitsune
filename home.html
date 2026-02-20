@@ -25,7 +25,7 @@
         }
       }
 
-      // ===== CHANGE 3: Store first login date in localStorage =====
+      // Store first login date in localStorage
       const firstLoginDate = localStorage.getItem('kitsune_first_login_date');
       if (!firstLoginDate) {
         const currentDate = new Date().toLocaleDateString('en-US', {
@@ -34,10 +34,9 @@
           day: 'numeric'
         });
         localStorage.setItem('kitsune_first_login_date', currentDate);
-        console.log('First login date stored:', currentDate);
       }
 
-      // ===== NEW: Initialize Theme from localStorage =====
+      // Initialize Theme from localStorage
       function initializeTheme() {
         const savedTheme = localStorage.getItem('kitsune_theme');
         if (savedTheme === 'light') {
@@ -275,11 +274,8 @@
       padding: 18px 0;
       transition: var(--transition);
       background: rgba(15, 15, 15, 0.4) !important;
-      /* More transparent */
       backdrop-filter: blur(20px) saturate(180%) !important;
-      /* Stronger blur with saturation */
       -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-      /* Safari support */
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
@@ -1224,6 +1220,207 @@
     .hero-carousel-section {
       padding-top: 120px;
       background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+    }
+
+    /* ===== CONTINUE WATCHING SECTION ===== */
+    .continue-watching-section {
+      background: var(--bg-tertiary);
+      position: relative;
+    }
+
+    .continue-watching-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .continue-watching-header h2 {
+      font-size: 2.5rem;
+      margin: 0;
+    }
+
+    .continue-controls {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .delete-history-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-tertiary);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .delete-history-btn:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .continue-view-all {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .continue-view-all:hover {
+      color: var(--primary-light);
+      transform: translateX(5px);
+    }
+
+    .continue-view-less {
+      display: none;
+    }
+
+    /* Continue Watching Grid */
+    .continue-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .continue-grid.expanded {
+      grid-template-columns: repeat(6, 1fr);
+    }
+
+    .continue-card {
+      background: var(--card-bg-color);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: var(--transition);
+      border: 1px solid var(--card-border);
+      position: relative;
+      cursor: pointer;
+    }
+
+    .continue-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--current-shadow);
+      border-color: rgba(229, 9, 20, 0.3);
+    }
+
+    .continue-image {
+      height: 220px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .continue-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: var(--transition);
+    }
+
+    .continue-card:hover .continue-image img {
+      transform: scale(1.05);
+    }
+
+    .continue-progress {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      z-index: 2;
+    }
+
+    .continue-progress-bar {
+      height: 100%;
+      background: var(--primary);
+      width: 0%;
+    }
+
+    .continue-content {
+      padding: 15px;
+    }
+
+    .continue-content h3 {
+      font-size: 1rem;
+      margin-bottom: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--text-primary);
+    }
+
+    .continue-episode {
+      font-size: 0.8rem;
+      color: var(--primary);
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    .continue-time {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.7rem;
+      color: var(--text-tertiary);
+    }
+
+    .continue-time i {
+      color: var(--primary);
+      font-size: 0.6rem;
+    }
+
+    @media (max-width: 1400px) {
+      .continue-grid {
+        grid-template-columns: repeat(5, 1fr);
+      }
+    }
+
+    @media (max-width: 1200px) {
+      .continue-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (max-width: 992px) {
+      .continue-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .continue-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 12px;
+      }
+
+      .continue-image {
+        height: 160px;
+      }
+
+      .continue-content h3 {
+        font-size: 0.85rem;
+        height: 2.6em;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .continue-watching-header h2 {
+        font-size: 1.8rem !important;
+      }
     }
 
     /* ===== TODAY'S RELEASES SECTION (MOVED AFTER CAROUSEL) ===== */
@@ -2612,6 +2809,59 @@
       z-index: 1000;
       /* Changed from 9 to 1000 */
     }
+
+    /* ===== TOAST NOTIFICATION ===== */
+    .toast-notification {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: var(--primary);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 50px;
+      box-shadow: var(--current-shadow);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      pointer-events: none;
+    }
+
+    .toast-notification.show {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .toast-notification i {
+      font-size: 1.2rem;
+    }
+
+    .toast-notification.success {
+      background: #4CAF50;
+    }
+
+    .toast-notification.error {
+      background: #f44336;
+    }
+
+    .toast-notification.info {
+      background: var(--primary);
+    }
+
+    @media (max-width: 768px) {
+      .toast-notification {
+        bottom: 20px;
+        right: 20px;
+        left: 20px;
+        width: auto;
+        border-radius: 30px;
+      }
+    }
   </style>
 </head>
 
@@ -2631,6 +2881,7 @@
         <ul class="nav-links">
           <li><a href="#home">Home</a></li>
           <li><a href="#hero-carousel">Featured</a></li>
+          <li><a href="#continue-watching">Continue</a></li>
           <li><a href="#today-releases">Today's Releases</a></li>
           <li><a href="#genres">Genres</a></li>
         </ul>
@@ -2648,12 +2899,20 @@
             </label>
           </div>
 
+          <!-- Add this HTML right after the search-backdrop div -->
+          <div class="toast-notification" id="toastNotification">
+            <i class="fas fa-check-circle"></i>
+            <span id="toastMessage">Watch history deleted</span>
+          </div>
+
           <!-- Search Container with Icon Button -->
           <div class="search-container">
             <!-- Search Icon Button - WILL NOT CHANGE TO X -->
             <button class="search-icon-btn" id="searchIconBtn">
               <i class="fas fa-search"></i>
             </button>
+
+
 
             <!-- Expanding Search Box -->
             <div class="search-box" id="searchBox">
@@ -2669,6 +2928,8 @@
               <!-- Search results will be populated here -->
             </div>
           </div>
+
+
 
           <div class="user-actions">
             <a href="#" class="profile-btn" id="profileBtn">
@@ -2745,6 +3006,35 @@
         <div class="carousel-progress" id="carouselProgress">
           <!-- Progress dots will be populated by JavaScript -->
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Continue Watching Section - NEW SECTION -->
+  <section class="continue-watching-section" id="continue-watching" style="display: none;">
+    <div class="container">
+      <div class="continue-watching-header fade-in">
+        <h2>Continue Watching</h2>
+        <div class="continue-controls">
+          <button class="delete-history-btn" id="deleteHistoryBtn" title="Delete all history">
+            <i class="fas fa-trash"></i>
+          </button>
+          <div class="continue-toggle">
+            <a href="#" class="continue-view-all" id="continueViewAllBtn">
+              View All
+              <i class="fas fa-chevron-right"></i>
+            </a>
+            <a href="#" class="continue-view-all continue-view-less" id="continueViewLessBtn">
+              View Less
+              <i class="fas fa-chevron-up"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Continue Watching Grid -->
+      <div class="continue-grid" id="continueGrid">
+        <!-- Continue watching cards will be populated by JavaScript -->
       </div>
     </div>
   </section>
@@ -2925,6 +3215,13 @@
     const viewAllBtn = document.getElementById('viewAllBtn');
     const viewLessBtn = document.getElementById('viewLessBtn');
 
+    // Continue Watching Elements
+    const continueSection = document.getElementById('continue-watching');
+    const continueGrid = document.getElementById('continueGrid');
+    const deleteHistoryBtn = document.getElementById('deleteHistoryBtn');
+    const continueViewAllBtn = document.getElementById('continueViewAllBtn');
+    const continueViewLessBtn = document.getElementById('continueViewLessBtn');
+
     // Theme Toggle Elements
     const themeToggle = document.getElementById('themeToggle');
 
@@ -2956,6 +3253,299 @@
 
     // State for today's releases view
     let isTodayReleasesExpanded = false;
+
+    // State for continue watching view
+    let isContinueExpanded = false;
+
+    // ===== CONTINUE WATCHING FUNCTIONS =====
+
+    // Initialize Continue Watching from localStorage
+    function initContinueWatching() {
+      // Get watch history from localStorage
+      const watchHistory = getWatchHistory();
+
+      // If no history, hide the section
+      if (watchHistory.length === 0) {
+        continueSection.style.display = 'none';
+        return;
+      }
+
+      // Show the section
+      continueSection.style.display = 'block';
+
+      // Populate continue watching grid (show only first 6)
+      populateContinueGrid(watchHistory.slice(0, 6));
+
+      // Reset expanded state
+      isContinueExpanded = false;
+      continueViewAllBtn.style.display = 'flex';
+      continueViewLessBtn.style.display = 'none';
+    }
+
+    // Get watch history from localStorage
+    function getWatchHistory() {
+      try {
+        const history = JSON.parse(localStorage.getItem('kitsune_watch_history') || '[]');
+        return history;
+      } catch (e) {
+        console.error('Error loading watch history:', e);
+        return [];
+      }
+    }
+
+    // Save watch history to localStorage
+    function saveWatchHistory(history) {
+      localStorage.setItem('kitsune_watch_history', JSON.stringify(history));
+    }
+
+    // Add anime to watch history
+    function addToWatchHistory(anime, episode, progress) {
+      const history = getWatchHistory();
+
+      // Remove if already exists
+      const existingIndex = history.findIndex(item => item.title === anime.title);
+      if (existingIndex !== -1) {
+        history.splice(existingIndex, 1);
+      }
+
+      // Add to beginning (most recent first)
+      history.unshift({
+        title: anime.title,
+        image: anime.image,
+        genre: anime.genre,
+        episode: episode,
+        progress: progress,
+        link: anime.link,
+        timestamp: new Date().getTime()
+      });
+
+      // Keep only last 50 items
+      const trimmedHistory = history.slice(0, 50);
+
+      // Save to localStorage
+      saveWatchHistory(trimmedHistory);
+
+      // Refresh continue watching section
+      initContinueWatching();
+    }
+
+    // Delete all history
+    // Delete all history with toast notification (no confirmation)
+    function deleteAllHistory() {
+      // Delete history
+      localStorage.removeItem('kitsune_watch_history');
+
+      // Refresh continue watching section
+      initContinueWatching();
+
+      // Show toast notification
+      showToast('Watch history deleted', 'success');
+    }
+
+    // Toast notification function
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toastNotification');
+      const toastMessage = document.getElementById('toastMessage');
+      const toastIcon = toast.querySelector('i');
+
+      // Set message
+      toastMessage.textContent = message;
+
+      // Set icon based on type
+      if (type === 'success') {
+        toastIcon.className = 'fas fa-check-circle';
+        toast.className = 'toast-notification success';
+      } else if (type === 'error') {
+        toastIcon.className = 'fas fa-exclamation-circle';
+        toast.className = 'toast-notification error';
+      } else {
+        toastIcon.className = 'fas fa-info-circle';
+        toast.className = 'toast-notification info';
+      }
+
+      // Show toast
+      toast.classList.add('show');
+
+      // Hide after 3 seconds
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    // Optional: Add undo functionality (if you want)
+    let lastDeletedHistory = null;
+
+    // Delete all history with undo option
+    function deleteAllHistoryWithUndo() {
+      // Save current history for potential undo
+      lastDeletedHistory = getWatchHistory();
+
+      // Delete history
+      localStorage.removeItem('kitsune_watch_history');
+
+      // Refresh continue watching section
+      initContinueWatching();
+
+      // Show toast with undo button
+      showToastWithUndo('Watch history deleted');
+    }
+
+    // Toast with undo button
+    function showToastWithUndo(message) {
+      const toast = document.getElementById('toastNotification');
+      const toastMessage = document.getElementById('toastMessage');
+      const toastIcon = toast.querySelector('i');
+
+      // Create undo button if it doesn't exist
+      let undoBtn = document.getElementById('toastUndoBtn');
+      if (!undoBtn) {
+        undoBtn = document.createElement('button');
+        undoBtn.id = 'toastUndoBtn';
+        undoBtn.innerHTML = 'UNDO';
+        undoBtn.style.marginLeft = '15px';
+        undoBtn.style.background = 'rgba(255, 255, 255, 0.2)';
+        undoBtn.style.border = 'none';
+        undoBtn.style.color = 'white';
+        undoBtn.style.padding = '5px 15px';
+        undoBtn.style.borderRadius = '50px';
+        undoBtn.style.cursor = 'pointer';
+        undoBtn.style.fontWeight = '600';
+        undoBtn.style.fontSize = '0.9rem';
+        undoBtn.style.transition = 'all 0.2s ease';
+
+        undoBtn.addEventListener('mouseenter', function () {
+          this.style.background = 'rgba(255, 255, 255, 0.3)';
+        });
+
+        undoBtn.addEventListener('mouseleave', function () {
+          this.style.background = 'rgba(255, 255, 255, 0.2)';
+        });
+
+        undoBtn.addEventListener('click', function () {
+          if (lastDeletedHistory) {
+            saveWatchHistory(lastDeletedHistory);
+            initContinueWatching();
+            showToast('History restored', 'info');
+            lastDeletedHistory = null;
+          }
+          toast.classList.remove('show');
+        });
+
+        toast.appendChild(undoBtn);
+      }
+
+      // Set message
+      toastMessage.textContent = message;
+
+      // Set icon and class
+      toastIcon.className = 'fas fa-info-circle';
+      toast.className = 'toast-notification info';
+
+      // Show toast
+      toast.classList.add('show');
+
+      // Auto hide after 5 seconds (longer for undo option)
+      setTimeout(() => {
+        toast.classList.remove('show');
+        // Remove undo button when toast hides
+        if (undoBtn && undoBtn.parentNode) {
+          undoBtn.remove();
+        }
+      }, 5000);
+    }
+
+    // Populate continue watching grid
+    function populateContinueGrid(history) {
+      continueGrid.innerHTML = '';
+
+      history.forEach(item => {
+        const continueCard = createContinueCard(item);
+        continueGrid.appendChild(continueCard);
+      });
+    }
+
+    // Create continue watching card
+    function createContinueCard(item) {
+      const card = document.createElement('div');
+      card.className = 'continue-card';
+
+      // Format time ago
+      const timeAgo = getTimeAgo(item.timestamp);
+
+      card.innerHTML = `
+        <div class="continue-image">
+          <img src="${item.image}" alt="${item.title}" onerror="this.src='https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
+          <div class="continue-progress">
+            <div class="continue-progress-bar" style="width: ${item.progress}%"></div>
+          </div>
+        </div>
+        <div class="continue-content">
+          <h3>${item.title}</h3>
+          <div class="continue-episode">Episode ${item.episode}</div>
+          <div class="continue-time">
+            <span><i class="fas fa-clock"></i> ${timeAgo}</span>
+            <span>${item.progress}%</span>
+          </div>
+        </div>
+      `;
+
+      // Add click event to continue watching
+      card.addEventListener('click', function () {
+        window.location.href = item.link;
+      });
+
+      return card;
+    }
+
+    // Get time ago string
+    function getTimeAgo(timestamp) {
+      const now = new Date().getTime();
+      const diff = now - timestamp;
+
+      const minutes = Math.floor(diff / 60000);
+      const hours = Math.floor(diff / 3600000);
+      const days = Math.floor(diff / 86400000);
+
+      if (minutes < 60) {
+        return `${minutes}m ago`;
+      } else if (hours < 24) {
+        return `${hours}h ago`;
+      } else {
+        return `${days}d ago`;
+      }
+    }
+
+    // Expand continue watching (show all history)
+    function expandContinueWatching() {
+      if (isContinueExpanded) return;
+
+      isContinueExpanded = true;
+
+      // Hide view all button, show view less button
+      continueViewAllBtn.style.display = 'none';
+      continueViewLessBtn.style.display = 'flex';
+
+      // Get all watch history
+      const watchHistory = getWatchHistory();
+
+      // Populate grid with all history
+      populateContinueGrid(watchHistory);
+    }
+
+    // Collapse continue watching (show only first 6)
+    function collapseContinueWatching() {
+      if (!isContinueExpanded) return;
+
+      isContinueExpanded = false;
+
+      // Hide view less button, show view all button
+      continueViewLessBtn.style.display = 'none';
+      continueViewAllBtn.style.display = 'flex';
+
+      // Get watch history and show only first 6
+      const watchHistory = getWatchHistory().slice(0, 6);
+      populateContinueGrid(watchHistory);
+    }
 
     // ===== THEME SWITCHING FUNCTIONALITY =====
     function initializeThemeToggle() {
@@ -3334,7 +3924,7 @@
           console.log(`📢 NEW EPISODE: ${anime.title} - Ep ${previousEpisode} → Ep ${currentEpisode}`);
           animeWithNewEpisodes.push(anime.title);
           anime.hasNewEpisode = true;
-          
+
           // Add to release history if not already there
           if (!releaseHistory.includes(anime.title)) {
             releaseHistory.unshift(anime.title);
@@ -3353,7 +3943,7 @@
       if (animeWithNewEpisodes.length > 0) {
         // This is a new upload - update today's releases
         console.log('New episodes detected! Updating Today\'s Releases');
-        
+
         // Add new episode anime to the top
         animeWithNewEpisodes.forEach(title => {
           // Remove if already exists (to avoid duplicates)
@@ -3364,40 +3954,40 @@
 
         // Update last update timestamp
         localStorage.setItem(lastUpdateTimestampKey, currentTime.toString());
-        
+
         // Update release history (keep last 20 releases)
         releaseHistory = [...new Set([...animeWithNewEpisodes, ...releaseHistory])].slice(0, 20);
         localStorage.setItem(releaseHistoryKey, JSON.stringify(releaseHistory));
-        
+
         console.log('Added new episodes to top:', animeWithNewEpisodes);
       } else {
         // No new episodes - KEEP EXISTING TODAY'S RELEASES
         console.log('No new episodes detected - preserving Today\'s Releases');
-        
+
         // If today's releases is empty (first time), populate with some content
         if (todaysReleases.length === 0) {
           console.log('First time - populating Today\'s Releases');
-          
+
           // Get all ongoing anime
           const allOngoingAnime = processedAnime.filter(anime => anime.status !== 'completed');
-          
+
           // Sort by episode number (highest first) and then alphabetically
           const sortedAnime = [...allOngoingAnime].sort((a, b) => {
             const episodeA = extractEpisodeNumber(a.type);
             const episodeB = extractEpisodeNumber(b.type);
-            
+
             // First sort by episode number (descending)
             if (episodeB !== episodeA) {
               return episodeB - episodeA;
             }
-            
+
             // Then sort alphabetically
             return a.title.localeCompare(b.title);
           });
-          
+
           // Take first 6
           todaysReleases = sortedAnime.slice(0, 6).map(anime => anime.title);
-          
+
           // Update last update timestamp
           localStorage.setItem(lastUpdateTimestampKey, currentTime.toString());
         }
@@ -3406,33 +3996,33 @@
       // Ensure we have exactly 6 anime for the initial view
       if (todaysReleases.length < 6) {
         const neededCount = 6 - todaysReleases.length;
-        
+
         // Get all ongoing anime
         const allOngoingAnime = processedAnime.filter(anime => anime.status !== 'completed');
-        
+
         // Filter out anime already in today's list
-        const availableAnime = allOngoingAnime.filter(anime => 
+        const availableAnime = allOngoingAnime.filter(anime =>
           !todaysReleases.includes(anime.title)
         );
-        
+
         // Sort by episode number (highest first) and then alphabetically
         const sortedAnime = [...availableAnime].sort((a, b) => {
           const episodeA = extractEpisodeNumber(a.type);
           const episodeB = extractEpisodeNumber(b.type);
-          
+
           // First sort by episode number (descending)
           if (episodeB !== episodeA) {
             return episodeB - episodeA;
           }
-          
+
           // Then sort alphabetically
           return a.title.localeCompare(b.title);
         });
-        
+
         // Add the top anime to reach 6
         const additionalTitles = sortedAnime.slice(0, neededCount).map(anime => anime.title);
         todaysReleases = [...todaysReleases, ...additionalTitles];
-        
+
         console.log('Filled with additional anime:', additionalTitles);
       }
 
@@ -3485,11 +4075,11 @@
     // ===== Get Last Two Days Releases =====
     function getLastTwoDaysReleases(allAnime) {
       const releaseHistoryKey = 'kitsune_release_history';
-      
+
       try {
         // Get release history (anime that had new episodes in the last two days)
         const releaseHistory = JSON.parse(localStorage.getItem(releaseHistoryKey) || '[]');
-        
+
         if (releaseHistory.length === 0) {
           // If no history, return all anime sorted by episode number
           return [...allAnime]
@@ -3520,7 +4110,7 @@
         if (releases.length < 18) {
           const neededCount = 18 - releases.length;
           const existingTitles = releases.map(a => a.title);
-          
+
           const otherAnime = allAnime
             .filter(anime => anime.status !== 'completed' && !existingTitles.includes(anime.title))
             .sort((a, b) => {
@@ -3529,7 +4119,7 @@
               return episodeB - episodeA;
             })
             .slice(0, neededCount);
-          
+
           releases.push(...otherAnime);
         }
 
@@ -3563,15 +4153,15 @@
     function getFeaturedAnimeForToday(animeList, count = 30) {
       const storageKey = 'kitsune_featured_anime';
       const timestampKey = 'kitsune_featured_timestamp';
-      
+
       // Get current time
       const currentTime = new Date().getTime();
       const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-      
+
       // Get stored featured anime and timestamp
       let storedFeatured = [];
       let lastUpdateTime = 0;
-      
+
       try {
         storedFeatured = JSON.parse(localStorage.getItem(storageKey) || '[]');
         lastUpdateTime = localStorage.getItem(timestampKey) || 0;
@@ -3580,11 +4170,11 @@
         storedFeatured = [];
         lastUpdateTime = 0;
       }
-      
+
       // Check if we need to generate new featured anime
       if (currentTime - lastUpdateTime > oneDay || storedFeatured.length === 0) {
         console.log('Generating new featured anime for today');
-        
+
         if (animeList.length <= count) {
           storedFeatured = animeList;
         } else {
@@ -3594,19 +4184,19 @@
             const j = Math.floor(Math.random() * (i + 1));
             [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
           }
-          
+
           storedFeatured = shuffled.slice(0, count);
         }
-        
+
         // Save to localStorage with current timestamp
         localStorage.setItem(storageKey, JSON.stringify(storedFeatured));
         localStorage.setItem(timestampKey, currentTime.toString());
-        
+
         console.log('Featured anime saved for today:', storedFeatured.length, 'anime');
       } else {
         console.log('Using stored featured anime from today');
       }
-      
+
       return storedFeatured;
     }
 
@@ -3845,11 +4435,27 @@
         // Step 2: Create carousel with 10 random anime
         createCarousel(animeData);
 
-        // Step 3: Populate Today's Releases and Featured sections
+        // Step 3: Initialize Continue Watching
+        initContinueWatching();
+
+        // Step 4: Populate Today's Releases and Featured sections
         populateAnimeSections(result.todaysReleases);
 
-        // Step 4: Setup view toggle buttons
+        // Step 5: Setup view toggle buttons
         setupViewToggle();
+
+        // Step 6: Setup continue watching buttons
+        setupContinueWatchingButtons();
+
+        // Example: Add a test item to watch history (for testing)
+        // Uncomment this to test the feature
+        /*
+        if (animeData.length > 0) {
+          addToWatchHistory(animeData[0], 5, 45);
+          addToWatchHistory(animeData[1], 12, 78);
+          addToWatchHistory(animeData[2], 3, 22);
+        }
+        */
 
       } catch (error) {
         console.error('Error loading anime data:', error);
@@ -3863,9 +4469,41 @@
 
         // Create carousel with fallback data
         createCarousel(animeData);
+        initContinueWatching();
         populateAnimeSections([]);
         setupViewToggle();
+        setupContinueWatchingButtons();
       }
+    }
+
+    // Setup Continue Watching buttons
+    // Setup Continue Watching buttons
+    function setupContinueWatchingButtons() {
+      // View All button
+      continueViewAllBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        expandContinueWatching();
+      });
+
+      // View Less button
+      continueViewLessBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        collapseContinueWatching();
+      });
+
+      // Delete history button - OPTION 1: Simple toast (no confirmation)
+      deleteHistoryBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        deleteAllHistory(); // No confirmation, just toast
+      });
+
+      // OPTION 2: Toast with undo button (uncomment to use this instead)
+      /*
+      deleteHistoryBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          deleteAllHistoryWithUndo(); // Toast with undo option
+      });
+      */
     }
 
     // ===== Setup View Toggle Buttons =====
@@ -3884,23 +4522,23 @@
     // ===== Expand Today's Releases (Show Last 2 Days) =====
     function expandTodayReleases() {
       if (isTodayReleasesExpanded) return;
-      
+
       isTodayReleasesExpanded = true;
-      
+
       // Hide view all button, show view less button
       viewAllBtn.style.display = 'none';
       viewLessBtn.style.display = 'flex';
-      
+
       // Get last two days releases
       const lastTwoDaysAnime = getLastTwoDaysReleases(animeData);
-      
+
       // Populate grid with expanded view
       todayReleasesGrid.innerHTML = '';
       lastTwoDaysAnime.slice(0, 18).forEach(anime => {
         const animeCard = createAnimeCard(anime);
         todayReleasesGrid.appendChild(animeCard);
       });
-      
+
       // Add smooth scroll to section
       document.getElementById('today-releases').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -3908,16 +4546,16 @@
     // ===== Collapse Today's Releases (Show 6 Anime) =====
     function collapseTodayReleases() {
       if (!isTodayReleasesExpanded) return;
-      
+
       isTodayReleasesExpanded = false;
-      
+
       // Hide view less button, show view all button
       viewLessBtn.style.display = 'none';
       viewAllBtn.style.display = 'flex';
-      
+
       // Get today's releases from storage
       const todaysReleases = getTodaysReleasesFromStorage(animeData);
-      
+
       // Populate grid with collapsed view
       todayReleasesGrid.innerHTML = '';
       todaysReleases.slice(0, 6).forEach(anime => {
@@ -4063,6 +4701,8 @@
 
       // Add click event to navigate to anime page
       animeCard.addEventListener('click', function () {
+        // Add to watch history when clicked (example: episode 1, progress 0%)
+        addToWatchHistory(anime, 1, 0);
         window.location.href = anime.link;
       });
 
@@ -4074,7 +4714,7 @@
       if (animeData.length > 0) {
         // Re-populate sections to adjust grid layout
         const todaysReleases = getTodaysReleasesFromStorage(animeData);
-        
+
         if (isTodayReleasesExpanded) {
           // If expanded, show last two days
           const lastTwoDaysAnime = getLastTwoDaysReleases(animeData);
@@ -4091,6 +4731,9 @@
         // Featured anime will stay the same as it's cached for the day
         const featuredAnime = getFeaturedAnimeForToday(animeData, 30);
         populateFeaturedAnime(featuredAnime);
+
+        // Refresh continue watching
+        initContinueWatching();
       }
     });
 
@@ -4149,6 +4792,14 @@
               </div>
             </div>
           `;
+
+          // Add click event to add to watch history
+          resultItem.addEventListener('click', function (e) {
+            e.preventDefault();
+            addToWatchHistory(anime, 1, 0);
+            window.location.href = anime.link;
+          });
+
           searchResults.appendChild(resultItem);
         });
       }
@@ -4220,6 +4871,16 @@
         }, 1000);
       };
       console.log('To reset featured anime (force new selection), run: resetKitsuneFeatured()');
+
+      // Add watch history reset function
+      window.resetKitsuneHistory = function () {
+        localStorage.removeItem('kitsune_watch_history');
+        console.log('Watch history reset. Refreshing page...');
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      };
+      console.log('To reset watch history, run: resetKitsuneHistory()');
     });
   </script>
 </body>
