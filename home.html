@@ -3264,10 +3264,12 @@
     }
 
     // ===== FIXED: Smart Today's Releases Management =====
+    // This function now preserves last updated anime until new uploads
     function manageTodaysReleases(newAnimeData) {
       const trackingKey = 'kitsune_episode_tracking_v2';
       const todayKey = 'kitsune_today_releases';
-      const todayTimestampKey = 'kitsune_today_timestamp';
+      const lastUpdateTimestampKey = 'kitsune_last_update_timestamp';
+      const releaseHistoryKey = 'kitsune_release_history';
 
       // Get current episode tracking
       let episodeTracking = {};
@@ -3285,21 +3287,19 @@
         todaysReleases = [];
       }
 
-      // Get timestamp of last update
-      const lastUpdateTime = localStorage.getItem(todayTimestampKey) || 0;
-      const currentTime = new Date().getTime();
-      const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-
-      // Check if we need to reset today's releases (after 24 hours)
-      if (currentTime - lastUpdateTime > oneDay) {
-        console.log('Resetting today releases (24 hours passed)');
-        todaysReleases = [];
+      // Get release history (all previously updated anime)
+      let releaseHistory = [];
+      try {
+        releaseHistory = JSON.parse(localStorage.getItem(releaseHistoryKey) || '[]');
+      } catch (e) {
+        releaseHistory = [];
       }
 
-      console.log('Previous tracking:', episodeTracking);
-      console.log('Previous today releases:', todaysReleases);
+      // Get last update timestamp
+      const lastUpdateTime = localStorage.getItem(lastUpdateTimestampKey) || 0;
+      const currentTime = new Date().getTime();
 
-      // Track which anime have new episodes
+      // Track which anime have new episodes in this data load
       const animeWithNewEpisodes = [];
       const processedAnime = newAnimeData.map(anime => {
         const currentEpisode = extractEpisodeNumber(anime.type);
@@ -3312,6 +3312,11 @@
           console.log(`📢 NEW EPISODE: ${anime.title} - Ep ${previousEpisode} → Ep ${currentEpisode}`);
           animeWithNewEpisodes.push(anime.title);
           anime.hasNewEpisode = true;
+          
+          // Add to release history if not already there
+          if (!releaseHistory.includes(anime.title)) {
+            releaseHistory.unshift(anime.title);
+          }
         } else {
           anime.hasNewEpisode = false;
         }
@@ -3322,8 +3327,11 @@
         return anime;
       });
 
-      // ===== UPDATED LOGIC: Always maintain 6 anime with proper ranking =====
+      // ===== UPDATED LOGIC: Preserve last updated anime =====
       if (animeWithNewEpisodes.length > 0) {
+        // This is a new upload - update today's releases
+        console.log('New episodes detected! Updating Today\'s Releases');
+        
         // Add new episode anime to the top
         animeWithNewEpisodes.forEach(title => {
           // Remove if already exists (to avoid duplicates)
@@ -3332,53 +3340,89 @@
           todaysReleases.unshift(title);
         });
 
+        // Update last update timestamp
+        localStorage.setItem(lastUpdateTimestampKey, currentTime.toString());
+        
+        // Update release history (keep last 20 releases)
+        releaseHistory = [...new Set([...animeWithNewEpisodes, ...releaseHistory])].slice(0, 20);
+        localStorage.setItem(releaseHistoryKey, JSON.stringify(releaseHistory));
+        
         console.log('Added new episodes to top:', animeWithNewEpisodes);
+      } else {
+        // No new episodes - KEEP EXISTING TODAY'S RELEASES
+        console.log('No new episodes detected - preserving Today\'s Releases');
+        
+        // If today's releases is empty (first time), populate with some content
+        if (todaysReleases.length === 0) {
+          console.log('First time - populating Today\'s Releases');
+          
+          // Get all ongoing anime
+          const allOngoingAnime = processedAnime.filter(anime => anime.status !== 'completed');
+          
+          // Sort by episode number (highest first) and then alphabetically
+          const sortedAnime = [...allOngoingAnime].sort((a, b) => {
+            const episodeA = extractEpisodeNumber(a.type);
+            const episodeB = extractEpisodeNumber(b.type);
+            
+            // First sort by episode number (descending)
+            if (episodeB !== episodeA) {
+              return episodeB - episodeA;
+            }
+            
+            // Then sort alphabetically
+            return a.title.localeCompare(b.title);
+          });
+          
+          // Take first 6
+          todaysReleases = sortedAnime.slice(0, 6).map(anime => anime.title);
+          
+          // Update last update timestamp
+          localStorage.setItem(lastUpdateTimestampKey, currentTime.toString());
+        }
       }
 
-      // If we have less than 6 anime, fill with ongoing anime sorted by episode
+      // Ensure we have exactly 6 anime
       if (todaysReleases.length < 6) {
         const neededCount = 6 - todaysReleases.length;
-
+        
         // Get all ongoing anime
         const allOngoingAnime = processedAnime.filter(anime => anime.status !== 'completed');
-
+        
         // Filter out anime already in today's list
-        const availableAnime = allOngoingAnime.filter(anime =>
+        const availableAnime = allOngoingAnime.filter(anime => 
           !todaysReleases.includes(anime.title)
         );
-
+        
         // Sort by episode number (highest first) and then alphabetically
         const sortedAnime = [...availableAnime].sort((a, b) => {
           const episodeA = extractEpisodeNumber(a.type);
           const episodeB = extractEpisodeNumber(b.type);
-
+          
           // First sort by episode number (descending)
           if (episodeB !== episodeA) {
             return episodeB - episodeA;
           }
-
+          
           // Then sort alphabetically
           return a.title.localeCompare(b.title);
         });
-
+        
         // Add the top anime to reach 6
         const additionalTitles = sortedAnime.slice(0, neededCount).map(anime => anime.title);
         todaysReleases = [...todaysReleases, ...additionalTitles];
-
+        
         console.log('Filled with additional anime:', additionalTitles);
       }
 
       // Always keep exactly 6 anime
       todaysReleases = todaysReleases.slice(0, 6);
 
-      // Update timestamp
-      localStorage.setItem(todayTimestampKey, currentTime.toString());
-
       // Save updated tracking and today's releases
       localStorage.setItem(trackingKey, JSON.stringify(episodeTracking));
       localStorage.setItem(todayKey, JSON.stringify(todaysReleases));
 
       console.log('Final today releases (6 total):', todaysReleases);
+      console.log('Release history:', releaseHistory);
 
       return {
         animeData: processedAnime,
@@ -3988,6 +4032,8 @@
         localStorage.removeItem('kitsune_episode_tracking_v2');
         localStorage.removeItem('kitsune_today_releases');
         localStorage.removeItem('kitsune_today_timestamp');
+        localStorage.removeItem('kitsune_last_update_timestamp');
+        localStorage.removeItem('kitsune_release_history');
         console.log('Episode tracking reset. Refreshing page...');
         setTimeout(() => {
           window.location.reload();
