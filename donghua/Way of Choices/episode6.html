@@ -1278,11 +1278,11 @@
         <section class="anime-info-section">
             <img src="../../Image & logo/way of choices.webp" alt="Throne Of Seal" class="poster">
             <div class="anime-details">
-                <h1 class="anime-title">Way of Choices [Ze Tian Ji] — Episode 05</h1>
+                <h1 class="anime-title">Way of Choices [Ze Tian Ji] — Episode 06</h1>
                 <div class="anime-meta">
                     <span class="meta-tag">Chinese</span>
                     <span class="meta-tag">4K</span>
-                    <span class="meta-tag">Episode 05</span>
+                    <span class="meta-tag">Episode 06</span>
                 </div>
                 <p class="anime-description">
                     While the demons were rising, mankind was about to become extinct.
@@ -1304,7 +1304,7 @@
                 <!-- VIDEO PLAYER -->
                 <section class="video-section">
                     <div class="video-header">
-                        <h2>Now Playing: Episode 05</h2>
+                        <h2>Now Playing: Episode 06</h2>
                         <div class="video-controls">
                             <button onclick="toggleFullscreen()">
                                 <i class="fas fa-expand"></i>
@@ -1313,7 +1313,7 @@
                         </div>
                     </div>
                     <div class="video-player">
-                        <iframe allow="autoplay; fullscreen; picture-in-picture; web-share" class="dailymotion-player" frameborder="0" src="https://geo.dailymotion.com/player/xbkmm.html?video=k1eKEzXADsJtJKEUTlE" title="Dailymotion video player - WOCep05 eng+Indo CC [4K]" height="100%" width="100%" style="opacity: 1;"></iframe>
+                        <iframe allow="autoplay; fullscreen; picture-in-picture; web-share" class="dailymotion-player" frameborder="0" src="https://geo.dailymotion.com/player/xbj0x.html?video=k4acXmKj4nGqLXEYlQw" title="Dailymotion video player - WOC ep6 engsub + indo cc [4K]" height="100%" width="100%" style="opacity: 1;"></iframe>
                     </div>
                 </section>
 
@@ -1336,10 +1336,10 @@
 
                 <!-- NAVIGATION BUTTONS -->
                 <div class="nav-buttons-container">
-                    <button class="nav-button previous" onclick="goToPreviousEpisode(4)">
+                    <button class="nav-button previous" onclick="goToPreviousEpisode(5)">
                         <i class="fas fa-arrow-left"></i> PREVIOUS
                     </button>
-                    <button class="nav-button" onclick="goToNextEpisode(6)">
+                    <button class="nav-button" onclick="goToNextEpisode()">
                         NEXT <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
@@ -1525,7 +1525,7 @@
         }
 
         function refreshEpisodeHighlighting() {
-            const currentEpisode = localStorage.getItem('kitsune_current_watching_episode') || '5';
+            const currentEpisode = localStorage.getItem('kitsune_current_watching_episode') || '6';
 
             // Remove current class from all episodes
             document.querySelectorAll('.episode-item').forEach(item => {
@@ -1666,7 +1666,7 @@
             loadAnimeForRow();
             
             // Set current episode
-            localStorage.setItem('kitsune_current_watching_episode', '5');
+            localStorage.setItem('kitsune_current_watching_episode', '6');
             
             console.log('Episode 2 page fully loaded with theme sync enabled');
             
