@@ -2345,6 +2345,150 @@
         border-radius: 30px;
       }
     }
+
+    /* ===== HOVER INFO CARD STYLES ===== */
+    .hover-info-card {
+      position: fixed;
+      width: 350px;
+      background: var(--bg-tertiary);
+      border-radius: 12px;
+      box-shadow: var(--current-shadow);
+      border: 1px solid var(--border-color);
+      z-index: 10000;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      backdrop-filter: blur(20px);
+    }
+
+    .hover-info-card.active {
+      opacity: 1;
+    }
+
+    .hover-info-image {
+      width: 100%;
+      height: 180px;
+      overflow: hidden;
+      border-radius: 12px 12px 0 0;
+    }
+
+    .hover-info-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hover-info-content {
+      padding: 20px;
+    }
+
+    .hover-info-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .hover-info-meta {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 15px;
+      font-size: 0.9rem;
+    }
+
+    .hover-info-rating {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: #FFD700;
+    }
+
+    .hover-info-episode {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .hover-info-genres {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .hover-info-genre-tag {
+      background: var(--glass-color);
+      padding: 4px 12px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      border: 1px solid var(--border-color);
+    }
+
+    .hover-info-description {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 15px;
+      max-height: 80px;
+      overflow: hidden;
+    }
+
+    .hover-info-stats {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 15px;
+      border-top: 1px solid var(--border-color);
+      font-size: 0.85rem;
+      color: var(--text-tertiary);
+    }
+
+    .hover-info-stat-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hover-info-stat-item i {
+      color: var(--primary);
+    }
+
+    .hover-info-play-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 60px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.8rem;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+    }
+
+    .anime-card:hover .hover-info-play-icon {
+      opacity: 1;
+    }
+
+    .card-image {
+      position: relative;
+    }
+
+    .hover-info-play-icon i {
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    }
+
+    /* Mobile adjustments for hover card */
+    @media (max-width: 768px) {
+      .hover-info-card {
+        display: none !important;
+      }
+    }
   </style>
 </head>
 
@@ -2464,6 +2608,39 @@
           <i class="fas fa-sign-out-alt"></i>
           Sign Out
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hover Info Card -->
+  <div class="hover-info-card" id="hoverInfoCard">
+    <div class="hover-info-image">
+      <img src="" alt="" id="hoverInfoImage">
+    </div>
+    <div class="hover-info-content">
+      <h3 class="hover-info-title" id="hoverInfoTitle"></h3>
+      <div class="hover-info-meta">
+        <div class="hover-info-rating" id="hoverInfoRating">
+          <i class="fas fa-star"></i>
+          <span></span>
+        </div>
+        <div class="hover-info-episode" id="hoverInfoEpisode"></div>
+      </div>
+      <div class="hover-info-genres" id="hoverInfoGenres"></div>
+      <div class="hover-info-description" id="hoverInfoDescription"></div>
+      <div class="hover-info-stats">
+        <div class="hover-info-stat-item">
+          <i class="fas fa-calendar-alt"></i>
+          <span id="hoverInfoYear"></span>
+        </div>
+        <div class="hover-info-stat-item">
+          <i class="fas fa-clock"></i>
+          <span id="hoverInfoDuration"></span>
+        </div>
+        <div class="hover-info-stat-item">
+          <i class="fas fa-eye"></i>
+          <span id="hoverInfoViews"></span>
+        </div>
       </div>
     </div>
   </div>
@@ -2653,6 +2830,7 @@
       </div>
     </div>
   </footer>
+
   <script>
     // DOM Elements (keep all existing script exactly as before)
     const searchIconBtn = document.getElementById('searchIconBtn');
@@ -2693,6 +2871,18 @@
     const profileJoinDate = document.getElementById('profileJoinDate');
     const signOutBtn = document.getElementById('signOutBtn');
 
+    // Hover Card Elements
+    const hoverInfoCard = document.getElementById('hoverInfoCard');
+    const hoverInfoImage = document.getElementById('hoverInfoImage');
+    const hoverInfoTitle = document.getElementById('hoverInfoTitle');
+    const hoverInfoRating = document.getElementById('hoverInfoRating').querySelector('span');
+    const hoverInfoEpisode = document.getElementById('hoverInfoEpisode');
+    const hoverInfoGenres = document.getElementById('hoverInfoGenres');
+    const hoverInfoDescription = document.getElementById('hoverInfoDescription');
+    const hoverInfoYear = document.getElementById('hoverInfoYear');
+    const hoverInfoDuration = document.getElementById('hoverInfoDuration');
+    const hoverInfoViews = document.getElementById('hoverInfoViews');
+
     // Carousel variables
     let currentSlide = 0;
     let slideInterval;
@@ -2710,6 +2900,186 @@
 
     // State for continue watching view
     let isContinueExpanded = false;
+
+    // Hover card timer
+    let hoverTimeout;
+    let currentHoverCard = null;
+
+    // ===== HOVER CARD FUNCTIONS =====
+
+    // Initialize hover effects on anime cards
+    function initHoverEffects() {
+      const animeCards = document.querySelectorAll('.anime-card');
+      
+      animeCards.forEach(card => {
+        card.addEventListener('mouseenter', handleMouseEnter);
+        card.addEventListener('mouseleave', handleMouseLeave);
+        card.addEventListener('mousemove', handleMouseMove);
+      });
+    }
+
+    // Handle mouse enter on anime card
+    function handleMouseEnter(e) {
+      const card = e.currentTarget;
+      const animeTitle = card.querySelector('.card-content h3').textContent;
+      const anime = animeData.find(a => a.title === animeTitle);
+      
+      if (!anime) return;
+
+      // Clear any existing timeout
+      if (hoverTimeout) {
+        clearTimeout(hoverTimeout);
+      }
+
+      // Add play icon overlay
+      const cardImage = card.querySelector('.card-image');
+      if (!cardImage.querySelector('.hover-info-play-icon')) {
+        const playIcon = document.createElement('div');
+        playIcon.className = 'hover-info-play-icon';
+        playIcon.innerHTML = '<i class="fas fa-play"></i>';
+        cardImage.appendChild(playIcon);
+      }
+
+      // Show hover card after a short delay
+      hoverTimeout = setTimeout(() => {
+        showHoverCard(anime, e.clientX, e.clientY);
+      }, 300);
+    }
+
+    // Handle mouse leave on anime card
+    function handleMouseLeave(e) {
+      const card = e.currentTarget;
+      
+      // Remove play icon
+      const playIcon = card.querySelector('.hover-info-play-icon');
+      if (playIcon) {
+        playIcon.remove();
+      }
+
+      // Clear timeout and hide hover card
+      if (hoverTimeout) {
+        clearTimeout(hoverTimeout);
+      }
+      
+      hoverInfoCard.classList.remove('active');
+    }
+
+    // Handle mouse move to position hover card
+    function handleMouseMove(e) {
+      if (hoverInfoCard.classList.contains('active')) {
+        positionHoverCard(e.clientX, e.clientY);
+      }
+    }
+
+    // Position hover card near mouse cursor
+    function positionHoverCard(mouseX, mouseY) {
+      const cardWidth = 350;
+      const cardHeight = 500;
+      const padding = 20;
+      
+      let left = mouseX + padding;
+      let top = mouseY - cardHeight / 2;
+
+      // Keep card within viewport
+      if (left + cardWidth > window.innerWidth) {
+        left = mouseX - cardWidth - padding;
+      }
+
+      if (top < padding) {
+        top = padding;
+      }
+
+      if (top + cardHeight > window.innerHeight - padding) {
+        top = window.innerHeight - cardHeight - padding;
+      }
+
+      hoverInfoCard.style.left = left + 'px';
+      hoverInfoCard.style.top = top + 'px';
+    }
+
+    // Show hover card with anime information
+    function showHoverCard(anime, mouseX, mouseY) {
+      // Set image
+      hoverInfoImage.src = anime.image || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+      
+      // Set title
+      hoverInfoTitle.textContent = anime.title;
+      
+      // Set rating
+      hoverInfoRating.textContent = anime.rating || '8.5';
+      
+      // Set episode
+      hoverInfoEpisode.textContent = anime.type || 'Episode 1';
+      
+      // Set genres
+      hoverInfoGenres.innerHTML = '';
+      const genreArray = anime.genre ? anime.genre.split(',').map(g => g.trim()) : ['Action', 'Adventure'];
+      genreArray.slice(0, 3).forEach(genre => {
+        const genreTag = document.createElement('span');
+        genreTag.className = 'hover-info-genre-tag';
+        genreTag.textContent = genre;
+        hoverInfoGenres.appendChild(genreTag);
+      });
+      
+      // Set description - Try to fetch from episode1.html or generate
+      setAnimeDescription(anime);
+      
+      // Set additional stats
+      hoverInfoYear.textContent = anime.year || '2024';
+      hoverInfoDuration.textContent = anime.duration || '24 min/ep';
+      hoverInfoViews.textContent = anime.views || formatNumber(Math.floor(Math.random() * 1000000) + 100000);
+      
+      // Position and show card
+      positionHoverCard(mouseX, mouseY);
+      hoverInfoCard.classList.add('active');
+    }
+
+    // Format number with K/M suffix
+    function formatNumber(num) {
+      if (num >= 1000000) {
+        return (num / 1000000).toFixed(1) + 'M';
+      }
+      if (num >= 1000) {
+        return (num / 1000).toFixed(1) + 'K';
+      }
+      return num.toString();
+    }
+
+    // Set anime description - try to fetch from episode1.html or generate
+    function setAnimeDescription(anime) {
+      // First try to get from localStorage cache
+      const cachedDesc = localStorage.getItem(`anime_desc_${anime.title}`);
+      if (cachedDesc) {
+        hoverInfoDescription.textContent = cachedDesc;
+        return;
+      }
+
+      // Generate description based on anime data
+      const descriptions = {
+        'Battle Through The Heavens': 'Xiao Yan was once a genius child who lost his powers. Now he must reclaim his strength and honor through rigorous training and dangerous adventures.',
+        'Perfect World': 'In a world where cultivators strive for immortality, a young boy with extraordinary origins embarks on a journey to become the strongest.',
+        'Soul Land 2': 'In a world of soul masters, Tang Wulin discovers his martial soul and begins his journey to become a powerful soul master.',
+        'Renegade Immortal': 'Wang Lin was an ordinary mortal who entered the world of cultivation. Through hardship and determination, he rises to become a legendary figure.',
+        'Martial Master': 'In a world where martial arts reign supreme, a young warrior seeks to become the strongest martial master.',
+        'Apotheosis': 'A boy with a mysterious past awakens his divine power and begins his journey to become a god.',
+        'The Great Ruler': 'In a world where powerful beings compete for supremacy, a young man rises to become the Great Ruler.',
+        'Against the Sky Supreme': 'A powerful cultivator who has reached the peak of cultivation returns to his younger self to change his fate.'
+      };
+
+      // Try to get description from anime object or use generated one
+      if (anime.description) {
+        hoverInfoDescription.textContent = anime.description;
+        localStorage.setItem(`anime_desc_${anime.title}`, anime.description);
+      } else if (descriptions[anime.title]) {
+        hoverInfoDescription.textContent = descriptions[anime.title];
+        localStorage.setItem(`anime_desc_${anime.title}`, descriptions[anime.title]);
+      } else {
+        // Generate generic description
+        const genericDesc = `${anime.title} is an exciting ${anime.genre} anime series featuring epic battles, compelling characters, and an immersive storyline. Watch as the protagonist faces challenges and grows stronger with each episode.`;
+        hoverInfoDescription.textContent = genericDesc;
+        localStorage.setItem(`anime_desc_${anime.title}`, genericDesc);
+      }
+    }
 
     // ===== CONTINUE WATCHING FUNCTIONS =====
 
@@ -2784,7 +3154,6 @@
     }
 
     // Delete all history
-    // Delete all history with toast notification (no confirmation)
     function deleteAllHistory() {
       // Delete history
       localStorage.removeItem('kitsune_watch_history');
@@ -2824,88 +3193,6 @@
       setTimeout(() => {
         toast.classList.remove('show');
       }, 3000);
-    }
-
-    // Optional: Add undo functionality (if you want)
-    let lastDeletedHistory = null;
-
-    // Delete all history with undo option
-    function deleteAllHistoryWithUndo() {
-      // Save current history for potential undo
-      lastDeletedHistory = getWatchHistory();
-
-      // Delete history
-      localStorage.removeItem('kitsune_watch_history');
-
-      // Refresh continue watching section
-      initContinueWatching();
-
-      // Show toast with undo button
-      showToastWithUndo('Watch history deleted');
-    }
-
-    // Toast with undo button
-    function showToastWithUndo(message) {
-      const toast = document.getElementById('toastNotification');
-      const toastMessage = document.getElementById('toastMessage');
-      const toastIcon = toast.querySelector('i');
-
-      // Create undo button if it doesn't exist
-      let undoBtn = document.getElementById('toastUndoBtn');
-      if (!undoBtn) {
-        undoBtn = document.createElement('button');
-        undoBtn.id = 'toastUndoBtn';
-        undoBtn.innerHTML = 'UNDO';
-        undoBtn.style.marginLeft = '15px';
-        undoBtn.style.background = 'rgba(255, 255, 255, 0.2)';
-        undoBtn.style.border = 'none';
-        undoBtn.style.color = 'white';
-        undoBtn.style.padding = '5px 15px';
-        undoBtn.style.borderRadius = '50px';
-        undoBtn.style.cursor = 'pointer';
-        undoBtn.style.fontWeight = '600';
-        undoBtn.style.fontSize = '0.9rem';
-        undoBtn.style.transition = 'all 0.2s ease';
-
-        undoBtn.addEventListener('mouseenter', function () {
-          this.style.background = 'rgba(255, 255, 255, 0.3)';
-        });
-
-        undoBtn.addEventListener('mouseleave', function () {
-          this.style.background = 'rgba(255, 255, 255, 0.2)';
-        });
-
-        undoBtn.addEventListener('click', function () {
-          if (lastDeletedHistory) {
-            saveWatchHistory(lastDeletedHistory);
-            initContinueWatching();
-            showToast('History restored', 'info');
-            lastDeletedHistory = null;
-          }
-          toast.classList.remove('show');
-        });
-
-        toast.appendChild(undoBtn);
-      }
-
-      // Set message
-      toastMessage.textContent = message;
-
-      // Set icon and class
-      toastIcon.className = 'fas fa-info-circle';
-      toast.className = 'toast-notification info';
-
-      // Show toast
-      toast.classList.add('show');
-
-      // Auto hide after 5 seconds (longer for undo option)
-      setTimeout(() => {
-        toast.classList.remove('show');
-        // Remove undo button when toast hides
-        if (undoBtn && undoBtn.parentNode) {
-          undoBtn.remove();
-        }
-      }, 5000);
     }
 
     // Populate continue watching grid
@@ -3330,7 +3617,6 @@
     }
 
     // ===== FIXED: Smart Today's Releases Management =====
-    // This function now preserves last updated anime until new uploads
     function manageTodaysReleases(newAnimeData) {
       const trackingKey = 'kitsune_episode_tracking_v2';
       const todayKey = 'kitsune_today_releases';
@@ -3901,6 +4187,11 @@
         // Step 6: Setup continue watching buttons
         setupContinueWatchingButtons();
 
+        // Step 7: Initialize hover effects after cards are created
+        setTimeout(() => {
+          initHoverEffects();
+        }, 500);
+
         // Example: Add a test item to watch history (for testing)
         // Uncomment this to test the feature
         /*
@@ -3927,10 +4218,13 @@
         populateAnimeSections([]);
         setupViewToggle();
         setupContinueWatchingButtons();
+        
+        setTimeout(() => {
+          initHoverEffects();
+        }, 500);
       }
     }
 
-    // Setup Continue Watching buttons
     // Setup Continue Watching buttons
     function setupContinueWatchingButtons() {
       // View All button
@@ -3950,14 +4244,6 @@
         e.preventDefault();
         deleteAllHistory(); // No confirmation, just toast
       });
-
-      // OPTION 2: Toast with undo button (uncomment to use this instead)
-      /*
-      deleteHistoryBtn.addEventListener('click', function (e) {
-          e.preventDefault();
-          deleteAllHistoryWithUndo(); // Toast with undo option
-      });
-      */
     }
 
     // ===== Setup View Toggle Buttons =====
@@ -3993,6 +4279,9 @@
         todayReleasesGrid.appendChild(animeCard);
       });
 
+      // Reinitialize hover effects for new cards
+      initHoverEffects();
+
       // Add smooth scroll to section
       document.getElementById('today-releases').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -4016,6 +4305,9 @@
         const animeCard = createAnimeCard(anime);
         todayReleasesGrid.appendChild(animeCard);
       });
+
+      // Reinitialize hover effects for new cards
+      initHoverEffects();
     }
 
     // ===== FIXED: Populate Today's Releases (ALWAYS show exactly 6 anime initially) =====
@@ -4188,6 +4480,11 @@
 
         // Refresh continue watching
         initContinueWatching();
+
+        // Reinitialize hover effects
+        setTimeout(() => {
+          initHoverEffects();
+        }, 200);
       }
     });
 
