@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <script>
     // Fixed Auth Guard - Only redirect from signin page
@@ -1222,7 +1221,7 @@
       background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
     }
 
-    /* ===== CONTINUE WATCHING SECTION ===== */
+    /* ===== CONTINUE WATCHING SECTION (HISTORY ON MOBILE) ===== */
     .continue-watching-section {
       background: var(--bg-tertiary);
       position: relative;
@@ -1816,70 +1815,65 @@
       font-weight: 600;
     }
 
-    /* ===== RESPONSIVE DESIGN ===== */
-    @media (max-width: 1400px) {
-      .anime-grid {
-        grid-template-columns: repeat(5, 1fr);
-      }
+    /* ===== RED SIDEBAR & RED SCROLLBARS ===== */
+    /* For WebKit browsers (Chrome, Safari, Edge) */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+      background: transparent;
     }
 
-    @media (max-width: 1200px) {
-      .today-releases-header h2 {
-        font-size: 2.2rem;
-      }
-
-      .footer-content {
-        grid-template-columns: 1fr 1fr 1fr;
-      }
-
-      .footer-about {
-        grid-column: 1 / -1;
-        margin-bottom: 30px;
-      }
-
-      .anime-grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
-
-      .search-box.expanded {
-        width: 250px;
-      }
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary) !important;
+      border-radius: 8px;
+      border: 2px solid transparent;
+      background-clip: padding-box;
     }
 
-    @media (max-width: 992px) {
-      h1 {
-        font-size: 2.5rem;
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--primary-light) !important;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-tertiary);
+    }
+
+    /* For Firefox */
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--primary) var(--bg-tertiary);
+    }
+
+    /* Mobile sidebar (hamburger menu) styling - red background when active */
+    @media (max-width: 768px) {
+      .nav-links.active {
+        background: var(--primary) !important;
+        backdrop-filter: blur(20px);
+        border-left: 4px solid var(--primary-light);
       }
 
-      h2 {
-        font-size: 2rem;
+      .nav-links.active a {
+        color: white !important;
       }
 
-      .nav-links {
-        gap: 20px;
+      .nav-links.active a:hover {
+        color: rgba(255, 255, 255, 0.8) !important;
       }
 
-      .today-releases-header h2 {
-        font-size: 2rem;
+      .nav-links.active a::after {
+        background: white !important;
       }
 
-      .footer-content {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .anime-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-
-      .search-box.expanded {
-        width: 220px;
+      /* Change hamburger to red when active */
+      .hamburger.active span {
+        background: var(--primary) !important;
       }
     }
 
     /* ===== MOBILE SPECIFIC CHANGES (768px and below) ===== */
     @media (max-width: 768px) {
 
-      /* Existing modern mobile header/app styles (kept as is) */
+      /* ... existing modern mobile header/app styles (kept as is) ... */
       body {
         background: var(--bg-primary) !important;
         font-size: 14px;
@@ -2043,7 +2037,11 @@
       }
 
       .hamburger {
-        display: none !important;
+        display: flex !important;
+        flex-direction: column;
+        gap: 4px;
+        cursor: pointer;
+        z-index: 1001;
       }
 
       .hero-carousel-section {
@@ -2059,7 +2057,7 @@
         padding: 0 16px;
       }
 
-      /* ===== MOBILE GRID & SCROLL CHANGES (Your requested modifications) ===== */
+      /* ===== MOBILE GRID & SCROLL CHANGES ===== */
 
       /* 1. Anime cards show only poster and name (hide meta, rating, description) */
       .anime-card .card-meta,
@@ -2082,7 +2080,7 @@
         text-overflow: ellipsis;
       }
 
-      /* 2. Today's Releases & Continue Watching: single row with horizontal scroll */
+      /* 2. Today's Releases & Continue Watching (now HISTORY): single row with horizontal scroll */
       #todayReleasesGrid.anime-grid,
       #continueGrid.continue-grid {
         display: flex !important;
@@ -2096,6 +2094,20 @@
         /* Override grid */
       }
 
+      /* Change section title to "History" on mobile only */
+      .continue-watching-header h2::before {
+        content: "History";
+        display: inline-block;
+      }
+      .continue-watching-header h2 {
+        font-size: 0 !important;
+      }
+      .continue-watching-header h2::before {
+        font-size: 2rem !important;
+        font-weight: 700;
+        color: var(--primary-light);
+      }
+
       #todayReleasesGrid.anime-grid::-webkit-scrollbar,
       #continueGrid.continue-grid::-webkit-scrollbar {
         height: 4px;
@@ -2103,7 +2115,7 @@
 
       #todayReleasesGrid.anime-grid::-webkit-scrollbar-thumb,
       #continueGrid.continue-grid::-webkit-scrollbar-thumb {
-        background: var(--primary);
+        background: var(--primary) !important;
         border-radius: 4px;
       }
 
@@ -2186,6 +2198,19 @@
 
       .search-backdrop.active {
         display: block;
+      }
+
+      /* ===== HIDE VIEW ALL/LESS BUTTONS ON MOBILE ===== */
+      .today-releases-header .view-all,
+      .today-releases-header .view-less,
+      .continue-watching-header .continue-view-all,
+      .continue-watching-header .continue-view-less {
+        display: none !important;
+      }
+
+      /* Keep delete history button visible */
+      .delete-history-btn {
+        display: flex;
       }
     }
 
@@ -2453,7 +2478,7 @@
     </div>
   </section>
 
-  <!-- Continue Watching Section -->
+  <!-- Continue Watching Section (History on mobile) -->
   <section class="continue-watching-section" id="continue-watching" style="display: none;">
     <div class="container">
       <div class="continue-watching-header fade-in">
@@ -2629,7 +2654,7 @@
     </div>
   </footer>
   <script>
-    // DOM Elements
+    // DOM Elements (keep all existing script exactly as before)
     const searchIconBtn = document.getElementById('searchIconBtn');
     const searchIcon = searchIconBtn.querySelector('i');
     const searchBox = document.getElementById('searchBox');

@@ -1276,7 +1276,7 @@
     <div class="main-container">
         <!-- ANIME INFO SECTION -->
         <section class="anime-info-section">
-            <img src="../../Image & logo/way of choices.webp" alt="Throne Of Seal" class="poster">
+            <img src="../../Image & logo/way of choices.webp" alt="Way of Choices" class="poster">
             <div class="anime-details">
                 <h1 class="anime-title">Way of Choices [Ze Tian Ji] — Episode 06</h1>
                 <div class="anime-meta">
@@ -1317,11 +1317,11 @@
                     </div>
                 </section>
 
-                <!-- ANIME LIST SECTION -->
+                <!-- ANIME LIST SECTION (NOW WITH ROTATING RECOMMENDATIONS + STATUS BADGE) -->
                 <section class="anime-list-section">
                     <h2>More Anime You Might Like</h2>
                     <div class="anime-row" id="animeRow">
-                        <!-- Anime will be loaded dynamically -->
+                        <!-- Anime will be loaded dynamically (random selection, status badge) -->
                     </div>
                 </section>
             </div>
@@ -1339,7 +1339,7 @@
                     <button class="nav-button previous" onclick="goToPreviousEpisode(5)">
                         <i class="fas fa-arrow-left"></i> PREVIOUS
                     </button>
-                    <button class="nav-button" onclick="goToNextEpisode()">
+                    <button class="nav-button" onclick="goToNextEpisode(7)">
                         NEXT <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
@@ -1547,7 +1547,7 @@
             }
         }
 
-        // ===== ANIME RECOMMENDATIONS =====
+        // ===== UPDATED ANIME RECOMMENDATIONS (RANDOM + STATUS BADGE) =====
         async function loadAnimeForRow() {
             try {
                 const response = await fetch('../../searchData.json');
@@ -1556,24 +1556,18 @@
                 }
                 const animeData = await response.json();
 
-                // Get the stored order from localStorage (same as home page)
-                const storedOrder = JSON.parse(localStorage.getItem('kitsune_anime_order') || '[]');
+                // Filter out the current anime (Way of Choices) to avoid showing it in recommendations
+                const otherAnime = animeData.filter(anime => 
+                    !anime.title.toLowerCase().includes('way of choices') && 
+                    !anime.title.toLowerCase().includes('ze tian ji')
+                );
 
-                let animeToShow = [];
+                // If we have less than 3 other anime, just use all of them
+                const pool = otherAnime.length >= 3 ? otherAnime : animeData;
 
-                if (storedOrder.length > 0) {
-                    // Use the same order as home page
-                    const animeMap = new Map();
-                    animeData.forEach(anime => {
-                        animeMap.set(anime.title, anime);
-                    });
-
-                    // Get first 3 anime from stored order
-                    animeToShow = storedOrder.slice(0, 3).map(title => animeMap.get(title)).filter(Boolean);
-                } else {
-                    // Fallback: show first 3 anime from JSON (reversed for newest first)
-                    animeToShow = animeData.reverse().slice(0, 3);
-                }
+                // Shuffle array and pick first 3 (random selection)
+                const shuffled = [...pool].sort(() => 0.5 - Math.random());
+                const animeToShow = shuffled.slice(0, 3);
 
                 populateAnimeRow(animeToShow);
             } catch (error) {
@@ -1608,21 +1602,24 @@
                     }
                 }
 
+                // Use the actual status from JSON (e.g., "Ongoing", "Completed"), fallback to "NEW" if missing
+                const statusText = anime.status && anime.status.trim() !== '' ? anime.status : 'NEW';
+
                 animeCard.innerHTML = `
             <div class="anime-card-image">
                 <img src="${imagePath}" alt="${anime.title}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
-                <div class="anime-card-badge">NEW</div>
+                <div class="anime-card-badge">${statusText}</div>
             </div>
             <div class="anime-card-content">
                 <h3>${anime.title}</h3>
                 <div class="anime-card-meta">
-                    <span>${anime.genre.split(',')[0]}</span>
+                    <span>${anime.genre ? anime.genre.split(',')[0] : 'Anime'}</span>
                     <div class="anime-card-rating">
                         <i class="fas fa-star"></i>
                         <span>9.8</span>
                     </div>
                 </div>
-                <p class="anime-card-description">${anime.type}</p>
+                <p class="anime-card-description">${anime.type || ''}</p>
             </div>
         `;
 
@@ -1663,12 +1660,12 @@
             
             // Load other content
             loadEpisodes();
-            loadAnimeForRow();
+            loadAnimeForRow(); // Now picks random anime each time
             
             // Set current episode
             localStorage.setItem('kitsune_current_watching_episode', '6');
             
-            console.log('Episode 2 page fully loaded with theme sync enabled');
+            console.log('Episode 6 page fully loaded with rotating recommendations + status badges');
             
             // Add theme reset function to console for debugging
             window.resetEpisodeTheme = function() {
