@@ -229,14 +229,13 @@
 
         .nav-links a {
             text-decoration: none;
-            color: var(--text-primary);
+            color: white;
             font-weight: 500;
             padding: 10px 20px;
             border-radius: 50px;
             transition: var(--transition);
             border: 1px solid var(--border-color);
             background: var(--primary);
-            color: white;
         }
 
         .nav-links a:hover {
@@ -410,6 +409,12 @@
             align-items: center;
             justify-content: center;
             color: var(--gray);
+        }
+
+        .video-player iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
 
         /* EPISODE LIST */
@@ -702,14 +707,19 @@
             background: var(--primary-dark);
         }
 
-        /* Next Button */
-        .next-button {
+        /* Navigation Buttons */
+        .nav-buttons-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .nav-button {
             background: var(--primary);
             border: none;
             color: white;
-            padding: 15px 40px;
-            min-width: 460px;
-            width: auto;
+            padding: 15px 30px;
+            min-width: 400px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
@@ -722,15 +732,19 @@
             transition: var(--transition);
         }
 
-        .next-button:hover {
+        .nav-button:hover {
             background: var(--primary-dark);
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
         }
 
-        .next-button-container {
-            left: auto;
-            right: 20px;
+        .nav-button.previous {
+            background: #dc3545;
+            color: white;
+        }
+
+        .nav-button.previous:hover {
+            background: #c82333;
         }
 
         /* ===== EPISODE LIST STYLES ===== */
@@ -870,7 +884,7 @@
                 display: contents;
             }
 
-            /* CONTACT SECTION IS NOW VISIBLE ON MOBILE - REMOVED display: none */
+            /* CONTACT SECTION IS NOW VISIBLE ON MOBILE */
             .contact-section {
                 order: 4;
                 width: 100%;
@@ -883,18 +897,20 @@
                 box-shadow: none;
             }
 
-            /* Next button is visible on mobile */
-            .next-button-container {
-                display: block !important;
+            /* Navigation buttons visible on mobile */
+            .nav-buttons-container {
+                display: flex !important;
                 order: 3;
                 width: 100%;
                 padding: 0 16px;
                 margin: 20px 0;
+                gap: 10px;
             }
 
-            .next-button {
-                min-width: 100%;
-                margin: 10px 0;
+            .nav-button {
+                min-width: calc(50% - 5px);
+                padding: 12px 10px;
+                font-size: 0.9rem;
             }
 
             .episode-list {
@@ -1151,7 +1167,7 @@
 
             .contact-form input,
             .contact-form textarea {
-                font-size: 16px; /* Prevents zoom on iOS */
+                font-size: 16px;
                 padding: 14px;
             }
         }
@@ -1219,9 +1235,10 @@
                 height: 2.4em;
             }
 
-            .next-button {
-                padding: 12px 20px;
-                font-size: 0.9rem;
+            .nav-button {
+                padding: 12px 8px;
+                font-size: 0.85rem;
+                min-width: calc(50% - 5px);
             }
         }
     </style>
@@ -1237,7 +1254,7 @@
         </a>
         
         <div class="nav-actions">
-            <!-- THEME TOGGLE SWITCH - NOW ON RIGHT SIDE -->
+            <!-- THEME TOGGLE SWITCH - ON RIGHT SIDE -->
             <div class="theme-toggle-container">
                 <input type="checkbox" id="themeToggle" class="theme-toggle-checkbox">
                 <label for="themeToggle" class="theme-toggle-label">
@@ -1261,13 +1278,14 @@
         <section class="anime-info-section">
             <img src="../../Image & logo/Return of the divine emperor.webp" alt="Throne Of Seal" class="poster">
             <div class="anime-details">
-                <h1 class="anime-title"></h1>
+                <h1 class="anime-title">Return Of The Immortal Emperor</h1>
                 <div class="anime-meta">
                     <span class="meta-tag">Chinese</span>
                     <span class="meta-tag">4K</span>
+                    <span class="meta-tag">Episode 16</span>
                 </div>
                 <p class="anime-description">
-                    The young warrior Yun Qingyan disappeared from the world three years ago, but he was actually drawn into the fairy world for three thousand years! With his extraordinary talent, he became the Yun Emperor, one of the ten great fairy emperors. However, because he was tired of the intrigues in the fairy world and missed his family, he decided to return to the human world at all costs. Upon return to the human world, his parents and sister strangely disappeared, and due to an incident whilst traveling from the fairy world to the human world, he lost his magic weapon and his cultivation became almost zero. Major forces took this opportunity to hunt him down. The fairy emperor became the target of public criticism, and his family was in danger! Yun Qingyan relied on his extraordinary fairy emperor talent to refine pills and array formations, study and practice, and overwhelm his enemies. He embarked on an adventure to revive his family, find his relatives, and rectify the mortal world.
+                   The young warrior Yun Qingyan disappeared from the world three years ago, but he was actually drawn into the fairy world for three thousand years! With his extraordinary talent, he became the Yun Emperor, one of the ten great fairy emperors. However, because he was tired of the intrigues in the fairy world and missed his family, he decided to return to the human world at all costs. Upon return to the human world, his parents and sister strangely disappeared, and due to an incident whilst traveling from the fairy world to the human world, he lost his magic weapon and his cultivation became almost zero. Major forces took this opportunity to hunt him down. The fairy emperor became the target of public criticism, and his family was in danger! Yun Qingyan relied on his extraordinary fairy emperor talent to refine pills and array formations, study and practice, and overwhelm his enemies. He embarked on an adventure to revive his family, find his relatives, and rectify the mortal world.
                 </p>
             </div>
         </section>
@@ -1278,10 +1296,16 @@
                 <!-- VIDEO PLAYER -->
                 <section class="video-section">
                     <div class="video-header">
-                        <h2>Now Playing: Episode 01</h2>
+                        <h2>Now Playing: Episode 16</h2>
+                        <div class="video-controls">
+                            <button onclick="toggleFullscreen()">
+                                <i class="fas fa-expand"></i>
+                                Fullscreen
+                            </button>
+                        </div>
                     </div>
                     <div class="video-player">
-                        <iframe allow="autoplay; fullscreen; picture-in-picture; web-share" class="dailymotion-player" frameborder="0" src="https://geo.dailymotion.com/player/xbkmm.html?video=k5gqBUGO94YWYCENsxK" title="Dailymotion video player - WTCep01 Eng+Indo CC [4K]" height="100%" width="100%" style="opacity: 1;"></iframe>
+                        <iframe allow="autoplay; fullscreen; picture-in-picture; web-share" class="dailymotion-player" frameborder="0" src="https://geo.dailymotion.com/player/xbj0x.html?video=k6nDWFRvv4NExwENskI" title="Dailymotion video player - WOC ep2 engsub + indo cc [4K]" height="100%" width="100%" style="opacity: 1;"></iframe>
                     </div>
                 </section>
 
@@ -1302,15 +1326,14 @@
                     <div id="episodeListContainer">Loading episodes...</div>
                 </section>
 
-                <!-- NEXT BUTTON -->
-                <div class="next-button-container">
-                    <button class="next-button" onclick="goToNextEpisode(2)">
-                        NEXT EPISODE
-                        <i class="fas fa-arrow-right"></i>
+                <!-- NAVIGATION BUTTONS -->
+                <div class="nav-buttons-container">
+                    <button class="nav-button previous" onclick="goToPreviousEpisode(15)">
+                        <i class="fas fa-arrow-left"></i> PREVIOUS
                     </button>
                 </div>
 
-                <!-- CONTACT SECTION - NOW VISIBLE ON MOBILE TOO -->
+                <!-- CONTACT SECTION - VISIBLE ON MOBILE TOO -->
                 <section class="contact-section" id="contact">
                     <h2>Contact Us</h2>
                     <form action="https://formsubmit.co/kitsuneanime436@gmail.com" method="POST" class="contact-form">
@@ -1437,6 +1460,29 @@
             }
         }
 
+        // ===== FULLSCREEN FUNCTIONALITY =====
+        function toggleFullscreen() {
+            const videoPlayer = document.querySelector('.video-player iframe');
+            
+            if (!document.fullscreenElement) {
+                if (videoPlayer.requestFullscreen) {
+                    videoPlayer.requestFullscreen();
+                } else if (videoPlayer.webkitRequestFullscreen) {
+                    videoPlayer.webkitRequestFullscreen();
+                } else if (videoPlayer.msRequestFullscreen) {
+                    videoPlayer.msRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
+        }
+
         // ===== EPISODE MANAGEMENT =====
         function loadEpisodes() {
             fetch('episodes.html')
@@ -1468,7 +1514,7 @@
         }
 
         function refreshEpisodeHighlighting() {
-            const currentEpisode = localStorage.getItem('kitsune_current_watching_episode') || '1';
+            const currentEpisode = localStorage.getItem('kitsune_current_watching_episode') || '16';
 
             // Remove current class from all episodes
             document.querySelectorAll('.episode-item').forEach(item => {
@@ -1490,8 +1536,7 @@
             }
         }
 
-        // ===== UPDATED ANIME RECOMMENDATIONS =====
-        // This function now picks 3 random anime on every load and uses their actual 'status' field
+        // ===== ANIME RECOMMENDATIONS =====
         async function loadAnimeForRow() {
             try {
                 const response = await fetch('../../searchData.json');
@@ -1500,18 +1545,24 @@
                 }
                 const animeData = await response.json();
 
-                // Filter out the current anime (Way of Choices) to avoid showing it in recommendations
-                const otherAnime = animeData.filter(anime => 
-                    !anime.title.toLowerCase().includes('way of choices') && 
-                    !anime.title.toLowerCase().includes('ze tian ji')
-                );
+                // Get the stored order from localStorage (same as home page)
+                const storedOrder = JSON.parse(localStorage.getItem('kitsune_anime_order') || '[]');
 
-                // If we have less than 3 other anime, just use all of them
-                const pool = otherAnime.length >= 3 ? otherAnime : animeData;
+                let animeToShow = [];
 
-                // Shuffle array and pick first 3 (random selection)
-                const shuffled = [...pool].sort(() => 0.5 - Math.random());
-                const animeToShow = shuffled.slice(0, 3);
+                if (storedOrder.length > 0) {
+                    // Use the same order as home page
+                    const animeMap = new Map();
+                    animeData.forEach(anime => {
+                        animeMap.set(anime.title, anime);
+                    });
+
+                    // Get first 3 anime from stored order
+                    animeToShow = storedOrder.slice(0, 3).map(title => animeMap.get(title)).filter(Boolean);
+                } else {
+                    // Fallback: show first 3 anime from JSON (reversed for newest first)
+                    animeToShow = animeData.reverse().slice(0, 3);
+                }
 
                 populateAnimeRow(animeToShow);
             } catch (error) {
@@ -1546,24 +1597,21 @@
                     }
                 }
 
-                // Use the actual status from JSON (e.g., "Ongoing", "Completed"), fallback to "NEW" if missing
-                const statusText = anime.status && anime.status.trim() !== '' ? anime.status : 'NEW';
-
                 animeCard.innerHTML = `
             <div class="anime-card-image">
                 <img src="${imagePath}" alt="${anime.title}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
-                <div class="anime-card-badge">${statusText}</div>
+                <div class="anime-card-badge">NEW</div>
             </div>
             <div class="anime-card-content">
                 <h3>${anime.title}</h3>
                 <div class="anime-card-meta">
-                    <span>${anime.genre ? anime.genre.split(',')[0] : 'Anime'}</span>
+                    <span>${anime.genre.split(',')[0]}</span>
                     <div class="anime-card-rating">
                         <i class="fas fa-star"></i>
                         <span>9.8</span>
                     </div>
                 </div>
-                <p class="anime-card-description">${anime.type || ''}</p>
+                <p class="anime-card-description">${anime.type}</p>
             </div>
         `;
 
@@ -1591,20 +1639,25 @@
             localStorage.setItem('kitsune_current_watching_episode', episodeNumber.toString());
             window.location.href = 'episode' + episodeNumber + '.html';
         }
+        
+        function goToPreviousEpisode(episodeNumber) {
+            localStorage.setItem('kitsune_current_watching_episode', episodeNumber.toString());
+            window.location.href = 'episode' + episodeNumber + '.html';
+        }
 
         // ===== INITIALIZE EVERYTHING =====
         document.addEventListener('DOMContentLoaded', function () {
-            // Initialize Theme Manager (MOST IMPORTANT FOR SYNC)
+            // Initialize Theme Manager (THEME SYNC)
             window.themeManager = new ThemeManager();
             
             // Load other content
             loadEpisodes();
-            loadAnimeForRow(); // Now picks random anime each time
+            loadAnimeForRow();
             
             // Set current episode
-            localStorage.setItem('kitsune_current_watching_episode', '1');
+            localStorage.setItem('kitsune_current_watching_episode', '16');
             
-            console.log('Episode page fully loaded with theme sync enabled and rotating recommendations');
+            console.log('Episode 16 page fully loaded with theme sync enabled');
             
             // Add theme reset function to console for debugging
             window.resetEpisodeTheme = function() {
