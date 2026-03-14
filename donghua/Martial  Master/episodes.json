@@ -1,0 +1,92 @@
+{
+  "animeTitle": "Martial Master",
+  "poster": "../../Image & logo/Martial Master.webp",
+  "description": "In a world where martial arts reign supreme, a young warrior named Qin Chen embarks on a journey to become the strongest martial master. Facing countless enemies and uncovering ancient secrets, he must overcome his limits and master the ultimate martial techniques to protect those he loves.",
+  "metaTags": ["Chinese", "Donghua", "2023"],
+  "episodes": [
+    {
+      "number": 1,
+      "title": "Episode 01",
+      "videoUrl": "https://geo.dailymotion.com/player/xtv3w.html?",
+      "img":"../../Image & logo/Martial Master.webp",
+      "quality": "1080p FHD"
+    },
+    {
+      "number": 2,
+      "title": "Episode 02",
+      "videoUrl": "https://geo.dailymotion.com/player/xtv3w.html?",
+      "img":"../../Image & logo/Martial Master.webp",
+      "quality": "1080p FHD"
+    },
+    {
+      "number": 3,
+      "title": "Episode 03",
+      "videoUrl": "https://geo.dailymotion.com/player/xtv3w.html?",
+      "img":"../../Image & logo/Martial Master.webp",
+      "quality": "1080p FHD"
+    },
+    {
+      "number": 4,
+      "title": "Episode 04",
+      "videoUrl": "https://geo.dailymotion.com/player/xtv3w.html?",
+      "img":"../../Image & logo/Martial Master.webp",
+      "quality": "1080p FHD"
+    },
+    {
+      "number": 5,
+      "title": "Episode 05",
+      "videoUrl": "https://geo.dailymotion.com/player/xtv3w.html?",
+      "img":"../../Image & logo/Martial Master.webp",
+      "quality": "1080p FHD"
+    },
+    {
+      "number": 6,
+      "title": "Episode 06",
+      "videoUrl": "https://geo.dailymotion.com/player/xtv3w.html?",
+      "img":"../../Image & logo/Martial Master.webp",
+      "quality": "1080p FHD"
+    },
+    {
+      "number": 7,
+      "title": "Episode 07",
+      "videoUrl": "https://geo.dailymotion.com/player/xtv3w.html?",
+      "img":"../../Image & logo/Martial Master.webp",
+      "quality": "1080p FHD"
+    },
+    {
+      "number": 8,
+      "title": "Episode 08",
+      "videoUrl": "https://geo.dailymotion.com/player/xtv3w.html?",
+      "img":"../../Image & logo/Martial Master.webp",
+      "quality": "1080p FHD"
+    },
+    {
+      "number": 9,
+      "title": "Episode 09",
+      "videoUrl": "https://geo.dailymotion.com/player/xtv3w.html?",
+      "img":"../../Image & logo/Martial Master.webp",
+      "quality": "1080p FHD"
+    },
+    {
+      "number": 10,
+      "title": "Episode 10",
+      "videoUrl": "https://geo.dailymotion.com/player/xtv3w.html?",
+      "img":"../../Image & logo/Martial Master.webp",
+      "quality": "1080p FHD"
+    },
+    {
+      "number": 11,
+      "title": "Episode 11",
+      "videoUrl": "https://geo.dailymotion.com/player/xtv3w.html?",
+      "img":"../../Image & logo/Martial Master.webp",
+      "quality": "1080p FHD"
+    },
+    {
+      "number": 12,
+      "title": "Episode 12",
+      "videoUrl": "https://geo.dailymotion.com/player/xtv3w.html?",
+      "img":"../../Image & logo/Martial Master.webp",
+      "quality": "1080p FHD"
+    }
+  ]
+}
