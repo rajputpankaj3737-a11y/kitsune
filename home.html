@@ -2922,6 +2922,64 @@
     let isHoverCardVisible = false;
     let hoverCardLoadTimer = null;
 
+    // ===== FIXED: Track navigation state to restore card styles on back button =====
+    // This solves the issue where cards remain unclickable after returning via browser back button
+    let navigatingAway = false;
+
+    // Listen for pageshow event to restore card styles when returning via back button
+    window.addEventListener('pageshow', function(event) {
+      // The event.persisted property is true when the page is loaded from the browser's cache (back/forward navigation)
+      if (event.persisted) {
+        console.log('Page loaded from cache (back button navigation detected) - Restoring card styles');
+        // Restore all anime card styles
+        restoreAllCardStyles();
+      }
+      // Reset the navigating flag
+      navigatingAway = false;
+    });
+
+    // Also listen for visibility change as a fallback
+    document.addEventListener('visibilitychange', function() {
+      if (document.visibilityState === 'visible' && navigatingAway) {
+        console.log('Page became visible after navigation - Restoring card styles');
+        // Small delay to ensure DOM is ready
+        setTimeout(function() {
+          restoreAllCardStyles();
+        }, 100);
+        navigatingAway = false;
+      }
+    });
+
+    // Function to restore all card styles
+    function restoreAllCardStyles() {
+      // Restore all anime cards in Today's Releases grid
+      if (todayReleasesGrid) {
+        const todayCards = todayReleasesGrid.querySelectorAll('.anime-card');
+        todayCards.forEach(function(card) {
+          card.style.opacity = '1';
+          card.style.pointerEvents = 'auto';
+        });
+      }
+
+      // Restore all anime cards in Featured Anime grid
+      if (featuredAnimeGrid) {
+        const featuredCards = featuredAnimeGrid.querySelectorAll('.anime-card');
+        featuredCards.forEach(function(card) {
+          card.style.opacity = '1';
+          card.style.pointerEvents = 'auto';
+        });
+      }
+
+      // Also restore any carousel cards if they have similar issues
+      const carouselCards = document.querySelectorAll('.carousel-slide .btn-primary');
+      carouselCards.forEach(function(btn) {
+        btn.style.opacity = '1';
+        btn.style.pointerEvents = 'auto';
+      });
+
+      console.log('All card styles restored successfully');
+    }
+
     // ===== PAGE LOADER FUNCTIONS =====
     function showPageLoader() {
       pageLoader.classList.remove('hidden');
@@ -2929,7 +2987,7 @@
 
     function hidePageLoader() {
       // Add a small delay for smooth transition
-      setTimeout(() => {
+      setTimeout(function() {
         pageLoader.classList.add('hidden');
       }, 500);
     }
@@ -2941,7 +2999,7 @@
       const animeCards = document.querySelectorAll('.anime-card');
       const currentCards = new Set();
 
-      animeCards.forEach(card => {
+      animeCards.forEach(function(card) {
         // Remove existing event listeners to avoid duplicates
         card.removeEventListener('mouseenter', handleMouseEnter);
         card.removeEventListener('mouseleave', handleMouseLeave);
@@ -2982,7 +3040,9 @@
       const animeTitle = titleElement.textContent.trim();
 
       // Find anime in mainAnimeData
-      const anime = mainAnimeData.find(a => a.title === animeTitle);
+      const anime = mainAnimeData.find(function(a) {
+        return a.title === animeTitle;
+      });
 
       if (!anime) {
         console.log('Anime not found in data:', animeTitle);
@@ -3011,7 +3071,7 @@
       }
 
       // Show hover card with loading animation after a short delay
-      hoverTimeout = setTimeout(() => {
+      hoverTimeout = setTimeout(function() {
         showHoverCardWithLoading(anime, mouseX, mouseY);
       }, 300);
     }
@@ -3057,7 +3117,7 @@
       // In a real scenario, this is where you'd load data
       const loadDelay = 600; // 600ms loading animation
 
-      cardLoadTimeout = setTimeout(() => {
+      cardLoadTimeout = setTimeout(function() {
         populateHoverCard(anime);
         hoverInfoCard.classList.remove('loading');
         hoverInfoCard.classList.add('loaded');
@@ -3117,8 +3177,10 @@
 
       // Set genres
       hoverInfoGenres.innerHTML = '';
-      const genreArray = anime.genre ? anime.genre.split(',').map(g => g.trim()) : ['Action', 'Adventure'];
-      genreArray.slice(0, 3).forEach(genre => {
+      const genreArray = anime.genre ? anime.genre.split(',').map(function(g) {
+        return g.trim();
+      }) : ['Action', 'Adventure'];
+      genreArray.slice(0, 3).forEach(function(genre) {
         const genreTag = document.createElement('span');
         genreTag.className = 'hover-info-genre-tag';
         genreTag.textContent = genre;
@@ -3126,7 +3188,7 @@
       });
 
       // Set description
-      hoverInfoDescription.textContent = anime.description || `${anime.title} is an exciting ${anime.genre} anime series featuring epic battles, compelling characters, and an immersive storyline.`;
+      hoverInfoDescription.textContent = anime.description || (anime.title + ' is an exciting ' + anime.genre + ' anime series featuring epic battles, compelling characters, and an immersive storyline.');
 
       // Set additional stats
       hoverInfoYear.textContent = anime.year || '2024';
@@ -3222,7 +3284,8 @@
     }
 
     // Toast notification function
-    function showToast(message, type = 'success') {
+    function showToast(message, type) {
+      type = type || 'success';
       const toast = document.getElementById('toastNotification');
       const toastMessage = document.getElementById('toastMessage');
       const toastIcon = toast.querySelector('i');
@@ -3246,7 +3309,7 @@
       toast.classList.add('show');
 
       // Hide after 3 seconds
-      setTimeout(() => {
+      setTimeout(function() {
         toast.classList.remove('show');
       }, 3000);
     }
@@ -3443,10 +3506,10 @@
       // Remove extra @ from username
       if (userData.username) {
         const cleanUsername = userData.username.replace(/^@+/, '');
-        profileUsername.textContent = `@${cleanUsername}`;
+        profileUsername.textContent = '@' + cleanUsername;
       } else if (userData.email) {
         const usernameFromEmail = userData.email.split('@')[0];
-        profileUsername.textContent = `@${usernameFromEmail}`;
+        profileUsername.textContent = '@' + usernameFromEmail;
       } else {
         profileUsername.textContent = '@user';
       }
@@ -3480,10 +3543,8 @@
 
       // Also update user data if needed
       if (!userData.joinDate) {
-        const updatedUserData = {
-          ...userData,
-          joinDate: firstLoginDate
-        };
+        const updatedUserData = JSON.parse(localStorage.getItem('kitsune_user') || '{}');
+        updatedUserData.joinDate = firstLoginDate;
         localStorage.setItem('kitsune_user', JSON.stringify(updatedUserData));
       }
     }
@@ -3491,7 +3552,7 @@
     // Helper function to set profile image
     function setProfileImage(imageUrl) {
       profileImage.src = imageUrl;
-      profileAvatar.innerHTML = `<img src="${imageUrl}" alt="Profile" style="width: 100%; height: 100%; object-fit: cover;">`;
+      profileAvatar.innerHTML = '<img src="' + imageUrl + '" alt="Profile" style="width: 100%; height: 100%; object-fit: cover;">';
     }
 
     // Helper function for default avatar
@@ -3499,7 +3560,7 @@
       const displayName = document.getElementById('profileDisplayName').textContent;
       const initials = displayName ? displayName.charAt(0).toUpperCase() : 'U';
 
-      profileAvatar.innerHTML = `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: var(--primary); color: white; font-weight: 600; font-size: 0.9rem;">${initials}</div>`;
+      profileAvatar.innerHTML = '<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: var(--primary); color: white; font-weight: 600; font-size: 0.9rem;">' + initials + '</div>';
       profileImage.src = '';
     }
 
@@ -3536,7 +3597,7 @@
         reader.onload = function (event) {
           const imageUrl = event.target.result;
           profileImage.src = imageUrl;
-          profileAvatar.innerHTML = `<img src="${imageUrl}" alt="Profile">`;
+          profileAvatar.innerHTML = '<img src="' + imageUrl + '" alt="Profile">';
           localStorage.setItem('kitsune_profile_image', imageUrl);
         };
         reader.readAsDataURL(file);
@@ -3631,7 +3692,7 @@
 
       // Track which anime have new episodes in this data load
       const animeWithNewEpisodes = [];
-      const processedAnime = newAnimeData.map(anime => {
+      const processedAnime = newAnimeData.map(function(anime) {
         const currentEpisode = extractEpisodeNumber(anime.type);
         const previousEpisode = episodeTracking[anime.title] || 0;
 
@@ -3639,7 +3700,7 @@
         const isNewEpisode = anime.status === 'ongoing' && currentEpisode > previousEpisode;
 
         if (isNewEpisode) {
-          console.log(`📢 NEW EPISODE: ${anime.title} - Ep ${previousEpisode} → Ep ${currentEpisode}`);
+          console.log('📢 NEW EPISODE: ' + anime.title + ' - Ep ' + previousEpisode + ' → Ep ' + currentEpisode);
           animeWithNewEpisodes.push(anime.title);
           anime.hasNewEpisode = true;
 
@@ -3663,9 +3724,11 @@
         console.log('New episodes detected! Updating Today\'s Releases');
 
         // Add new episode anime to the top
-        animeWithNewEpisodes.forEach(title => {
+        animeWithNewEpisodes.forEach(function(title) {
           // Remove if already exists (to avoid duplicates)
-          todaysReleases = todaysReleases.filter(t => t !== title);
+          todaysReleases = todaysReleases.filter(function(t) {
+            return t !== title;
+          });
           // Add to beginning
           todaysReleases.unshift(title);
         });
@@ -3687,10 +3750,12 @@
           console.log('First time - populating Today\'s Releases');
 
           // Get all ongoing anime
-          const allOngoingAnime = processedAnime.filter(anime => anime.status === 'ongoing');
+          const allOngoingAnime = processedAnime.filter(function(anime) {
+            return anime.status === 'ongoing';
+          });
 
           // Sort by episode number (highest first) and then alphabetically
-          const sortedAnime = [...allOngoingAnime].sort((a, b) => {
+          const sortedAnime = [...allOngoingAnime].sort(function(a, b) {
             const episodeA = extractEpisodeNumber(a.type);
             const episodeB = extractEpisodeNumber(b.type);
 
@@ -3704,7 +3769,9 @@
           });
 
           // Take first 6
-          todaysReleases = sortedAnime.slice(0, 6).map(anime => anime.title);
+          todaysReleases = sortedAnime.slice(0, 6).map(function(anime) {
+            return anime.title;
+          });
         }
       }
 
@@ -3713,15 +3780,17 @@
         const neededCount = 6 - todaysReleases.length;
 
         // Get all ongoing anime
-        const allOngoingAnime = processedAnime.filter(anime => anime.status === 'ongoing');
+        const allOngoingAnime = processedAnime.filter(function(anime) {
+          return anime.status === 'ongoing';
+        });
 
         // Filter out anime already in today's list
-        const availableAnime = allOngoingAnime.filter(anime =>
-          !todaysReleases.includes(anime.title)
-        );
+        const availableAnime = allOngoingAnime.filter(function(anime) {
+          return !todaysReleases.includes(anime.title);
+        });
 
         // Sort by episode number (highest first) and then alphabetically
-        const sortedAnime = [...availableAnime].sort((a, b) => {
+        const sortedAnime = [...availableAnime].sort(function(a, b) {
           const episodeA = extractEpisodeNumber(a.type);
           const episodeB = extractEpisodeNumber(b.type);
 
@@ -3735,7 +3804,9 @@
         });
 
         // Add the top anime to reach 6
-        const additionalTitles = sortedAnime.slice(0, neededCount).map(anime => anime.title);
+        const additionalTitles = sortedAnime.slice(0, neededCount).map(function(anime) {
+          return anime.title;
+        });
         todaysReleases = [...todaysReleases, ...additionalTitles];
 
         console.log('Filled with additional anime:', additionalTitles);
@@ -3767,13 +3838,14 @@
 
         // Create a map for quick lookup
         const animeMap = new Map();
-        allAnime.forEach(anime => {
+        allAnime.forEach(function(anime) {
           animeMap.set(anime.title, anime);
         });
 
         // Get anime objects for stored titles
         const todaysAnime = [];
-        for (const title of storedTitles) {
+        for (let i = 0; i < storedTitles.length; i++) {
+          const title = storedTitles[i];
           if (animeMap.has(title)) {
             todaysAnime.push(animeMap.get(title));
           }
@@ -3798,8 +3870,10 @@
         if (releaseHistory.length === 0) {
           // If no history, return all ongoing anime sorted by episode number
           return [...allAnime]
-            .filter(anime => anime.status === 'ongoing')
-            .sort((a, b) => {
+            .filter(function(anime) {
+              return anime.status === 'ongoing';
+            })
+            .sort(function(a, b) {
               const episodeA = extractEpisodeNumber(a.type);
               const episodeB = extractEpisodeNumber(b.type);
               return episodeB - episodeA;
@@ -3809,13 +3883,14 @@
 
         // Create a map for quick lookup
         const animeMap = new Map();
-        allAnime.forEach(anime => {
+        allAnime.forEach(function(anime) {
           animeMap.set(anime.title, anime);
         });
 
         // Get anime from release history
         const releases = [];
-        for (const title of releaseHistory) {
+        for (let i = 0; i < releaseHistory.length; i++) {
+          const title = releaseHistory[i];
           if (animeMap.has(title)) {
             releases.push(animeMap.get(title));
           }
@@ -3824,11 +3899,15 @@
         // Add some ongoing anime if we have less than 18
         if (releases.length < 18) {
           const neededCount = 18 - releases.length;
-          const existingTitles = releases.map(a => a.title);
+          const existingTitles = releases.map(function(a) {
+            return a.title;
+          });
 
           const otherAnime = allAnime
-            .filter(anime => anime.status === 'ongoing' && !existingTitles.includes(anime.title))
-            .sort((a, b) => {
+            .filter(function(anime) {
+              return anime.status === 'ongoing' && !existingTitles.includes(anime.title);
+            })
+            .sort(function(a, b) {
               const episodeA = extractEpisodeNumber(a.type);
               const episodeB = extractEpisodeNumber(b.type);
               return episodeB - episodeA;
@@ -3841,14 +3920,19 @@
         return releases.slice(0, 18);
       } catch (e) {
         console.error('Error getting last two days releases:', e);
-        return allAnime.filter(anime => anime.status === 'ongoing').slice(0, 18);
+        return allAnime.filter(function(anime) {
+          return anime.status === 'ongoing';
+        }).slice(0, 18);
       }
     }
 
     // ===== Get Random Anime for Carousel (10 anime) =====
-    function getRandomAnimeForCarousel(animeList, count = 10) {
+    function getRandomAnimeForCarousel(animeList, count) {
+      count = count || 10;
       // Filter out completed anime for carousel
-      const ongoingAnime = animeList.filter(anime => anime.status !== 'completed');
+      const ongoingAnime = animeList.filter(function(anime) {
+        return anime.status !== 'completed';
+      });
 
       if (ongoingAnime.length <= count) {
         return ongoingAnime;
@@ -3858,14 +3942,17 @@
       const shuffled = [...ongoingAnime];
       for (let i = shuffled.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        const temp = shuffled[i];
+        shuffled[i] = shuffled[j];
+        shuffled[j] = temp;
       }
 
       return shuffled.slice(0, count);
     }
 
     // ===== NEW: Get Featured Anime for Today (Changes once per day) =====
-    function getFeaturedAnimeForToday(animeList, count = 30) {
+    function getFeaturedAnimeForToday(animeList, count) {
+      count = count || 30;
       const storageKey = 'kitsune_featured_anime';
       const timestampKey = 'kitsune_featured_timestamp';
 
@@ -3897,7 +3984,9 @@
           const shuffled = [...animeList];
           for (let i = shuffled.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
-            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            const temp = shuffled[i];
+            shuffled[i] = shuffled[j];
+            shuffled[j] = temp;
           }
 
           storedFeatured = shuffled.slice(0, count);
@@ -3927,7 +4016,7 @@
       const carouselAnime = getRandomAnimeForCarousel(animeList, 10);
 
       // Create slides
-      carouselAnime.forEach((anime, index) => {
+      carouselAnime.forEach(function(anime, index) {
         const slide = document.createElement('div');
         slide.className = 'carousel-slide';
         slide.dataset.index = index;
@@ -3940,31 +4029,43 @@
         // Use actual rating from JSON data
         const rating = anime.rating || 8.5;
 
-        slide.innerHTML = `
-          <div class="carousel-backdrop" style="background-image: url('${anime.image}')"></div>
-          <div class="carousel-image">
-            <img src="${anime.image}" alt="${anime.title}" 
-                 onerror="this.src='https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
-          </div>
-          <div class="carousel-content">
-            <h3>${anime.title}</h3>
-            <div class="carousel-meta">
-              <div class="carousel-rating">
-                <i class="fas fa-star"></i>
-                <span>${rating}</span>
-              </div>
-              <div class="carousel-episode">${anime.type}</div>
-            </div>
-            <p class="carousel-description">${anime.genre} • Latest Release</p>
-            <div class="carousel-actions">
-              <button class="btn btn-primary" onclick="navigateToAnime('${anime.link}')">
-                <i class="fas fa-play"></i>
-                Watch Now
-              </button>
-            </div>
-          </div>
-          <div class="carousel-badge ${badgeClass}">${badgeText}</div>
-        `;
+        slide.innerHTML = '' +
+          '<div class="carousel-backdrop" style="background-image: url(\'' + anime.image + '\')"></div>' +
+          '<div class="carousel-image">' +
+            '<img src="' + anime.image + '" alt="' + anime.title + '" ' +
+                 'onerror="this.src=\'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80\'">' +
+          '</div>' +
+          '<div class="carousel-content">' +
+            '<h3>' + anime.title + '</h3>' +
+            '<div class="carousel-meta">' +
+              '<div class="carousel-rating">' +
+                '<i class="fas fa-star"></i>' +
+                '<span>' + rating + '</span>' +
+              '</div>' +
+              '<div class="carousel-episode">' + anime.type + '</div>' +
+            '</div>' +
+            '<p class="carousel-description">' + anime.genre + ' • Latest Release</p>' +
+            '<div class="carousel-actions">' +
+              '<button class="btn btn-primary" data-anime-link="' + anime.link + '">' +
+                '<i class="fas fa-play"></i>' +
+                'Watch Now' +
+              '</button>' +
+            '</div>' +
+          '</div>' +
+          '<div class="carousel-badge ' + badgeClass + '">' + badgeText + '</div>' +
+        '';
+
+        // Add click handler to the Watch Now button
+        const watchButton = slide.querySelector('.btn-primary');
+        watchButton.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          const link = this.dataset.animeLink;
+          if (link) {
+            navigatingAway = true;
+            window.navigateToAnime(link);
+          }
+        });
 
         animeCarousel.appendChild(slide);
 
@@ -3974,7 +4075,7 @@
         dot.dataset.index = index;
         if (index === 0) dot.classList.add('active');
 
-        dot.addEventListener('click', () => {
+        dot.addEventListener('click', function() {
           goToSlide(index);
         });
 
@@ -4021,11 +4122,15 @@
       if (slides.length === 0) return;
 
       // Update carousel position
-      animeCarousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+      animeCarousel.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
 
       // Update active dot
-      dots.forEach((dot, index) => {
-        dot.classList.toggle('active', index === currentSlide);
+      dots.forEach(function(dot, index) {
+        if (index === currentSlide) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
       });
     }
 
@@ -4140,7 +4245,7 @@
         const basePath = link.substring(0, link.lastIndexOf('/') + 1);
 
         // Try to fetch episodes.json to get the latest episode
-        const episodesUrl = `${basePath}episodes.json`;
+        const episodesUrl = basePath + 'episodes.json';
 
         const response = await fetch(episodesUrl);
 
@@ -4159,18 +4264,18 @@
           }
 
           // Navigate to player.html with episode parameter
-          window.location.href = `${basePath}player.html?ep=${latestEpisode}`;
+          window.location.href = basePath + 'player.html?ep=' + latestEpisode;
 
         } else {
           // If episodes.json doesn't exist, use episode 1
-          window.location.href = `${basePath}player.html?ep=1`;
+          window.location.href = basePath + 'player.html?ep=1';
         }
       } catch (error) {
         console.error('Error fetching episodes:', error);
 
         // Fallback: navigate to player with episode 1
         const basePath = link.substring(0, link.lastIndexOf('/') + 1);
-        window.location.href = `${basePath}player.html?ep=1`;
+        window.location.href = basePath + 'player.html?ep=1';
       }
     };
 
@@ -4215,7 +4320,7 @@
         setupViewToggle();
 
         // Step 5: Initialize hover effects after cards are created
-        setTimeout(() => {
+        setTimeout(function() {
           initHoverEffects();
         }, 500);
 
@@ -4259,13 +4364,13 @@
 
       // Populate grid with expanded view
       todayReleasesGrid.innerHTML = '';
-      lastTwoDaysAnime.slice(0, 18).forEach(anime => {
+      lastTwoDaysAnime.slice(0, 18).forEach(function(anime) {
         const animeCard = createAnimeCard(anime);
         todayReleasesGrid.appendChild(animeCard);
       });
 
       // Reinitialize hover effects for new cards
-      setTimeout(() => {
+      setTimeout(function() {
         initHoverEffects();
       }, 200);
 
@@ -4288,13 +4393,13 @@
 
       // Populate grid with collapsed view
       todayReleasesGrid.innerHTML = '';
-      todaysReleases.slice(0, 6).forEach(anime => {
+      todaysReleases.slice(0, 6).forEach(function(anime) {
         const animeCard = createAnimeCard(anime);
         todayReleasesGrid.appendChild(animeCard);
       });
 
       // Reinitialize hover effects for new cards
-      setTimeout(() => {
+      setTimeout(function() {
         initHoverEffects();
       }, 200);
     }
@@ -4313,16 +4418,22 @@
         const neededCount = 6 - todaysAnime.length;
 
         // Get all ongoing anime from main data
-        const allOngoingAnime = mainAnimeData.filter(anime => anime.status === 'ongoing');
+        const allOngoingAnime = mainAnimeData.filter(function(anime) {
+          return anime.status === 'ongoing';
+        });
 
         // Get titles already in today's list
-        const existingTitles = todaysAnime.map(anime => anime.title);
+        const existingTitles = todaysAnime.map(function(anime) {
+          return anime.title;
+        });
 
         // Filter out anime already in today's list
-        const availableAnime = allOngoingAnime.filter(anime => !existingTitles.includes(anime.title));
+        const availableAnime = allOngoingAnime.filter(function(anime) {
+          return !existingTitles.includes(anime.title);
+        });
 
         // Sort by episode number (highest first)
-        const sortedByEpisode = [...availableAnime].sort((a, b) => {
+        const sortedByEpisode = [...availableAnime].sort(function(a, b) {
           const episodeA = extractEpisodeNumber(a.type);
           const episodeB = extractEpisodeNumber(b.type);
           return episodeB - episodeA; // Highest episode first
@@ -4338,10 +4449,12 @@
       // Ensure we have exactly 6 for initial view
       todaysAnime = todaysAnime.slice(0, 6);
 
-      console.log('Initial Today Releases (6 total):', todaysAnime.map(a => a.title));
+      console.log('Initial Today Releases (6 total):', todaysAnime.map(function(a) {
+        return a.title;
+      }));
 
       // Create cards for all 6 anime
-      todaysAnime.forEach(anime => {
+      todaysAnime.forEach(function(anime) {
         const animeCard = createAnimeCard(anime);
         todayReleasesGrid.appendChild(animeCard);
       });
@@ -4352,7 +4465,7 @@
       viewLessBtn.style.display = 'none';
 
       // Initialize hover effects for these cards
-      setTimeout(() => {
+      setTimeout(function() {
         initHoverEffects();
       }, 200);
     }
@@ -4377,7 +4490,7 @@
       // Limit to maximum 30 anime
       const limitedAnimeList = animeList.slice(0, 30);
 
-      limitedAnimeList.forEach(anime => {
+      limitedAnimeList.forEach(function(anime) {
         const animeCard = createAnimeCard(anime);
         featuredAnimeGrid.appendChild(animeCard);
       });
@@ -4386,20 +4499,20 @@
       if (limitedAnimeList.length < 30) {
         const emptyCard = document.createElement('div');
         emptyCard.className = 'anime-card empty-card';
-        emptyCard.innerHTML = `
-          <div class="card-image" style="background: var(--card-bg-color); display: flex; align-items: center; justify-content: center;">
-            <i class="fas fa-plus" style="font-size: 2rem; color: var(--text-tertiary);"></i>
-          </div>
-          <div class="card-content">
-            <h3>More Coming Soon</h3>
-            <p class="card-description">We're adding more amazing anime content regularly</p>
-          </div>
-        `;
+        emptyCard.innerHTML = '' +
+          '<div class="card-image" style="background: var(--card-bg-color); display: flex; align-items: center; justify-content: center;">' +
+            '<i class="fas fa-plus" style="font-size: 2rem; color: var(--text-tertiary);"></i>' +
+          '</div>' +
+          '<div class="card-content">' +
+            '<h3>More Coming Soon</h3>' +
+            '<p class="card-description">We\'re adding more amazing anime content regularly</p>' +
+          '</div>' +
+        '';
         featuredAnimeGrid.appendChild(emptyCard);
       }
 
       // Initialize hover effects for these cards
-      setTimeout(() => {
+      setTimeout(function() {
         initHoverEffects();
       }, 200);
     }
@@ -4417,29 +4530,30 @@
       // Use actual rating from JSON data
       const rating = anime.rating || 8.5;
 
-      animeCard.innerHTML = `
-        <div class="card-image">
-          <img src="${anime.image}" alt="${anime.title}" onerror="this.src='https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
-          <div class="card-badge ${badgeClass}">${badgeText}</div>
-        </div>
-        <div class="card-content">
-          <h3>${anime.title}</h3>
-          <div class="card-meta">
-            <span>${anime.genre}</span>
-            <div class="card-rating">
-              <i class="fas fa-star"></i>
-              <span>${rating}</span>
-            </div>
-          </div>
-          <p class="card-description">${anime.type}</p>
-        </div>
-      `;
+      animeCard.innerHTML = '' +
+        '<div class="card-image">' +
+          '<img src="' + anime.image + '" alt="' + anime.title + '" onerror="this.src=\'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80\'">' +
+          '<div class="card-badge ' + badgeClass + '">' + badgeText + '</div>' +
+        '</div>' +
+        '<div class="card-content">' +
+          '<h3>' + anime.title + '</h3>' +
+          '<div class="card-meta">' +
+            '<span>' + anime.genre + '</span>' +
+            '<div class="card-rating">' +
+              '<i class="fas fa-star"></i>' +
+              '<span>' + rating + '</span>' +
+            '</div>' +
+          '</div>' +
+          '<p class="card-description">' + anime.type + '</p>' +
+        '</div>' +
+      '';
 
       // Store anime data on the card for hover effects
       animeCard.dataset.animeTitle = anime.title;
       animeCard.dataset.animeLink = anime.link;
 
       // ===== FIXED CLICK HANDLER: Use addEventListener once with proper function reference =====
+      // Also set navigatingAway flag and handle back button restoration
       const clickHandler = async function(e) {
         // Prevent default and stop propagation
         e.preventDefault();
@@ -4449,12 +4563,15 @@
         animeCard.style.opacity = '0.7';
         animeCard.style.pointerEvents = 'none';
 
+        // Set navigating flag so we can restore on back button
+        navigatingAway = true;
+
         try {
           // Get the base path without filename
           const basePath = anime.link.substring(0, anime.link.lastIndexOf('/') + 1);
 
           // Try to fetch episodes.json to get the latest episode
-          const episodesUrl = `${basePath}episodes.json`;
+          const episodesUrl = basePath + 'episodes.json';
 
           const response = await fetch(episodesUrl);
 
@@ -4473,21 +4590,26 @@
             }
 
             // Navigate to player.html with episode parameter
-            window.location.href = `${basePath}player.html?ep=${latestEpisode}`;
+            window.location.href = basePath + 'player.html?ep=' + latestEpisode;
 
           } else {
             // If episodes.json doesn't exist, use the episode from the type field
             const episodeNumber = extractEpisodeNumber(anime.type) || 1;
 
             // Navigate to player.html
-            window.location.href = `${basePath}player.html?ep=${episodeNumber}`;
+            window.location.href = basePath + 'player.html?ep=' + episodeNumber;
           }
         } catch (error) {
           console.error('Error fetching episodes:', error);
 
+          // Restore card state on error
+          animeCard.style.opacity = '1';
+          animeCard.style.pointerEvents = 'auto';
+          navigatingAway = false;
+
           // Fallback: use the link as is
           const basePath = anime.link.substring(0, anime.link.lastIndexOf('/') + 1);
-          window.location.href = `${basePath}player.html?ep=1`;
+          window.location.href = basePath + 'player.html?ep=1';
         }
       };
 
@@ -4513,7 +4635,7 @@
           // If expanded, show last two days
           const lastTwoDaysAnime = getLastTwoDaysReleases(mainAnimeData);
           todayReleasesGrid.innerHTML = '';
-          lastTwoDaysAnime.slice(0, 18).forEach(anime => {
+          lastTwoDaysAnime.slice(0, 18).forEach(function(anime) {
             const animeCard = createAnimeCard(anime);
             todayReleasesGrid.appendChild(animeCard);
           });
@@ -4527,7 +4649,7 @@
         populateFeaturedAnime(featuredAnime);
 
         // Reinitialize hover effects
-        setTimeout(() => {
+        setTimeout(function() {
           initHoverEffects();
         }, 200);
       }
@@ -4542,7 +4664,7 @@
         return;
       }
 
-      const filteredAnime = searchAnimeData.filter(anime => {
+      const filteredAnime = searchAnimeData.filter(function(anime) {
         return anime.title.toLowerCase().includes(normalizedQuery) ||
           anime.genre.toLowerCase().includes(normalizedQuery) ||
           anime.type.toLowerCase().includes(normalizedQuery);
@@ -4558,7 +4680,7 @@
       if (results.length === 0) {
         searchResults.innerHTML = '<div class="no-results">No anime found matching your search</div>';
       } else {
-        results.forEach(anime => {
+        results.forEach(function(anime) {
           const resultItem = document.createElement('a');
           resultItem.className = 'search-result-item';
           resultItem.href = '#';
@@ -4572,28 +4694,29 @@
           // Use actual rating from JSON data
           const rating = anime.rating || 8.5;
 
-          resultItem.innerHTML = `
-            <div class="search-result-image">
-              <img src="${anime.image}" alt="${anime.title}" onerror="this.src='https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
-            </div>
-            <div class="search-result-content">
-              <div class="search-result-title">${anime.title} 
-                <span class="search-update-indicator ${badgeClass}">${badgeText}</span>
-              </div>
-              <div class="search-result-type">${anime.type}</div>
-              <div class="search-result-meta">
-                <span class="search-result-genre">${anime.genre}</span>
-                <div class="search-result-rating">
-                  <i class="fas fa-star"></i>
-                  <span>${rating}</span>
-                </div>
-              </div>
-            </div>
-          `;
+          resultItem.innerHTML = '' +
+            '<div class="search-result-image">' +
+              '<img src="' + anime.image + '" alt="' + anime.title + '" onerror="this.src=\'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80\'">' +
+            '</div>' +
+            '<div class="search-result-content">' +
+              '<div class="search-result-title">' + anime.title + ' ' +
+                '<span class="search-update-indicator ' + badgeClass + '">' + badgeText + '</span>' +
+              '</div>' +
+              '<div class="search-result-type">' + anime.type + '</div>' +
+              '<div class="search-result-meta">' +
+                '<span class="search-result-genre">' + anime.genre + '</span>' +
+                '<div class="search-result-rating">' +
+                  '<i class="fas fa-star"></i>' +
+                  '<span>' + rating + '</span>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '';
 
           // Add click event - FIXED
           resultItem.addEventListener('click', async function(e) {
             e.preventDefault();
+            navigatingAway = true;
             const link = this.dataset.animeLink;
             if (link) {
               await window.navigateToAnime(link);
@@ -4628,7 +4751,7 @@
       };
 
       const observer = new IntersectionObserver(function (entries) {
-        entries.forEach(entry => {
+        entries.forEach(function(entry) {
           if (entry.isIntersecting) {
             entry.target.classList.add('fade-in');
           }
@@ -4636,7 +4759,7 @@
       }, observerOptions);
 
       // Observe all elements with fade-in class
-      document.querySelectorAll('.fade-in').forEach(el => {
+      document.querySelectorAll('.fade-in').forEach(function(el) {
         observer.observe(el);
       });
 
@@ -4648,7 +4771,7 @@
         localStorage.removeItem('kitsune_last_update_timestamp');
         localStorage.removeItem('kitsune_release_history');
         console.log('Episode tracking reset. Refreshing page...');
-        setTimeout(() => {
+        setTimeout(function() {
           window.location.reload();
         }, 1000);
       };
@@ -4658,7 +4781,7 @@
       window.resetKitsuneTheme = function () {
         localStorage.removeItem('kitsune_theme');
         console.log('Theme preference reset. Refreshing page...');
-        setTimeout(() => {
+        setTimeout(function() {
           window.location.reload();
         }, 1000);
       };
@@ -4669,7 +4792,7 @@
         localStorage.removeItem('kitsune_featured_anime');
         localStorage.removeItem('kitsune_featured_timestamp');
         console.log('Featured anime reset. New set will be generated on refresh...');
-        setTimeout(() => {
+        setTimeout(function() {
           window.location.reload();
         }, 1000);
       };
