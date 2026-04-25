@@ -2695,18 +2695,25 @@
     // Initialize hover effects on anime cards
     function initHoverEffects() {
       const animeCards = document.querySelectorAll('.anime-card');
-
+      const currentCards = new Set();
+      
       animeCards.forEach(card => {
         // Remove existing event listeners to avoid duplicates
         card.removeEventListener('mouseenter', handleMouseEnter);
         card.removeEventListener('mouseleave', handleMouseLeave);
         card.removeEventListener('mousemove', handleMouseMove);
         
+        // Store reference to prevent garbage collection issues
+        currentCards.add(card);
+        
         // Add new event listeners
         card.addEventListener('mouseenter', handleMouseEnter);
         card.addEventListener('mouseleave', handleMouseLeave);
         card.addEventListener('mousemove', handleMouseMove);
       });
+      
+      // Store reference to prevent garbage collection
+      window._animeCards = currentCards;
     }
 
     // Handle mouse move to track position
@@ -3614,7 +3621,7 @@
             </div>
             <p class="carousel-description">${anime.genre} • Latest Release</p>
             <div class="carousel-actions">
-              <button class="btn btn-primary" onclick="window.location.href='${anime.link}'">
+              <button class="btn btn-primary" onclick="navigateToAnime('${anime.link}')">
                 <i class="fas fa-play"></i>
                 Watch Now
               </button>
@@ -3789,6 +3796,47 @@
     function getPositionX(event) {
       return event.type.includes('mouse') ? event.clientX : event.touches[0].clientX;
     }
+
+    // ===== FIXED: Global navigation function to prevent event issues =====
+    window.navigateToAnime = async function(link) {
+      try {
+        // Get the base path without filename
+        const basePath = link.substring(0, link.lastIndexOf('/') + 1);
+
+        // Try to fetch episodes.json to get the latest episode
+        const episodesUrl = `${basePath}episodes.json`;
+
+        const response = await fetch(episodesUrl);
+
+        if (response.ok) {
+          const episodesData = await response.json();
+
+          // Get the latest episode number
+          let latestEpisode = 1;
+
+          if (episodesData.episodes && Array.isArray(episodesData.episodes)) {
+            latestEpisode = episodesData.episodes.length;
+          } else if (episodesData.totalEpisodes) {
+            latestEpisode = episodesData.totalEpisodes;
+          } else if (Array.isArray(episodesData)) {
+            latestEpisode = episodesData.length;
+          }
+
+          // Navigate to player.html with episode parameter
+          window.location.href = `${basePath}player.html?ep=${latestEpisode}`;
+
+        } else {
+          // If episodes.json doesn't exist, use episode 1
+          window.location.href = `${basePath}player.html?ep=1`;
+        }
+      } catch (error) {
+        console.error('Error fetching episodes:', error);
+
+        // Fallback: navigate to player with episode 1
+        const basePath = link.substring(0, link.lastIndexOf('/') + 1);
+        window.location.href = `${basePath}player.html?ep=1`;
+      }
+    };
 
     // Load anime data from JSON files
     async function loadAnimeData() {
@@ -4015,7 +4063,7 @@
       }, 200);
     }
 
-    // Create anime card component
+    // Create anime card component - FIXED CLICK HANDLER
     function createAnimeCard(anime) {
       const animeCard = document.createElement('div');
       animeCard.className = 'anime-card fade-in';
@@ -4048,9 +4096,14 @@
 
       // Store anime data on the card for hover effects
       animeCard.dataset.animeTitle = anime.title;
+      animeCard.dataset.animeLink = anime.link;
 
-      // ===== UPDATED CLICK HANDLER =====
-      animeCard.addEventListener('click', async function () {
+      // ===== FIXED CLICK HANDLER: Use addEventListener once with proper function reference =====
+      const clickHandler = async function(e) {
+        // Prevent default and stop propagation
+        e.preventDefault();
+        e.stopPropagation();
+        
         // Show loading state
         animeCard.style.opacity = '0.7';
         animeCard.style.pointerEvents = 'none';
@@ -4095,7 +4148,16 @@
           const basePath = anime.link.substring(0, anime.link.lastIndexOf('/') + 1);
           window.location.href = `${basePath}player.html?ep=1`;
         }
-      });
+      };
+
+      // Store reference to prevent garbage collection
+      animeCard._clickHandler = clickHandler;
+      
+      // Remove any existing click listeners before adding new one
+      animeCard.removeEventListener('click', animeCard._clickHandler);
+      
+      // Add click event listener
+      animeCard.addEventListener('click', clickHandler);
 
       return animeCard;
     }
@@ -4158,7 +4220,8 @@
         results.forEach(anime => {
           const resultItem = document.createElement('a');
           resultItem.className = 'search-result-item';
-          resultItem.href = anime.link;
+          resultItem.href = '#';
+          resultItem.dataset.animeLink = anime.link;
 
           // Determine badge text and class for search results
           const status = checkEpisodeStatus(anime);
@@ -4187,10 +4250,13 @@
             </div>
           `;
 
-          // Add click event
-          resultItem.addEventListener('click', function (e) {
+          // Add click event - FIXED
+          resultItem.addEventListener('click', async function(e) {
             e.preventDefault();
-            window.location.href = anime.link;
+            const link = this.dataset.animeLink;
+            if (link) {
+              await window.navigateToAnime(link);
+            }
           });
 
           searchResults.appendChild(resultItem);
@@ -4200,7 +4266,7 @@
       searchResults.classList.add('active');
     }
 
-    // Initialize the page
+    // Initialize the page - FIXED: Ensure proper initialization and re-initialization
     document.addEventListener('DOMContentLoaded', function () {
       // Initialize theme toggle
       initializeThemeToggle();
