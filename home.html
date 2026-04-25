@@ -2166,7 +2166,7 @@
       }
     }
 
-    /* ===== HOVER INFO CARD STYLES - FIXED: APPEARS NEAR MOUSE BUT STATIC ===== */
+    /* ===== HOVER INFO CARD STYLES - UPDATED WITH LOADING ANIMATION ===== */
     .hover-info-card {
       position: fixed;
       width: 350px;
@@ -2177,13 +2177,72 @@
       z-index: 10000;
       pointer-events: none;
       opacity: 0;
-      transition: opacity 0.2s ease;
+      transform: scale(0.8);
+      transition: opacity 0.3s ease, transform 0.3s ease;
       backdrop-filter: blur(20px);
-      /* Position will be set by JavaScript */
+      overflow: hidden;
     }
 
     .hover-info-card.active {
       opacity: 1;
+      transform: scale(1);
+    }
+
+    .hover-info-card.loading {
+      opacity: 0.6;
+      transform: scale(0.9);
+    }
+
+    /* Loading skeleton animation */
+    .hover-info-loading {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-tertiary);
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.3s ease;
+    }
+
+    .hover-info-card.loaded .hover-info-loading {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--border-color);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Skeleton loading placeholders */
+    .skeleton {
+      background: linear-gradient(90deg, var(--bg-tertiary) 25%, var(--card-bg-color) 50%, var(--bg-tertiary) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 4px;
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: 200% 0;
+      }
+      100% {
+        background-position: -200% 0;
+      }
     }
 
     .hover-info-image {
@@ -2191,12 +2250,30 @@
       height: 180px;
       overflow: hidden;
       border-radius: 12px 12px 0 0;
+      position: relative;
+    }
+
+    .hover-info-image .skeleton-image {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
     }
 
     .hover-info-image img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: opacity 0.3s ease;
+    }
+
+    .hover-info-image img.loading-image {
+      opacity: 0;
+    }
+
+    .hover-info-image img.loaded-image {
+      opacity: 1;
     }
 
     .hover-info-content {
@@ -2210,11 +2287,23 @@
       color: var(--text-primary);
     }
 
+    .skeleton-title {
+      height: 24px;
+      width: 80%;
+      margin-bottom: 8px;
+    }
+
     .hover-info-meta {
       display: flex;
       gap: 20px;
       margin-bottom: 15px;
       font-size: 0.9rem;
+    }
+
+    .skeleton-meta {
+      height: 16px;
+      width: 60%;
+      margin-bottom: 15px;
     }
 
     .hover-info-rating {
@@ -2236,6 +2325,12 @@
       margin-bottom: 15px;
     }
 
+    .skeleton-genres {
+      height: 24px;
+      width: 70%;
+      margin-bottom: 15px;
+    }
+
     .hover-info-genre-tag {
       background: var(--glass-color);
       padding: 4px 12px;
@@ -2254,6 +2349,12 @@
       overflow: hidden;
     }
 
+    .skeleton-description {
+      height: 60px;
+      width: 100%;
+      margin-bottom: 15px;
+    }
+
     .hover-info-stats {
       display: flex;
       justify-content: space-between;
@@ -2261,6 +2362,12 @@
       border-top: 1px solid var(--border-color);
       font-size: 0.85rem;
       color: var(--text-tertiary);
+    }
+
+    .skeleton-stats {
+      height: 32px;
+      width: 100%;
+      margin-top: 15px;
     }
 
     .hover-info-stat-item {
@@ -2310,10 +2417,125 @@
         display: none !important;
       }
     }
+
+    /* ===== PAGE LOADING ANIMATION ===== */
+    .page-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-primary);
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .page-loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .page-loader-content {
+      text-align: center;
+    }
+
+    .page-loader-logo {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    .page-loader-logo img {
+      width: 60%;
+      height: 60%;
+      object-fit: contain;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 20px rgba(229, 9, 20, 0.4);
+      }
+      50% {
+        transform: scale(1.1);
+        box-shadow: 0 0 40px rgba(229, 9, 20, 0.8);
+      }
+    }
+
+    .page-loader-spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid var(--border-color);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    .page-loader-text {
+      margin-top: 15px;
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+
+    /* ===== CARD LOADING SKELETON ===== */
+    .anime-card-skeleton {
+      background: var(--card-bg-color);
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+    }
+
+    .anime-card-skeleton .skeleton-image {
+      height: 220px;
+      width: 100%;
+    }
+
+    .anime-card-skeleton .skeleton-content {
+      padding: 15px;
+    }
+
+    .anime-card-skeleton .skeleton-title-sm {
+      height: 18px;
+      width: 80%;
+      margin-bottom: 10px;
+    }
+
+    .anime-card-skeleton .skeleton-meta-sm {
+      height: 14px;
+      width: 60%;
+      margin-bottom: 8px;
+    }
+
+    .anime-card-skeleton .skeleton-desc-sm {
+      height: 14px;
+      width: 90%;
+    }
   </style>
 </head>
 
 <body>
+  <!-- Page Loader -->
+  <div class="page-loader" id="pageLoader">
+    <div class="page-loader-content">
+      <div class="page-loader-logo">
+        <img src="Image & logo/kitsune logo.jpg" alt="Kitsune Logo">
+      </div>
+      <div class="page-loader-spinner"></div>
+      <p class="page-loader-text">Loading your anime experience...</p>
+    </div>
+  </div>
+
   <!-- Header -->
   <header id="header">
     <div class="container">
@@ -2434,15 +2656,20 @@
 
   <!-- Hover Info Card -->
   <div class="hover-info-card" id="hoverInfoCard">
+    <!-- Loading overlay -->
+    <div class="hover-info-loading" id="hoverInfoLoading">
+      <div class="loading-spinner"></div>
+    </div>
+
     <div class="hover-info-image">
-      <img src="" alt="" id="hoverInfoImage">
+      <img src="" alt="" id="hoverInfoImage" class="loading-image">
     </div>
     <div class="hover-info-content">
       <h3 class="hover-info-title" id="hoverInfoTitle"></h3>
       <div class="hover-info-meta">
-        <div class="hover-info-rating" id="hoverInfoRating">
+        <div class="hover-info-rating">
           <i class="fas fa-star"></i>
-          <span></span>
+          <span id="hoverInfoRatingText"></span>
         </div>
         <div class="hover-info-episode" id="hoverInfoEpisode"></div>
       </div>
@@ -2640,6 +2867,7 @@
     const carouselProgress = document.getElementById('carouselProgress');
     const viewAllBtn = document.getElementById('viewAllBtn');
     const viewLessBtn = document.getElementById('viewLessBtn');
+    const pageLoader = document.getElementById('pageLoader');
 
     // Theme Toggle Elements
     const themeToggle = document.getElementById('themeToggle');
@@ -2660,9 +2888,10 @@
 
     // Hover Card Elements
     const hoverInfoCard = document.getElementById('hoverInfoCard');
+    const hoverInfoLoading = document.getElementById('hoverInfoLoading');
     const hoverInfoImage = document.getElementById('hoverInfoImage');
     const hoverInfoTitle = document.getElementById('hoverInfoTitle');
-    const hoverInfoRating = document.getElementById('hoverInfoRating').querySelector('span');
+    const hoverInfoRatingText = document.getElementById('hoverInfoRatingText');
     const hoverInfoEpisode = document.getElementById('hoverInfoEpisode');
     const hoverInfoGenres = document.getElementById('hoverInfoGenres');
     const hoverInfoDescription = document.getElementById('hoverInfoDescription');
@@ -2680,38 +2909,53 @@
     let animationID;
 
     // Global variables to store anime data
-    let mainAnimeData = []; // From data.json for main content
-    let searchAnimeData = []; // From searchData.json for search
+    let mainAnimeData = [];
+    let searchAnimeData = [];
 
     // State for today's releases view
     let isTodayReleasesExpanded = false;
 
-    // Hover card timer
+    // Hover card timer and state
     let hoverTimeout;
+    let cardLoadTimeout;
     let currentHoverCard = null;
+    let isHoverCardVisible = false;
+    let hoverCardLoadTimer = null;
 
-    // ===== HOVER CARD FUNCTIONS - FIXED =====
+    // ===== PAGE LOADER FUNCTIONS =====
+    function showPageLoader() {
+      pageLoader.classList.remove('hidden');
+    }
+
+    function hidePageLoader() {
+      // Add a small delay for smooth transition
+      setTimeout(() => {
+        pageLoader.classList.add('hidden');
+      }, 500);
+    }
+
+    // ===== HOVER CARD FUNCTIONS - UPDATED WITH LOADING ANIMATION =====
 
     // Initialize hover effects on anime cards
     function initHoverEffects() {
       const animeCards = document.querySelectorAll('.anime-card');
       const currentCards = new Set();
-      
+
       animeCards.forEach(card => {
         // Remove existing event listeners to avoid duplicates
         card.removeEventListener('mouseenter', handleMouseEnter);
         card.removeEventListener('mouseleave', handleMouseLeave);
         card.removeEventListener('mousemove', handleMouseMove);
-        
+
         // Store reference to prevent garbage collection issues
         currentCards.add(card);
-        
+
         // Add new event listeners
         card.addEventListener('mouseenter', handleMouseEnter);
         card.addEventListener('mouseleave', handleMouseLeave);
         card.addEventListener('mousemove', handleMouseMove);
       });
-      
+
       // Store reference to prevent garbage collection
       window._animeCards = currentCards;
     }
@@ -2730,16 +2974,16 @@
     // Handle mouse enter on anime card
     function handleMouseEnter(e) {
       const card = e.currentTarget;
-      
+
       // Get anime title from card
       const titleElement = card.querySelector('.card-content h3');
       if (!titleElement) return;
-      
+
       const animeTitle = titleElement.textContent.trim();
-      
+
       // Find anime in mainAnimeData
       const anime = mainAnimeData.find(a => a.title === animeTitle);
-      
+
       if (!anime) {
         console.log('Anime not found in data:', animeTitle);
         return;
@@ -2753,6 +2997,9 @@
       if (hoverTimeout) {
         clearTimeout(hoverTimeout);
       }
+      if (cardLoadTimeout) {
+        clearTimeout(cardLoadTimeout);
+      }
 
       // Add play icon overlay
       const cardImage = card.querySelector('.card-image');
@@ -2763,9 +3010,9 @@
         cardImage.appendChild(playIcon);
       }
 
-      // Show hover card after a short delay
+      // Show hover card with loading animation after a short delay
       hoverTimeout = setTimeout(() => {
-        showHoverCard(anime, mouseX, mouseY);
+        showHoverCardWithLoading(anime, mouseX, mouseY);
       }, 300);
     }
 
@@ -2783,20 +3030,87 @@
       if (hoverTimeout) {
         clearTimeout(hoverTimeout);
       }
+      if (cardLoadTimeout) {
+        clearTimeout(cardLoadTimeout);
+      }
 
-      hoverInfoCard.classList.remove('active');
+      hideHoverCard();
     }
 
-    // Show hover card with anime information - positioned near mouse
-    function showHoverCard(anime, mouseX, mouseY) {
-      // Set image
+    // Show hover card with loading animation
+    function showHoverCardWithLoading(anime, mouseX, mouseY) {
+      // Reset hover card state
+      resetHoverCard();
+
+      // Set loading state
+      hoverInfoCard.classList.add('loading');
+      hoverInfoCard.classList.remove('loaded');
+
+      // Position the card near mouse pointer
+      positionHoverCardNearMouse(mouseX, mouseY);
+
+      // Show card immediately with loading state
+      hoverInfoCard.classList.add('active');
+      isHoverCardVisible = true;
+
+      // Simulate loading delay (this makes the loading animation visible)
+      // In a real scenario, this is where you'd load data
+      const loadDelay = 600; // 600ms loading animation
+
+      cardLoadTimeout = setTimeout(() => {
+        populateHoverCard(anime);
+        hoverInfoCard.classList.remove('loading');
+        hoverInfoCard.classList.add('loaded');
+
+        // Recalculate position after content is loaded
+        positionHoverCardNearMouse(mouseX, mouseY);
+      }, loadDelay);
+    }
+
+    // Reset hover card to loading state
+    function resetHoverCard() {
+      // Clear all content
+      hoverInfoTitle.textContent = '';
+      hoverInfoRatingText.textContent = '';
+      hoverInfoEpisode.textContent = '';
+      hoverInfoGenres.innerHTML = '';
+      hoverInfoDescription.textContent = '';
+      hoverInfoYear.textContent = '';
+      hoverInfoDuration.textContent = '';
+      hoverInfoViews.textContent = '';
+
+      // Set image to loading state
+      hoverInfoImage.src = '';
+      hoverInfoImage.classList.add('loading-image');
+      hoverInfoImage.classList.remove('loaded-image');
+
+      // Show loading spinner
+      hoverInfoLoading.style.opacity = '1';
+    }
+
+    // Populate hover card with anime data
+    function populateHoverCard(anime) {
+      // Set image with load event
       hoverInfoImage.src = anime.image || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+
+      // Handle image load
+      hoverInfoImage.onload = function() {
+        hoverInfoImage.classList.remove('loading-image');
+        hoverInfoImage.classList.add('loaded-image');
+      };
+
+      // Handle image error
+      hoverInfoImage.onerror = function() {
+        hoverInfoImage.src = 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+        hoverInfoImage.classList.remove('loading-image');
+        hoverInfoImage.classList.add('loaded-image');
+      };
 
       // Set title
       hoverInfoTitle.textContent = anime.title;
 
       // Set rating
-      hoverInfoRating.textContent = anime.rating || '8.5';
+      hoverInfoRatingText.textContent = anime.rating || '8.5';
 
       // Set episode
       hoverInfoEpisode.textContent = anime.type || 'Episode 1';
@@ -2811,62 +3125,84 @@
         hoverInfoGenres.appendChild(genreTag);
       });
 
-      // Set description - USE DIRECTLY FROM DATA.JSON
+      // Set description
       hoverInfoDescription.textContent = anime.description || `${anime.title} is an exciting ${anime.genre} anime series featuring epic battles, compelling characters, and an immersive storyline.`;
 
-      // Set additional stats from data.json
+      // Set additional stats
       hoverInfoYear.textContent = anime.year || '2024';
       hoverInfoDuration.textContent = anime.duration || '24 min/ep';
-      
-      // Format views if available
+
+      // Format views
       if (anime.views) {
         hoverInfoViews.textContent = formatNumber(anime.views);
       } else {
         hoverInfoViews.textContent = formatNumber(Math.floor(Math.random() * 1000000) + 100000);
       }
 
-      // Position the card near mouse but keep it static once shown
-      positionHoverCardNearMouse(mouseX, mouseY);
-
-      // Show card
-      hoverInfoCard.classList.add('active');
+      // Hide loading spinner
+      hoverInfoLoading.style.opacity = '0';
     }
 
-    // Position hover card near mouse without moving with mouse
+    // Hide hover card
+    function hideHoverCard() {
+      hoverInfoCard.classList.remove('active');
+      hoverInfoCard.classList.remove('loading');
+      hoverInfoCard.classList.remove('loaded');
+      isHoverCardVisible = false;
+    }
+
+    // Position hover card near mouse pointer
     function positionHoverCardNearMouse(mouseX, mouseY) {
       // Get viewport dimensions
       const viewportWidth = window.innerWidth;
       const viewportHeight = window.innerHeight;
 
-      // Get card dimensions (will be 350px width, height varies)
+      // Get card dimensions
       const cardWidth = 350;
+      const cardHeight = hoverInfoCard.offsetHeight || 480;
 
-      // Calculate initial position (30px offset from mouse)
-      let left = mouseX + 20;
-      let top = mouseY + 20;
+      // Calculate position with offset from mouse
+      const offsetX = 20;
+      const offsetY = 20;
+      const margin = 10;
 
-      // Check if card would go off right edge
-      if (left + cardWidth > viewportWidth - 20) {
-        left = mouseX - cardWidth - 20;
+      // Determine horizontal position
+      let left;
+      const spaceOnRight = viewportWidth - mouseX - offsetX;
+      const spaceOnLeft = mouseX - offsetX;
+
+      if (spaceOnRight >= cardWidth + margin) {
+        // Show on right side of cursor
+        left = mouseX + offsetX;
+      } else if (spaceOnLeft >= cardWidth + margin) {
+        // Show on left side of cursor
+        left = mouseX - cardWidth - offsetX;
+      } else {
+        // Center horizontally
+        left = Math.max(margin, Math.min(viewportWidth - cardWidth - margin, mouseX - cardWidth / 2));
       }
 
-      // Check if card would go off left edge
-      if (left < 20) {
-        left = 20;
+      // Determine vertical position
+      let top;
+      const spaceBelow = viewportHeight - mouseY - offsetY;
+      const spaceAbove = mouseY - offsetY;
+
+      if (spaceBelow >= cardHeight + margin) {
+        // Show below cursor
+        top = mouseY + offsetY;
+      } else if (spaceAbove >= cardHeight + margin) {
+        // Show above cursor
+        top = mouseY - cardHeight - offsetY;
+      } else {
+        // Center vertically
+        top = Math.max(margin, Math.min(viewportHeight - cardHeight - margin, mouseY - cardHeight / 2));
       }
 
-      // Check if card would go off bottom (we'll estimate height as 500px)
-      const estimatedHeight = 500;
-      if (top + estimatedHeight > viewportHeight - 20) {
-        top = mouseY - estimatedHeight - 20;
-      }
+      // Ensure card stays within viewport
+      left = Math.max(margin, Math.min(viewportWidth - cardWidth - margin, left));
+      top = Math.max(margin, Math.min(viewportHeight - cardHeight - margin, top));
 
-      // Check if card would go off top
-      if (top < 20) {
-        top = 20;
-      }
-
-      // Apply position - this is fixed once set
+      // Apply position
       hoverInfoCard.style.left = left + 'px';
       hoverInfoCard.style.top = top + 'px';
       hoverInfoCard.style.right = 'auto';
@@ -3230,7 +3566,7 @@
           class: 'completed-badge'
         };
       }
-      
+
       if (anime.status === 'ongoing') {
         return {
           text: 'ONGOING',
@@ -3883,8 +4219,13 @@
           initHoverEffects();
         }, 500);
 
+        // Hide page loader after everything is loaded
+        hidePageLoader();
+
       } catch (error) {
         console.error('Error loading anime data:', error);
+        // Hide page loader even on error
+        hidePageLoader();
         // Fallback: use hardcoded data or show error message
         showToast('Error loading anime data. Please refresh the page.', 'error');
       }
@@ -4103,7 +4444,7 @@
         // Prevent default and stop propagation
         e.preventDefault();
         e.stopPropagation();
-        
+
         // Show loading state
         animeCard.style.opacity = '0.7';
         animeCard.style.pointerEvents = 'none';
@@ -4152,10 +4493,10 @@
 
       // Store reference to prevent garbage collection
       animeCard._clickHandler = clickHandler;
-      
+
       // Remove any existing click listeners before adding new one
       animeCard.removeEventListener('click', animeCard._clickHandler);
-      
+
       // Add click event listener
       animeCard.addEventListener('click', clickHandler);
 
@@ -4268,6 +4609,9 @@
 
     // Initialize the page - FIXED: Ensure proper initialization and re-initialization
     document.addEventListener('DOMContentLoaded', function () {
+      // Show page loader
+      showPageLoader();
+
       // Initialize theme toggle
       initializeThemeToggle();
 
