@@ -2202,16 +2202,16 @@
       }
     }
 
-    /* ===== HOVER INFO CARD STYLES - UPDATED WITH LOADING ANIMATION ===== */
+    /* ===== HOVER INFO CARD STYLES - UPDATED WITHOUT IMAGE ===== */
     .hover-info-card {
       position: fixed;
-      width: 350px;
+      width: 320px;
       background: var(--bg-tertiary);
       border-radius: 12px;
       box-shadow: var(--current-shadow);
       border: 1px solid var(--border-color);
       z-index: 10000;
-      pointer-events: none;
+      pointer-events: auto;
       opacity: 0;
       transform: scale(0.8);
       transition: opacity 0.3s ease, transform 0.3s ease;
@@ -2225,7 +2225,7 @@
     }
 
     .hover-info-card.loading {
-      opacity: 0.6;
+      opacity: 0.7;
       transform: scale(0.9);
     }
 
@@ -2281,35 +2281,9 @@
       }
     }
 
+    /* Hover info image - HIDDEN */
     .hover-info-image {
-      width: 100%;
-      height: 180px;
-      overflow: hidden;
-      border-radius: 12px 12px 0 0;
-      position: relative;
-    }
-
-    .hover-info-image .skeleton-image {
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-
-    .hover-info-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: opacity 0.3s ease;
-    }
-
-    .hover-info-image img.loading-image {
-      opacity: 0;
-    }
-
-    .hover-info-image img.loaded-image {
-      opacity: 1;
+      display: none;
     }
 
     .hover-info-content {
@@ -2317,7 +2291,7 @@
     }
 
     .hover-info-title {
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       font-weight: 700;
       margin-bottom: 8px;
       color: var(--text-primary);
@@ -3119,8 +3093,41 @@
         clearTimeout(cardLoadTimeout);
       }
 
-      hideHoverCard();
+      // Only hide if mouse is not over the hover card
+      if (!isMouseOverHoverCard(e)) {
+        hideHoverCard();
+      }
     }
+
+    function isMouseOverHoverCard(e) {
+      if (!hoverInfoCard || !hoverInfoCard.classList.contains('active')) {
+        return false;
+      }
+
+      const rect = hoverInfoCard.getBoundingClientRect();
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
+
+      return mouseX >= rect.left && mouseX <= rect.right && mouseY >= rect.top && mouseY <= rect.bottom;
+    }
+
+    // Add event listeners to hover card to prevent it from disappearing
+    hoverInfoCard.addEventListener('mouseenter', function() {
+      // Clear any pending hide timeouts
+      if (hoverTimeout) {
+        clearTimeout(hoverTimeout);
+      }
+      if (cardLoadTimeout) {
+        clearTimeout(cardLoadTimeout);
+      }
+    });
+
+    hoverInfoCard.addEventListener('mouseleave', function(e) {
+      // Only hide if mouse is not moving to an anime card
+      if (!e.relatedTarget || !e.relatedTarget.closest('.anime-card')) {
+        hideHoverCard();
+      }
+    });
 
     function showHoverCardWithLoading(anime, mouseX, mouseY) {
       resetHoverCard();
@@ -3130,7 +3137,7 @@
       hoverInfoCard.classList.add('active');
       isHoverCardVisible = true;
 
-      const loadDelay = 600;
+      const loadDelay = 500;
 
       cardLoadTimeout = setTimeout(function() {
         populateHoverCard(anime);
@@ -3149,26 +3156,10 @@
       hoverInfoYear.textContent = '';
       hoverInfoDuration.textContent = '';
       hoverInfoViews.textContent = '';
-      hoverInfoImage.src = '';
-      hoverInfoImage.classList.add('loading-image');
-      hoverInfoImage.classList.remove('loaded-image');
       hoverInfoLoading.style.opacity = '1';
     }
 
     function populateHoverCard(anime) {
-      hoverInfoImage.src = anime.image || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
-
-      hoverInfoImage.onload = function() {
-        hoverInfoImage.classList.remove('loading-image');
-        hoverInfoImage.classList.add('loaded-image');
-      };
-
-      hoverInfoImage.onerror = function() {
-        hoverInfoImage.src = 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
-        hoverInfoImage.classList.remove('loading-image');
-        hoverInfoImage.classList.add('loaded-image');
-      };
-
       hoverInfoTitle.textContent = anime.title;
       hoverInfoRatingText.textContent = anime.rating || '8.5';
       hoverInfoEpisode.textContent = anime.type || 'Episode 1';
@@ -3207,8 +3198,8 @@
     function positionHoverCardAtMouseCorner(mouseX, mouseY) {
       const viewportWidth = window.innerWidth;
       const viewportHeight = window.innerHeight;
-      const cardWidth = 350;
-      const cardHeight = hoverInfoCard.offsetHeight || 480;
+      const cardWidth = 320;
+      const cardHeight = hoverInfoCard.offsetHeight || 380;
       const margin = 10;
 
       const isLeftHalf = mouseX < viewportWidth / 2;
@@ -3580,7 +3571,7 @@
     signOutBtn.addEventListener('click', function () {
       localStorage.removeItem('kitsune_user');
       localStorage.removeItem('kitsune_profile_image');
-      window.location.href = 'signin.html';
+      window.location.replace('signin.html');
     });
 
     // Extract episode number from type field
