@@ -93,6 +93,8 @@
       --light-card-border: rgba(0, 0, 0, 0.08);
       --light-glass: rgba(0, 0, 0, 0.05);
       --light-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      --light-input-bg: rgba(0, 0, 0, 0.05);
+      --light-input-border: rgba(229, 9, 20, 0.3);
     }
 
     :root[data-theme="dark"] {
@@ -1997,10 +1999,10 @@
         height: 190px;
       }
 
-      /* 3. Featured Anime Grid remains unchanged (3 columns, no scroll) */
+      /* 3. Featured Anime Grid - UPDATED: 2 columns instead of 3 */
       #featuredAnimeGrid.anime-grid {
         display: grid !important;
-        grid-template-columns: repeat(3, 1fr) !important;
+        grid-template-columns: repeat(2, 1fr) !important;
         gap: 12px;
         overflow-x: visible;
       }
@@ -2012,12 +2014,12 @@
       }
 
       #featuredAnimeGrid.anime-grid .anime-card .card-image {
-        height: 170px;
+        height: 190px;
       }
 
-      /* Adjust genre grid for mobile */
+      /* Adjust genre grid for mobile - 2 columns */
       .genres-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         gap: 12px;
       }
 
@@ -2025,13 +2027,77 @@
         padding: 20px 10px;
       }
 
+      /* ===== MOBILE FOOTER - 2 COLUMN ROW LAYOUT ===== */
       footer {
-        padding: 40px 0 30px;
+        padding: 30px 0 25px;
       }
 
       .footer-content {
-        grid-template-columns: 1fr;
-        gap: 30px;
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 20px;
+        row-gap: 25px;
+      }
+
+      /* Footer about section takes full width */
+      .footer-about {
+        grid-column: 1 / -1;
+      }
+
+      /* Browse and Support in first row */
+      .footer-column:nth-child(2) {
+        grid-column: 1;
+      }
+
+      .footer-column:nth-child(3) {
+        grid-column: 2;
+      }
+
+      /* Legal in full width below */
+      .footer-column:nth-child(4) {
+        grid-column: 1 / -1;
+      }
+
+      .footer-column h3 {
+        font-size: 1rem;
+        margin-bottom: 12px;
+      }
+
+      .footer-column h3::after {
+        width: 30px;
+        height: 2px;
+      }
+
+      .footer-links li {
+        margin-bottom: 8px;
+      }
+
+      .footer-links a {
+        font-size: 0.85rem;
+      }
+
+      .footer-logo .logo-icon {
+        width: 30px;
+        height: 30px;
+      }
+
+      .footer-logo .logo-text {
+        font-size: 1.3rem;
+      }
+
+      .footer-about p {
+        font-size: 0.85rem;
+      }
+
+      .social-links a {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+      }
+
+      .footer-bottom {
+        font-size: 0.8rem;
+        padding-top: 20px;
       }
 
       .section-header h2 {
@@ -2119,12 +2185,36 @@
         min-width: 120px;
       }
 
+      /* Keep 2 columns for extra small devices */
       #featuredAnimeGrid.anime-grid {
-        grid-template-columns: repeat(3, 1fr) !important;
+        grid-template-columns: repeat(2, 1fr) !important;
       }
 
       .genres-grid {
         grid-template-columns: repeat(2, 1fr);
+      }
+
+      /* Footer still 2 columns on extra small */
+      .footer-content {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 15px;
+        row-gap: 20px;
+      }
+
+      .footer-about {
+        grid-column: 1 / -1;
+      }
+
+      .footer-column:nth-child(2) {
+        grid-column: 1;
+      }
+
+      .footer-column:nth-child(3) {
+        grid-column: 2;
+      }
+
+      .footer-column:nth-child(4) {
+        grid-column: 1 / -1;
       }
     }
 
