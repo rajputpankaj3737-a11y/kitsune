@@ -596,7 +596,6 @@
         opacity: 0;
         transform: translateY(-10px);
       }
-
       to {
         opacity: 1;
         transform: translateY(0);
@@ -1279,6 +1278,7 @@
       grid-template-columns: repeat(6, 1fr);
     }
 
+    /* ===== NEW ANIME CARD STYLE - CLEAN MINIMAL DESIGN ===== */
     .anime-card {
       background: var(--card-bg-color);
       border-radius: var(--radius);
@@ -1296,7 +1296,7 @@
     }
 
     .card-image {
-      height: 220px;
+      height: 260px;
       overflow: hidden;
       position: relative;
     }
@@ -1312,57 +1312,106 @@
       transform: scale(1.05);
     }
 
-    .card-badge {
+    /* Status Badge - Positioned at top-left of image */
+    .card-status-badge {
       position: absolute;
-      top: 10px;
-      right: 10px;
-      background: var(--primary);
-      color: white;
-      padding: 4px 8px;
+      top: 12px;
+      left: 12px;
+      padding: 5px 12px;
       border-radius: 4px;
       font-size: 0.7rem;
-      font-weight: 600;
+      font-weight: 700;
+      letter-spacing: 1px;
       z-index: 2;
+      color: white;
+      text-transform: uppercase;
     }
 
+    .card-status-badge.ongoing {
+      background: #2196F3;
+    }
+
+    .card-status-badge.completed {
+      background: #4CAF50;
+    }
+
+    .card-status-badge.updated {
+      background: #FF6B00;
+    }
+
+    .card-status-badge.new {
+      background: var(--primary);
+    }
+
+    /* Card Content - Clean info below image */
     .card-content {
-      padding: 15px;
+      padding: 12px 15px;
+      background: var(--card-bg-color);
     }
 
-    .card-content h3 {
-      font-size: 1rem;
-      margin-bottom: 8px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    /* Anime Title - Bold, prominent */
+    .card-content .anime-title {
+      font-size: 0.95rem;
+      font-weight: 700;
       color: var(--text-primary);
-    }
-
-    .card-meta {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 10px;
-      font-size: 0.8rem;
-      color: var(--text-tertiary);
-    }
-
-    .card-rating {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      color: #FFD700;
-      font-size: 0.8rem;
-    }
-
-    .card-description {
-      color: var(--text-secondary);
-      font-size: 0.8rem;
-      line-height: 1.4;
+      margin-bottom: 6px;
+      line-height: 1.3;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
-      max-height: 2.8em;
+      min-height: 2.6em;
+    }
+
+    /* Info Row: Episode + Quality + Sub/Dub */
+    .card-info-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 0.85rem;
+    }
+
+    .card-episode {
+      color: var(--text-secondary);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .card-quality {
+      background: rgba(229, 9, 20, 0.15);
+      color: var(--primary-light);
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    .card-sub-type {
+      color: var(--text-tertiary);
+      font-size: 0.8rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    /* Hide old elements */
+    .card-badge {
+      display: none;
+    }
+
+    .card-meta {
+      display: none;
+    }
+
+    .card-rating {
+      display: none;
+    }
+
+    .card-description {
+      display: none;
     }
 
     /* ===== TRENDING NOW SECTION ===== */
@@ -1616,26 +1665,6 @@
       border-top: 1px solid var(--border-color);
       color: var(--text-tertiary);
       font-size: 0.9rem;
-    }
-
-    .updated-badge {
-      background: #FF6B00;
-      /* Orange for new episodes */
-    }
-
-    .new-badge {
-      background: var(--primary);
-      /* Red for new anime */
-    }
-
-    .completed-badge {
-      background: #4CAF50;
-      /* Green for completed */
-    }
-
-    .ongoing-badge {
-      background: #2196F3;
-      /* Blue for ongoing */
     }
 
     .search-update-indicator {
@@ -1908,23 +1937,31 @@
 
       /* ===== MOBILE GRID & SCROLL CHANGES ===== */
 
-      /* 1. Anime cards show only poster and name (hide meta, rating, description) */
-      .anime-card .card-meta,
-      .anime-card .card-description {
-        display: none !important;
+      /* 1. Anime cards - clean minimal style on mobile */
+      .card-image {
+        height: 200px;
       }
 
-      .anime-card .card-content {
-        padding: 8px 5px;
+      .card-content {
+        padding: 10px 12px;
       }
 
-      .anime-card .card-content h3 {
+      .card-content .anime-title {
         font-size: 0.85rem;
-        text-align: center;
-        margin-bottom: 0;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        min-height: 2.4em;
+      }
+
+      .card-info-row {
+        font-size: 0.78rem;
+      }
+
+      .card-quality {
+        font-size: 0.7rem;
+        padding: 1px 6px;
+      }
+
+      .card-sub-type {
+        font-size: 0.72rem;
       }
 
       /* 2. Today's Releases: single row with horizontal scroll */
@@ -1937,7 +1974,6 @@
         padding-bottom: 8px;
         scrollbar-width: thin;
         grid-template-columns: unset !important;
-        /* Override grid */
       }
 
       #todayReleasesGrid.anime-grid::-webkit-scrollbar {
@@ -1951,14 +1987,14 @@
 
       /* Each card in the scrolling row has fixed width */
       #todayReleasesGrid.anime-grid .anime-card {
-        flex: 0 0 120px;
-        min-width: 120px;
-        max-width: 120px;
+        flex: 0 0 140px;
+        min-width: 140px;
+        max-width: 140px;
       }
 
       /* Adjust card image height for mobile scrolling cards */
       #todayReleasesGrid.anime-grid .anime-card .card-image {
-        height: 160px;
+        height: 190px;
       }
 
       /* 3. Featured Anime Grid remains unchanged (3 columns, no scroll) */
@@ -1976,7 +2012,7 @@
       }
 
       #featuredAnimeGrid.anime-grid .anime-card .card-image {
-        height: 160px;
+        height: 170px;
       }
 
       /* Adjust genre grid for mobile */
@@ -2079,8 +2115,8 @@
       }
 
       #todayReleasesGrid.anime-grid .anime-card {
-        flex: 0 0 100px;
-        min-width: 100px;
+        flex: 0 0 120px;
+        min-width: 120px;
       }
 
       #featuredAnimeGrid.anime-grid {
@@ -2923,18 +2959,14 @@
     let hoverCardLoadTimer = null;
 
     // ===== FIXED: Track navigation state to restore card styles on back button =====
-    // This solves the issue where cards remain unclickable after returning via browser back button
     let navigatingAway = false;
 
     // Listen for pageshow event to restore card styles when returning via back button
     window.addEventListener('pageshow', function(event) {
-      // The event.persisted property is true when the page is loaded from the browser's cache (back/forward navigation)
       if (event.persisted) {
         console.log('Page loaded from cache (back button navigation detected) - Restoring card styles');
-        // Restore all anime card styles
         restoreAllCardStyles();
       }
-      // Reset the navigating flag
       navigatingAway = false;
     });
 
@@ -2942,7 +2974,6 @@
     document.addEventListener('visibilitychange', function() {
       if (document.visibilityState === 'visible' && navigatingAway) {
         console.log('Page became visible after navigation - Restoring card styles');
-        // Small delay to ensure DOM is ready
         setTimeout(function() {
           restoreAllCardStyles();
         }, 100);
@@ -2952,7 +2983,6 @@
 
     // Function to restore all card styles
     function restoreAllCardStyles() {
-      // Restore all anime cards in Today's Releases grid
       if (todayReleasesGrid) {
         const todayCards = todayReleasesGrid.querySelectorAll('.anime-card');
         todayCards.forEach(function(card) {
@@ -2961,7 +2991,6 @@
         });
       }
 
-      // Restore all anime cards in Featured Anime grid
       if (featuredAnimeGrid) {
         const featuredCards = featuredAnimeGrid.querySelectorAll('.anime-card');
         featuredCards.forEach(function(card) {
@@ -2970,7 +2999,6 @@
         });
       }
 
-      // Also restore any carousel cards if they have similar issues
       const carouselCards = document.querySelectorAll('.carousel-slide .btn-primary');
       carouselCards.forEach(function(btn) {
         btn.style.opacity = '1';
@@ -2986,60 +3014,65 @@
     }
 
     function hidePageLoader() {
-      // Add a small delay for smooth transition
       setTimeout(function() {
         pageLoader.classList.add('hidden');
       }, 500);
     }
 
-    // ===== HOVER CARD FUNCTIONS - UPDATED WITH LOADING ANIMATION =====
+    // ===== QUALITY DETECTION FUNCTION =====
+    function getAnimeQuality(anime) {
+      // Check anime type for quality indicators
+      if (anime.type) {
+        if (anime.type.includes('4K') || anime.type.includes('2160p')) {
+          return '4K';
+        }
+        if (anime.type.includes('1080p') || anime.type.includes('FHD')) {
+          return '1080p';
+        }
+        if (anime.type.includes('720p') || anime.type.includes('HD')) {
+          return '720p';
+        }
+      }
+      // Default quality based on status
+      return '1080p';
+    }
 
-    // Initialize hover effects on anime cards
+    // ===== SUB/DUB DETECTION FUNCTION =====
+    function getAnimeSubType(anime) {
+      if (anime.type) {
+        if (anime.type.includes('DUB') || anime.type.includes('Dub') || anime.type.includes('dub')) {
+          return 'DUB';
+        }
+        if (anime.type.includes('SUB') || anime.type.includes('Sub') || anime.type.includes('sub')) {
+          return 'SUB';
+        }
+      }
+      // Default to SUB
+      return 'SUB';
+    }
+
+    // ===== HOVER EFFECTS =====
     function initHoverEffects() {
       const animeCards = document.querySelectorAll('.anime-card');
       const currentCards = new Set();
 
       animeCards.forEach(function(card) {
-        // Remove existing event listeners to avoid duplicates
         card.removeEventListener('mouseenter', handleMouseEnter);
         card.removeEventListener('mouseleave', handleMouseLeave);
-        card.removeEventListener('mousemove', handleMouseMove);
-
-        // Store reference to prevent garbage collection issues
         currentCards.add(card);
-
-        // Add new event listeners
         card.addEventListener('mouseenter', handleMouseEnter);
         card.addEventListener('mouseleave', handleMouseLeave);
-        card.addEventListener('mousemove', handleMouseMove);
       });
 
-      // Store reference to prevent garbage collection
       window._animeCards = currentCards;
     }
 
-    // Handle mouse move to track position
-    function handleMouseMove(e) {
-      // Store mouse position for positioning the hover card
-      const mouseX = e.clientX;
-      const mouseY = e.clientY;
-
-      // Store on the card element for use when showing hover card
-      e.currentTarget.dataset.mouseX = mouseX;
-      e.currentTarget.dataset.mouseY = mouseY;
-    }
-
-    // Handle mouse enter on anime card
     function handleMouseEnter(e) {
       const card = e.currentTarget;
-
-      // Get anime title from card
-      const titleElement = card.querySelector('.card-content h3');
+      const titleElement = card.querySelector('.card-content .anime-title');
       if (!titleElement) return;
 
       const animeTitle = titleElement.textContent.trim();
-
-      // Find anime in mainAnimeData
       const anime = mainAnimeData.find(function(a) {
         return a.title === animeTitle;
       });
@@ -3049,11 +3082,9 @@
         return;
       }
 
-      // Get mouse position from stored data or use event coordinates
-      const mouseX = parseInt(card.dataset.mouseX) || e.clientX;
-      const mouseY = parseInt(card.dataset.mouseY) || e.clientY;
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
 
-      // Clear any existing timeout
       if (hoverTimeout) {
         clearTimeout(hoverTimeout);
       }
@@ -3061,7 +3092,6 @@
         clearTimeout(cardLoadTimeout);
       }
 
-      // Add play icon overlay
       const cardImage = card.querySelector('.card-image');
       if (cardImage && !cardImage.querySelector('.hover-info-play-icon')) {
         const playIcon = document.createElement('div');
@@ -3070,23 +3100,18 @@
         cardImage.appendChild(playIcon);
       }
 
-      // Show hover card with loading animation after a short delay
       hoverTimeout = setTimeout(function() {
         showHoverCardWithLoading(anime, mouseX, mouseY);
       }, 300);
     }
 
-    // Handle mouse leave on anime card
     function handleMouseLeave(e) {
       const card = e.currentTarget;
-
-      // Remove play icon
       const playIcon = card.querySelector('.hover-info-play-icon');
       if (playIcon) {
         playIcon.remove();
       }
 
-      // Clear timeout and hide hover card
       if (hoverTimeout) {
         clearTimeout(hoverTimeout);
       }
@@ -3097,39 +3122,25 @@
       hideHoverCard();
     }
 
-    // Show hover card with loading animation
     function showHoverCardWithLoading(anime, mouseX, mouseY) {
-      // Reset hover card state
       resetHoverCard();
-
-      // Set loading state
       hoverInfoCard.classList.add('loading');
       hoverInfoCard.classList.remove('loaded');
-
-      // Position the card near mouse pointer
-      positionHoverCardNearMouse(mouseX, mouseY);
-
-      // Show card immediately with loading state
+      positionHoverCardAtMouseCorner(mouseX, mouseY);
       hoverInfoCard.classList.add('active');
       isHoverCardVisible = true;
 
-      // Simulate loading delay (this makes the loading animation visible)
-      // In a real scenario, this is where you'd load data
-      const loadDelay = 600; // 600ms loading animation
+      const loadDelay = 600;
 
       cardLoadTimeout = setTimeout(function() {
         populateHoverCard(anime);
         hoverInfoCard.classList.remove('loading');
         hoverInfoCard.classList.add('loaded');
-
-        // Recalculate position after content is loaded
-        positionHoverCardNearMouse(mouseX, mouseY);
+        positionHoverCardAtMouseCorner(mouseX, mouseY);
       }, loadDelay);
     }
 
-    // Reset hover card to loading state
     function resetHoverCard() {
-      // Clear all content
       hoverInfoTitle.textContent = '';
       hoverInfoRatingText.textContent = '';
       hoverInfoEpisode.textContent = '';
@@ -3138,44 +3149,30 @@
       hoverInfoYear.textContent = '';
       hoverInfoDuration.textContent = '';
       hoverInfoViews.textContent = '';
-
-      // Set image to loading state
       hoverInfoImage.src = '';
       hoverInfoImage.classList.add('loading-image');
       hoverInfoImage.classList.remove('loaded-image');
-
-      // Show loading spinner
       hoverInfoLoading.style.opacity = '1';
     }
 
-    // Populate hover card with anime data
     function populateHoverCard(anime) {
-      // Set image with load event
       hoverInfoImage.src = anime.image || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
 
-      // Handle image load
       hoverInfoImage.onload = function() {
         hoverInfoImage.classList.remove('loading-image');
         hoverInfoImage.classList.add('loaded-image');
       };
 
-      // Handle image error
       hoverInfoImage.onerror = function() {
         hoverInfoImage.src = 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
         hoverInfoImage.classList.remove('loading-image');
         hoverInfoImage.classList.add('loaded-image');
       };
 
-      // Set title
       hoverInfoTitle.textContent = anime.title;
-
-      // Set rating
       hoverInfoRatingText.textContent = anime.rating || '8.5';
-
-      // Set episode
       hoverInfoEpisode.textContent = anime.type || 'Episode 1';
 
-      // Set genres
       hoverInfoGenres.innerHTML = '';
       const genreArray = anime.genre ? anime.genre.split(',').map(function(g) {
         return g.trim();
@@ -3187,25 +3184,19 @@
         hoverInfoGenres.appendChild(genreTag);
       });
 
-      // Set description
       hoverInfoDescription.textContent = anime.description || (anime.title + ' is an exciting ' + anime.genre + ' anime series featuring epic battles, compelling characters, and an immersive storyline.');
-
-      // Set additional stats
       hoverInfoYear.textContent = anime.year || '2024';
       hoverInfoDuration.textContent = anime.duration || '24 min/ep';
 
-      // Format views
       if (anime.views) {
         hoverInfoViews.textContent = formatNumber(anime.views);
       } else {
         hoverInfoViews.textContent = formatNumber(Math.floor(Math.random() * 1000000) + 100000);
       }
 
-      // Hide loading spinner
       hoverInfoLoading.style.opacity = '0';
     }
 
-    // Hide hover card
     function hideHoverCard() {
       hoverInfoCard.classList.remove('active');
       hoverInfoCard.classList.remove('loading');
@@ -3213,58 +3204,76 @@
       isHoverCardVisible = false;
     }
 
-    // Position hover card near mouse pointer
-    function positionHoverCardNearMouse(mouseX, mouseY) {
-      // Get viewport dimensions
+    function positionHoverCardAtMouseCorner(mouseX, mouseY) {
       const viewportWidth = window.innerWidth;
       const viewportHeight = window.innerHeight;
-
-      // Get card dimensions
       const cardWidth = 350;
       const cardHeight = hoverInfoCard.offsetHeight || 480;
-
-      // Calculate position with offset from mouse
-      const offsetX = 20;
-      const offsetY = 20;
       const margin = 10;
 
-      // Determine horizontal position
+      const isLeftHalf = mouseX < viewportWidth / 2;
+      const isTopHalf = mouseY < viewportHeight / 2;
+
       let left;
-      const spaceOnRight = viewportWidth - mouseX - offsetX;
-      const spaceOnLeft = mouseX - offsetX;
-
-      if (spaceOnRight >= cardWidth + margin) {
-        // Show on right side of cursor
-        left = mouseX + offsetX;
-      } else if (spaceOnLeft >= cardWidth + margin) {
-        // Show on left side of cursor
-        left = mouseX - cardWidth - offsetX;
-      } else {
-        // Center horizontally
-        left = Math.max(margin, Math.min(viewportWidth - cardWidth - margin, mouseX - cardWidth / 2));
-      }
-
-      // Determine vertical position
       let top;
-      const spaceBelow = viewportHeight - mouseY - offsetY;
-      const spaceAbove = mouseY - offsetY;
 
-      if (spaceBelow >= cardHeight + margin) {
-        // Show below cursor
-        top = mouseY + offsetY;
-      } else if (spaceAbove >= cardHeight + margin) {
-        // Show above cursor
-        top = mouseY - cardHeight - offsetY;
+      if (isTopHalf && isLeftHalf) {
+        left = mouseX;
+        top = mouseY;
+        if (left + cardWidth > viewportWidth - margin) {
+          left = viewportWidth - cardWidth - margin;
+        }
+        if (top + cardHeight > viewportHeight - margin) {
+          top = mouseY - cardHeight;
+          if (top < margin) top = margin;
+        }
+        if (left < margin) left = margin;
+      } else if (isTopHalf && !isLeftHalf) {
+        left = mouseX - cardWidth;
+        top = mouseY;
+        if (left < margin) {
+          left = margin;
+        }
+        if (top + cardHeight > viewportHeight - margin) {
+          top = mouseY - cardHeight;
+          if (top < margin) top = margin;
+        }
+        if (left + cardWidth > viewportWidth - margin) {
+          left = viewportWidth - cardWidth - margin;
+        }
+      } else if (!isTopHalf && isLeftHalf) {
+        left = mouseX;
+        top = mouseY - cardHeight;
+        if (left + cardWidth > viewportWidth - margin) {
+          left = viewportWidth - cardWidth - margin;
+        }
+        if (top < margin) {
+          top = mouseY;
+          if (top + cardHeight > viewportHeight - margin) {
+            top = viewportHeight - cardHeight - margin;
+          }
+        }
+        if (left < margin) left = margin;
       } else {
-        // Center vertically
-        top = Math.max(margin, Math.min(viewportHeight - cardHeight - margin, mouseY - cardHeight / 2));
+        left = mouseX - cardWidth;
+        top = mouseY - cardHeight;
+        if (left < margin) {
+          left = margin;
+        }
+        if (top < margin) {
+          top = mouseY;
+          if (top + cardHeight > viewportHeight - margin) {
+            top = viewportHeight - cardHeight - margin;
+          }
+        }
+        if (left + cardWidth > viewportWidth - margin) {
+          left = viewportWidth - cardWidth - margin;
+        }
       }
 
-      // Ensure card stays within viewport
       left = Math.max(margin, Math.min(viewportWidth - cardWidth - margin, left));
       top = Math.max(margin, Math.min(viewportHeight - cardHeight - margin, top));
 
-      // Apply position
       hoverInfoCard.style.left = left + 'px';
       hoverInfoCard.style.top = top + 'px';
       hoverInfoCard.style.right = 'auto';
@@ -3272,7 +3281,6 @@
       hoverInfoCard.style.transform = 'none';
     }
 
-    // Format number with K/M suffix
     function formatNumber(num) {
       if (num >= 1000000) {
         return (num / 1000000).toFixed(1) + 'M';
@@ -3290,10 +3298,8 @@
       const toastMessage = document.getElementById('toastMessage');
       const toastIcon = toast.querySelector('i');
 
-      // Set message
       toastMessage.textContent = message;
 
-      // Set icon based on type
       if (type === 'success') {
         toastIcon.className = 'fas fa-check-circle';
         toast.className = 'toast-notification success';
@@ -3305,10 +3311,8 @@
         toast.className = 'toast-notification info';
       }
 
-      // Show toast
       toast.classList.add('show');
 
-      // Hide after 3 seconds
       setTimeout(function() {
         toast.classList.remove('show');
       }, 3000);
@@ -3316,10 +3320,8 @@
 
     // ===== THEME SWITCHING FUNCTIONALITY =====
     function initializeThemeToggle() {
-      // Check saved theme from localStorage
       const savedTheme = localStorage.getItem('kitsune_theme');
 
-      // Set initial state of toggle
       if (savedTheme === 'light') {
         themeToggle.checked = true;
         document.documentElement.setAttribute('data-theme', 'light');
@@ -3328,15 +3330,12 @@
         document.documentElement.setAttribute('data-theme', 'dark');
       }
 
-      // Add event listener for theme toggle
       themeToggle.addEventListener('change', function () {
         if (this.checked) {
-          // Switch to light theme
           document.documentElement.setAttribute('data-theme', 'light');
           localStorage.setItem('kitsune_theme', 'light');
           console.log('Theme switched to: Light');
         } else {
-          // Switch to dark theme
           document.documentElement.setAttribute('data-theme', 'dark');
           localStorage.setItem('kitsune_theme', 'dark');
           console.log('Theme switched to: Dark');
@@ -3368,7 +3367,6 @@
       return window.innerWidth <= 768;
     }
 
-    // Desktop Search Functionality
     function openDesktopSearch() {
       searchBox.classList.add('expanded');
       searchIconBtn.classList.add('active');
@@ -3384,18 +3382,14 @@
       searchInput.value = '';
     }
 
-    // Mobile Search Functionality
     function openMobileSearch() {
       searchBox.classList.add('expanded');
       searchIconBtn.classList.add('active');
       searchIconBtn.classList.add('hidden');
       searchBackdrop.classList.add('active');
       searchInput.focus();
-
-      // On mobile, change search icon to X
       searchIcon.classList.remove('fa-search');
       searchIcon.classList.add('fa-times');
-
       document.body.style.overflow = 'hidden';
     }
 
@@ -3406,15 +3400,11 @@
       searchBackdrop.classList.remove('active');
       searchResults.classList.remove('active');
       searchInput.value = '';
-
-      // On mobile, change X back to search icon
       searchIcon.classList.remove('fa-times');
       searchIcon.classList.add('fa-search');
-
       document.body.style.overflow = 'auto';
     }
 
-    // Search icon click handler
     searchIconBtn.addEventListener('click', function (e) {
       e.preventDefault();
       e.stopPropagation();
@@ -3436,7 +3426,6 @@
       }
     });
 
-    // Search close button handler (INSIDE search box)
     searchCloseBtn.addEventListener('click', function (e) {
       e.preventDefault();
       e.stopPropagation();
@@ -3448,14 +3437,12 @@
       }
     });
 
-    // Close search when clicking backdrop (mobile only)
     searchBackdrop.addEventListener('click', function () {
       if (isMobile()) {
         closeMobileSearch();
       }
     });
 
-    // Close search on Escape key
     document.addEventListener('keydown', function (event) {
       if (event.key === 'Escape' && searchBox.classList.contains('expanded')) {
         if (isMobile()) {
@@ -3466,12 +3453,10 @@
       }
     });
 
-    // Search input functionality
     searchInput.addEventListener('input', function () {
       performSearch(this.value);
     });
 
-    // Close search when clicking outside (desktop only)
     document.addEventListener('click', function (event) {
       if (isMobile()) return;
 
@@ -3485,12 +3470,10 @@
 
     // Profile Modal functionality
     function initProfileModal() {
-      // Load user data from localStorage
       const userData = JSON.parse(localStorage.getItem('kitsune_user') || '{}');
 
       console.log('User Data:', userData);
 
-      // Set profile data
       if (userData.displayName) {
         profileDisplayName.textContent = userData.displayName;
         document.querySelector('.profile-name').textContent = userData.displayName;
@@ -3503,7 +3486,6 @@
         profileEmail.textContent = userData.email;
       }
 
-      // Remove extra @ from username
       if (userData.username) {
         const cleanUsername = userData.username.replace(/^@+/, '');
         profileUsername.textContent = '@' + cleanUsername;
@@ -3514,7 +3496,6 @@
         profileUsername.textContent = '@user';
       }
 
-      // Set profile image
       const savedProfileImage = localStorage.getItem('kitsune_profile_image');
 
       if (savedProfileImage) {
@@ -3532,7 +3513,6 @@
         setDefaultAvatar();
       }
 
-      // Set Member Since from first login date
       const firstLoginDate = localStorage.getItem('kitsune_first_login_date') || new Date().toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
@@ -3541,7 +3521,6 @@
 
       profileJoinDate.textContent = firstLoginDate;
 
-      // Also update user data if needed
       if (!userData.joinDate) {
         const updatedUserData = JSON.parse(localStorage.getItem('kitsune_user') || '{}');
         updatedUserData.joinDate = firstLoginDate;
@@ -3549,13 +3528,11 @@
       }
     }
 
-    // Helper function to set profile image
     function setProfileImage(imageUrl) {
       profileImage.src = imageUrl;
       profileAvatar.innerHTML = '<img src="' + imageUrl + '" alt="Profile" style="width: 100%; height: 100%; object-fit: cover;">';
     }
 
-    // Helper function for default avatar
     function setDefaultAvatar() {
       const displayName = document.getElementById('profileDisplayName').textContent;
       const initials = displayName ? displayName.charAt(0).toUpperCase() : 'U';
@@ -3564,20 +3541,17 @@
       profileImage.src = '';
     }
 
-    // Open profile modal
     profileBtn.addEventListener('click', function (e) {
       e.preventDefault();
       profileModal.classList.add('active');
       document.body.style.overflow = 'hidden';
     });
 
-    // Close profile modal
     profileClose.addEventListener('click', function () {
       profileModal.classList.remove('active');
       document.body.style.overflow = 'auto';
     });
 
-    // Close modal when clicking outside
     profileModal.addEventListener('click', function (e) {
       if (e.target === profileModal) {
         profileModal.classList.remove('active');
@@ -3585,7 +3559,6 @@
       }
     });
 
-    // Profile image change functionality
     profileImageEdit.addEventListener('click', function () {
       profileImageInput.click();
     });
@@ -3604,7 +3577,6 @@
       }
     });
 
-    // Sign out functionality
     signOutBtn.addEventListener('click', function () {
       localStorage.removeItem('kitsune_user');
       localStorage.removeItem('kitsune_profile_image');
@@ -3618,55 +3590,50 @@
       return episodeMatch ? parseInt(episodeMatch[1]) : 0;
     }
 
-    // ===== FIXED: Episode status checker with proper status from data.json =====
+    // ===== Check episode status =====
     function checkEpisodeStatus(anime) {
-      // Priority 1: Check status from data.json
       if (anime.status === 'completed') {
         return {
           text: 'COMPLETED',
-          class: 'completed-badge'
+          class: 'completed'
         };
       }
 
       if (anime.status === 'ongoing') {
         return {
           text: 'ONGOING',
-          class: 'ongoing-badge'
+          class: 'ongoing'
         };
       }
 
-      // Priority 2: If anime has a new episode today, show "NEW EP"
       if (anime.hasNewEpisode) {
         return {
           text: 'NEW EP',
-          class: 'updated-badge'
+          class: 'updated'
         };
       }
 
-      // Priority 3: If anime has 3 episodes or less, show "NEW"
       const episodeNumber = extractEpisodeNumber(anime.type);
       if (episodeNumber <= 3) {
         return {
           text: 'NEW',
-          class: 'new-badge'
+          class: 'new'
         };
       }
 
-      // Priority 4: Default to ONGOING if status is not specified
       return {
         text: 'ONGOING',
-        class: 'ongoing-badge'
+        class: 'ongoing'
       };
     }
 
-    // ===== FIXED: Smart Today's Releases Management =====
+    // ===== Smart Today's Releases Management =====
     function manageTodaysReleases(newAnimeData) {
       const trackingKey = 'kitsune_episode_tracking_v2';
       const todayKey = 'kitsune_today_releases';
       const lastUpdateTimestampKey = 'kitsune_last_update_timestamp';
       const releaseHistoryKey = 'kitsune_release_history';
 
-      // Get current episode tracking
       let episodeTracking = {};
       try {
         episodeTracking = JSON.parse(localStorage.getItem(trackingKey) || '{}');
@@ -3674,7 +3641,6 @@
         episodeTracking = {};
       }
 
-      // Get today's releases from storage
       let todaysReleases = [];
       try {
         todaysReleases = JSON.parse(localStorage.getItem(todayKey) || '[]');
@@ -3682,7 +3648,6 @@
         todaysReleases = [];
       }
 
-      // Get release history (all previously updated anime)
       let releaseHistory = [];
       try {
         releaseHistory = JSON.parse(localStorage.getItem(releaseHistoryKey) || '[]');
@@ -3690,13 +3655,11 @@
         releaseHistory = [];
       }
 
-      // Track which anime have new episodes in this data load
       const animeWithNewEpisodes = [];
       const processedAnime = newAnimeData.map(function(anime) {
         const currentEpisode = extractEpisodeNumber(anime.type);
         const previousEpisode = episodeTracking[anime.title] || 0;
 
-        // Check if this is a new episode (only for ongoing anime)
         const isNewEpisode = anime.status === 'ongoing' && currentEpisode > previousEpisode;
 
         if (isNewEpisode) {
@@ -3704,7 +3667,6 @@
           animeWithNewEpisodes.push(anime.title);
           anime.hasNewEpisode = true;
 
-          // Add to release history if not already there
           if (!releaseHistory.includes(anime.title)) {
             releaseHistory.unshift(anime.title);
           }
@@ -3712,98 +3674,76 @@
           anime.hasNewEpisode = false;
         }
 
-        // Update tracking with current episode
         episodeTracking[anime.title] = currentEpisode;
 
         return anime;
       });
 
-      // ===== UPDATED LOGIC: Preserve last updated anime =====
       if (animeWithNewEpisodes.length > 0) {
-        // This is a new upload - update today's releases
         console.log('New episodes detected! Updating Today\'s Releases');
 
-        // Add new episode anime to the top
         animeWithNewEpisodes.forEach(function(title) {
-          // Remove if already exists (to avoid duplicates)
           todaysReleases = todaysReleases.filter(function(t) {
             return t !== title;
           });
-          // Add to beginning
           todaysReleases.unshift(title);
         });
 
-        // Update last update timestamp
         localStorage.setItem(lastUpdateTimestampKey, new Date().getTime().toString());
 
-        // Update release history (keep last 20 releases)
         releaseHistory = [...new Set([...animeWithNewEpisodes, ...releaseHistory])].slice(0, 20);
         localStorage.setItem(releaseHistoryKey, JSON.stringify(releaseHistory));
 
         console.log('Added new episodes to top:', animeWithNewEpisodes);
       } else {
-        // No new episodes - KEEP EXISTING TODAY'S RELEASES
         console.log('No new episodes detected - preserving Today\'s Releases');
 
-        // If today's releases is empty (first time), populate with some content
         if (todaysReleases.length === 0) {
           console.log('First time - populating Today\'s Releases');
 
-          // Get all ongoing anime
           const allOngoingAnime = processedAnime.filter(function(anime) {
             return anime.status === 'ongoing';
           });
 
-          // Sort by episode number (highest first) and then alphabetically
           const sortedAnime = [...allOngoingAnime].sort(function(a, b) {
             const episodeA = extractEpisodeNumber(a.type);
             const episodeB = extractEpisodeNumber(b.type);
 
-            // First sort by episode number (descending)
             if (episodeB !== episodeA) {
               return episodeB - episodeA;
             }
 
-            // Then sort alphabetically
             return a.title.localeCompare(b.title);
           });
 
-          // Take first 6
           todaysReleases = sortedAnime.slice(0, 6).map(function(anime) {
             return anime.title;
           });
         }
       }
 
-      // Ensure we have exactly 6 anime for the initial view
       if (todaysReleases.length < 6) {
         const neededCount = 6 - todaysReleases.length;
 
-        // Get all ongoing anime
         const allOngoingAnime = processedAnime.filter(function(anime) {
           return anime.status === 'ongoing';
         });
 
-        // Filter out anime already in today's list
         const availableAnime = allOngoingAnime.filter(function(anime) {
           return !todaysReleases.includes(anime.title);
         });
 
-        // Sort by episode number (highest first) and then alphabetically
         const sortedAnime = [...availableAnime].sort(function(a, b) {
           const episodeA = extractEpisodeNumber(a.type);
           const episodeB = extractEpisodeNumber(b.type);
 
-          // First sort by episode number (descending)
           if (episodeB !== episodeA) {
             return episodeB - episodeA;
           }
 
-          // Then sort alphabetically
           return a.title.localeCompare(b.title);
         });
 
-        // Add the top anime to reach 6
         const additionalTitles = sortedAnime.slice(0, neededCount).map(function(anime) {
           return anime.title;
         });
@@ -3812,10 +3752,8 @@
         console.log('Filled with additional anime:', additionalTitles);
       }
 
-      // Always keep exactly 6 anime for initial view
       todaysReleases = todaysReleases.slice(0, 6);
 
-      // Save updated tracking and today's releases
       localStorage.setItem(trackingKey, JSON.stringify(episodeTracking));
       localStorage.setItem(todayKey, JSON.stringify(todaysReleases));
 
@@ -3828,7 +3766,6 @@
       };
     }
 
-    // ===== Get Today's Releases from storage =====
     function getTodaysReleasesFromStorage(allAnime) {
       const todayKey = 'kitsune_today_releases';
 
@@ -3836,13 +3773,11 @@
         const storedTitles = JSON.parse(localStorage.getItem(todayKey) || '[]');
         console.log('Stored today releases titles:', storedTitles);
 
-        // Create a map for quick lookup
         const animeMap = new Map();
         allAnime.forEach(function(anime) {
           animeMap.set(anime.title, anime);
         });
 
-        // Get anime objects for stored titles
         const todaysAnime = [];
         for (let i = 0; i < storedTitles.length; i++) {
           const title = storedTitles[i];
@@ -3859,16 +3794,13 @@
       }
     }
 
-    // ===== Get Last Two Days Releases =====
     function getLastTwoDaysReleases(allAnime) {
       const releaseHistoryKey = 'kitsune_release_history';
 
       try {
-        // Get release history (anime that had new episodes in the last two days)
         const releaseHistory = JSON.parse(localStorage.getItem(releaseHistoryKey) || '[]');
 
         if (releaseHistory.length === 0) {
-          // If no history, return all ongoing anime sorted by episode number
           return [...allAnime]
             .filter(function(anime) {
               return anime.status === 'ongoing';
@@ -3881,13 +3813,11 @@
             .slice(0, 18);
         }
 
-        // Create a map for quick lookup
         const animeMap = new Map();
         allAnime.forEach(function(anime) {
           animeMap.set(anime.title, anime);
         });
 
-        // Get anime from release history
         const releases = [];
         for (let i = 0; i < releaseHistory.length; i++) {
           const title = releaseHistory[i];
@@ -3896,7 +3826,6 @@
           }
         }
 
-        // Add some ongoing anime if we have less than 18
         if (releases.length < 18) {
           const neededCount = 18 - releases.length;
           const existingTitles = releases.map(function(a) {
@@ -3926,10 +3855,8 @@
       }
     }
 
-    // ===== Get Random Anime for Carousel (10 anime) =====
     function getRandomAnimeForCarousel(animeList, count) {
       count = count || 10;
-      // Filter out completed anime for carousel
       const ongoingAnime = animeList.filter(function(anime) {
         return anime.status !== 'completed';
       });
@@ -3938,7 +3865,6 @@
         return ongoingAnime;
       }
 
-      // Fisher-Yates shuffle
       const shuffled = [...ongoingAnime];
       for (let i = shuffled.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -3950,17 +3876,14 @@
       return shuffled.slice(0, count);
     }
 
-    // ===== NEW: Get Featured Anime for Today (Changes once per day) =====
     function getFeaturedAnimeForToday(animeList, count) {
       count = count || 30;
       const storageKey = 'kitsune_featured_anime';
       const timestampKey = 'kitsune_featured_timestamp';
 
-      // Get current time
       const currentTime = new Date().getTime();
-      const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+      const oneDay = 24 * 60 * 60 * 1000;
 
-      // Get stored featured anime and timestamp
       let storedFeatured = [];
       let lastUpdateTime = 0;
 
@@ -3973,14 +3896,12 @@
         lastUpdateTime = 0;
       }
 
-      // Check if we need to generate new featured anime
       if (currentTime - lastUpdateTime > oneDay || storedFeatured.length === 0) {
         console.log('Generating new featured anime for today');
 
         if (animeList.length <= count) {
           storedFeatured = animeList;
         } else {
-          // Fisher-Yates shuffle
           const shuffled = [...animeList];
           for (let i = shuffled.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -3992,7 +3913,6 @@
           storedFeatured = shuffled.slice(0, count);
         }
 
-        // Save to localStorage with current timestamp
         localStorage.setItem(storageKey, JSON.stringify(storedFeatured));
         localStorage.setItem(timestampKey, currentTime.toString());
 
@@ -4004,29 +3924,23 @@
       return storedFeatured;
     }
 
-    // ===== Carousel Functions (5 seconds interval) =====
+    // ===== Carousel Functions =====
     function createCarousel(animeList) {
       if (!animeCarousel || animeList.length === 0) return;
 
-      // Clear existing carousel
       animeCarousel.innerHTML = '';
       carouselProgress.innerHTML = '';
 
-      // Get 10 random anime for carousel
       const carouselAnime = getRandomAnimeForCarousel(animeList, 10);
 
-      // Create slides
       carouselAnime.forEach(function(anime, index) {
         const slide = document.createElement('div');
         slide.className = 'carousel-slide';
         slide.dataset.index = index;
 
-        // Determine badge text and class
         const status = checkEpisodeStatus(anime);
         const badgeText = status.text;
         const badgeClass = status.class;
-
-        // Use actual rating from JSON data
         const rating = anime.rating || 8.5;
 
         slide.innerHTML = '' +
@@ -4055,7 +3969,6 @@
           '<div class="carousel-badge ' + badgeClass + '">' + badgeText + '</div>' +
         '';
 
-        // Add click handler to the Watch Now button
         const watchButton = slide.querySelector('.btn-primary');
         watchButton.addEventListener('click', function(e) {
           e.preventDefault();
@@ -4069,7 +3982,6 @@
 
         animeCarousel.appendChild(slide);
 
-        // Create progress dot
         const dot = document.createElement('div');
         dot.className = 'progress-dot';
         dot.dataset.index = index;
@@ -4082,20 +3994,14 @@
         carouselProgress.appendChild(dot);
       });
 
-      // Initialize carousel
       initCarousel();
     }
 
     function initCarousel() {
-      // Stop any existing interval
       if (slideInterval) {
         clearInterval(slideInterval);
       }
-
-      // 5 seconds interval
       slideInterval = setInterval(nextSlide, 5000);
-
-      // Add touch/swipe events
       setupTouchEvents();
     }
 
@@ -4121,10 +4027,8 @@
 
       if (slides.length === 0) return;
 
-      // Update carousel position
       animeCarousel.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
 
-      // Update active dot
       dots.forEach(function(dot, index) {
         if (index === currentSlide) {
           dot.classList.add('active');
@@ -4141,7 +4045,6 @@
       slideInterval = setInterval(nextSlide, 5000);
     }
 
-    // Touch/swipe functionality
     function setupTouchEvents() {
       animeCarousel.addEventListener('touchstart', touchStart);
       animeCarousel.addEventListener('touchmove', touchMove);
@@ -4179,10 +4082,8 @@
 
       if (Math.abs(diff) > 50) {
         if (diff > 0) {
-          // Swipe right - go to previous slide
           currentSlide = currentSlide > 0 ? currentSlide - 1 : document.querySelectorAll('.carousel-slide').length - 1;
         } else {
-          // Swipe left - go to next slide
           const slides = document.querySelectorAll('.carousel-slide');
           currentSlide = (currentSlide + 1) % slides.length;
         }
@@ -4213,10 +4114,8 @@
 
       if (Math.abs(diff) > 50) {
         if (diff > 0) {
-          // Swipe right - go to previous slide
           currentSlide = currentSlide > 0 ? currentSlide - 1 : document.querySelectorAll('.carousel-slide').length - 1;
         } else {
-          // Swipe left - go to next slide
           const slides = document.querySelectorAll('.carousel-slide');
           currentSlide = (currentSlide + 1) % slides.length;
         }
@@ -4238,13 +4137,10 @@
       return event.type.includes('mouse') ? event.clientX : event.touches[0].clientX;
     }
 
-    // ===== FIXED: Global navigation function to prevent event issues =====
+    // ===== Global navigation function =====
     window.navigateToAnime = async function(link) {
       try {
-        // Get the base path without filename
         const basePath = link.substring(0, link.lastIndexOf('/') + 1);
-
-        // Try to fetch episodes.json to get the latest episode
         const episodesUrl = basePath + 'episodes.json';
 
         const response = await fetch(episodesUrl);
@@ -4252,7 +4148,6 @@
         if (response.ok) {
           const episodesData = await response.json();
 
-          // Get the latest episode number
           let latestEpisode = 1;
 
           if (episodesData.episodes && Array.isArray(episodesData.episodes)) {
@@ -4263,17 +4158,14 @@
             latestEpisode = episodesData.length;
           }
 
-          // Navigate to player.html with episode parameter
           window.location.href = basePath + 'player.html?ep=' + latestEpisode;
 
         } else {
-          // If episodes.json doesn't exist, use episode 1
           window.location.href = basePath + 'player.html?ep=1';
         }
       } catch (error) {
         console.error('Error fetching episodes:', error);
 
-        // Fallback: navigate to player with episode 1
         const basePath = link.substring(0, link.lastIndexOf('/') + 1);
         window.location.href = basePath + 'player.html?ep=1';
       }
@@ -4282,7 +4174,6 @@
     // Load anime data from JSON files
     async function loadAnimeData() {
       try {
-        // Load main anime data from data.json
         const mainResponse = await fetch('data.json');
         if (!mainResponse.ok) {
           throw new Error('Failed to load main anime data');
@@ -4290,48 +4181,37 @@
         const newMainAnimeData = await mainResponse.json();
         mainAnimeData = newMainAnimeData;
 
-        // Load search anime data from searchData.json
         try {
           const searchResponse = await fetch('searchData.json');
           if (searchResponse.ok) {
             searchAnimeData = await searchResponse.json();
             console.log('Search data loaded:', searchAnimeData.length, 'anime');
           } else {
-            // If searchData.json doesn't exist, use main data for search
             searchAnimeData = [...mainAnimeData];
             console.log('Using main data for search');
           }
         } catch (searchError) {
-          // If searchData.json doesn't exist, use main data for search
           searchAnimeData = [...mainAnimeData];
           console.log('Search data not found, using main data for search');
         }
 
-        // Step 1: Manage today's releases with smart tracking using main data
         const result = manageTodaysReleases(mainAnimeData);
 
-        // Step 2: Create carousel with 10 random anime from main data
         createCarousel(mainAnimeData);
 
-        // Step 3: Populate Today's Releases and Featured sections
         populateAnimeSections(result.todaysReleases);
 
-        // Step 4: Setup view toggle buttons
         setupViewToggle();
 
-        // Step 5: Initialize hover effects after cards are created
         setTimeout(function() {
           initHoverEffects();
         }, 500);
 
-        // Hide page loader after everything is loaded
         hidePageLoader();
 
       } catch (error) {
         console.error('Error loading anime data:', error);
-        // Hide page loader even on error
         hidePageLoader();
-        // Fallback: use hardcoded data or show error message
         showToast('Error loading anime data. Please refresh the page.', 'error');
       }
     }
@@ -4349,145 +4229,115 @@
       });
     }
 
-    // ===== Expand Today's Releases (Show Last 2 Days) =====
     function expandTodayReleases() {
       if (isTodayReleasesExpanded) return;
 
       isTodayReleasesExpanded = true;
 
-      // Hide view all button, show view less button
       viewAllBtn.style.display = 'none';
       viewLessBtn.style.display = 'flex';
 
-      // Get last two days releases from main data
       const lastTwoDaysAnime = getLastTwoDaysReleases(mainAnimeData);
 
-      // Populate grid with expanded view
       todayReleasesGrid.innerHTML = '';
       lastTwoDaysAnime.slice(0, 18).forEach(function(anime) {
         const animeCard = createAnimeCard(anime);
         todayReleasesGrid.appendChild(animeCard);
       });
 
-      // Reinitialize hover effects for new cards
       setTimeout(function() {
         initHoverEffects();
       }, 200);
 
-      // Add smooth scroll to section
       document.getElementById('today-releases').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    // ===== Collapse Today's Releases (Show 6 Anime) =====
     function collapseTodayReleases() {
       if (!isTodayReleasesExpanded) return;
 
       isTodayReleasesExpanded = false;
 
-      // Hide view less button, show view all button
       viewLessBtn.style.display = 'none';
       viewAllBtn.style.display = 'flex';
 
-      // Get today's releases from storage
       const todaysReleases = getTodaysReleasesFromStorage(mainAnimeData);
 
-      // Populate grid with collapsed view
       todayReleasesGrid.innerHTML = '';
       todaysReleases.slice(0, 6).forEach(function(anime) {
         const animeCard = createAnimeCard(anime);
         todayReleasesGrid.appendChild(animeCard);
       });
 
-      // Reinitialize hover effects for new cards
       setTimeout(function() {
         initHoverEffects();
       }, 200);
     }
 
-    // ===== FIXED: Populate Today's Releases (ALWAYS show exactly 6 anime initially) =====
     function populateTodayReleases(storedAnimeList) {
       todayReleasesGrid.innerHTML = '';
 
       console.log('Stored anime for Today Releases:', storedAnimeList.length, 'anime');
 
-      // Start with stored anime (anime with new episodes)
       let todaysAnime = [...storedAnimeList];
 
-      // If we have less than 6, fill with ongoing anime sorted by highest episode
       if (todaysAnime.length < 6) {
         const neededCount = 6 - todaysAnime.length;
 
-        // Get all ongoing anime from main data
         const allOngoingAnime = mainAnimeData.filter(function(anime) {
           return anime.status === 'ongoing';
         });
 
-        // Get titles already in today's list
         const existingTitles = todaysAnime.map(function(anime) {
           return anime.title;
         });
 
-        // Filter out anime already in today's list
         const availableAnime = allOngoingAnime.filter(function(anime) {
           return !existingTitles.includes(anime.title);
         });
 
-        // Sort by episode number (highest first)
         const sortedByEpisode = [...availableAnime].sort(function(a, b) {
           const episodeA = extractEpisodeNumber(a.type);
           const episodeB = extractEpisodeNumber(b.type);
-          return episodeB - episodeA; // Highest episode first
+          return episodeB - episodeA;
         });
 
-        // Add the needed anime
         const additionalAnime = sortedByEpisode.slice(0, neededCount);
         todaysAnime = [...todaysAnime, ...additionalAnime];
 
         console.log('Added', additionalAnime.length, 'more anime to reach 6 total');
       }
 
-      // Ensure we have exactly 6 for initial view
       todaysAnime = todaysAnime.slice(0, 6);
 
       console.log('Initial Today Releases (6 total):', todaysAnime.map(function(a) {
         return a.title;
       }));
 
-      // Create cards for all 6 anime
       todaysAnime.forEach(function(anime) {
         const animeCard = createAnimeCard(anime);
         todayReleasesGrid.appendChild(animeCard);
       });
 
-      // Reset view state
       isTodayReleasesExpanded = false;
       viewAllBtn.style.display = 'flex';
       viewLessBtn.style.display = 'none';
 
-      // Initialize hover effects for these cards
       setTimeout(function() {
         initHoverEffects();
       }, 200);
     }
 
-    // Populate anime sections
     function populateAnimeSections(storedTodayTitles) {
-      // ===== TODAY'S RELEASES =====
-      // Get anime from storage (smartly managed)
       const todaysReleases = getTodaysReleasesFromStorage(mainAnimeData);
       populateTodayReleases(todaysReleases);
 
-      // ===== FEATURED ANIME ===== (Now changes once per day)
-      // Get featured anime for today (30 ANIME) from main data
       const featuredAnime = getFeaturedAnimeForToday(mainAnimeData, 30);
       populateFeaturedAnime(featuredAnime);
     }
 
-    // Populate Featured Anime (Changes once per day) - NOW SHOWS 30 ANIME
     function populateFeaturedAnime(animeList) {
       featuredAnimeGrid.innerHTML = '';
 
-      // Limit to maximum 30 anime
       const limitedAnimeList = animeList.slice(0, 30);
 
       limitedAnimeList.forEach(function(anime) {
@@ -4495,7 +4345,6 @@
         featuredAnimeGrid.appendChild(animeCard);
       });
 
-      // If we have less than 30 anime, show a message
       if (limitedAnimeList.length < 30) {
         const emptyCard = document.createElement('div');
         emptyCard.className = 'anime-card empty-card';
@@ -4504,73 +4353,66 @@
             '<i class="fas fa-plus" style="font-size: 2rem; color: var(--text-tertiary);"></i>' +
           '</div>' +
           '<div class="card-content">' +
-            '<h3>More Coming Soon</h3>' +
-            '<p class="card-description">We\'re adding more amazing anime content regularly</p>' +
+            '<div class="anime-title">More Coming Soon</div>' +
           '</div>' +
         '';
         featuredAnimeGrid.appendChild(emptyCard);
       }
 
-      // Initialize hover effects for these cards
       setTimeout(function() {
         initHoverEffects();
       }, 200);
     }
 
-    // Create anime card component - FIXED CLICK HANDLER
+    // ===== CREATE ANIME CARD - NEW CLEAN MINIMAL STYLE =====
     function createAnimeCard(anime) {
       const animeCard = document.createElement('div');
       animeCard.className = 'anime-card fade-in';
 
-      // Determine badge text and class based on status
+      // Determine status
       const status = checkEpisodeStatus(anime);
-      const badgeText = status.text;
-      const badgeClass = status.class;
+      const statusText = status.text;
+      const statusClass = status.class;
 
-      // Use actual rating from JSON data
-      const rating = anime.rating || 8.5;
+      // Get quality
+      const quality = getAnimeQuality(anime);
+
+      // Get sub type
+      const subType = getAnimeSubType(anime);
+
+      // Extract episode info from type
+      const episodeInfo = anime.type || '';
 
       animeCard.innerHTML = '' +
         '<div class="card-image">' +
           '<img src="' + anime.image + '" alt="' + anime.title + '" onerror="this.src=\'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80\'">' +
-          '<div class="card-badge ' + badgeClass + '">' + badgeText + '</div>' +
+          '<div class="card-status-badge ' + statusClass + '">' + statusText + '</div>' +
         '</div>' +
         '<div class="card-content">' +
-          '<h3>' + anime.title + '</h3>' +
-          '<div class="card-meta">' +
-            '<span>' + anime.genre + '</span>' +
-            '<div class="card-rating">' +
-              '<i class="fas fa-star"></i>' +
-              '<span>' + rating + '</span>' +
-            '</div>' +
+          '<div class="anime-title">' + anime.title + '</div>' +
+          '<div class="card-info-row">' +
+            '<span class="card-episode">' + episodeInfo + '</span>' +
+            '<span class="card-quality">[' + quality + ']</span>' +
+            '<span class="card-sub-type">' + subType + '</span>' +
           '</div>' +
-          '<p class="card-description">' + anime.type + '</p>' +
         '</div>' +
       '';
 
-      // Store anime data on the card for hover effects
+      // Store anime data
       animeCard.dataset.animeTitle = anime.title;
       animeCard.dataset.animeLink = anime.link;
 
-      // ===== FIXED CLICK HANDLER: Use addEventListener once with proper function reference =====
-      // Also set navigatingAway flag and handle back button restoration
+      // Click handler
       const clickHandler = async function(e) {
-        // Prevent default and stop propagation
         e.preventDefault();
         e.stopPropagation();
 
-        // Show loading state
         animeCard.style.opacity = '0.7';
         animeCard.style.pointerEvents = 'none';
-
-        // Set navigating flag so we can restore on back button
         navigatingAway = true;
 
         try {
-          // Get the base path without filename
           const basePath = anime.link.substring(0, anime.link.lastIndexOf('/') + 1);
-
-          // Try to fetch episodes.json to get the latest episode
           const episodesUrl = basePath + 'episodes.json';
 
           const response = await fetch(episodesUrl);
@@ -4578,7 +4420,6 @@
           if (response.ok) {
             const episodesData = await response.json();
 
-            // Get the latest episode number
             let latestEpisode = 1;
 
             if (episodesData.episodes && Array.isArray(episodesData.episodes)) {
@@ -4589,50 +4430,37 @@
               latestEpisode = episodesData.length;
             }
 
-            // Navigate to player.html with episode parameter
             window.location.href = basePath + 'player.html?ep=' + latestEpisode;
 
           } else {
-            // If episodes.json doesn't exist, use the episode from the type field
             const episodeNumber = extractEpisodeNumber(anime.type) || 1;
-
-            // Navigate to player.html
             window.location.href = basePath + 'player.html?ep=' + episodeNumber;
           }
         } catch (error) {
           console.error('Error fetching episodes:', error);
 
-          // Restore card state on error
           animeCard.style.opacity = '1';
           animeCard.style.pointerEvents = 'auto';
           navigatingAway = false;
 
-          // Fallback: use the link as is
           const basePath = anime.link.substring(0, anime.link.lastIndexOf('/') + 1);
           window.location.href = basePath + 'player.html?ep=1';
         }
       };
 
-      // Store reference to prevent garbage collection
       animeCard._clickHandler = clickHandler;
-
-      // Remove any existing click listeners before adding new one
       animeCard.removeEventListener('click', animeCard._clickHandler);
-
-      // Add click event listener
       animeCard.addEventListener('click', clickHandler);
 
       return animeCard;
     }
 
-    // Add resize listener to update on screen size changes
+    // Add resize listener
     window.addEventListener('resize', function () {
       if (mainAnimeData.length > 0) {
-        // Re-populate sections to adjust grid layout
         const todaysReleases = getTodaysReleasesFromStorage(mainAnimeData);
 
         if (isTodayReleasesExpanded) {
-          // If expanded, show last two days
           const lastTwoDaysAnime = getLastTwoDaysReleases(mainAnimeData);
           todayReleasesGrid.innerHTML = '';
           lastTwoDaysAnime.slice(0, 18).forEach(function(anime) {
@@ -4640,22 +4468,19 @@
             todayReleasesGrid.appendChild(animeCard);
           });
         } else {
-          // If collapsed, show today's releases
           populateTodayReleases(todaysReleases);
         }
 
-        // Featured anime will stay the same as it's cached for the day
         const featuredAnime = getFeaturedAnimeForToday(mainAnimeData, 30);
         populateFeaturedAnime(featuredAnime);
 
-        // Reinitialize hover effects
         setTimeout(function() {
           initHoverEffects();
         }, 200);
       }
     });
 
-    // Search functionality (using searchAnimeData)
+    // Search functionality
     function performSearch(query) {
       const normalizedQuery = query.toLowerCase().trim();
 
@@ -4673,7 +4498,6 @@
       displaySearchResults(filteredAnime);
     }
 
-    // Display search results with ratings
     function displaySearchResults(results) {
       searchResults.innerHTML = '';
 
@@ -4686,12 +4510,9 @@
           resultItem.href = '#';
           resultItem.dataset.animeLink = anime.link;
 
-          // Determine badge text and class for search results
           const status = checkEpisodeStatus(anime);
           const badgeText = status.text;
           const badgeClass = status.class;
-
-          // Use actual rating from JSON data
           const rating = anime.rating || 8.5;
 
           resultItem.innerHTML = '' +
@@ -4713,7 +4534,6 @@
             '</div>' +
           '';
 
-          // Add click event - FIXED
           resultItem.addEventListener('click', async function(e) {
             e.preventDefault();
             navigatingAway = true;
@@ -4730,21 +4550,16 @@
       searchResults.classList.add('active');
     }
 
-    // Initialize the page - FIXED: Ensure proper initialization and re-initialization
+    // Initialize the page
     document.addEventListener('DOMContentLoaded', function () {
-      // Show page loader
       showPageLoader();
 
-      // Initialize theme toggle
       initializeThemeToggle();
 
-      // Initialize profile modal with user data
       initProfileModal();
 
-      // Load anime data from JSON files
       loadAnimeData();
 
-      // Animation on scroll
       const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
@@ -4758,12 +4573,10 @@
         });
       }, observerOptions);
 
-      // Observe all elements with fade-in class
       document.querySelectorAll('.fade-in').forEach(function(el) {
         observer.observe(el);
       });
 
-      // Add reset function to console for testing
       window.resetKitsuneTracking = function () {
         localStorage.removeItem('kitsune_episode_tracking_v2');
         localStorage.removeItem('kitsune_today_releases');
@@ -4777,7 +4590,6 @@
       };
       console.log('To reset episode tracking, run: resetKitsuneTracking()');
 
-      // Add theme reset function
       window.resetKitsuneTheme = function () {
         localStorage.removeItem('kitsune_theme');
         console.log('Theme preference reset. Refreshing page...');
@@ -4787,7 +4599,6 @@
       };
       console.log('To reset theme preference, run: resetKitsuneTheme()');
 
-      // Add featured anime reset function
       window.resetKitsuneFeatured = function () {
         localStorage.removeItem('kitsune_featured_anime');
         localStorage.removeItem('kitsune_featured_timestamp');
