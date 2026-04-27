@@ -1724,32 +1724,6 @@
       scrollbar-color: var(--primary) var(--bg-tertiary);
     }
 
-    /* Mobile sidebar (hamburger menu) styling - red background when active */
-    @media (max-width: 768px) {
-      .nav-links.active {
-        background: var(--primary) !important;
-        backdrop-filter: blur(20px);
-        border-left: 4px solid var(--primary-light);
-      }
-
-      .nav-links.active a {
-        color: white !important;
-      }
-
-      .nav-links.active a:hover {
-        color: rgba(255, 255, 255, 0.8) !important;
-      }
-
-      .nav-links.active a::after {
-        background: white !important;
-      }
-
-      /* Change hamburger to red when active */
-      .hamburger.active span {
-        background: var(--primary) !important;
-      }
-    }
-
     /* ===== MOBILE SPECIFIC CHANGES (768px and below) ===== */
     @media (max-width: 768px) {
 
@@ -1916,12 +1890,9 @@
         display: none;
       }
 
+      /* Remove hamburger menu on mobile */
       .hamburger {
-        display: flex !important;
-        flex-direction: column;
-        gap: 4px;
-        cursor: pointer;
-        z-index: 1001;
+        display: none !important;
       }
 
       .hero-carousel-section {
@@ -2699,11 +2670,6 @@
             </a>
           </div>
 
-          <div class="hamburger" id="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
         </div>
       </nav>
     </div>
@@ -3432,15 +3398,6 @@
       } else {
         header.classList.remove('scrolled');
       }
-    });
-
-    // Mobile menu toggle
-    const hamburger = document.getElementById('hamburger');
-    const navLinks = document.querySelector('.nav-links');
-
-    hamburger.addEventListener('click', function () {
-      navLinks.classList.toggle('active');
-      hamburger.classList.toggle('active');
     });
 
     // ===== FIXED SEARCH FUNCTIONALITY =====
