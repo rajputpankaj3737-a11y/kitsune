@@ -3628,49 +3628,90 @@
       return episodeMatch ? parseInt(episodeMatch[1]) : 0;
     }
 
-    // ===== Check episode status =====
+    // ===== FIXED: Check episode status using data.json tracking =====
     function checkEpisodeStatus(anime) {
+      const trackingKey = 'kitsune_episode_tracking_v2';
+      const newEpTimestampsKey = 'kitsune_new_ep_timestamps';
+      
+      let episodeTracking = {};
+      try {
+        episodeTracking = JSON.parse(localStorage.getItem(trackingKey) || '{}');
+      } catch (e) {
+        episodeTracking = {};
+      }
+      
+      let newEpTimestamps = {};
+      try {
+        newEpTimestamps = JSON.parse(localStorage.getItem(newEpTimestampsKey) || '{}');
+      } catch (e) {
+        newEpTimestamps = {};
+      }
+      
+      const currentEpisode = extractEpisodeNumber(anime.type);
+      const previousEpisode = episodeTracking[anime.title] || 0;
+      
+      // If anime is marked as completed in data.json
       if (anime.status === 'completed') {
         return {
           text: 'COMPLETED',
           class: 'completed'
         };
       }
-
+      
+      // Check if this anime has a NEW EP timestamp (within last 24 hours)
+      if (newEpTimestamps[anime.title]) {
+        const timestamp = newEpTimestamps[anime.title];
+        const now = new Date().getTime();
+        const twentyFourHours = 24 * 60 * 60 * 1000;
+        
+        if ((now - timestamp) < twentyFourHours) {
+          return {
+            text: 'NEW EP',
+            class: 'updated'
+          };
+        }
+      }
+      
+      // If episode count increased, set NEW EP timestamp and return NEW EP
+      if (currentEpisode > previousEpisode && previousEpisode > 0) {
+        newEpTimestamps[anime.title] = new Date().getTime();
+        localStorage.setItem(newEpTimestampsKey, JSON.stringify(newEpTimestamps));
+        
+        return {
+          text: 'NEW EP',
+          class: 'updated'
+        };
+      }
+      
+      // If ongoing and has less than 4 episodes, show NEW
+      if (anime.status === 'ongoing' && currentEpisode < 4) {
+        return {
+          text: 'NEW',
+          class: 'new'
+        };
+      }
+      
+      // Default to ONGOING for ongoing anime
       if (anime.status === 'ongoing') {
         return {
           text: 'ONGOING',
           class: 'ongoing'
         };
       }
-
-      if (anime.hasNewEpisode) {
-        return {
-          text: 'NEW EP',
-          class: 'updated'
-        };
-      }
-
-      const episodeNumber = extractEpisodeNumber(anime.type);
-      if (episodeNumber <= 3) {
-        return {
-          text: 'NEW',
-          class: 'new'
-        };
-      }
-
+      
       return {
         text: 'ONGOING',
         class: 'ongoing'
       };
     }
 
-    // ===== Smart Today's Releases Management =====
+    // ===== FIXED: Smart Today's Releases Management with proper status tracking =====
     function manageTodaysReleases(newAnimeData) {
       const trackingKey = 'kitsune_episode_tracking_v2';
       const todayKey = 'kitsune_today_releases';
       const lastUpdateTimestampKey = 'kitsune_last_update_timestamp';
       const releaseHistoryKey = 'kitsune_release_history';
+      const newEpTimestampsKey = 'kitsune_new_ep_timestamps';
 
       let episodeTracking = {};
       try {
@@ -3692,18 +3733,28 @@
       } catch (e) {
         releaseHistory = [];
       }
+      
+      let newEpTimestamps = {};
+      try {
+        newEpTimestamps = JSON.parse(localStorage.getItem(newEpTimestampsKey) || '{}');
+      } catch (e) {
+        newEpTimestamps = {};
+      }
 
       const animeWithNewEpisodes = [];
       const processedAnime = newAnimeData.map(function(anime) {
         const currentEpisode = extractEpisodeNumber(anime.type);
         const previousEpisode = episodeTracking[anime.title] || 0;
 
-        const isNewEpisode = anime.status === 'ongoing' && currentEpisode > previousEpisode;
+        const isNewEpisode = anime.status === 'ongoing' && currentEpisode > previousEpisode && previousEpisode > 0;
 
         if (isNewEpisode) {
           console.log('📢 NEW EPISODE: ' + anime.title + ' - Ep ' + previousEpisode + ' → Ep ' + currentEpisode);
           animeWithNewEpisodes.push(anime.title);
           anime.hasNewEpisode = true;
+          
+          // Set timestamp for NEW EP badge
+          newEpTimestamps[anime.title] = new Date().getTime();
 
           if (!releaseHistory.includes(anime.title)) {
             releaseHistory.unshift(anime.title);
@@ -3794,6 +3845,7 @@
 
       localStorage.setItem(trackingKey, JSON.stringify(episodeTracking));
       localStorage.setItem(todayKey, JSON.stringify(todaysReleases));
+      localStorage.setItem(newEpTimestampsKey, JSON.stringify(newEpTimestamps));
 
       console.log('Final today releases (6 total):', todaysReleases);
       console.log('Release history:', releaseHistory);
@@ -4175,50 +4227,37 @@
       return event.type.includes('mouse') ? event.clientX : event.touches[0].clientX;
     }
 
-    // ===== Global navigation function =====
+    // ===== FIXED: Global navigation function - navigates to episodes.html =====
     window.navigateToAnime = async function(link) {
       try {
+        // Extract the base path from the link
         const basePath = link.substring(0, link.lastIndexOf('/') + 1);
-        const episodesUrl = basePath + 'episodes.json';
-
-        const response = await fetch(episodesUrl);
-
-        if (response.ok) {
-          const episodesData = await response.json();
-
-          let latestEpisode = 1;
-
-          if (episodesData.episodes && Array.isArray(episodesData.episodes)) {
-            latestEpisode = episodesData.episodes.length;
-          } else if (episodesData.totalEpisodes) {
-            latestEpisode = episodesData.totalEpisodes;
-          } else if (Array.isArray(episodesData)) {
-            latestEpisode = episodesData.length;
-          }
-
-          window.location.href = basePath + 'player.html?ep=' + latestEpisode;
-
-        } else {
-          window.location.href = basePath + 'player.html?ep=1';
-        }
+        
+        // Navigate to episodes.html in the same directory
+        window.location.href = basePath + 'episodes.html';
+        
       } catch (error) {
-        console.error('Error fetching episodes:', error);
-
+        console.error('Error navigating to episodes:', error);
+        
+        // Fallback: navigate to episodes.html
         const basePath = link.substring(0, link.lastIndexOf('/') + 1);
-        window.location.href = basePath + 'player.html?ep=1';
+        window.location.href = basePath + 'episodes.html';
       }
     };
 
-    // Load anime data from JSON files
+    // ===== FIXED: Load anime data from data.json (not searchData.json for main data) =====
     async function loadAnimeData() {
       try {
+        // Load main anime data from data.json
         const mainResponse = await fetch('data.json');
         if (!mainResponse.ok) {
           throw new Error('Failed to load main anime data');
         }
         const newMainAnimeData = await mainResponse.json();
         mainAnimeData = newMainAnimeData;
+        console.log('Main anime data loaded from data.json:', mainAnimeData.length, 'anime');
 
+        // Try to load search data from searchData.json
         try {
           const searchResponse = await fetch('searchData.json');
           if (searchResponse.ok) {
@@ -4233,18 +4272,24 @@
           console.log('Search data not found, using main data for search');
         }
 
+        // Process anime data with episode tracking from data.json
         const result = manageTodaysReleases(mainAnimeData);
 
+        // Create carousel with data from data.json
         createCarousel(mainAnimeData);
 
+        // Populate anime sections
         populateAnimeSections(result.todaysReleases);
 
+        // Setup view toggle
         setupViewToggle();
 
+        // Initialize hover effects after a delay
         setTimeout(function() {
           initHoverEffects();
         }, 500);
 
+        // Hide page loader
         hidePageLoader();
 
       } catch (error) {
@@ -4407,7 +4452,7 @@
       const animeCard = document.createElement('div');
       animeCard.className = 'anime-card fade-in';
 
-      // Determine status
+      // Determine status using data from data.json
       const status = checkEpisodeStatus(anime);
       const statusText = status.text;
       const statusClass = status.class;
@@ -4440,7 +4485,7 @@
       animeCard.dataset.animeTitle = anime.title;
       animeCard.dataset.animeLink = anime.link;
 
-      // Click handler
+      // FIXED: Click handler navigates to episodes.html
       const clickHandler = async function(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -4451,38 +4496,16 @@
 
         try {
           const basePath = anime.link.substring(0, anime.link.lastIndexOf('/') + 1);
-          const episodesUrl = basePath + 'episodes.json';
-
-          const response = await fetch(episodesUrl);
-
-          if (response.ok) {
-            const episodesData = await response.json();
-
-            let latestEpisode = 1;
-
-            if (episodesData.episodes && Array.isArray(episodesData.episodes)) {
-              latestEpisode = episodesData.episodes.length;
-            } else if (episodesData.totalEpisodes) {
-              latestEpisode = episodesData.totalEpisodes;
-            } else if (Array.isArray(episodesData)) {
-              latestEpisode = episodesData.length;
-            }
-
-            window.location.href = basePath + 'player.html?ep=' + latestEpisode;
-
-          } else {
-            const episodeNumber = extractEpisodeNumber(anime.type) || 1;
-            window.location.href = basePath + 'player.html?ep=' + episodeNumber;
-          }
+          window.location.href = basePath + 'episodes.html';
         } catch (error) {
-          console.error('Error fetching episodes:', error);
+          console.error('Error navigating to episodes:', error);
 
           animeCard.style.opacity = '1';
           animeCard.style.pointerEvents = 'auto';
           navigatingAway = false;
 
           const basePath = anime.link.substring(0, anime.link.lastIndexOf('/') + 1);
-          window.location.href = basePath + 'player.html?ep=1';
+          window.location.href = basePath + 'episodes.html';
         }
       };
 
@@ -4518,7 +4541,7 @@
       }
     });
 
-    // Search functionality
+    // FIXED: Search functionality - navigates to episodes.html
     function performSearch(query) {
       const normalizedQuery = query.toLowerCase().trim();
 
@@ -4572,12 +4595,14 @@
             '</div>' +
           '';
 
+          // FIXED: Search result click navigates to episodes.html
           resultItem.addEventListener('click', async function(e) {
             e.preventDefault();
             navigatingAway = true;
             const link = this.dataset.animeLink;
             if (link) {
-              await window.navigateToAnime(link);
+              const basePath = link.substring(0, link.lastIndexOf('/') + 1);
+              window.location.href = basePath + 'episodes.html';
             }
           });
 
@@ -4621,6 +4646,7 @@
         localStorage.removeItem('kitsune_today_timestamp');
         localStorage.removeItem('kitsune_last_update_timestamp');
         localStorage.removeItem('kitsune_release_history');
+        localStorage.removeItem('kitsune_new_ep_timestamps');
         console.log('Episode tracking reset. Refreshing page...');
         setTimeout(function() {
           window.location.reload();

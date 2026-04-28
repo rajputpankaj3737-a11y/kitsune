@@ -19,16 +19,16 @@
   },
   {
     "title": "Throne Of Seal",
-    "type": "DONGHUA • Ep 70 [4K] • Sub",
+    "type": "DONGHUA • Ep 207 [4K] • Sub",
     "genre": "Action, Fantasy, Adventure",
     "image": "Image & logo/TOS.jpg",
     "link": "donghua/Throne Of Seal/episode.html",
-    "status": "ongoing",
+    "status": "completed",
     "rating": 8.9
   },
   {
     "title": "Renegade Immortal",
-    "type": "DONGHUA • Ep 25[4k] • Sub",
+    "type": "DONGHUA • Ep 105[4k] • Sub",
     "genre": "Action, Adventure",
     "image": "Image & logo/Renegade_Immortal.jpg",
     "link": "donghua/Renegade Immortal/episode.html",
@@ -171,7 +171,7 @@
   },
   {
     "title": "Peerless Battle Spirit",
-    "type": "DONGHUA • Ep 50 [4K] • Sub",
+    "type": "DONGHUA • Ep 120 [4K] • Sub",
     "genre": "Action",
     "image": "Image & logo/peerless battle spirit.webp",
     "link": "janime/Death Note/episode.html",
@@ -373,5 +373,14 @@
     "link": "donghua/Way of Choices/episode.html",
     "status": "ongoing",
     "rating": 9.0
+  },
+  {
+    "title": "Against The Gods Season 2",
+    "type": "DONGHUA • Ep 3 [4K] • Sub",
+    "genre": "Action, Fantasy, Adventure",
+    "image": "Image & logo/Against the gods Season 2.webp",
+    "link": "donghua/Against The Gods Season 2/episode.html",
+    "status": "ongoing",
+    "rating": 8.9
   }
 ]
