@@ -346,7 +346,7 @@
                 <section class="top-rated-section" id="topRated">
                     <h2><i class="fas fa-trophy"></i>Top 20 Rated</h2>
                     <div class="top-rated-list" id="topRatedList">
-                        <!-- Top 5 anime will be loaded here -->
+                        <!-- Top 20 anime will be loaded here -->
                         <div style="text-align: center; padding: 20px; color: var(--text-tertiary);">Loading top rated...</div>
                     </div>
                 </section>
@@ -383,7 +383,21 @@
             const posterPath = animeData.poster || animeData.image || animeData.posterImage || '';
             const description = animeData.description || animeData.synopsis || animeData.summary || '';
             const metaTags = animeData.metaTags || animeData.tags || animeData.genres || [];
-            const totalEpisodes = animeData.totalEpisodes || episodes.length || 0;
+            
+            // FIXED: Determine total episodes count correctly
+            // Priority: totalEpisodes from JSON > length of episodes array > 0
+            const totalEpisodesFromJson = animeData.totalEpisodes;
+            const episodesArrayLength = episodes.length;
+            
+            // Use the maximum between totalEpisodes from JSON and actual episodes array length
+            // This ensures we show the correct count even for 1000+ episodes
+            let totalEpisodes;
+            if (totalEpisodesFromJson !== undefined && totalEpisodesFromJson !== null) {
+                // Use the larger number between declared total and actual episodes
+                totalEpisodes = Math.max(parseInt(totalEpisodesFromJson), episodesArrayLength);
+            } else {
+                totalEpisodes = episodesArrayLength;
+            }
             
             // Update page title
             document.title = animeName + ' | Episode Selection - Kitsune';
@@ -419,11 +433,11 @@
                 });
             }
             
-            // Update episode counter
-            document.getElementById('episodeCounter').textContent = episodes.length + '/' + totalEpisodes;
+            // FIXED: Update episode counter with correct total
+            updateEpisodeCounterDisplay(totalEpisodes);
             
             // Load episode list with images
-            loadEpisodeList();
+            loadEpisodeList(totalEpisodes);
             
             // Load recommendations
             loadAnimeForRow();
@@ -451,23 +465,30 @@
         loadTopRated();
     }
 
-    function loadEpisodeList() {
+    // FIXED: Updated function to accept total episodes parameter
+    function loadEpisodeList(totalEpisodes) {
         const grid = document.getElementById('episodeGrid'); 
         if (!grid) return;
         
         if (!episodes || episodes.length === 0) {
             grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-tertiary);">No episodes available</div>';
+            updateEpisodeCounterDisplay(0);
             return;
         }
         
         let html = ''; 
         
-        // Sort episodes by number
-        episodes.sort((a, b) => (a.number || 0) - (b.number || 0)).forEach(ep => { 
+        // FIXED: Sort episodes numerically (not string comparison) to handle 1000+ episodes
+        episodes.sort((a, b) => {
+            const numA = parseInt(a.number) || 0;
+            const numB = parseInt(b.number) || 0;
+            return numA - numB;
+        }).forEach(ep => { 
             const imagePath = ep.img || ep.image || animeData?.poster || '../../Image & logo/Martial Master.webp';
             const quality = ep.quality || 'HD';
             const episodeTitle = ep.title || ep.name || `Episode ${ep.number}`;
-            const episodeNumber = ep.number || 0;
+            // FIXED: Ensure episode number is treated as integer
+            const episodeNumber = parseInt(ep.number) || 0;
             
             html += `
                 <a href="player.html?ep=${episodeNumber}" class="episode-card" data-ep="${episodeNumber}">
@@ -488,15 +509,15 @@
         
         grid.innerHTML = html; 
         
-        // Update episode counter
-        const totalEpisodes = animeData?.totalEpisodes || episodes.length;
-        document.getElementById('episodeCounter').textContent = episodes.length + '/' + totalEpisodes;
+        // FIXED: Update episode counter with correct display
+        updateEpisodeCounterDisplay(totalEpisodes);
         
         // Highlight the last watched episode if any
         const lastWatched = localStorage.getItem('kitsune_current_watching_episode');
         if (lastWatched) {
+            const lastWatchedNum = parseInt(lastWatched);
             document.querySelectorAll('.episode-card').forEach(card => { 
-                if (parseInt(card.dataset.ep) === parseInt(lastWatched)) { 
+                if (parseInt(card.dataset.ep) === lastWatchedNum) { 
                     card.style.border = '2px solid var(--primary)';
                     card.style.boxShadow = '0 0 15px rgba(229, 9, 20, 0.5)';
                 } 
@@ -504,10 +525,23 @@
         }
     }
     
-    function updateEpisodeCounter() { 
+    // FIXED: New helper function to update episode counter display
+    function updateEpisodeCounterDisplay(totalEpisodes) {
         const counter = document.getElementById('episodeCounter'); 
+        if (!counter) return;
+        
+        // Use actual episodes length or provided total, whichever is larger
+        const actualCount = episodes ? episodes.length : 0;
+        const displayTotal = totalEpisodes || actualCount;
+        
+        // For very large numbers (1000+), format without commas
+        counter.textContent = actualCount + '/' + displayTotal;
+    }
+    
+    // FIXED: Keep backward compatibility
+    function updateEpisodeCounter() { 
         const totalEpisodes = animeData?.totalEpisodes || episodes.length;
-        if (counter && episodes.length) counter.textContent = episodes.length + '/' + totalEpisodes; 
+        updateEpisodeCounterDisplay(totalEpisodes);
     }
 
     // ===== LOAD TOP RATED ANIME =====

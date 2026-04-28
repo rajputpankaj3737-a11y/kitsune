@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title id="pageTitle">Over Goddess | Kitsune</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -494,6 +494,7 @@
             color: var(--primary-light);
             border: 1px solid var(--primary);
             letter-spacing: 0.5px;
+            white-space: nowrap;
         }
 
         .episode-list-container {
@@ -1026,8 +1027,16 @@
             background: var(--primary-dark);
         }
 
-        /* Mobile responsive styles */
-        @media (max-width: 768px) {
+        /* ===== MOBILE RESPONSIVE STYLES ===== */
+        /* 
+           IMPORTANT: Using max-width: 1024px AND max-device-width: 1024px 
+           to catch both desktop browsers resized and mobile devices including landscape
+        */
+        @media screen and (max-width: 1024px), 
+               screen and (max-device-width: 1024px),
+               screen and (max-width: 1024px) and (orientation: landscape),
+               screen and (max-device-width: 1024px) and (orientation: landscape) {
+            
             * {
                 -webkit-tap-highlight-color: transparent;
             }
@@ -1144,6 +1153,7 @@
             .next-button {
                 min-width: 100%;
                 margin: 10px 0;
+                padding: 15px 20px;
             }
 
             .episode-list {
@@ -1197,6 +1207,7 @@
                 text-align: left;
                 margin-bottom: 8px;
                 line-height: 1.3;
+                -webkit-text-fill-color: var(--primary-light);
             }
 
             .anime-meta {
@@ -1248,8 +1259,10 @@
             }
 
             .video-player {
-                height: 220px;
+                height: auto;
+                aspect-ratio: 16/9;
                 width: 100%;
+                max-height: 350px;
                 background: #000;
             }
 
@@ -1272,7 +1285,7 @@
             }
 
             .episode-grid {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(4, 1fr);
                 gap: 8px;
             }
 
@@ -1298,7 +1311,7 @@
             }
 
             .anime-list-section h2::before {
-                content: '\1F525';
+                content: '🔥';
                 font-size: 1.1rem;
             }
 
@@ -1405,7 +1418,7 @@
             }
 
             .contact-section h2::before {
-                content: '\1F4E7';
+                content: '📧';
                 font-size: 1.1rem;
             }
 
@@ -1424,7 +1437,7 @@
             }
 
             .top-rated-section h2::before {
-                content: '\1F3C6';
+                content: '🏆';
                 margin-right: 8px;
             }
 
@@ -1435,9 +1448,19 @@
             .top-rated-list {
                 max-height: 400px;
             }
+
+            .episode-counter {
+                font-size: 0.85rem;
+                padding: 4px 10px;
+            }
         }
 
-        @media (max-width: 480px) {
+        /* Extra small screens */
+        @media screen and (max-width: 480px),
+               screen and (max-device-width: 480px),
+               screen and (max-width: 480px) and (orientation: landscape),
+               screen and (max-device-width: 480px) and (orientation: landscape) {
+            
             .main-container {
                 padding-top: 65px;
             }
@@ -1474,16 +1497,25 @@
             }
 
             .video-player {
-                height: 200px;
+                max-height: 250px;
             }
 
             .episode-grid {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(4, 1fr);
                 gap: 6px;
             }
 
             .episode-card-image {
-                height: 70px;
+                height: 65px;
+            }
+
+            .episode-card-content h3 {
+                font-size: 0.65rem;
+            }
+
+            .episode-card-badge {
+                font-size: 0.6rem;
+                padding: 2px 5px;
             }
 
             .anime-row {
@@ -1681,6 +1713,7 @@
                 this.animeData = null;
                 this.currentEpisode = null;
                 this.episodes = [];
+                this.totalEpisodes = 0;
                 this.isInitialLoad = true;
             }
 
@@ -1721,6 +1754,7 @@
                     
                     this.animeData = await response.json();
                     this.episodes = this.animeData.episodes || [];
+                    this.totalEpisodes = this.episodes.length;
                     
                     // Load all anime information from JSON
                     this.loadAnimeInformation();
@@ -1753,8 +1787,13 @@
                     return;
                 }
                 
-                // Set anime name from JSON - THIS IS THE KEY FIX
-                const animeName = this.animeData.animeTitle || this.animeData.title || this.animeData.name || 'Over Goddess';
+                // Set anime name from JSON - reads ALL possible field names
+                const animeName = this.animeData.animeTitle || 
+                                 this.animeData.title || 
+                                 this.animeData.name || 
+                                 this.animeData.animeName ||
+                                 this.animeData.seriesName ||
+                                 'Over Goddess';
                 
                 // Update page title
                 document.title = animeName + ' | Kitsune';
@@ -1769,11 +1808,16 @@
                     mainTitleElement.textContent = animeName;
                 }
                 
-                // Set poster image from JSON
+                // Set poster image from JSON - reads ALL possible field names
                 const posterElement = document.getElementById('animePoster');
                 if (posterElement) {
-                    const posterUrl = this.animeData.poster || this.animeData.image || 
-                                     this.animeData.animePoster || '../../Image & logo/Martial Master.webp';
+                    const posterUrl = this.animeData.poster || 
+                                     this.animeData.image || 
+                                     this.animeData.animePoster ||
+                                     this.animeData.posterImage ||
+                                     this.animeData.coverImage ||
+                                     this.animeData.thumbnail ||
+                                     '../../Image & logo/Martial Master.webp';
                     posterElement.src = posterUrl;
                     posterElement.alt = animeName + ' poster';
                     posterElement.onerror = () => {
@@ -1781,11 +1825,15 @@
                     };
                 }
                 
-                // Set description from JSON
+                // Set description from JSON - reads ALL possible field names
                 const descriptionElement = document.getElementById('animeDescription');
                 if (descriptionElement) {
-                    const description = this.animeData.description || this.animeData.synopsis || 
-                                       this.animeData.summary || 'No description available.';
+                    const description = this.animeData.description || 
+                                       this.animeData.synopsis || 
+                                       this.animeData.summary ||
+                                       this.animeData.plot ||
+                                       this.animeData.story ||
+                                       'No description available.';
                     descriptionElement.textContent = description;
                 }
                 
@@ -1795,7 +1843,11 @@
                     metaContainer.innerHTML = '';
                     
                     // Add all meta tags from JSON
-                    const metaTags = this.animeData.metaTags || this.animeData.tags || [];
+                    const metaTags = this.animeData.metaTags || 
+                                    this.animeData.tags || 
+                                    this.animeData.categories || 
+                                    [];
+                    
                     if (Array.isArray(metaTags)) {
                         metaTags.forEach(tag => {
                             const span = document.createElement('span');
@@ -1806,7 +1858,7 @@
                     }
                     
                     // Add genre if available
-                    if (this.animeData.genre) {
+                    if (this.animeData.genre && !metaTags.includes(this.animeData.genre)) {
                         const genreSpan = document.createElement('span');
                         genreSpan.className = 'meta-tag';
                         genreSpan.textContent = this.animeData.genre;
@@ -1821,12 +1873,20 @@
                         metaContainer.appendChild(statusSpan);
                     }
                     
-                    // Add quality tag from first episode if available
-                    if (this.episodes.length > 0 && this.episodes[0].quality) {
-                        const qualitySpan = document.createElement('span');
-                        qualitySpan.className = 'meta-tag';
-                        qualitySpan.textContent = this.episodes[0].quality;
-                        metaContainer.appendChild(qualitySpan);
+                    // Add type if available
+                    if (this.animeData.type) {
+                        const typeSpan = document.createElement('span');
+                        typeSpan.className = 'meta-tag';
+                        typeSpan.textContent = this.animeData.type;
+                        metaContainer.appendChild(typeSpan);
+                    }
+                    
+                    // Add studio if available
+                    if (this.animeData.studio) {
+                        const studioSpan = document.createElement('span');
+                        studioSpan.className = 'meta-tag';
+                        studioSpan.textContent = this.animeData.studio;
+                        metaContainer.appendChild(studioSpan);
                     }
                     
                     // Add year if available
@@ -1835,6 +1895,22 @@
                         yearSpan.className = 'meta-tag';
                         yearSpan.textContent = this.animeData.year;
                         metaContainer.appendChild(yearSpan);
+                    }
+                    
+                    // Add quality tag from first episode if available
+                    if (this.episodes.length > 0 && this.episodes[0].quality) {
+                        const qualitySpan = document.createElement('span');
+                        qualitySpan.className = 'meta-tag';
+                        qualitySpan.textContent = this.episodes[0].quality;
+                        metaContainer.appendChild(qualitySpan);
+                    }
+                    
+                    // Add total episodes count tag
+                    if (this.totalEpisodes > 0) {
+                        const countSpan = document.createElement('span');
+                        countSpan.className = 'meta-tag';
+                        countSpan.textContent = this.totalEpisodes + ' Episodes';
+                        metaContainer.appendChild(countSpan);
                     }
                 }
             }
@@ -1856,8 +1932,12 @@
                 this.currentEpisode = episodeNumber;
                 
                 // Get anime name from data
-                const animeName = this.animeData?.animeTitle || this.animeData?.title || 
-                                 this.animeData?.name || 'Over Goddess';
+                const animeName = this.animeData?.animeTitle || 
+                                 this.animeData?.title || 
+                                 this.animeData?.name || 
+                                 this.animeData?.animeName ||
+                                 this.animeData?.seriesName ||
+                                 'Over Goddess';
                 
                 // Update main title with anime name and episode title
                 const mainTitleElement = document.getElementById('animeTitle');
@@ -1888,7 +1968,7 @@
                     window.history.replaceState(
                         { episode: episodeNumber, anime: animeName }, 
                         '', 
-                        newUrl
+                        newUrl.toString()
                     );
                     this.isInitialLoad = false;
                 } else if (updateHistory) {
@@ -1896,7 +1976,7 @@
                     window.history.pushState(
                         { episode: episodeNumber, anime: animeName }, 
                         '', 
-                        newUrl
+                        newUrl.toString()
                     );
                 }
                 
@@ -1965,8 +2045,11 @@
                 
                 sortedEpisodes.forEach(episode => {
                     // Use episode image if available, otherwise use anime poster
-                    const imagePath = episode.img || episode.image || 
-                                     this.animeData?.poster || this.animeData?.image ||
+                    const imagePath = episode.img || 
+                                     episode.image || 
+                                     episode.thumbnail ||
+                                     this.animeData?.poster || 
+                                     this.animeData?.image ||
                                      '../../Image & logo/Martial Master.webp';
                     
                     const quality = episode.quality || 'HD';
@@ -2018,16 +2101,26 @@
                 });
             }
 
+            // FIXED: Now properly handles episode counts beyond 99
             updateEpisodeCounter(currentEpisodeNumber) {
                 const counter = document.getElementById('episodeCounter');
-                if (counter && this.episodes.length > 0) {
-                    counter.textContent = currentEpisodeNumber + '/' + this.episodes.length;
+                if (counter && this.totalEpisodes > 0) {
+                    // No limits on episode numbers - handles 100+ episodes correctly
+                    counter.textContent = currentEpisodeNumber + '/' + this.totalEpisodes;
+                } else if (counter && this.episodes.length > 0) {
+                    // Fallback using episodes array length
+                    this.totalEpisodes = this.episodes.length;
+                    counter.textContent = currentEpisodeNumber + '/' + this.totalEpisodes;
                 }
             }
 
             saveLastWatchedInfo() {
-                const animeName = this.animeData?.animeTitle || this.animeData?.title || 
-                                 this.animeData?.name || 'Over Goddess';
+                const animeName = this.animeData?.animeTitle || 
+                                 this.animeData?.title || 
+                                 this.animeData?.name || 
+                                 this.animeData?.animeName ||
+                                 this.animeData?.seriesName ||
+                                 'Over Goddess';
                 
                 localStorage.setItem('kitsune_last_watched', JSON.stringify({
                     title: animeName,
