@@ -295,9 +295,9 @@
     <div class="main-container">
         <!-- ANIME INFO SECTION -->
         <section class="anime-info-section">
-            <div class="poster-container"><img src="" alt="Martial Master poster" id="animePoster"></div>
+            <div class="poster-container"><img src="" alt="Anime poster" id="animePoster"></div>
             <div class="anime-details">
-                <h1 class="anime-title" id="animeTitle">Martial Master</h1>
+                <h1 class="anime-title" id="animeTitle">Loading...</h1>
                 <div class="anime-meta" id="animeMeta"></div>
                 <p class="anime-description" id="animeDescription"></p>
             </div>
@@ -372,26 +372,55 @@
     async function loadAnimeData() {
         try {
             const response = await fetch('episodes.json');
+            if (!response.ok) {
+                throw new Error('Failed to load episodes.json');
+            }
             animeData = await response.json();
             episodes = animeData.episodes || [];
             
-            // Update anime info
-            document.getElementById('animePoster').src = animeData.poster || '';
-            document.getElementById('animeDescription').textContent = animeData.description || '';
+            // Extract all data from JSON
+            const animeName = animeData.animeTitle || animeData.name || animeData.title || 'Unknown Anime';
+            const posterPath = animeData.poster || animeData.image || animeData.posterImage || '';
+            const description = animeData.description || animeData.synopsis || animeData.summary || '';
+            const metaTags = animeData.metaTags || animeData.tags || animeData.genres || [];
+            const totalEpisodes = animeData.totalEpisodes || episodes.length || 0;
             
+            // Update page title
+            document.title = animeName + ' | Episode Selection - Kitsune';
+            
+            // Update anime poster
+            document.getElementById('animePoster').src = posterPath;
+            document.getElementById('animePoster').alt = animeName + ' poster';
+            
+            // Update anime title with name from JSON
+            document.getElementById('animeTitle').textContent = animeName + ' — Episode Selection';
+            
+            // Update anime description
+            document.getElementById('animeDescription').textContent = description;
+            
+            // Update meta tags
             const metaContainer = document.getElementById('animeMeta');
             metaContainer.innerHTML = '';
-            if (animeData.metaTags) {
-                animeData.metaTags.forEach(tag => { 
+            if (metaTags && metaTags.length > 0) {
+                metaTags.forEach(tag => { 
                     const span = document.createElement('span'); 
                     span.className = 'meta-tag'; 
                     span.textContent = tag; 
                     metaContainer.appendChild(span); 
                 });
+            } else {
+                // Add default meta tags if none provided
+                const defaultTags = ['Anime', 'Series'];
+                defaultTags.forEach(tag => {
+                    const span = document.createElement('span'); 
+                    span.className = 'meta-tag'; 
+                    span.textContent = tag; 
+                    metaContainer.appendChild(span);
+                });
             }
             
-            // Update title
-            document.getElementById('animeTitle').textContent = `${animeData.animeTitle || 'Martial Master'} — Episode Selection`;
+            // Update episode counter
+            document.getElementById('episodeCounter').textContent = episodes.length + '/' + totalEpisodes;
             
             // Load episode list with images
             loadEpisodeList();
@@ -404,17 +433,19 @@
             
         } catch (error) { 
             console.error('Failed to load anime data:', error);
-            // Fallback
             createFallbackData();
         }
     }
 
     function createFallbackData() {
         document.getElementById('animePoster').src = '../../Image & logo/Martial Master.webp';
+        document.getElementById('animeTitle').textContent = 'Martial Master — Episode Selection';
         document.getElementById('animeDescription').textContent = 'Failed to load episode data. Please try again.';
         
         const metaContainer = document.getElementById('animeMeta');
         metaContainer.innerHTML = '<span class="meta-tag">Error</span>';
+        
+        document.getElementById('episodeCounter').textContent = '0/0';
         
         loadAnimeForRow();
         loadTopRated();
@@ -432,21 +463,22 @@
         let html = ''; 
         
         // Sort episodes by number
-        episodes.sort((a,b)=> (a.number || 0) - (b.number || 0)).forEach(ep => { 
-            const imagePath = ep.img || animeData?.poster || '../../Image & logo/Martial Master.webp';
+        episodes.sort((a, b) => (a.number || 0) - (b.number || 0)).forEach(ep => { 
+            const imagePath = ep.img || ep.image || animeData?.poster || '../../Image & logo/Martial Master.webp';
             const quality = ep.quality || 'HD';
-            const episodeTitle = ep.title || `Episode ${ep.number}`;
+            const episodeTitle = ep.title || ep.name || `Episode ${ep.number}`;
+            const episodeNumber = ep.number || 0;
             
             html += `
-                <a href="player.html?ep=${ep.number}" class="episode-card" data-ep="${ep.number}">
+                <a href="player.html?ep=${episodeNumber}" class="episode-card" data-ep="${episodeNumber}">
                     <div class="episode-card-image">
-                        <img src="${imagePath}" alt="Episode ${ep.number}" onerror="this.src='../../Image & logo/Martial Master.webp'">
-                        <div class="episode-card-badge">EP ${ep.number}</div>
+                        <img src="${imagePath}" alt="Episode ${episodeNumber}" onerror="this.src='../../Image & logo/Martial Master.webp'">
+                        <div class="episode-card-badge">EP ${episodeNumber}</div>
                     </div>
                     <div class="episode-card-content">
                         <h3>${episodeTitle}</h3>
                         <div class="episode-card-meta">
-                            <span class="episode-number">#${ep.number}</span>
+                            <span class="episode-number">#${episodeNumber}</span>
                             <span class="episode-quality">${quality}</span>
                         </div>
                     </div>
@@ -455,7 +487,10 @@
         });
         
         grid.innerHTML = html; 
-        updateEpisodeCounter();
+        
+        // Update episode counter
+        const totalEpisodes = animeData?.totalEpisodes || episodes.length;
+        document.getElementById('episodeCounter').textContent = episodes.length + '/' + totalEpisodes;
         
         // Highlight the last watched episode if any
         const lastWatched = localStorage.getItem('kitsune_current_watching_episode');
@@ -471,7 +506,8 @@
     
     function updateEpisodeCounter() { 
         const counter = document.getElementById('episodeCounter'); 
-        if (counter && episodes.length) counter.textContent = `${episodes.length}/${episodes.length}`; 
+        const totalEpisodes = animeData?.totalEpisodes || episodes.length;
+        if (counter && episodes.length) counter.textContent = episodes.length + '/' + totalEpisodes; 
     }
 
     // ===== LOAD TOP RATED ANIME =====
@@ -482,7 +518,7 @@
             
             const allAnime = await response.json();
             
-            // Sort by rating (descending) and take top 5
+            // Sort by rating (descending) and take top 20
             const topRated = [...allAnime]
                 .sort((a, b) => {
                     const ratingA = parseFloat(a.rating) || 0;
@@ -546,7 +582,7 @@
         try {
             const response = await fetch('../../searchData.json');
             if (!response.ok) throw new Error('Failed to load search data');
-            const animeData = await response.json();
+            const animeDataFromSearch = await response.json();
 
             // Get stored order or take random items
             const storedOrder = JSON.parse(localStorage.getItem('kitsune_anime_order') || '[]');
@@ -554,11 +590,11 @@
 
             if (storedOrder.length >= 9) {
                 const animeMap = new Map();
-                animeData.forEach(anime => animeMap.set(anime.title, anime));
+                animeDataFromSearch.forEach(anime => animeMap.set(anime.title, anime));
                 animeToShow = storedOrder.slice(0, 9).map(title => animeMap.get(title)).filter(Boolean);
             } 
             if (animeToShow.length < 9) {
-                const shuffled = [...animeData].sort(() => 0.5 - Math.random());
+                const shuffled = [...animeDataFromSearch].sort(() => 0.5 - Math.random());
                 const needed = 9 - animeToShow.length;
                 const existingTitles = new Set(animeToShow.map(a => a.title));
                 for (let item of shuffled) {
@@ -582,12 +618,12 @@
             populateAnimeRow(animeToShow.slice(0,9));
         } catch (error) {
             console.error('Error loading recommendations:', error);
-            const dummy = Array(9).fill().map((_,i)=> ({ 
-                title: `Anime ${i+1}`, 
+            const dummy = Array(9).fill().map((_, i) => ({ 
+                title: 'Anime ' + (i+1), 
                 image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', 
                 genre: 'Action', 
-                rating:'9.5', 
-                type:'Series' 
+                rating: '9.5', 
+                type: 'Series' 
             }));
             populateAnimeRow(dummy);
         }
@@ -595,6 +631,7 @@
 
     function populateAnimeRow(animeList) {
         const animeRow = document.getElementById('animeRow');
+        if (!animeRow) return;
         animeRow.innerHTML = '';
 
         animeList.forEach(anime => {
@@ -613,9 +650,9 @@
                 badgeClass = anime.status.toLowerCase() === 'completed' ? 'completed' : (anime.status.toLowerCase() === 'ongoing' ? 'ongoing' : 'new'); 
             } else { 
                 const r = Math.random(); 
-                if (r<0.33) { statusText='COMPLETED'; badgeClass='completed'; } 
-                else if (r<0.66) { statusText='ONGOING'; badgeClass='ongoing'; } 
-                else { statusText='NEW'; badgeClass='new'; } 
+                if (r < 0.33) { statusText = 'COMPLETED'; badgeClass = 'completed'; } 
+                else if (r < 0.66) { statusText = 'ONGOING'; badgeClass = 'ongoing'; } 
+                else { statusText = 'NEW'; badgeClass = 'new'; } 
             }
 
             card.innerHTML = `
@@ -636,8 +673,11 @@
             card.addEventListener('click', function () {
                 if (anime.link) {
                     const currentPath = window.location.pathname;
-                    if (currentPath.includes('/donghua/') || currentPath.includes('/janime/')) window.location.href = '../../' + anime.link;
-                    else window.location.href = anime.link;
+                    if (currentPath.includes('/donghua/') || currentPath.includes('/janime/')) {
+                        window.location.href = '../../' + anime.link;
+                    } else {
+                        window.location.href = anime.link;
+                    }
                 }
             });
             animeRow.appendChild(card);

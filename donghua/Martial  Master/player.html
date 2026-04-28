@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Over Goddess | Kitsune (fullscreen update)</title>
+    <title id="pageTitle">Over Goddess | Kitsune</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* root & themes — unchanged (kept exactly as original) */
+        /* Root variables and themes */
         :root {
             --primary: #E50914;
             --primary-dark: #B20710;
@@ -22,7 +22,6 @@
             --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
             --radius: 12px;
- 
             --light-bg-primary: #FFFFFF;
             --light-bg-secondary: #F8F9FA;
             --light-bg-tertiary: #F1F3F5;
@@ -72,250 +71,1460 @@
             --footer-bg: var(--light-bg-secondary);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background: var(--bg-primary); color: var(--text-primary); overflow-x: hidden; min-height: 100vh; line-height: 1.6; transition: background-color 0.3s ease, color 0.3s ease; }
+        /* Global reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-        /* theme toggle (unchanged) */
-        .theme-toggle-container { display: flex; align-items: center; }
-        .theme-toggle-checkbox { display: none; }
-        .theme-toggle-label { position: relative; display: inline-flex; align-items: center; cursor: pointer; width: 50px; height: 26px; background: var(--glass-color); border-radius: 50px; border: 1px solid var(--border-color); padding: 2px; transition: var(--transition); }
-        .theme-toggle-label:hover { border-color: var(--primary); }
-        .theme-toggle-slider { position: absolute; width: 22px; height: 22px; background: white; border-radius: 50%; transition: transform 0.3s ease; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); left: 2px; }
-        .theme-toggle-checkbox:checked+.theme-toggle-label .theme-toggle-slider { transform: translateX(24px); background: #FFD700; }
-        .theme-toggle-icon { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 0 5px; pointer-events: none; }
-        .theme-toggle-icon i { font-size: 0.7rem; transition: var(--transition); }
-        .theme-toggle-icon .fa-moon { color: #FFD700; }
-        .theme-toggle-icon .fa-sun { color: #FFA500; }
-        .theme-toggle-checkbox:checked+.theme-toggle-label .fa-moon { opacity: 0.5; }
-        .theme-toggle-checkbox:not(:checked)+.theme-toggle-label .fa-sun { opacity: 0.5; }
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
 
-        /* HEADER - reduced glass effect */
-        header { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; padding: 18px 20px; background: rgba(var(--bg-primary), 0.98); backdrop-filter: blur(30px); border-bottom: 1px solid var(--border-color); position: fixed; top: 0; left: 0; right: 0; z-index: 1000; }
-        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-        .logo-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 4px 12px rgba(229, 9, 20, 0.4); background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); }
-        .logo-icon img { width: 100%; height: 100%; object-fit: contain; }
-        .logo-text { font-size: 1.6rem; font-weight: 800; color: var(--primary); text-shadow: 0 2px 8px rgba(229, 9, 20, 0.3); }
-        .nav-actions { display: flex; align-items: center; gap: 20px; }
-        .nav-links { display: flex; align-items: center; gap: 20px; }
-        .nav-links a { text-decoration: none; color: var(--text-primary); font-weight: 500; padding: 10px 20px; border-radius: 50px; transition: var(--transition); border: 1px solid var(--border-color); background: var(--primary); color: white; }
-        .nav-links a:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4); }
+        /* Theme toggle styles */
+        .theme-toggle-container {
+            display: flex;
+            align-items: center;
+        }
 
-        .main-container { max-width: 1400px; margin: 80px auto 0; padding: 40px 20px; }
-        .content-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
+        .theme-toggle-checkbox {
+            display: none;
+        }
 
-        /* anime info */
-        .anime-info-section { display: flex; gap: 30px; background: var(--card-bg-color); border-radius: var(--radius); padding: 30px; margin-bottom: 30px; box-shadow: var(--current-shadow); border: 1px solid var(--card-border); position: relative; overflow: hidden; transition: var(--transition); }
-        .anime-info-section::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(229, 9, 20, 0.05), transparent); transition: left 0.6s ease; }
-        .anime-info-section:hover::before { left: 100%; }
-        .poster-container { width: 35%; max-width: 280px; aspect-ratio: 9 / 16; border-radius: var(--radius); overflow: hidden; box-shadow: 0 0 25px rgba(229, 9, 20, 0.4); transition: var(--transition); flex-shrink: 0; background: var(--bg-secondary); max-height: 320px; }
-        .poster-container img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .anime-details { width: 65%; }
-        .anime-title { font-size: 2.2rem; font-weight: 700; margin-bottom: 10px; background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .anime-meta { color: var(--text-tertiary); font-size: 0.95rem; margin-bottom: 15px; display: flex; flex-wrap: wrap; gap: 10px; }
-        .meta-tag { background: rgba(229, 9, 20, 0.2); padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; border: 1px solid rgba(229, 9, 20, 0.3); transition: var(--transition); color: var(--text-secondary); }
-        .meta-tag:hover { background: rgba(229, 9, 20, 0.3); transform: translateY(-2px); }
-        .anime-description { color: var(--text-secondary); line-height: 1.6; }
+        .theme-toggle-label {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            width: 50px;
+            height: 26px;
+            background: var(--glass-color);
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
+            padding: 2px;
+            transition: var(--transition);
+        }
 
-        /* video section */
-        .video-section { background: var(--card-bg-color); border-radius: var(--radius); overflow: hidden; margin-bottom: 30px; box-shadow: var(--current-shadow); border: 1px solid var(--card-border); transition: var(--transition); }
-        .video-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--border-color); background: rgba(0, 0, 0, 0.3); }
-        .video-header h2 { font-size: 1.4rem; color: var(--primary-light); }
-        .video-controls { display: flex; gap: 15px; }
-        .video-controls button { background: var(--glass-color); border: 1px solid var(--border-color); color: var(--text-primary); padding: 8px 15px; border-radius: 6px; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 8px; font-size: 0.9rem; }
-        .video-controls button:hover { background: rgba(229, 9, 20, 0.2); border-color: rgba(229, 9, 20, 0.3); transform: translateY(-2px); }
-        #customFullscreenBtn { background: rgba(229, 9, 20, 0.15); border-color: var(--primary); }
-        #customFullscreenBtn:hover { background: var(--primary); color: white; }
+        .theme-toggle-label:hover {
+            border-color: var(--primary);
+        }
 
-        .video-player { width: 100%; height: 500px; background: #000; display: flex; align-items: center; justify-content: center; color: var(--gray); position: relative; }
-        .video-player iframe { width: 100%; height: 100%; border: none; }
+        .theme-toggle-slider {
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            left: 2px;
+        }
+
+        .theme-toggle-checkbox:checked + .theme-toggle-label .theme-toggle-slider {
+            transform: translateX(24px);
+            background: #FFD700;
+        }
+
+        .theme-toggle-icon {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0 5px;
+            pointer-events: none;
+        }
+
+        .theme-toggle-icon i {
+            font-size: 0.7rem;
+            transition: var(--transition);
+        }
+
+        .theme-toggle-icon .fa-moon {
+            color: #FFD700;
+        }
+
+        .theme-toggle-icon .fa-sun {
+            color: #FFA500;
+        }
+
+        .theme-toggle-checkbox:checked + .theme-toggle-label .fa-moon {
+            opacity: 0.5;
+        }
+
+        .theme-toggle-checkbox:not(:checked) + .theme-toggle-label .fa-sun {
+            opacity: 0.5;
+        }
+
+        /* Header styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 18px 20px;
+            background: rgba(var(--bg-primary), 0.98);
+            backdrop-filter: blur(30px);
+            border-bottom: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(229, 9, 20, 0.4);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        }
+
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-shadow: 0 2px 8px rgba(229, 9, 20, 0.3);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 50px;
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+            background: var(--primary);
+        }
+
+        .nav-links a:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
+        }
+
+        /* Main container */
+        .main-container {
+            max-width: 1400px;
+            margin: 80px auto 0;
+            padding: 40px 20px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        /* Anime info section */
+        .anime-info-section {
+            display: flex;
+            gap: 30px;
+            background: var(--card-bg-color);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--current-shadow);
+            border: 1px solid var(--card-border);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .anime-info-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(229, 9, 20, 0.05), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .anime-info-section:hover::before {
+            left: 100%;
+        }
+
+        .poster-container {
+            width: 35%;
+            max-width: 280px;
+            aspect-ratio: 9 / 16;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: 0 0 25px rgba(229, 9, 20, 0.4);
+            transition: var(--transition);
+            flex-shrink: 0;
+            background: var(--bg-secondary);
+            max-height: 320px;
+        }
+
+        .poster-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .anime-details {
+            width: 65%;
+        }
+
+        .anime-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .anime-meta {
+            color: var(--text-tertiary);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .meta-tag {
+            background: rgba(229, 9, 20, 0.2);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(229, 9, 20, 0.3);
+            transition: var(--transition);
+            color: var(--text-secondary);
+        }
+
+        .meta-tag:hover {
+            background: rgba(229, 9, 20, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .anime-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Video section */
+        .video-section {
+            background: var(--card-bg-color);
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-bottom: 30px;
+            box-shadow: var(--current-shadow);
+            border: 1px solid var(--card-border);
+            transition: var(--transition);
+        }
+
+        .video-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .video-header h2 {
+            font-size: 1.4rem;
+            color: var(--primary-light);
+        }
+
+        .video-controls {
+            display: flex;
+            gap: 15px;
+        }
+
+        .video-controls button {
+            background: var(--glass-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .video-controls button:hover {
+            background: rgba(229, 9, 20, 0.2);
+            border-color: rgba(229, 9, 20, 0.3);
+            transform: translateY(-2px);
+        }
+
+        #customFullscreenBtn {
+            background: rgba(229, 9, 20, 0.15);
+            border-color: var(--primary);
+        }
+
+        #customFullscreenBtn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .video-player {
+            width: 100%;
+            height: 500px;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            position: relative;
+        }
+
+        .video-player iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
         .video-player.custom-fullscreen {
             position: fixed !important;
-            top: 0; left: 0; width: 100vw !important; height: 100vh !important;
-            z-index: 9999; background: black; padding: 0; margin: 0;
+            top: 0;
+            left: 0;
+            width: 100vw !important;
+            height: 100vh !important;
+            z-index: 9999;
+            background: black;
+            padding: 0;
+            margin: 0;
         }
-        .video-player.custom-fullscreen iframe { height: 100vh; }
 
-        /* EPISODE LIST - with image cards */
-        .episode-list { background: var(--card-bg-color); border-radius: var(--radius); box-shadow: var(--current-shadow); border: 1px solid var(--card-border); transition: var(--transition); display: flex; flex-direction: column; max-height: 600px; overflow: hidden; }
-        .episode-list-header { padding: 25px 25px 15px 25px; border-bottom: 1px solid var(--border-color); background: var(--card-bg-color); z-index: 2; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
-        .episode-list-header h2 { color: var(--primary-light); font-size: 1.4rem; position: relative; display: inline-block; margin: 0; }
-        .episode-list-header h2::after { content: ''; position: absolute; bottom: -8px; left: 0; width: 40px; height: 3px; background: var(--primary); border-radius: 2px; }
-        .episode-counter { background: var(--glass-color); padding: 5px 12px; border-radius: 30px; font-size: 0.9rem; font-weight: 600; color: var(--primary-light); border: 1px solid var(--primary); letter-spacing: 0.5px; }
-        .episode-list-container { padding: 25px; overflow-y: auto; flex-grow: 1; }
-        
-        /* Episode grid with cards */
-        .episode-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 15px; }
-        
-        .episode-card { background: var(--glass-color); border-radius: var(--radius); overflow: hidden; transition: var(--transition); border: 1px solid var(--card-border); cursor: pointer; position: relative; }
-        .episode-card:hover { transform: translateY(-5px); box-shadow: var(--current-shadow); border-color: rgba(229, 9, 20, 0.3); }
-        .episode-card-image { width: 100%; height: 100px; overflow: hidden; position: relative; }
-        .episode-card-image img { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); }
-        .episode-card:hover .episode-card-image img { transform: scale(1.05); }
-        .episode-card-badge { position: absolute; top: 5px; right: 5px; background: var(--primary); color: white; padding: 3px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: 600; z-index: 2; }
-        .episode-card-content { padding: 8px; text-align: center; }
-        .episode-card-content h3 { font-size: 0.8rem; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-primary); }
-        .episode-card-meta { display: flex; justify-content: center; align-items: center; font-size: 0.7rem; color: var(--text-tertiary); }
-        .episode-quality { background: rgba(229, 9, 20, 0.2); padding: 2px 6px; border-radius: 4px; color: var(--primary-light); font-weight: 600; font-size: 0.6rem; }
-        .episode-card.current { border: 2px solid var(--primary); box-shadow: 0 0 15px rgba(229, 9, 20, 0.5); }
+        .video-player.custom-fullscreen iframe {
+            height: 100vh;
+        }
 
-        .sidebar { display: flex; flex-direction: column; gap: 30px; }
+        /* Episode list */
+        .episode-list {
+            background: var(--card-bg-color);
+            border-radius: var(--radius);
+            box-shadow: var(--current-shadow);
+            border: 1px solid var(--card-border);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            max-height: 600px;
+            overflow: hidden;
+        }
 
-        /* TOP RATED SECTION - top 20 anime */
-        .top-rated-section { background: var(--card-bg-color); border-radius: var(--radius); padding: 25px; box-shadow: var(--current-shadow); border: 1px solid var(--card-border); transition: var(--transition); }
-        .top-rated-section h2 { margin-bottom: 20px; color: var(--primary-light); font-size: 1.2rem; position: relative; display: inline-block; }
-        .top-rated-section h2::after { content: ''; position: absolute; bottom: -8px; left: 0; width: 40px; height: 3px; background: var(--primary); border-radius: 2px; }
-        .top-rated-section h2 i { margin-right: 8px; color: #FFD700; }
-        
-        .top-rated-list { display: flex; flex-direction: column; gap: 12px; max-height: 500px; overflow-y: auto; padding-right: 5px; }
-        .top-rated-list::-webkit-scrollbar { width: 6px; }
-        .top-rated-list::-webkit-scrollbar-track { background: var(--bg-secondary); border-radius: 4px; }
-        .top-rated-list::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
-        
-        .top-rated-item { display: flex; align-items: center; gap: 12px; padding: 10px; background: var(--glass-color); border-radius: 8px; border: 1px solid var(--border-color); transition: var(--transition); cursor: pointer; }
-        .top-rated-item:hover { transform: translateX(5px); border-color: rgba(229, 9, 20, 0.3); background: rgba(229, 9, 20, 0.1); }
-        .top-rated-rank { width: 28px; height: 28px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; flex-shrink: 0; }
-        .top-rated-rank.gold { background: #FFD700; color: #000; }
-        .top-rated-rank.silver { background: #C0C0C0; color: #000; }
-        .top-rated-rank.bronze { background: #CD7F32; color: #000; }
-        .top-rated-image { width: 45px; height: 45px; border-radius: 6px; overflow: hidden; flex-shrink: 0; }
-        .top-rated-image img { width: 100%; height: 100%; object-fit: cover; }
-        .top-rated-info { flex: 1; overflow: hidden; }
-        .top-rated-info h4 { font-size: 0.9rem; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-primary); }
-        .top-rated-meta { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-tertiary); }
-        .top-rated-rating { color: #FFD700; font-weight: 600; }
-        .top-rated-rating i { margin-right: 2px; font-size: 0.6rem; }
+        .episode-list-header {
+            padding: 25px 25px 15px 25px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--card-bg-color);
+            z-index: 2;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
 
-        .contact-section { background: var(--card-bg-color); border-radius: var(--radius); padding: 25px; box-shadow: var(--current-shadow); border: 1px solid var(--card-border); transition: var(--transition); }
-        .contact-section h2 { margin-bottom: 20px; color: var(--primary-light); font-size: 1.4rem; position: relative; display: inline-block; }
-        .contact-section h2::after { content: ''; position: absolute; bottom: -8px; left: 0; width: 40px; height: 3px; background: var(--primary); border-radius: 2px; }
-        .contact-form { display: flex; flex-direction: column; gap: 15px; }
-        .contact-form input, .contact-form textarea { background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 8px; padding: 12px; color: var(--input-text); font-size: 0.9rem; transition: var(--transition); }
-        .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.2); }
-        .contact-form textarea { min-height: 100px; resize: vertical; }
-        .contact-form button { background: var(--primary); border: none; color: #fff; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .contact-form button:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4); }
+        .episode-list-header h2 {
+            color: var(--primary-light);
+            font-size: 1.4rem;
+            position: relative;
+            display: inline-block;
+            margin: 0;
+        }
 
-        /* ANIME LIST SECTION */
-        .anime-list-section { background: var(--card-bg-color); border-radius: var(--radius); padding: 30px; margin-top: 30px; box-shadow: var(--current-shadow); border: 1px solid var(--card-border); transition: var(--transition); }
-        .anime-list-section h2 { margin-bottom: 25px; color: var(--primary-light); font-size: 1.4rem; position: relative; display: inline-block; }
-        .anime-list-section h2::after { content: ''; position: absolute; bottom: -8px; left: 0; width: 40px; height: 3px; background: var(--primary); border-radius: 2px; }
-        .anime-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .episode-list-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
 
-        .anime-card { background: var(--glass-color); border-radius: var(--radius); overflow: hidden; transition: var(--transition); border: 1px solid var(--card-border); cursor: pointer; position: relative; }
-        .anime-card:hover { transform: translateY(-5px); box-shadow: var(--current-shadow); border-color: rgba(229, 9, 20, 0.3); }
-        .anime-card-image { width: 100%; height: 216px; overflow: hidden; position: relative; }
-        .anime-card-image img { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); }
-        .anime-card:hover .anime-card-image img { transform: scale(1.05); }
-        .anime-card-badge { position: absolute; top: 10px; right: 10px; background: var(--primary); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; z-index: 2; text-transform: uppercase; }
-        .anime-card-badge.completed { background: #28a745; }
-        .anime-card-badge.ongoing { background: #ffc107; color: #000; }
-        .anime-card-badge.new { background: var(--primary); }
-        .anime-card-content { padding: 15px; }
-        .anime-card-content h3 { font-size: 0.95rem; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-primary); }
-        .anime-card-meta { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.75rem; color: var(--text-tertiary); }
-        .anime-card-rating { display: flex; align-items: center; gap: 4px; color: #FFD700; font-size: 0.75rem; }
-        .anime-card-description { color: var(--text-secondary); font-size: 0.75rem; line-height: 1.4; margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; word-break: break-word; max-height: calc(1.4em * 2); }
+        .episode-counter {
+            background: var(--glass-color);
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary-light);
+            border: 1px solid var(--primary);
+            letter-spacing: 0.5px;
+        }
 
-        footer { text-align: center; padding: 30px; font-size: 0.9rem; color: var(--text-tertiary); border-top: 1px solid var(--border-color); margin-top: 50px; max-width: 1400px; margin-left: auto; margin-right: auto; background: var(--footer-bg); }
+        .episode-list-container {
+            padding: 25px;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
 
-        .episode-list-container::-webkit-scrollbar { width: 8px; }
-        .episode-list-container::-webkit-scrollbar-track { background: var(--bg-secondary); border-radius: 4px; }
-        .episode-list-container::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; transition: var(--transition); }
-        .episode-list-container::-webkit-scrollbar-thumb:hover { background: var(--primary-dark); }
+        .episode-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+        }
 
-        .next-button { background: var(--primary); border: none; color: white; padding: 15px 40px; min-width: 460px; width: auto; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 1rem; display: flex; align-items: center; justify-content: center; text-align: center; gap: 8px; transition: var(--transition); }
-        .next-button:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4); }
+        .episode-card {
+            background: var(--glass-color);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid var(--card-border);
+            cursor: pointer;
+            position: relative;
+        }
 
-        /* ----- MOBILE OVERRIDES ----- */
+        .episode-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--current-shadow);
+            border-color: rgba(229, 9, 20, 0.3);
+        }
+
+        .episode-card-image {
+            width: 100%;
+            height: 100px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .episode-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .episode-card:hover .episode-card-image img {
+            transform: scale(1.05);
+        }
+
+        .episode-card-badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: var(--primary);
+            color: white;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .episode-card-content {
+            padding: 8px;
+            text-align: center;
+        }
+
+        .episode-card-content h3 {
+            font-size: 0.8rem;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--text-primary);
+        }
+
+        .episode-card-meta {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+        }
+
+        .episode-quality {
+            background: rgba(229, 9, 20, 0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--primary-light);
+            font-weight: 600;
+            font-size: 0.6rem;
+        }
+
+        .episode-card.current {
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 15px rgba(229, 9, 20, 0.5);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Top rated section */
+        .top-rated-section {
+            background: var(--card-bg-color);
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--current-shadow);
+            border: 1px solid var(--card-border);
+            transition: var(--transition);
+        }
+
+        .top-rated-section h2 {
+            margin-bottom: 20px;
+            color: var(--primary-light);
+            font-size: 1.2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .top-rated-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .top-rated-section h2 i {
+            margin-right: 8px;
+            color: #FFD700;
+        }
+
+        .top-rated-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .top-rated-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .top-rated-list::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+            border-radius: 4px;
+        }
+
+        .top-rated-list::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        .top-rated-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            background: var(--glass-color);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .top-rated-item:hover {
+            transform: translateX(5px);
+            border-color: rgba(229, 9, 20, 0.3);
+            background: rgba(229, 9, 20, 0.1);
+        }
+
+        .top-rated-rank {
+            width: 28px;
+            height: 28px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .top-rated-rank.gold {
+            background: #FFD700;
+            color: #000;
+        }
+
+        .top-rated-rank.silver {
+            background: #C0C0C0;
+            color: #000;
+        }
+
+        .top-rated-rank.bronze {
+            background: #CD7F32;
+            color: #000;
+        }
+
+        .top-rated-image {
+            width: 45px;
+            height: 45px;
+            border-radius: 6px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .top-rated-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .top-rated-info {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .top-rated-info h4 {
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--text-primary);
+        }
+
+        .top-rated-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+        }
+
+        .top-rated-rating {
+            color: #FFD700;
+            font-weight: 600;
+        }
+
+        .top-rated-rating i {
+            margin-right: 2px;
+            font-size: 0.6rem;
+        }
+
+        /* Contact section */
+        .contact-section {
+            background: var(--card-bg-color);
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--current-shadow);
+            border: 1px solid var(--card-border);
+            transition: var(--transition);
+        }
+
+        .contact-section h2 {
+            margin-bottom: 20px;
+            color: var(--primary-light);
+            font-size: 1.4rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .contact-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--input-text);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.2);
+        }
+
+        .contact-form textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .contact-form button {
+            background: var(--primary);
+            border: none;
+            color: #fff;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .contact-form button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
+        }
+
+        /* Anime list section */
+        .anime-list-section {
+            background: var(--card-bg-color);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: var(--current-shadow);
+            border: 1px solid var(--card-border);
+            transition: var(--transition);
+        }
+
+        .anime-list-section h2 {
+            margin-bottom: 25px;
+            color: var(--primary-light);
+            font-size: 1.4rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .anime-list-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .anime-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .anime-card {
+            background: var(--glass-color);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid var(--card-border);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .anime-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--current-shadow);
+            border-color: rgba(229, 9, 20, 0.3);
+        }
+
+        .anime-card-image {
+            width: 100%;
+            height: 216px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .anime-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .anime-card:hover .anime-card-image img {
+            transform: scale(1.05);
+        }
+
+        .anime-card-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--primary);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            z-index: 2;
+            text-transform: uppercase;
+        }
+
+        .anime-card-badge.completed {
+            background: #28a745;
+        }
+
+        .anime-card-badge.ongoing {
+            background: #ffc107;
+            color: #000;
+        }
+
+        .anime-card-badge.new {
+            background: var(--primary);
+        }
+
+        .anime-card-content {
+            padding: 15px;
+        }
+
+        .anime-card-content h3 {
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--text-primary);
+        }
+
+        .anime-card-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+        }
+
+        .anime-card-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #FFD700;
+            font-size: 0.75rem;
+        }
+
+        .anime-card-description {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            line-height: 1.4;
+            margin: 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-word;
+            max-height: calc(1.4em * 2);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            font-size: 0.9rem;
+            color: var(--text-tertiary);
+            border-top: 1px solid var(--border-color);
+            margin-top: 50px;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+            background: var(--footer-bg);
+        }
+
+        /* Next button */
+        .next-button {
+            background: var(--primary);
+            border: none;
+            color: white;
+            padding: 15px 40px;
+            min-width: 460px;
+            width: auto;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .next-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
+        }
+
+        /* Scrollbar styles */
+        .episode-list-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .episode-list-container::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+            border-radius: 4px;
+        }
+
+        .episode-list-container::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .episode-list-container::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Mobile responsive styles */
         @media (max-width: 768px) {
-            * { -webkit-tap-highlight-color: transparent; }
-            body { font-size: 15px; -webkit-text-size-adjust: 100%; padding: 0; margin: 0; }
-            .main-container { width: 100%; max-width: 100%; padding: 70px 0 20px; margin: 0; overflow-x: hidden; }
-            header { position: fixed; top: 0; left: 0; right: 0; padding: 12px 16px; background: rgba(var(--bg-primary), 0.98); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); border-bottom: 1px solid rgba(229, 9, 20, 0.3); z-index: 1000; display: flex; justify-content: space-between; align-items: center; }
-            .nav-actions { gap: 12px; }
-            .theme-toggle-label { width: 46px; height: 24px; }
-            .theme-toggle-slider { width: 20px; height: 20px; }
-            .theme-toggle-checkbox:checked+.theme-toggle-label .theme-toggle-slider { transform: translateX(22px); }
-            .logo-text { font-size: 1.4rem; }
-            .nav-links { gap: 8px; }
-            .nav-links a { padding: 8px 16px; font-size: 0.85rem; }
-            .content-grid { display: flex; flex-direction: column; gap: 0; width: 100%; }
-            .main-content { width: 100%; display: flex; flex-direction: column; order: 1; }
-            .sidebar { display: contents; }
-            .contact-section { order: 5; width: 100%; padding: 20px 16px; margin: 0; background: var(--bg-primary); border-radius: 0; border: none; border-top: 1px solid var(--border-color); box-shadow: none; }
-            .top-rated-section { order: 4; width: 100%; margin: 20px 0; border-radius: 0; border-left: none; border-right: none; }
-            .next-button-container { display: block !important; order: 3; width: 100%; padding: 0 16px; margin: 20px 0; }
-            .next-button { min-width: 100%; margin: 10px 0; }
-            .episode-list { order: 2; width: 100%; max-height: 450px; margin-bottom: 20px; }
-            .anime-list-section { order: 6; width: 100%; padding: 20px 16px; margin: 0; background: var(--bg-primary); border-radius: 0; border: none; box-shadow: none; }
-            .anime-info-section { flex-direction: row; padding: 20px 16px; gap: 16px; margin: 0; background: linear-gradient(135deg, var(--card-bg-color) 0%, rgba(30, 30, 30, 0.95) 100%); border-radius: 0; border-bottom: 1px solid var(--border-color); box-shadow: none; align-items: flex-start; width: 100%; order: 0; }
-            .poster-container { width: 120px; aspect-ratio: 9/16; border-radius: 12px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5); flex-shrink: 0; max-height: 180px; }
-            .anime-details { flex: 1; width: auto; }
-            .anime-title { font-size: 1.3rem; text-align: left; margin-bottom: 8px; line-height: 1.3; }
-            .anime-meta { justify-content: flex-start; gap: 6px; margin-bottom: 10px; }
-            .meta-tag { font-size: 0.75rem; padding: 4px 10px; background: rgba(229, 9, 20, 0.25); border: 1px solid rgba(229, 9, 20, 0.4); }
-            .anime-description { font-size: 0.85rem; line-height: 1.5; color: var(--text-secondary); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; word-break: break-word; max-height: calc(1.5em * 3); }
-            .video-section { margin: 0; border-radius: 0; background: #000; border: none; box-shadow: none; width: 100%; order: 1; }
-            .video-header { padding: 15px 16px; background: rgba(0, 0, 0, 0.9); border-bottom: 1px solid var(--border-color); }
-            .video-header h2 { font-size: 1.1rem; color: var(--primary-light); font-weight: 600; }
-            .video-player { height: 220px; width: 100%; background: #000; }
-            .episode-list { padding: 0; background: var(--bg-primary); border-radius: 0; border: none; border-bottom: 1px solid var(--border-color); box-shadow: none; width: 100%; }
-            .episode-list-header { padding: 16px 16px 8px 16px; }
-            .episode-list-container { padding: 16px; }
-            .episode-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-            .episode-card-image { height: 80px; }
-            .episode-card-content { padding: 6px; }
-            .episode-card-content h3 { font-size: 0.7rem; }
-            .anime-list-section h2 { font-size: 1.2rem; margin-bottom: 16px; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
-            .anime-list-section h2::before { content: '🔥'; font-size: 1.1rem; }
-            .anime-list-section h2::after { display: none; }
-            .anime-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; overflow-x: visible; padding-bottom: 0; }
-            .anime-row .anime-card:nth-child(n+4) { display: none; }
-            .anime-card { min-width: auto; width: 100%; background: var(--card-bg-color); border-radius: 12px; overflow: hidden; border: 1px solid var(--card-border); transition: all 0.3s ease; }
-            .anime-card:active { transform: scale(0.95); border-color: rgba(229, 9, 20, 0.4); }
-            .anime-card-image { height: 120px; position: relative; }
-            .anime-card-badge { background: var(--primary); border-radius: 6px; font-weight: 700; font-size: 0.65rem; padding: 3px 6px; }
-            .anime-card-content { padding: 10px; }
-            .anime-card-content h3 { font-size: 0.8rem; font-weight: 600; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.3; }
-            .anime-card-meta { font-size: 0.7rem; margin-bottom: 4px; justify-content: space-between; }
-            .anime-card-rating { color: #FFD700; font-weight: 600; font-size: 0.7rem; }
-            .anime-card-description { font-size: 0.7rem; color: var(--text-secondary); line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.6em; text-overflow: ellipsis; word-break: break-word; }
-            footer { padding: 25px 16px; margin: 0; background: var(--footer-bg); border-top: 1px solid var(--border-color); border-radius: 0; text-align: center; order: 7; }
-            .contact-section h2 { font-size: 1.2rem; margin-bottom: 16px; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
-            .contact-section h2::before { content: '📧'; font-size: 1.1rem; }
-            .contact-section h2::after { display: none; }
-            .contact-form input, .contact-form textarea { font-size: 16px; padding: 14px; }
-            .top-rated-section h2 { font-size: 1.2rem; }
-            .top-rated-section h2::before { content: '🏆'; margin-right: 8px; }
-            .top-rated-section h2::after { display: none; }
-            .top-rated-list { max-height: 400px; }
+            * {
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            body {
+                font-size: 15px;
+                -webkit-text-size-adjust: 100%;
+                padding: 0;
+                margin: 0;
+            }
+
+            .main-container {
+                width: 100%;
+                max-width: 100%;
+                padding: 70px 0 20px;
+                margin: 0;
+                overflow-x: hidden;
+            }
+
+            header {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                padding: 12px 16px;
+                background: rgba(var(--bg-primary), 0.98);
+                backdrop-filter: blur(3px);
+                -webkit-backdrop-filter: blur(3px);
+                border-bottom: 1px solid rgba(229, 9, 20, 0.3);
+                z-index: 1000;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .nav-actions {
+                gap: 12px;
+            }
+
+            .theme-toggle-label {
+                width: 46px;
+                height: 24px;
+            }
+
+            .theme-toggle-slider {
+                width: 20px;
+                height: 20px;
+            }
+
+            .theme-toggle-checkbox:checked + .theme-toggle-label .theme-toggle-slider {
+                transform: translateX(22px);
+            }
+
+            .logo-text {
+                font-size: 1.4rem;
+            }
+
+            .nav-links {
+                gap: 8px;
+            }
+
+            .nav-links a {
+                padding: 8px 16px;
+                font-size: 0.85rem;
+            }
+
+            .content-grid {
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+                width: 100%;
+            }
+
+            .main-content {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                order: 1;
+            }
+
+            .sidebar {
+                display: contents;
+            }
+
+            .contact-section {
+                order: 5;
+                width: 100%;
+                padding: 20px 16px;
+                margin: 0;
+                background: var(--bg-primary);
+                border-radius: 0;
+                border: none;
+                border-top: 1px solid var(--border-color);
+                box-shadow: none;
+            }
+
+            .top-rated-section {
+                order: 4;
+                width: 100%;
+                margin: 20px 0;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+            }
+
+            .next-button-container {
+                display: block !important;
+                order: 3;
+                width: 100%;
+                padding: 0 16px;
+                margin: 20px 0;
+            }
+
+            .next-button {
+                min-width: 100%;
+                margin: 10px 0;
+            }
+
+            .episode-list {
+                order: 2;
+                width: 100%;
+                max-height: 450px;
+                margin-bottom: 20px;
+            }
+
+            .anime-list-section {
+                order: 6;
+                width: 100%;
+                padding: 20px 16px;
+                margin: 0;
+                background: var(--bg-primary);
+                border-radius: 0;
+                border: none;
+                box-shadow: none;
+            }
+
+            .anime-info-section {
+                flex-direction: row;
+                padding: 20px 16px;
+                gap: 16px;
+                margin: 0;
+                background: linear-gradient(135deg, var(--card-bg-color) 0%, rgba(30, 30, 30, 0.95) 100%);
+                border-radius: 0;
+                border-bottom: 1px solid var(--border-color);
+                box-shadow: none;
+                align-items: flex-start;
+                width: 100%;
+                order: 0;
+            }
+
+            .poster-container {
+                width: 120px;
+                aspect-ratio: 9/16;
+                border-radius: 12px;
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+                flex-shrink: 0;
+                max-height: 180px;
+            }
+
+            .anime-details {
+                flex: 1;
+                width: auto;
+            }
+
+            .anime-title {
+                font-size: 1.3rem;
+                text-align: left;
+                margin-bottom: 8px;
+                line-height: 1.3;
+            }
+
+            .anime-meta {
+                justify-content: flex-start;
+                gap: 6px;
+                margin-bottom: 10px;
+            }
+
+            .meta-tag {
+                font-size: 0.75rem;
+                padding: 4px 10px;
+                background: rgba(229, 9, 20, 0.25);
+                border: 1px solid rgba(229, 9, 20, 0.4);
+            }
+
+            .anime-description {
+                font-size: 0.85rem;
+                line-height: 1.5;
+                color: var(--text-secondary);
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                word-break: break-word;
+                max-height: calc(1.5em * 3);
+            }
+
+            .video-section {
+                margin: 0;
+                border-radius: 0;
+                background: #000;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                order: 1;
+            }
+
+            .video-header {
+                padding: 15px 16px;
+                background: rgba(0, 0, 0, 0.9);
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .video-header h2 {
+                font-size: 1.1rem;
+                color: var(--primary-light);
+                font-weight: 600;
+            }
+
+            .video-player {
+                height: 220px;
+                width: 100%;
+                background: #000;
+            }
+
+            .episode-list {
+                padding: 0;
+                background: var(--bg-primary);
+                border-radius: 0;
+                border: none;
+                border-bottom: 1px solid var(--border-color);
+                box-shadow: none;
+                width: 100%;
+            }
+
+            .episode-list-header {
+                padding: 16px 16px 8px 16px;
+            }
+
+            .episode-list-container {
+                padding: 16px;
+            }
+
+            .episode-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+
+            .episode-card-image {
+                height: 80px;
+            }
+
+            .episode-card-content {
+                padding: 6px;
+            }
+
+            .episode-card-content h3 {
+                font-size: 0.7rem;
+            }
+
+            .anime-list-section h2 {
+                font-size: 1.2rem;
+                margin-bottom: 16px;
+                color: var(--text-primary);
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .anime-list-section h2::before {
+                content: '\1F525';
+                font-size: 1.1rem;
+            }
+
+            .anime-list-section h2::after {
+                display: none;
+            }
+
+            .anime-row {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 12px;
+                overflow-x: visible;
+                padding-bottom: 0;
+            }
+
+            .anime-row .anime-card:nth-child(n+4) {
+                display: none;
+            }
+
+            .anime-card {
+                min-width: auto;
+                width: 100%;
+                background: var(--card-bg-color);
+                border-radius: 12px;
+                overflow: hidden;
+                border: 1px solid var(--card-border);
+                transition: all 0.3s ease;
+            }
+
+            .anime-card:active {
+                transform: scale(0.95);
+                border-color: rgba(229, 9, 20, 0.4);
+            }
+
+            .anime-card-image {
+                height: 120px;
+                position: relative;
+            }
+
+            .anime-card-badge {
+                background: var(--primary);
+                border-radius: 6px;
+                font-weight: 700;
+                font-size: 0.65rem;
+                padding: 3px 6px;
+            }
+
+            .anime-card-content {
+                padding: 10px;
+            }
+
+            .anime-card-content h3 {
+                font-size: 0.8rem;
+                font-weight: 600;
+                margin-bottom: 4px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                line-height: 1.3;
+            }
+
+            .anime-card-meta {
+                font-size: 0.7rem;
+                margin-bottom: 4px;
+                justify-content: space-between;
+            }
+
+            .anime-card-rating {
+                color: #FFD700;
+                font-weight: 600;
+                font-size: 0.7rem;
+            }
+
+            .anime-card-description {
+                font-size: 0.7rem;
+                color: var(--text-secondary);
+                line-height: 1.3;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                height: 2.6em;
+                text-overflow: ellipsis;
+                word-break: break-word;
+            }
+
+            footer {
+                padding: 25px 16px;
+                margin: 0;
+                background: var(--footer-bg);
+                border-top: 1px solid var(--border-color);
+                border-radius: 0;
+                text-align: center;
+                order: 7;
+            }
+
+            .contact-section h2 {
+                font-size: 1.2rem;
+                margin-bottom: 16px;
+                color: var(--text-primary);
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .contact-section h2::before {
+                content: '\1F4E7';
+                font-size: 1.1rem;
+            }
+
+            .contact-section h2::after {
+                display: none;
+            }
+
+            .contact-form input,
+            .contact-form textarea {
+                font-size: 16px;
+                padding: 14px;
+            }
+
+            .top-rated-section h2 {
+                font-size: 1.2rem;
+            }
+
+            .top-rated-section h2::before {
+                content: '\1F3C6';
+                margin-right: 8px;
+            }
+
+            .top-rated-section h2::after {
+                display: none;
+            }
+
+            .top-rated-list {
+                max-height: 400px;
+            }
         }
+
         @media (max-width: 480px) {
-            .main-container { padding-top: 65px; }
-            header { padding: 10px 12px; }
-            .nav-actions { gap: 8px; }
-            .theme-toggle-label { width: 42px; height: 22px; }
-            .theme-toggle-slider { width: 18px; height: 18px; }
-            .theme-toggle-checkbox:checked+.theme-toggle-label .theme-toggle-slider { transform: translateX(20px); }
-            .poster-container { width: 100px; max-height: 160px; }
-            .anime-title { font-size: 1.1rem; }
-            .video-player { height: 200px; }
-            .episode-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
-            .episode-card-image { height: 70px; }
-            .anime-row { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-            .anime-card-image { height: 100px; }
-            .anime-card-content { padding: 8px; }
-            .anime-card-content h3 { font-size: 0.75rem; }
-            .anime-card-description { font-size: 0.65rem; height: 2.4em; }
-            .next-button { padding: 12px 20px; font-size: 0.9rem; }
-            .top-rated-list { max-height: 350px; }
+            .main-container {
+                padding-top: 65px;
+            }
+
+            header {
+                padding: 10px 12px;
+            }
+
+            .nav-actions {
+                gap: 8px;
+            }
+
+            .theme-toggle-label {
+                width: 42px;
+                height: 22px;
+            }
+
+            .theme-toggle-slider {
+                width: 18px;
+                height: 18px;
+            }
+
+            .theme-toggle-checkbox:checked + .theme-toggle-label .theme-toggle-slider {
+                transform: translateX(20px);
+            }
+
+            .poster-container {
+                width: 100px;
+                max-height: 160px;
+            }
+
+            .anime-title {
+                font-size: 1.1rem;
+            }
+
+            .video-player {
+                height: 200px;
+            }
+
+            .episode-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 6px;
+            }
+
+            .episode-card-image {
+                height: 70px;
+            }
+
+            .anime-row {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+
+            .anime-card-image {
+                height: 100px;
+            }
+
+            .anime-card-content {
+                padding: 8px;
+            }
+
+            .anime-card-content h3 {
+                font-size: 0.75rem;
+            }
+
+            .anime-card-description {
+                font-size: 0.65rem;
+                height: 2.4em;
+            }
+
+            .next-button {
+                padding: 12px 20px;
+                font-size: 0.9rem;
+            }
+
+            .top-rated-list {
+                max-height: 350px;
+            }
         }
     </style>
 </head>
 <body>
     <header>
         <a href="../../home.html" class="logo">
-            <div class="logo-icon"><img src="../../Image & logo/kitsune logo.jpg" alt="Kitsune Logo"></div>
+            <div class="logo-icon">
+                <img src="../../Image & logo/kitsune logo.jpg" alt="Kitsune Logo">
+            </div>
             <div class="logo-text">Kitsune</div>
         </a>
         <div class="nav-actions">
@@ -323,72 +1532,89 @@
                 <input type="checkbox" id="themeToggle" class="theme-toggle-checkbox">
                 <label for="themeToggle" class="theme-toggle-label">
                     <span class="theme-toggle-slider"></span>
-                    <span class="theme-toggle-icon"><i class="fas fa-moon"></i><i class="fas fa-sun"></i></span>
+                    <span class="theme-toggle-icon">
+                        <i class="fas fa-moon"></i>
+                        <i class="fas fa-sun"></i>
+                    </span>
                 </label>
             </div>
-            <div class="nav-links"><a href="#contact">Contact Us</a><a href="../../home.html">Home</a></div>
+            <div class="nav-links">
+                <a href="#contact">Contact Us</a>
+                <a href="../../home.html">Home</a>
+            </div>
         </div>
     </header>
 
     <div class="main-container">
-        <!-- ANIME INFO SECTION -->
+        <!-- Anime info section -->
         <section class="anime-info-section">
-            <div class="poster-container"><img src="" alt="Over Goddess poster" id="animePoster"></div>
+            <div class="poster-container">
+                <img src="" alt="Anime poster" id="animePoster">
+            </div>
             <div class="anime-details">
-                <h1 class="anime-title" id="animeTitle">Over Goddess —</h1>
+                <h1 class="anime-title" id="animeTitle">Loading...</h1>
                 <div class="anime-meta" id="animeMeta"></div>
                 <p class="anime-description" id="animeDescription"></p>
             </div>
         </section>
 
         <div class="content-grid">
-            <!-- MAIN CONTENT -->
+            <!-- Main content area -->
             <div class="main-content">
                 <section class="video-section">
                     <div class="video-header">
                         <h2 id="videoTitle">Now Playing:</h2>
                         <div class="video-controls">
-                            <button id="customFullscreenBtn"><i class="fas fa-expand"></i> Fullscreen</button>
+                            <button id="customFullscreenBtn">
+                                <i class="fas fa-expand"></i> Fullscreen
+                            </button>
                         </div>
                     </div>
                     <div class="video-player" id="videoPlayer">
-                        <iframe allow="autoplay; fullscreen; picture-in-picture; web-share" class="dailymotion-player" frameborder="0" src="" title="Dailymotion video player" id="videoIframe"></iframe>
+                        <iframe allow="autoplay; fullscreen; picture-in-picture; web-share" 
+                                class="dailymotion-player" 
+                                frameborder="0" 
+                                src="" 
+                                title="Dailymotion video player" 
+                                id="videoIframe">
+                        </iframe>
                     </div>
                 </section>
 
-                <!-- ANIME LIST SECTION - will load 9 items but on mobile only first 3 are visible -->
+                <!-- Anime recommendations section -->
                 <section class="anime-list-section">
                     <h2>More Anime You Might Like</h2>
-                    <div class="anime-row" id="animeRow">
-                        <!-- 9 anime will be loaded dynamically -->
-                    </div>
+                    <div class="anime-row" id="animeRow"></div>
                 </section>
             </div>
 
-            <!-- SIDEBAR -->
+            <!-- Sidebar -->
             <div class="sidebar">
                 <section class="episode-list">
                     <div class="episode-list-header">
-                        <h2><i class="fas fa-film" style="margin-right: 8px;"></i>Episodes</h2>
+                        <h2>
+                            <i class="fas fa-film" style="margin-right: 8px;"></i>Episodes
+                        </h2>
                         <span class="episode-counter" id="episodeCounter">-/-</span>
                     </div>
                     <div class="episode-list-container" id="episodeListContainer">
-                        <div class="episode-grid" id="episodeGrid">
-                            <!-- Episode cards with images will be loaded here -->
-                        </div>
+                        <div class="episode-grid" id="episodeGrid"></div>
                     </div>
                 </section>
 
                 <div class="next-button-container">
-                    <button class="next-button" onclick="goToNextEpisode()" id="nextButton">NEXT EPISODE <i class="fas fa-arrow-right"></i></button>
+                    <button class="next-button" id="nextButton">
+                        NEXT EPISODE <i class="fas fa-arrow-right"></i>
+                    </button>
                 </div>
 
-                <!-- TOP RATED SECTION - top 20 anime -->
+                <!-- Top rated section -->
                 <section class="top-rated-section" id="topRated">
                     <h2><i class="fas fa-trophy"></i>Top 20 Rated</h2>
                     <div class="top-rated-list" id="topRatedList">
-                        <!-- Top 20 anime will be loaded here -->
-                        <div style="text-align: center; padding: 20px; color: var(--text-tertiary);">Loading top rated...</div>
+                        <div style="text-align: center; padding: 20px; color: var(--text-tertiary);">
+                            Loading top rated...
+                        </div>
                     </div>
                 </section>
 
@@ -400,390 +1626,779 @@
                         <input type="text" name="name" placeholder="Name" required>
                         <input type="email" name="email" placeholder="Email" required>
                         <textarea name="message" placeholder="Your message..." required></textarea>
-                        <button type="submit"><i class="fas fa-paper-plane"></i> Send Message</button>
+                        <button type="submit">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
                     </form>
                 </section>
             </div>
         </div>
     </div>
-    <footer>© 2025 Kitsune | All rights reserved.</footer>
+
+    <footer>
+        © 2025 Kitsune | All rights reserved.
+    </footer>
 
     <script>
-    // ===== THEME MANAGER =====
-    class ThemeManager {
-        constructor() { this.themeToggle = document.getElementById('themeToggle'); this.init(); }
-        init() { this.loadTheme(); this.themeToggle.addEventListener('change', () => this.toggleTheme()); }
-        loadTheme() { const savedTheme = localStorage.getItem('kitsune_theme'); if (savedTheme === 'light') { this.themeToggle.checked = true; this.applyTheme('light'); } else { this.themeToggle.checked = false; this.applyTheme('dark'); } }
-        toggleTheme() { const newTheme = this.themeToggle.checked ? 'light' : 'dark'; this.applyTheme(newTheme); localStorage.setItem('kitsune_theme', newTheme); }
-        applyTheme(theme) { document.documentElement.setAttribute('data-theme', theme); this.themeToggle.checked = (theme === 'light'); document.body.style.display = 'none'; document.body.offsetHeight; document.body.style.display = ''; }
-    }
-
-    // ===== EPISODE DATA =====
-    let animeData = null;
-    let currentEpisode = 1;
-    let episodes = [];
-
-    function getEpisodeFromUrl() { 
-        const urlParams = new URLSearchParams(window.location.search); 
-        let ep = urlParams.get('ep') || urlParams.get('episode');
-        return ep ? parseInt(ep) : null;
-    }
-
-    function getLatestEpisode() {
-        if (!episodes || episodes.length === 0) return 1;
-        return Math.max(...episodes.map(e => e.number));
-    }
-
-    async function loadAnimeData() {
-        try {
-            const response = await fetch('episodes.json');
-            animeData = await response.json();
-            episodes = animeData.episodes;
-            
-            document.getElementById('animePoster').src = animeData.poster;
-            document.getElementById('animeDescription').textContent = animeData.description;
-            
-            const metaContainer = document.getElementById('animeMeta');
-            metaContainer.innerHTML = '';
-            animeData.metaTags.forEach(tag => { 
-                const span = document.createElement('span'); 
-                span.className = 'meta-tag'; 
-                span.textContent = tag; 
-                metaContainer.appendChild(span); 
-            });
-            const qualityTag = document.createElement('span'); 
-            qualityTag.className = 'meta-tag'; 
-            qualityTag.textContent = episodes[0]?.quality || 'HD'; 
-            metaContainer.appendChild(qualityTag);
-            
-            const requestedEpisode = getEpisodeFromUrl();
-            
-            if (requestedEpisode === null || isNaN(requestedEpisode) || requestedEpisode < 1) {
-                currentEpisode = getLatestEpisode();
-                console.log('Loading latest episode:', currentEpisode);
-            } else {
-                currentEpisode = requestedEpisode;
+        // ===== THEME MANAGER CLASS =====
+        class ThemeManager {
+            constructor() {
+                this.themeToggle = document.getElementById('themeToggle');
+                this.initialize();
             }
-            
-            loadEpisode(currentEpisode);
-            loadEpisodeList();
-            loadAnimeForRow();
-            loadTopRated(); // Load top 20 anime
-            
-            localStorage.setItem('kitsune_last_watched', JSON.stringify({
-                title: 'Over Goddess',
-                episode: currentEpisode,
-                timestamp: new Date().getTime()
-            }));
-            
-        } catch (error) { 
-            console.error('Failed to load anime data:', error);
-            createFallbackData();
+
+            initialize() {
+                this.loadSavedTheme();
+                this.themeToggle.addEventListener('change', () => this.handleThemeToggle());
+            }
+
+            loadSavedTheme() {
+                const savedTheme = localStorage.getItem('kitsune_theme');
+                if (savedTheme === 'light') {
+                    this.themeToggle.checked = true;
+                    this.applyTheme('light');
+                } else {
+                    this.themeToggle.checked = false;
+                    this.applyTheme('dark');
+                }
+            }
+
+            handleThemeToggle() {
+                const newTheme = this.themeToggle.checked ? 'light' : 'dark';
+                this.applyTheme(newTheme);
+                localStorage.setItem('kitsune_theme', newTheme);
+            }
+
+            applyTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                this.themeToggle.checked = (theme === 'light');
+            }
         }
-    }
 
-    function createFallbackData() {
-        document.getElementById('animePoster').src = '../../Image & logo/Martial Master.webp';
-        document.getElementById('animeDescription').textContent = 'Failed to load episode data. Please try again.';
-        const metaContainer = document.getElementById('animeMeta');
-        metaContainer.innerHTML = '<span class="meta-tag">Error</span>';
-        loadAnimeForRow();
-        loadTopRated();
-    }
+        // ===== EPISODE MANAGER CLASS =====
+        class EpisodeManager {
+            constructor() {
+                this.animeData = null;
+                this.currentEpisode = null;
+                this.episodes = [];
+                this.isInitialLoad = true;
+            }
 
-    function loadEpisode(epNumber) {
-        const episode = episodes.find(e => e.number === epNumber);
-        if (!episode) { 
-            const latestEp = getLatestEpisode();
-            window.location.href = `player.html?ep=${latestEp}`;
-            return; 
-        }
-        currentEpisode = epNumber;
-        document.getElementById('animeTitle').textContent = `Over Goddess — ${episode.title}`;
-        document.getElementById('videoTitle').textContent = `Now Playing: ${episode.title}`;
-        document.getElementById('videoIframe').src = episode.videoUrl;
-        
-        const url = new URL(window.location); 
-        url.searchParams.set('ep', epNumber); 
-        window.history.pushState({}, '', url);
-        localStorage.setItem('kitsune_current_watching_episode', epNumber.toString());
-        updateNextButton(epNumber); 
-        highlightCurrentEpisode(epNumber); 
-        updateEpisodeCounter(epNumber);
-    }
+            initialize() {
+                this.getEpisodeFromUrl();
+                this.loadAnimeData();
+                this.setupCustomFullscreen();
+                this.setupNextButton();
+                this.setupPopStateListener();
+            }
 
-    function updateNextButton(currentEp) { 
-        const nextButton = document.getElementById('nextButton');
-        const nextEpisode = episodes.find(e => e.number === currentEp + 1);
-        if (nextEpisode) { 
-            nextButton.style.opacity = '1'; 
-            nextButton.disabled = false; 
-            nextButton.onclick = () => goToNextEpisode(); 
-        } else { 
-            nextButton.style.opacity = '0.5'; 
-            nextButton.disabled = true; 
-        }
-    }
-    
-    function goToNextEpisode() { 
-        const nextEpisode = episodes.find(e => e.number === currentEpisode + 1); 
-        if (nextEpisode) window.location.href = `player.html?ep=${nextEpisode.number}`; 
-    }
-
-    function loadEpisodeList() {
-        const grid = document.getElementById('episodeGrid'); 
-        if (!grid) return;
-        
-        if (!episodes || episodes.length === 0) {
-            grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-tertiary);">No episodes available</div>';
-            return;
-        }
-        
-        let html = ''; 
-        
-        episodes.sort((a,b)=> a.number - b.number).forEach(ep => { 
-            const imagePath = ep.img || animeData?.poster || '../../Image & logo/Martial Master.webp';
-            const quality = ep.quality || 'HD';
-            const episodeTitle = ep.title || `Episode ${ep.number}`;
-            
-            html += `
-                <div class="episode-card" data-ep="${ep.number}" onclick="loadEpisode(${ep.number})">
-                    <div class="episode-card-image">
-                        <img src="${imagePath}" alt="Episode ${ep.number}" onerror="this.src='../../Image & logo/Martial Master.webp'">
-                        <div class="episode-card-badge">${ep.number}</div>
-                    </div>
-                    <div class="episode-card-content">
-                        <h3>${episodeTitle.substring(0, 15)}${episodeTitle.length > 15 ? '...' : ''}</h3>
-                        <div class="episode-card-meta">
-                            <span class="episode-quality">${quality}</span>
-                        </div>
-                    </div>
-                </div>
-            `; 
-        });
-        
-        grid.innerHTML = html; 
-        highlightCurrentEpisode(currentEpisode); 
-        updateEpisodeCounter(currentEpisode);
-    }
-    
-    function highlightCurrentEpisode(epNumber) {
-        document.querySelectorAll('.episode-card').forEach(card => { 
-            card.classList.remove('current'); 
-            if (parseInt(card.dataset.ep) === epNumber) { 
-                card.classList.add('current'); 
-                setTimeout(() => { 
-                    card.scrollIntoView({ behavior: 'smooth', block: 'center' }); 
-                }, 300); 
-            } 
-        });
-    }
-    
-    function updateEpisodeCounter(currentEp) { 
-        const counter = document.getElementById('episodeCounter'); 
-        if (counter && episodes.length) counter.textContent = `${currentEp}/${episodes.length}`; 
-    }
-
-    // ===== LOAD TOP RATED ANIME (top 20) =====
-    async function loadTopRated() {
-        try {
-            const response = await fetch('../../data.json');
-            if (!response.ok) throw new Error('Failed to load data');
-            
-            const allAnime = await response.json();
-            
-            // Sort by rating (descending) and take top 20
-            const topRated = [...allAnime]
-                .sort((a, b) => {
-                    const ratingA = parseFloat(a.rating) || 0;
-                    const ratingB = parseFloat(b.rating) || 0;
-                    return ratingB - ratingA;
-                })
-                .slice(0, 20);
-            
-            displayTopRated(topRated);
-            
-        } catch (error) {
-            console.error('Error loading top rated:', error);
-            document.getElementById('topRatedList').innerHTML = 
-                '<div style="text-align: center; padding: 20px; color: var(--text-tertiary);">Failed to load top rated</div>';
-        }
-    }
-
-    function displayTopRated(animeList) {
-        const container = document.getElementById('topRatedList');
-        if (!container) return;
-        
-        if (!animeList || animeList.length === 0) {
-            container.innerHTML = '<div style="text-align: center; padding: 20px; color: var(--text-tertiary);">No data available</div>';
-            return;
-        }
-        
-        let html = '';
-        
-        animeList.forEach((anime, index) => {
-            let rankClass = '';
-            if (index === 0) rankClass = 'gold';
-            else if (index === 1) rankClass = 'silver';
-            else if (index === 2) rankClass = 'bronze';
-            
-            const imagePath = anime.image || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
-            const finalImagePath = !imagePath.startsWith('http') && !imagePath.startsWith('../../') ? '../../' + imagePath : imagePath;
-            
-            html += `
-                <div class="top-rated-item" onclick="window.location.href='${anime.link || '#'}'">
-                    <div class="top-rated-rank ${rankClass}">${index + 1}</div>
-                    <div class="top-rated-image">
-                        <img src="${finalImagePath}" alt="${anime.title}" onerror="this.src='https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
-                    </div>
-                    <div class="top-rated-info">
-                        <h4>${anime.title || 'Untitled'}</h4>
-                        <div class="top-rated-meta">
-                            <span>${anime.genre ? anime.genre.split(',')[0] : 'Anime'}</span>
-                            <span class="top-rated-rating"><i class="fas fa-star"></i> ${anime.rating || 'N/A'}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-        });
-        
-        container.innerHTML = html;
-    }
-
-    // ===== ANIME RECOMMENDATIONS =====
-    async function loadAnimeForRow() {
-        try {
-            const response = await fetch('../../searchData.json');
-            if (!response.ok) throw new Error('Failed to load search data');
-            const animeData = await response.json();
-
-            const storedOrder = JSON.parse(localStorage.getItem('kitsune_anime_order') || '[]');
-            let animeToShow = [];
-
-            if (storedOrder.length >= 9) {
-                const animeMap = new Map();
-                animeData.forEach(anime => animeMap.set(anime.title, anime));
-                animeToShow = storedOrder.slice(0, 9).map(title => animeMap.get(title)).filter(Boolean);
-            } 
-            if (animeToShow.length < 9) {
-                const shuffled = [...animeData].sort(() => 0.5 - Math.random());
-                const needed = 9 - animeToShow.length;
-                const existingTitles = new Set(animeToShow.map(a => a.title));
-                for (let item of shuffled) {
-                    if (!existingTitles.has(item.title)) {
-                        animeToShow.push(item);
-                        existingTitles.add(item.title);
-                        if (animeToShow.length >= 9) break;
+            getEpisodeFromUrl() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const epParam = urlParams.get('ep') || urlParams.get('episode');
+                
+                if (epParam) {
+                    const episodeNumber = parseInt(epParam);
+                    if (!isNaN(episodeNumber) && episodeNumber > 0) {
+                        this.currentEpisode = episodeNumber;
                     }
                 }
             }
-            while (animeToShow.length < 9) { 
-                animeToShow.push({ 
-                    title: 'Anime Placeholder', 
-                    image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', 
-                    genre: 'Action', 
-                    rating: '9.5', 
-                    type: 'Series' 
-                }); 
-            }
 
-            populateAnimeRow(animeToShow.slice(0,9));
-        } catch (error) {
-            console.error('Error loading recommendations:', error);
-            const dummy = Array(9).fill().map((_,i)=> ({ 
-                title: `Anime ${i+1}`, 
-                image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', 
-                genre: 'Action', 
-                rating:'9.5', 
-                type:'Series' 
-            }));
-            populateAnimeRow(dummy);
-        }
-    }
-
-    function populateAnimeRow(animeList) {
-        const animeRow = document.getElementById('animeRow');
-        animeRow.innerHTML = '';
-
-        animeList.forEach(anime => {
-            const card = document.createElement('div');
-            card.className = 'anime-card';
-
-            let imagePath = anime.image || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
-            const currentPath = window.location.pathname;
-            if (!imagePath.startsWith('http') && (currentPath.includes('/donghua/') || currentPath.includes('/janime/'))) {
-                if (!imagePath.startsWith('../')) imagePath = '../../' + imagePath;
-            }
-
-            let statusText = 'NEW', badgeClass = 'new';
-            if (anime.status) { 
-                statusText = anime.status.toUpperCase(); 
-                badgeClass = anime.status.toLowerCase() === 'completed' ? 'completed' : (anime.status.toLowerCase() === 'ongoing' ? 'ongoing' : 'new'); 
-            } else { 
-                const r = Math.random(); 
-                if (r<0.33) { statusText='COMPLETED'; badgeClass='completed'; } 
-                else if (r<0.66) { statusText='ONGOING'; badgeClass='ongoing'; } 
-                else { statusText='NEW'; badgeClass='new'; } 
-            }
-
-            card.innerHTML = `
-                <div class="anime-card-image">
-                    <img src="${imagePath}" alt="${anime.title}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
-                    <div class="anime-card-badge ${badgeClass}">${statusText}</div>
-                </div>
-                <div class="anime-card-content">
-                    <h3>${anime.title}</h3>
-                    <div class="anime-card-meta">
-                        <span>${anime.genre ? anime.genre.split(',')[0] : 'Action'}</span>
-                        <div class="anime-card-rating"><i class="fas fa-star"></i><span>${anime.rating || '9.8'}</span></div>
-                    </div>
-                    <p class="anime-card-description">${anime.type || 'Series'}</p>
-                </div>
-            `;
-
-            card.addEventListener('click', function () {
-                if (anime.link) {
-                    const currentPath = window.location.pathname;
-                    if (currentPath.includes('/donghua/') || currentPath.includes('/janime/')) window.location.href = '../../' + anime.link;
-                    else window.location.href = anime.link;
+            getLatestEpisode() {
+                if (!this.episodes || this.episodes.length === 0) {
+                    return 1;
                 }
-            });
-            animeRow.appendChild(card);
-        });
-    }
+                return Math.max(...this.episodes.map(episode => episode.number));
+            }
 
-    // ===== CUSTOM FULLSCREEN =====
-    function setupCustomFullscreen() {
-        const videoPlayer = document.getElementById('videoPlayer');
-        const fullscreenBtn = document.getElementById('customFullscreenBtn');
-        
-        function toggleFullscreen() {
-            if (document.fullscreenElement) {
-                document.exitFullscreen();
-                videoPlayer.classList.remove('custom-fullscreen');
-            } else {
-                if (videoPlayer.requestFullscreen) {
-                    videoPlayer.requestFullscreen().then(() => {
-                        videoPlayer.classList.add('custom-fullscreen');
-                    }).catch(err => console.warn('fullscreen failed', err));
+            async loadAnimeData() {
+                try {
+                    const response = await fetch('episodes.json');
+                    
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch episodes.json');
+                    }
+                    
+                    this.animeData = await response.json();
+                    this.episodes = this.animeData.episodes || [];
+                    
+                    // Load all anime information from JSON
+                    this.loadAnimeInformation();
+                    
+                    // Determine which episode to load
+                    if (this.currentEpisode === null || 
+                        !this.episodes.find(episode => episode.number === this.currentEpisode)) {
+                        this.currentEpisode = this.getLatestEpisode();
+                    }
+                    
+                    // Load episode without creating extra history entries
+                    this.loadEpisode(this.currentEpisode, false);
+                    
+                    // Load other sections
+                    this.loadEpisodeGrid();
+                    this.loadRecommendations();
+                    this.loadTopRatedAnime();
+                    
+                    // Save last watched info
+                    this.saveLastWatchedInfo();
+                    
+                } catch (error) {
+                    console.error('Failed to load anime data:', error);
+                    this.handleDataLoadError();
+                }
+            }
+
+            loadAnimeInformation() {
+                if (!this.animeData) {
+                    return;
+                }
+                
+                // Set anime name from JSON - THIS IS THE KEY FIX
+                const animeName = this.animeData.animeTitle || this.animeData.title || this.animeData.name || 'Over Goddess';
+                
+                // Update page title
+                document.title = animeName + ' | Kitsune';
+                const pageTitleElement = document.getElementById('pageTitle');
+                if (pageTitleElement) {
+                    pageTitleElement.textContent = animeName + ' | Kitsune';
+                }
+                
+                // Update main title in the info section
+                const mainTitleElement = document.getElementById('animeTitle');
+                if (mainTitleElement) {
+                    mainTitleElement.textContent = animeName;
+                }
+                
+                // Set poster image from JSON
+                const posterElement = document.getElementById('animePoster');
+                if (posterElement) {
+                    const posterUrl = this.animeData.poster || this.animeData.image || 
+                                     this.animeData.animePoster || '../../Image & logo/Martial Master.webp';
+                    posterElement.src = posterUrl;
+                    posterElement.alt = animeName + ' poster';
+                    posterElement.onerror = () => {
+                        posterElement.src = '../../Image & logo/Martial Master.webp';
+                    };
+                }
+                
+                // Set description from JSON
+                const descriptionElement = document.getElementById('animeDescription');
+                if (descriptionElement) {
+                    const description = this.animeData.description || this.animeData.synopsis || 
+                                       this.animeData.summary || 'No description available.';
+                    descriptionElement.textContent = description;
+                }
+                
+                // Set meta tags from JSON
+                const metaContainer = document.getElementById('animeMeta');
+                if (metaContainer) {
+                    metaContainer.innerHTML = '';
+                    
+                    // Add all meta tags from JSON
+                    const metaTags = this.animeData.metaTags || this.animeData.tags || [];
+                    if (Array.isArray(metaTags)) {
+                        metaTags.forEach(tag => {
+                            const span = document.createElement('span');
+                            span.className = 'meta-tag';
+                            span.textContent = tag;
+                            metaContainer.appendChild(span);
+                        });
+                    }
+                    
+                    // Add genre if available
+                    if (this.animeData.genre) {
+                        const genreSpan = document.createElement('span');
+                        genreSpan.className = 'meta-tag';
+                        genreSpan.textContent = this.animeData.genre;
+                        metaContainer.appendChild(genreSpan);
+                    }
+                    
+                    // Add status if available
+                    if (this.animeData.status) {
+                        const statusSpan = document.createElement('span');
+                        statusSpan.className = 'meta-tag';
+                        statusSpan.textContent = this.animeData.status;
+                        metaContainer.appendChild(statusSpan);
+                    }
+                    
+                    // Add quality tag from first episode if available
+                    if (this.episodes.length > 0 && this.episodes[0].quality) {
+                        const qualitySpan = document.createElement('span');
+                        qualitySpan.className = 'meta-tag';
+                        qualitySpan.textContent = this.episodes[0].quality;
+                        metaContainer.appendChild(qualitySpan);
+                    }
+                    
+                    // Add year if available
+                    if (this.animeData.year) {
+                        const yearSpan = document.createElement('span');
+                        yearSpan.className = 'meta-tag';
+                        yearSpan.textContent = this.animeData.year;
+                        metaContainer.appendChild(yearSpan);
+                    }
+                }
+            }
+
+            loadEpisode(episodeNumber, updateHistory = true) {
+                const episode = this.episodes.find(ep => ep.number === episodeNumber);
+                
+                if (!episode) {
+                    // Episode not found, redirect to latest episode
+                    const latestEpisode = this.getLatestEpisode();
+                    if (this.isInitialLoad) {
+                        window.location.replace('player.html?ep=' + latestEpisode);
+                    } else {
+                        window.location.href = 'player.html?ep=' + latestEpisode;
+                    }
+                    return;
+                }
+                
+                this.currentEpisode = episodeNumber;
+                
+                // Get anime name from data
+                const animeName = this.animeData?.animeTitle || this.animeData?.title || 
+                                 this.animeData?.name || 'Over Goddess';
+                
+                // Update main title with anime name and episode title
+                const mainTitleElement = document.getElementById('animeTitle');
+                if (mainTitleElement) {
+                    const episodeTitle = episode.title || 'Episode ' + episodeNumber;
+                    mainTitleElement.textContent = animeName + ' — ' + episodeTitle;
+                }
+                
+                // Update video title
+                const videoTitleElement = document.getElementById('videoTitle');
+                if (videoTitleElement) {
+                    const episodeTitle = episode.title || 'Episode ' + episodeNumber;
+                    videoTitleElement.textContent = 'Now Playing: ' + episodeTitle;
+                }
+                
+                // Update video iframe source
+                const videoIframe = document.getElementById('videoIframe');
+                if (videoIframe && episode.videoUrl) {
+                    videoIframe.src = episode.videoUrl;
+                }
+                
+                // Update URL and browser history
+                const newUrl = new URL(window.location);
+                newUrl.searchParams.set('ep', episodeNumber);
+                
+                if (this.isInitialLoad) {
+                    // On first load, replace state to avoid extra history entry
+                    window.history.replaceState(
+                        { episode: episodeNumber, anime: animeName }, 
+                        '', 
+                        newUrl
+                    );
+                    this.isInitialLoad = false;
+                } else if (updateHistory) {
+                    // On subsequent episode changes, push new state
+                    window.history.pushState(
+                        { episode: episodeNumber, anime: animeName }, 
+                        '', 
+                        newUrl
+                    );
+                }
+                
+                // Update page title
+                const episodeTitle = episode.title || 'Episode ' + episodeNumber;
+                document.title = animeName + ' - ' + episodeTitle + ' | Kitsune';
+                
+                // Save current episode to localStorage
+                localStorage.setItem('kitsune_current_watching_episode', episodeNumber.toString());
+                
+                // Update UI elements
+                this.updateNextButton(episodeNumber);
+                this.highlightCurrentEpisodeCard(episodeNumber);
+                this.updateEpisodeCounter(episodeNumber);
+            }
+
+            updateNextButton(currentEpisodeNumber) {
+                const nextButton = document.getElementById('nextButton');
+                if (!nextButton) {
+                    return;
+                }
+                
+                const nextEpisode = this.episodes.find(ep => ep.number === currentEpisodeNumber + 1);
+                
+                if (nextEpisode) {
+                    nextButton.style.opacity = '1';
+                    nextButton.disabled = false;
+                    nextButton.title = 'Go to Episode ' + nextEpisode.number;
                 } else {
-                    videoPlayer.classList.toggle('custom-fullscreen');
+                    nextButton.style.opacity = '0.5';
+                    nextButton.disabled = true;
+                    nextButton.title = 'No more episodes available';
                 }
+            }
+
+            goToNextEpisode() {
+                const nextEpisode = this.episodes.find(ep => ep.number === this.currentEpisode + 1);
+                if (nextEpisode) {
+                    this.loadEpisode(nextEpisode.number, true);
+                    // Scroll to top of video section
+                    const videoSection = document.querySelector('.video-section');
+                    if (videoSection) {
+                        videoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            }
+
+            loadEpisodeGrid() {
+                const grid = document.getElementById('episodeGrid');
+                if (!grid) {
+                    return;
+                }
+                
+                if (!this.episodes || this.episodes.length === 0) {
+                    grid.innerHTML = `
+                        <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-tertiary);">
+                            No episodes available
+                        </div>`;
+                    return;
+                }
+                
+                let htmlContent = '';
+                
+                // Sort episodes by number
+                const sortedEpisodes = [...this.episodes].sort((a, b) => a.number - b.number);
+                
+                sortedEpisodes.forEach(episode => {
+                    // Use episode image if available, otherwise use anime poster
+                    const imagePath = episode.img || episode.image || 
+                                     this.animeData?.poster || this.animeData?.image ||
+                                     '../../Image & logo/Martial Master.webp';
+                    
+                    const quality = episode.quality || 'HD';
+                    const episodeTitle = episode.title || 'Episode ' + episode.number;
+                    const truncatedTitle = episodeTitle.length > 15 ? 
+                        episodeTitle.substring(0, 15) + '...' : 
+                        episodeTitle;
+                    
+                    htmlContent += `
+                        <div class="episode-card" data-ep="${episode.number}" 
+                             onclick="window.episodeManager.loadEpisode(${episode.number}, true)">
+                            <div class="episode-card-image">
+                                <img src="${imagePath}" 
+                                     alt="Episode ${episode.number}" 
+                                     onerror="this.src='../../Image & logo/Martial Master.webp'"
+                                     loading="lazy">
+                                <div class="episode-card-badge">${episode.number}</div>
+                            </div>
+                            <div class="episode-card-content">
+                                <h3 title="${episodeTitle}">${truncatedTitle}</h3>
+                                <div class="episode-card-meta">
+                                    <span class="episode-quality">${quality}</span>
+                                </div>
+                            </div>
+                        </div>`;
+                });
+                
+                grid.innerHTML = htmlContent;
+                this.highlightCurrentEpisodeCard(this.currentEpisode);
+                this.updateEpisodeCounter(this.currentEpisode);
+            }
+
+            highlightCurrentEpisodeCard(episodeNumber) {
+                const allCards = document.querySelectorAll('.episode-card');
+                
+                allCards.forEach(card => {
+                    card.classList.remove('current');
+                    if (parseInt(card.dataset.ep) === episodeNumber) {
+                        card.classList.add('current');
+                        
+                        // Scroll to the current episode card
+                        setTimeout(() => {
+                            card.scrollIntoView({ 
+                                behavior: 'smooth', 
+                                block: 'center' 
+                            });
+                        }, 300);
+                    }
+                });
+            }
+
+            updateEpisodeCounter(currentEpisodeNumber) {
+                const counter = document.getElementById('episodeCounter');
+                if (counter && this.episodes.length > 0) {
+                    counter.textContent = currentEpisodeNumber + '/' + this.episodes.length;
+                }
+            }
+
+            saveLastWatchedInfo() {
+                const animeName = this.animeData?.animeTitle || this.animeData?.title || 
+                                 this.animeData?.name || 'Over Goddess';
+                
+                localStorage.setItem('kitsune_last_watched', JSON.stringify({
+                    title: animeName,
+                    episode: this.currentEpisode,
+                    timestamp: new Date().getTime()
+                }));
+            }
+
+            async loadTopRatedAnime() {
+                try {
+                    const response = await fetch('../../data.json');
+                    
+                    if (!response.ok) {
+                        throw new Error('Failed to load top rated data');
+                    }
+                    
+                    const allAnimeData = await response.json();
+                    
+                    // Sort by rating in descending order and get top 20
+                    const topRatedList = [...allAnimeData]
+                        .sort((a, b) => {
+                            const ratingA = parseFloat(a.rating) || 0;
+                            const ratingB = parseFloat(b.rating) || 0;
+                            return ratingB - ratingA;
+                        })
+                        .slice(0, 20);
+                    
+                    this.displayTopRatedAnime(topRatedList);
+                    
+                } catch (error) {
+                    console.error('Error loading top rated anime:', error);
+                    this.displayTopRatedError();
+                }
+            }
+
+            displayTopRatedAnime(animeList) {
+                const container = document.getElementById('topRatedList');
+                if (!container) {
+                    return;
+                }
+                
+                if (!animeList || animeList.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 20px; color: var(--text-tertiary);">
+                            No data available
+                        </div>`;
+                    return;
+                }
+                
+                let htmlContent = '';
+                
+                animeList.forEach((anime, index) => {
+                    let rankClass = '';
+                    if (index === 0) {
+                        rankClass = 'gold';
+                    } else if (index === 1) {
+                        rankClass = 'silver';
+                    } else if (index === 2) {
+                        rankClass = 'bronze';
+                    }
+                    
+                    let imagePath = anime.image || 
+                        'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+                    
+                    // Fix image path if needed
+                    if (!imagePath.startsWith('http') && !imagePath.startsWith('../../')) {
+                        imagePath = '../../' + imagePath;
+                    }
+                    
+                    const genre = anime.genre ? anime.genre.split(',')[0] : 'Anime';
+                    const rating = anime.rating || 'N/A';
+                    const animeLink = anime.link || '#';
+                    const animeTitle = anime.title || 'Untitled';
+                    
+                    htmlContent += `
+                        <div class="top-rated-item" onclick="window.location.href='${animeLink}'">
+                            <div class="top-rated-rank ${rankClass}">${index + 1}</div>
+                            <div class="top-rated-image">
+                                <img src="${imagePath}" 
+                                     alt="${animeTitle}" 
+                                     onerror="this.src='https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'"
+                                     loading="lazy">
+                            </div>
+                            <div class="top-rated-info">
+                                <h4 title="${animeTitle}">${animeTitle}</h4>
+                                <div class="top-rated-meta">
+                                    <span>${genre}</span>
+                                    <span class="top-rated-rating">
+                                        <i class="fas fa-star"></i> ${rating}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>`;
+                });
+                
+                container.innerHTML = htmlContent;
+            }
+
+            displayTopRatedError() {
+                const container = document.getElementById('topRatedList');
+                if (container) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 20px; color: var(--text-tertiary);">
+                            Failed to load top rated anime
+                        </div>`;
+                }
+            }
+
+            async loadRecommendations() {
+                try {
+                    const response = await fetch('../../searchData.json');
+                    
+                    if (!response.ok) {
+                        throw new Error('Failed to load recommendations data');
+                    }
+                    
+                    const allAnimeData = await response.json();
+                    
+                    // Try to get stored order from localStorage
+                    const storedOrder = JSON.parse(
+                        localStorage.getItem('kitsune_anime_order') || '[]'
+                    );
+                    
+                    let animeToShow = [];
+                    
+                    // Use stored order if available
+                    if (storedOrder.length >= 9) {
+                        const animeMap = new Map();
+                        allAnimeData.forEach(anime => animeMap.set(anime.title, anime));
+                        
+                        animeToShow = storedOrder
+                            .slice(0, 9)
+                            .map(title => animeMap.get(title))
+                            .filter(Boolean);
+                    }
+                    
+                    // Fill remaining slots with random anime
+                    if (animeToShow.length < 9) {
+                        const shuffled = [...allAnimeData].sort(() => 0.5 - Math.random());
+                        const existingTitles = new Set(animeToShow.map(anime => anime.title));
+                        const needed = 9 - animeToShow.length;
+                        
+                        for (let item of shuffled) {
+                            if (!existingTitles.has(item.title)) {
+                                animeToShow.push(item);
+                                existingTitles.add(item.title);
+                                if (animeToShow.length >= 9) {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    
+                    // Fill with placeholders if still not enough
+                    while (animeToShow.length < 9) {
+                        animeToShow.push({
+                            title: 'Anime Placeholder',
+                            image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                            genre: 'Action',
+                            rating: '9.5',
+                            type: 'Series'
+                        });
+                    }
+                    
+                    this.displayRecommendations(animeToShow.slice(0, 9));
+                    
+                } catch (error) {
+                    console.error('Error loading recommendations:', error);
+                    this.displayRecommendationsError();
+                }
+            }
+
+            displayRecommendations(animeList) {
+                const animeRow = document.getElementById('animeRow');
+                if (!animeRow) {
+                    return;
+                }
+                
+                animeRow.innerHTML = '';
+                
+                animeList.forEach(anime => {
+                    const card = document.createElement('div');
+                    card.className = 'anime-card';
+                    
+                    // Determine image path
+                    let imagePath = anime.image || 
+                        'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+                    
+                    const currentPath = window.location.pathname;
+                    if (!imagePath.startsWith('http') && 
+                        (currentPath.includes('/donghua/') || currentPath.includes('/janime/'))) {
+                        if (!imagePath.startsWith('../')) {
+                            imagePath = '../../' + imagePath;
+                        }
+                    }
+                    
+                    // Determine status badge
+                    let statusText = 'NEW';
+                    let badgeClass = 'new';
+                    
+                    if (anime.status) {
+                        statusText = anime.status.toUpperCase();
+                        const statusLower = anime.status.toLowerCase();
+                        if (statusLower === 'completed') {
+                            badgeClass = 'completed';
+                        } else if (statusLower === 'ongoing') {
+                            badgeClass = 'ongoing';
+                        } else {
+                            badgeClass = 'new';
+                        }
+                    } else {
+                        const random = Math.random();
+                        if (random < 0.33) {
+                            statusText = 'COMPLETED';
+                            badgeClass = 'completed';
+                        } else if (random < 0.66) {
+                            statusText = 'ONGOING';
+                            badgeClass = 'ongoing';
+                        }
+                    }
+                    
+                    card.innerHTML = `
+                        <div class="anime-card-image">
+                            <img src="${imagePath}" 
+                                 alt="${anime.title}" 
+                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'"
+                                 loading="lazy">
+                            <div class="anime-card-badge ${badgeClass}">${statusText}</div>
+                        </div>
+                        <div class="anime-card-content">
+                            <h3 title="${anime.title}">${anime.title}</h3>
+                            <div class="anime-card-meta">
+                                <span>${anime.genre ? anime.genre.split(',')[0] : 'Action'}</span>
+                                <div class="anime-card-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>${anime.rating || '9.8'}</span>
+                                </div>
+                            </div>
+                            <p class="anime-card-description">${anime.type || 'Series'}</p>
+                        </div>`;
+                    
+                    // Add click handler for navigation
+                    card.addEventListener('click', () => {
+                        if (anime.link) {
+                            const currentPath = window.location.pathname;
+                            if (currentPath.includes('/donghua/') || currentPath.includes('/janime/')) {
+                                window.location.href = '../../' + anime.link;
+                            } else {
+                                window.location.href = anime.link;
+                            }
+                        }
+                    });
+                    
+                    animeRow.appendChild(card);
+                });
+            }
+
+            displayRecommendationsError() {
+                const animeRow = document.getElementById('animeRow');
+                if (animeRow) {
+                    animeRow.innerHTML = `
+                        <div style="grid-column: 1/-1; text-align: center; padding: 20px; color: var(--text-tertiary);">
+                            Failed to load recommendations
+                        </div>`;
+                }
+            }
+
+            handleDataLoadError() {
+                // Set fallback values
+                const fallbackName = 'Over Goddess';
+                
+                document.title = fallbackName + ' | Kitsune';
+                
+                const mainTitleElement = document.getElementById('animeTitle');
+                if (mainTitleElement) {
+                    mainTitleElement.textContent = fallbackName;
+                }
+                
+                const posterElement = document.getElementById('animePoster');
+                if (posterElement) {
+                    posterElement.src = '../../Image & logo/Martial Master.webp';
+                }
+                
+                const descriptionElement = document.getElementById('animeDescription');
+                if (descriptionElement) {
+                    descriptionElement.textContent = 'Failed to load episode data. Please try again later.';
+                }
+                
+                const metaContainer = document.getElementById('animeMeta');
+                if (metaContainer) {
+                    metaContainer.innerHTML = '<span class="meta-tag">Error</span>';
+                }
+                
+                // Still try to load recommendations and top rated
+                this.loadRecommendations();
+                this.loadTopRatedAnime();
+            }
+
+            setupCustomFullscreen() {
+                const videoPlayer = document.getElementById('videoPlayer');
+                const fullscreenBtn = document.getElementById('customFullscreenBtn');
+                
+                if (!videoPlayer || !fullscreenBtn) {
+                    return;
+                }
+                
+                const toggleFullscreen = () => {
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen();
+                        videoPlayer.classList.remove('custom-fullscreen');
+                    } else {
+                        if (videoPlayer.requestFullscreen) {
+                            videoPlayer.requestFullscreen().then(() => {
+                                videoPlayer.classList.add('custom-fullscreen');
+                            }).catch(err => {
+                                console.warn('Fullscreen request failed:', err);
+                                // Fallback: toggle custom class
+                                videoPlayer.classList.toggle('custom-fullscreen');
+                            });
+                        } else {
+                            // Fallback for browsers without fullscreen API
+                            videoPlayer.classList.toggle('custom-fullscreen');
+                        }
+                    }
+                };
+                
+                fullscreenBtn.addEventListener('click', toggleFullscreen);
+                
+                // Listen for fullscreen change events
+                document.addEventListener('fullscreenchange', () => {
+                    if (!document.fullscreenElement) {
+                        videoPlayer.classList.remove('custom-fullscreen');
+                    }
+                });
+                
+                document.addEventListener('webkitfullscreenchange', () => {
+                    if (!document.webkitFullscreenElement) {
+                        videoPlayer.classList.remove('custom-fullscreen');
+                    }
+                });
+            }
+
+            setupNextButton() {
+                const nextButton = document.getElementById('nextButton');
+                if (nextButton) {
+                    nextButton.addEventListener('click', () => {
+                        this.goToNextEpisode();
+                    });
+                }
+            }
+
+            setupPopStateListener() {
+                // Handle browser back/forward buttons
+                window.addEventListener('popstate', (event) => {
+                    if (event.state && event.state.episode) {
+                        // Load the episode without pushing new state
+                        this.loadEpisode(event.state.episode, false);
+                    }
+                });
             }
         }
 
-        fullscreenBtn.addEventListener('click', toggleFullscreen);
-        document.addEventListener('fullscreenchange', () => {
-            if (!document.fullscreenElement) videoPlayer.classList.remove('custom-fullscreen');
+        // ===== INITIALIZE EVERYTHING ON PAGE LOAD =====
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize theme manager
+            window.themeManager = new ThemeManager();
+            
+            // Initialize episode manager
+            window.episodeManager = new EpisodeManager();
+            window.episodeManager.initialize();
         });
-    }
-
-    // ===== INIT =====
-    document.addEventListener('DOMContentLoaded', function () {
-        window.themeManager = new ThemeManager();
-        loadAnimeData();
-        setupCustomFullscreen();
-    });
     </script>
 </body>
 </html>

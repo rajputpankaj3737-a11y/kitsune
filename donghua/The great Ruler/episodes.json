@@ -1,7 +1,7 @@
 {
-  "animeTitle": "Martial Master",
-  "poster": "../../Image & logo/Martial Master.webp",
-  "description": "In a world where martial arts reign supreme, a young warrior named Qin Chen embarks on a journey to become the strongest martial master. Facing countless enemies and uncovering ancient secrets, he must overcome his limits and master the ultimate martial techniques to protect those he loves.",
+  "animeTitle": "The Great Ruler",
+  "poster": "../../Image & logo/the great ruler.webp",
+  "description": "In a world where powerful beings compete for supremacy, a young man named Mu Chen rises to become the Great Ruler. Born with a mysterious seal that limits his potential, he must overcome countless obstacles, face ancient beasts, and challenge the very fabric of reality. Alongside his companions and his beloved Luo Li, he fights to unite the Great Thousand World",
   "metaTags": ["Chinese", "Donghua", "2023"],
   "episodes": [
     {
@@ -143,41 +143,6 @@
       "videoUrl": "https://geo.dailymotion.com/player/xtv3w.html?",
       "img":"../../Image & logo/Martial Master.webp",
       "quality": "1080p FHD"
-    },
-      {
-        "number": 21,
-        "title": "Episode 21",
-        "videoUrl": "https://geo.dailymotion.com/player/xtv3w.html?",
-        "img":"../../Image & logo/Martial Master.webp",
-        "quality": "1080p FHD"
-      },
-      {
-        "number": 22,
-        "title": "Episode 22",
-        "videoUrl": "https://geo.dailymotion.com/player/xtv3w.html?",
-        "img":"../../Image & logo/Martial Master.webp",
-        "quality": "1080p FHD"
-      },
-      {
-        "number": 23,
-        "title": "Episode 23",
-        "videoUrl": "https://geo.dailymotion.com/player/xtv3w.html?",
-        "img":"../../Image & logo/Martial Master.webp",
-        "quality": "1080p FHD"
-      },
-      {
-        "number": 24,
-        "title": "Episode 24",
-        "videoUrl": "https://geo.dailymotion.com/player/xtv3w.html?",
-        "img":"../../Image & logo/Martial Master.webp",
-        "quality": "1080p FHD"
-      },
-      {
-        "number": 25,
-        "title": "Episode 25",
-        "videoUrl": "https://geo.dailymotion.com/player/xtv3w.html?",
-        "img":"../../Image & logo/Martial Master.webp",
-        "quality": "1080p FHD"
-      }
+    }
   ]
 } 
