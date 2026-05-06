@@ -598,7 +598,6 @@
         opacity: 0;
         transform: translateY(-10px);
       }
-
       to {
         opacity: 1;
         transform: translateY(0);
@@ -1302,6 +1301,8 @@
       height: 260px;
       overflow: hidden;
       position: relative;
+      background: var(--bg-tertiary);
+      min-height: 260px;
     }
 
     .card-image img {
@@ -1309,6 +1310,40 @@
       height: 100%;
       object-fit: cover;
       transition: var(--transition);
+      opacity: 0;
+    }
+
+    .card-image img.loaded {
+      opacity: 1;
+    }
+
+    .card-image .skeleton-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--bg-tertiary) 25%, var(--card-bg-color) 50%, var(--bg-tertiary) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 4px;
+      z-index: 1;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+
+    .card-image img.loaded~.skeleton-overlay {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: 200% 0;
+      }
+      100% {
+        background-position: -200% 0;
+      }
     }
 
     .anime-card:hover .card-image img {
@@ -1404,23 +1439,6 @@
       font-size: 0.8rem;
       font-weight: 600;
       white-space: nowrap;
-    }
-
-    /* Hide old elements */
-    .card-badge {
-      display: none;
-    }
-
-    .card-meta {
-      display: none;
-    }
-
-    .card-rating {
-      display: none;
-    }
-
-    .card-description {
-      display: none;
     }
 
     /* ===== TRENDING NOW SECTION ===== */
@@ -1922,6 +1940,7 @@
       /* 1. Anime cards - clean minimal style on mobile */
       .card-image {
         height: 200px;
+        min-height: 200px;
       }
 
       .card-content {
@@ -1977,6 +1996,7 @@
       /* Adjust card image height for mobile scrolling cards */
       #todayReleasesGrid.anime-grid .anime-card .card-image {
         height: 190px;
+        min-height: 190px;
       }
 
       /* 3. Featured Anime Grid - UPDATED: 2 columns instead of 3 */
@@ -1995,6 +2015,7 @@
 
       #featuredAnimeGrid.anime-grid .anime-card .card-image {
         height: 190px;
+        min-height: 190px;
       }
 
       /* Adjust genre grid for mobile - 2 columns */
@@ -2342,16 +2363,6 @@
       border-radius: 4px;
     }
 
-    @keyframes shimmer {
-      0% {
-        background-position: 200% 0;
-      }
-
-      100% {
-        background-position: -200% 0;
-      }
-    }
-
     /* Hover info image - HIDDEN */
     .hover-info-image {
       display: none;
@@ -2368,23 +2379,11 @@
       color: var(--text-primary);
     }
 
-    .skeleton-title {
-      height: 24px;
-      width: 80%;
-      margin-bottom: 8px;
-    }
-
     .hover-info-meta {
       display: flex;
       gap: 20px;
       margin-bottom: 15px;
       font-size: 0.9rem;
-    }
-
-    .skeleton-meta {
-      height: 16px;
-      width: 60%;
-      margin-bottom: 15px;
     }
 
     .hover-info-rating {
@@ -2406,12 +2405,6 @@
       margin-bottom: 15px;
     }
 
-    .skeleton-genres {
-      height: 24px;
-      width: 70%;
-      margin-bottom: 15px;
-    }
-
     .hover-info-genre-tag {
       background: var(--glass-color);
       padding: 4px 12px;
@@ -2430,12 +2423,6 @@
       overflow: hidden;
     }
 
-    .skeleton-description {
-      height: 60px;
-      width: 100%;
-      margin-bottom: 15px;
-    }
-
     .hover-info-stats {
       display: flex;
       justify-content: space-between;
@@ -2443,12 +2430,6 @@
       border-top: 1px solid var(--border-color);
       font-size: 0.85rem;
       color: var(--text-tertiary);
-    }
-
-    .skeleton-stats {
-      height: 32px;
-      width: 100%;
-      margin-top: 15px;
     }
 
     .hover-info-stat-item {
@@ -2543,13 +2524,11 @@
     }
 
     @keyframes pulse {
-
       0%,
       100% {
         transform: scale(1);
         box-shadow: 0 0 20px rgba(229, 9, 20, 0.4);
       }
-
       50% {
         transform: scale(1.1);
         box-shadow: 0 0 40px rgba(229, 9, 20, 0.8);
@@ -2583,6 +2562,10 @@
     .anime-card-skeleton .skeleton-image {
       height: 220px;
       width: 100%;
+      background: linear-gradient(90deg, var(--bg-tertiary) 25%, var(--card-bg-color) 50%, var(--bg-tertiary) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 4px;
     }
 
     .anime-card-skeleton .skeleton-content {
@@ -2592,18 +2575,30 @@
     .anime-card-skeleton .skeleton-title-sm {
       height: 18px;
       width: 80%;
+      background: linear-gradient(90deg, var(--bg-tertiary) 25%, var(--card-bg-color) 50%, var(--bg-tertiary) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 4px;
       margin-bottom: 10px;
     }
 
     .anime-card-skeleton .skeleton-meta-sm {
       height: 14px;
       width: 60%;
+      background: linear-gradient(90deg, var(--bg-tertiary) 25%, var(--card-bg-color) 50%, var(--bg-tertiary) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 4px;
       margin-bottom: 8px;
     }
 
     .anime-card-skeleton .skeleton-desc-sm {
       height: 14px;
       width: 90%;
+      background: linear-gradient(90deg, var(--bg-tertiary) 25%, var(--card-bg-color) 50%, var(--bg-tertiary) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 4px;
     }
   </style>
 </head>
@@ -2807,7 +2802,6 @@
     <div class="container">
       <div class="section-header fade-in">
         <h2>Featured Anime</h2>
-        <p>Curated selection of the most popular and highly-rated anime series</p>
       </div>
 
       <div class="anime-grid" id="featuredAnimeGrid"></div>
@@ -3000,6 +2994,10 @@
     let currentHoverCard = null;
     let isHoverCardVisible = false;
     let hoverCardLoadTimer = null;
+
+    // ===== FEATURED ANIME QUEUE =====
+    let featuredAnimeQueue = [];
+    let allFeaturedAnime = [];
 
     // ===== FIXED: Track navigation state to restore card styles on back button =====
     let navigatingAway = false;
@@ -3979,52 +3977,136 @@
       return shuffled.slice(0, count);
     }
 
+    // ===== NEW: FEATURED ANIME QUEUE SYSTEM =====
     function getFeaturedAnimeForToday(animeList, count) {
       count = count || 30;
-      const storageKey = 'kitsune_featured_anime';
-      const timestampKey = 'kitsune_featured_timestamp';
 
-      const currentTime = new Date().getTime();
-      const oneDay = 24 * 60 * 60 * 1000;
-
-      let storedFeatured = [];
-      let lastUpdateTime = 0;
-
-      try {
-        storedFeatured = JSON.parse(localStorage.getItem(storageKey) || '[]');
-        lastUpdateTime = localStorage.getItem(timestampKey) || 0;
-      } catch (e) {
-        console.error('Error loading featured anime:', e);
-        storedFeatured = [];
-        lastUpdateTime = 0;
+      // If queue is empty, shuffle all anime and create queue
+      if (featuredAnimeQueue.length === 0) {
+        // Create a copy and shuffle
+        const shuffled = [...animeList];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        featuredAnimeQueue = shuffled;
+        allFeaturedAnime = shuffled;
+        console.log('Featured anime queue reset with', featuredAnimeQueue.length, 'anime');
       }
 
-      if (currentTime - lastUpdateTime > oneDay || storedFeatured.length === 0) {
-        console.log('Generating new featured anime for today');
+      // Get next batch from queue
+      const batch = [];
+      for (let i = 0; i < count && featuredAnimeQueue.length > 0; i++) {
+        batch.push(featuredAnimeQueue.shift());
+      }
 
-        if (animeList.length <= count) {
-          storedFeatured = animeList;
-        } else {
-          const shuffled = [...animeList];
-          for (let i = shuffled.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            const temp = shuffled[i];
-            shuffled[i] = shuffled[j];
-            shuffled[j] = temp;
-          }
+      // If we don't have enough, refill queue
+      if (batch.length < count) {
+        console.log('Refilling featured anime queue');
+        const shuffled = [...allFeaturedAnime];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        featuredAnimeQueue = shuffled;
 
-          storedFeatured = shuffled.slice(0, count);
+        // Add more to batch
+        while (batch.length < count && featuredAnimeQueue.length > 0) {
+          batch.push(featuredAnimeQueue.shift());
+        }
+      }
+
+      return batch;
+    }
+
+    // ===== ADD REFRESH BUTTON TO FEATURED ANIME SECTION =====
+    function addFeaturedRefreshButton() {
+      const featuredSection = document.querySelector('#browse .section-header');
+      if (!featuredSection) return;
+
+      // Create refresh button
+      const refreshBtn = document.createElement('button');
+      refreshBtn.id = 'featuredRefreshBtn';
+      refreshBtn.style.cssText = `
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 50px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        margin-left: auto;
+        box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+      `;
+      refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh';
+      refreshBtn.addEventListener('click', refreshFeaturedAnime);
+
+      // Add to header
+      featuredSection.style.display = 'flex';
+      featuredSection.style.justifyContent = 'space-between';
+      featuredSection.style.alignItems = 'center';
+      featuredSection.appendChild(refreshBtn);
+    }
+
+    // ===== REFRESH FEATURED ANIME FUNCTION =====
+    function refreshFeaturedAnime() {
+      const refreshBtn = document.getElementById('featuredRefreshBtn');
+      if (refreshBtn) {
+        refreshBtn.disabled = true;
+        refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+        refreshBtn.style.opacity = '0.7';
+      }
+
+      // Clear current featured anime
+      featuredAnimeGrid.innerHTML = '';
+
+      // Add skeleton loaders
+      for (let i = 0; i < 6; i++) {
+        const skeleton = document.createElement('div');
+        skeleton.className = 'anime-card-skeleton';
+        skeleton.innerHTML = `
+          <div class="skeleton-image skeleton-loader"></div>
+          <div class="skeleton-content">
+            <div class="skeleton-title-sm skeleton-loader"></div>
+            <div class="skeleton-meta-sm skeleton-loader"></div>
+            <div class="skeleton-desc-sm skeleton-loader"></div>
+          </div>
+        `;
+        featuredAnimeGrid.appendChild(skeleton);
+      }
+
+      // Load new batch after short delay
+      setTimeout(function () {
+        // Get new batch from queue
+        const batch = getFeaturedAnimeForToday(mainAnimeData, 30);
+
+        // Clear skeletons
+        featuredAnimeGrid.innerHTML = '';
+
+        // Populate with new anime
+        batch.slice(0, 30).forEach(function (anime) {
+          const animeCard = createAnimeCard(anime);
+          featuredAnimeGrid.appendChild(animeCard);
+        });
+
+        // Reinitialize hover effects
+        setTimeout(function () {
+          initHoverEffects();
+        }, 200);
+
+        // Restore button
+        if (refreshBtn) {
+          refreshBtn.disabled = false;
+          refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh';
+          refreshBtn.style.opacity = '1';
         }
 
-        localStorage.setItem(storageKey, JSON.stringify(storedFeatured));
-        localStorage.setItem(timestampKey, currentTime.toString());
-
-        console.log('Featured anime saved for today:', storedFeatured.length, 'anime');
-      } else {
-        console.log('Using stored featured anime from today');
-      }
-
-      return storedFeatured;
+        showToast('Featured anime refreshed!', 'success');
+      }, 800);
     }
 
     // ===== Carousel Functions =====
@@ -4258,7 +4340,7 @@
       }
     };
 
-    // ===== FIXED: Load anime data from data.json (not searchData.json for main data) =====
+    // ===== FIXED: Load anime data from data.json =====
     async function loadAnimeData() {
       try {
         // Load main anime data from data.json
@@ -4296,6 +4378,9 @@
 
         // Setup view toggle
         setupViewToggle();
+
+        // Add refresh button to featured section
+        addFeaturedRefreshButton();
 
         // Initialize hover effects after a delay
         setTimeout(function () {
@@ -4460,7 +4545,7 @@
       }, 200);
     }
 
-    // ===== CREATE ANIME CARD - NEW CLEAN MINIMAL STYLE =====
+    // ===== CREATE ANIME CARD - WITH SKELETON LOADING =====
     function createAnimeCard(anime) {
       const animeCard = document.createElement('div');
       animeCard.className = 'anime-card fade-in';
@@ -4481,7 +4566,8 @@
 
       animeCard.innerHTML = '' +
         '<div class="card-image">' +
-        '<img src="' + anime.image + '" alt="' + anime.title + '" onerror="this.src=\'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80\'">' +
+        '<img src="' + anime.image + '" alt="' + anime.title + '" onerror="this.src=\'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80\'" loading="lazy">' +
+        '<div class="skeleton-overlay"></div>' +
         '<div class="card-status-badge ' + statusClass + '">' + statusText + '</div>' +
         '</div>' +
         '<div class="card-content">' +
@@ -4493,6 +4579,17 @@
         '</div>' +
         '</div>' +
         '';
+
+      // Handle image loading
+      const img = animeCard.querySelector('.card-image img');
+      if (img) {
+        img.addEventListener('load', function () {
+          this.classList.add('loaded');
+        });
+        img.addEventListener('error', function () {
+          this.classList.add('loaded');
+        });
+      }
 
       // Store anime data
       animeCard.dataset.animeTitle = anime.title;
@@ -4554,7 +4651,7 @@
       }
     });
 
-    // FIXED: Search functionality - navigates to player.html
+    // FIXED: Search functionality - navigates to episodes.html
     function performSearch(query) {
       const normalizedQuery = query.toLowerCase().trim();
 
@@ -4591,7 +4688,7 @@
 
           resultItem.innerHTML = '' +
             '<div class="search-result-image">' +
-            '<img src="' + anime.image + '" alt="' + anime.title + '" onerror="this.src=\'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80\'">' +
+            '<img src="' + anime.image + '" alt="' + anime.title + '" onerror="this.src=\'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80\'" loading="lazy">' +
             '</div>' +
             '<div class="search-result-content">' +
             '<div class="search-result-title">' + anime.title + ' ' +
@@ -4608,14 +4705,14 @@
             '</div>' +
             '';
 
-          // FIXED: Search result click navigates to player.html
+          // FIXED: Search result click navigates to episodes.html
           resultItem.addEventListener('click', async function (e) {
             e.preventDefault();
             navigatingAway = true;
             const link = this.dataset.animeLink;
             if (link) {
               const basePath = link.substring(0, link.lastIndexOf('/') + 1);
-              window.location.href = basePath + 'episodes.html';  // ✅ Correct: goes to episodes.html
+              window.location.href = basePath + 'episodes.html';
             }
           });
 
@@ -4679,6 +4776,8 @@
       window.resetKitsuneFeatured = function () {
         localStorage.removeItem('kitsune_featured_anime');
         localStorage.removeItem('kitsune_featured_timestamp');
+        localStorage.removeItem('kitsune_featured_queue');
+        localStorage.removeItem('kitsune_featured_all');
         console.log('Featured anime reset. New set will be generated on refresh...');
         setTimeout(function () {
           window.location.reload();
