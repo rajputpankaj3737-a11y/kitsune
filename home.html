@@ -598,6 +598,7 @@
         opacity: 0;
         transform: translateY(-10px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
@@ -1223,6 +1224,55 @@
       background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
     }
 
+    /* ===== LATEST RELEASE HEADER STYLES (NEW) ===== */
+    .latest-release-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(90deg, #4a0010 0%, #5e0020 50%, #4a0010 100%);
+      padding: 12px 25px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      border-left: 5px solid var(--primary);
+      box-shadow: 0 4px 15px rgba(229, 9, 20, 0.15);
+    }
+
+    :root[data-theme="light"] .latest-release-header {
+      background: linear-gradient(90deg, #fce4ec 0%, #f8d7da 50%, #fce4ec 100%);
+      border-left: 5px solid var(--primary);
+    }
+
+    .latest-release-header h2 {
+      color: #ffffff;
+      font-size: 1.8rem;
+      margin: 0;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    :root[data-theme="light"] .latest-release-header h2 {
+      color: #b71c1c;
+      text-shadow: none;
+    }
+
+    .latest-release-header .view-all {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+    }
+
+    :root[data-theme="light"] .latest-release-header .view-all {
+      color: #b71c1c;
+      background: rgba(183, 28, 28, 0.15);
+    }
+
+    .latest-release-header .view-all:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateX(0);
+    }
+
     /* ===== TODAY'S RELEASES SECTION ===== */
     .today-releases-section {
       background: var(--bg-secondary);
@@ -1341,6 +1391,7 @@
       0% {
         background-position: 200% 0;
       }
+
       100% {
         background-position: -200% 0;
       }
@@ -2779,18 +2830,25 @@
   <!-- Today's Releases Section -->
   <section class="today-releases-section" id="today-releases">
     <div class="container">
-      <div class="today-releases-header fade-in">
-        <h2>Today's Releases</h2>
+      
+      <!-- NEW: Latest Release Header Box -->
+      <div class="latest-release-header fade-in">
+        <h2>Latest Release</h2>
         <div class="view-toggle">
           <a href="#" class="view-all" id="viewAllBtn">
-            View All
+            VIEW ALL
             <i class="fas fa-chevron-right"></i>
           </a>
           <a href="#" class="view-all view-less" id="viewLessBtn">
-            View Less
+            VIEW LESS
             <i class="fas fa-chevron-up"></i>
           </a>
         </div>
+      </div>
+      
+      <!-- Original Today's Releases Header (kept for layout consistency on mobile) -->
+      <div class="today-releases-header fade-in" style="display: none;">
+        <h2>Today's Releases</h2>
       </div>
 
       <div class="anime-grid" id="todayReleasesGrid"></div>
