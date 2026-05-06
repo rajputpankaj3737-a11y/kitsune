@@ -495,6 +495,8 @@
             border: 1px solid var(--primary);
             letter-spacing: 0.5px;
             white-space: nowrap;
+            min-width: fit-content;
+            display: inline-block;
         }
 
         .episode-list-container {
@@ -1027,11 +1029,23 @@
             background: var(--primary-dark);
         }
 
+        /* Loading state */
+        .loading-text {
+            color: var(--text-tertiary);
+            font-style: italic;
+        }
+
+        .counter-updated {
+            animation: counterPulse 0.5s ease-in-out;
+        }
+
+        @keyframes counterPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
         /* ===== MOBILE RESPONSIVE STYLES ===== */
-        /* 
-           IMPORTANT: Using max-width: 1024px AND max-device-width: 1024px 
-           to catch both desktop browsers resized and mobile devices including landscape
-        */
         @media screen and (max-width: 1024px), 
                screen and (max-device-width: 1024px),
                screen and (max-width: 1024px) and (orientation: landscape),
@@ -1627,7 +1641,9 @@
                         <h2>
                             <i class="fas fa-film" style="margin-right: 8px;"></i>Episodes
                         </h2>
-                        <span class="episode-counter" id="episodeCounter">-/-</span>
+                        <span class="episode-counter" id="episodeCounter">
+                            <span id="currentEpDisplay">-</span>/<span id="totalEpDisplay">-</span>
+                        </span>
                     </div>
                     <div class="episode-list-container" id="episodeListContainer">
                         <div class="episode-grid" id="episodeGrid"></div>
@@ -1715,6 +1731,7 @@
                 this.episodes = [];
                 this.totalEpisodes = 0;
                 this.isInitialLoad = true;
+                this.counterInitialized = false;
             }
 
             initialize() {
@@ -1741,7 +1758,14 @@
                 if (!this.episodes || this.episodes.length === 0) {
                     return 1;
                 }
-                return Math.max(...this.episodes.map(episode => episode.number));
+                // Find the highest episode number
+                let maxEpisode = 0;
+                this.episodes.forEach(episode => {
+                    if (episode.number > maxEpisode) {
+                        maxEpisode = episode.number;
+                    }
+                });
+                return maxEpisode;
             }
 
             async loadAnimeData() {
@@ -1754,7 +1778,14 @@
                     
                     this.animeData = await response.json();
                     this.episodes = this.animeData.episodes || [];
+                    
+                    // FIX: Count total episodes correctly from the episodes array
                     this.totalEpisodes = this.episodes.length;
+                    
+                    // If totalEpisodes is specified in JSON, use that instead
+                    if (this.animeData.totalEpisodes && !isNaN(this.animeData.totalEpisodes)) {
+                        this.totalEpisodes = parseInt(this.animeData.totalEpisodes);
+                    }
                     
                     // Load all anime information from JSON
                     this.loadAnimeInformation();
@@ -1775,6 +1806,9 @@
                     
                     // Save last watched info
                     this.saveLastWatchedInfo();
+                    
+                    // Mark counter as initialized
+                    this.counterInitialized = true;
                     
                 } catch (error) {
                     console.error('Failed to load anime data:', error);
@@ -1905,13 +1939,26 @@
                         metaContainer.appendChild(qualitySpan);
                     }
                     
-                    // Add total episodes count tag
+                    // Add total episodes count tag - FIX: Shows actual total
                     if (this.totalEpisodes > 0) {
                         const countSpan = document.createElement('span');
                         countSpan.className = 'meta-tag';
                         countSpan.textContent = this.totalEpisodes + ' Episodes';
                         metaContainer.appendChild(countSpan);
                     }
+                }
+                
+                // FIX: Immediately update the episode counter with total
+                this.forceUpdateTotalDisplay();
+            }
+
+            // FIX: Force update the total episodes display
+            forceUpdateTotalDisplay() {
+                const totalEpDisplay = document.getElementById('totalEpDisplay');
+                if (totalEpDisplay && this.totalEpisodes > 0) {
+                    totalEpDisplay.textContent = this.totalEpisodes;
+                } else if (totalEpDisplay) {
+                    totalEpDisplay.textContent = '0';
                 }
             }
 
@@ -1990,7 +2037,9 @@
                 // Update UI elements
                 this.updateNextButton(episodeNumber);
                 this.highlightCurrentEpisodeCard(episodeNumber);
-                this.updateEpisodeCounter(episodeNumber);
+                
+                // FIX: Properly update the counter with actual episode number
+                this.updateEpisodeCounterDisplay(episodeNumber);
             }
 
             updateNextButton(currentEpisodeNumber) {
@@ -2079,7 +2128,12 @@
                 
                 grid.innerHTML = htmlContent;
                 this.highlightCurrentEpisodeCard(this.currentEpisode);
-                this.updateEpisodeCounter(this.currentEpisode);
+                
+                // FIX: Update counter display after grid is loaded
+                this.updateEpisodeCounterDisplay(this.currentEpisode);
+                
+                // FIX: Force update total display again
+                this.forceUpdateTotalDisplay();
             }
 
             highlightCurrentEpisodeCard(episodeNumber) {
@@ -2101,17 +2155,32 @@
                 });
             }
 
-            // FIXED: Now properly handles episode counts beyond 99
-            updateEpisodeCounter(currentEpisodeNumber) {
-                const counter = document.getElementById('episodeCounter');
-                if (counter && this.totalEpisodes > 0) {
-                    // No limits on episode numbers - handles 100+ episodes correctly
-                    counter.textContent = currentEpisodeNumber + '/' + this.totalEpisodes;
-                } else if (counter && this.episodes.length > 0) {
-                    // Fallback using episodes array length
-                    this.totalEpisodes = this.episodes.length;
-                    counter.textContent = currentEpisodeNumber + '/' + this.totalEpisodes;
+            // FIX: Completely rewritten counter update function
+            updateEpisodeCounterDisplay(currentEpisodeNumber) {
+                const currentEpDisplay = document.getElementById('currentEpDisplay');
+                const totalEpDisplay = document.getElementById('totalEpDisplay');
+                const counterElement = document.getElementById('episodeCounter');
+                
+                // Update current episode display
+                if (currentEpDisplay) {
+                    currentEpDisplay.textContent = currentEpisodeNumber;
                 }
+                
+                // Update total episodes display
+                if (totalEpDisplay) {
+                    totalEpDisplay.textContent = this.totalEpisodes;
+                }
+                
+                // Add animation class
+                if (counterElement && this.counterInitialized) {
+                    counterElement.classList.add('counter-updated');
+                    setTimeout(() => {
+                        counterElement.classList.remove('counter-updated');
+                    }, 500);
+                }
+                
+                // Debug log to verify correct values
+                console.log('Episode Counter Updated:', currentEpisodeNumber + '/' + this.totalEpisodes);
             }
 
             saveLastWatchedInfo() {
@@ -2414,6 +2483,9 @@
                     metaContainer.innerHTML = '<span class="meta-tag">Error</span>';
                 }
                 
+                // Update total display even on error
+                this.forceUpdateTotalDisplay();
+                
                 // Still try to load recommendations and top rated
                 this.loadRecommendations();
                 this.loadTopRatedAnime();
@@ -2437,11 +2509,9 @@
                                 videoPlayer.classList.add('custom-fullscreen');
                             }).catch(err => {
                                 console.warn('Fullscreen request failed:', err);
-                                // Fallback: toggle custom class
                                 videoPlayer.classList.toggle('custom-fullscreen');
                             });
                         } else {
-                            // Fallback for browsers without fullscreen API
                             videoPlayer.classList.toggle('custom-fullscreen');
                         }
                     }
@@ -2449,7 +2519,6 @@
                 
                 fullscreenBtn.addEventListener('click', toggleFullscreen);
                 
-                // Listen for fullscreen change events
                 document.addEventListener('fullscreenchange', () => {
                     if (!document.fullscreenElement) {
                         videoPlayer.classList.remove('custom-fullscreen');
@@ -2473,10 +2542,8 @@
             }
 
             setupPopStateListener() {
-                // Handle browser back/forward buttons
                 window.addEventListener('popstate', (event) => {
                     if (event.state && event.state.episode) {
-                        // Load the episode without pushing new state
                         this.loadEpisode(event.state.episode, false);
                     }
                 });
@@ -2485,10 +2552,7 @@
 
         // ===== INITIALIZE EVERYTHING ON PAGE LOAD =====
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize theme manager
             window.themeManager = new ThemeManager();
-            
-            // Initialize episode manager
             window.episodeManager = new EpisodeManager();
             window.episodeManager.initialize();
         });

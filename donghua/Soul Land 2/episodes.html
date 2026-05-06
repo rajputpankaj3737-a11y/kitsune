@@ -346,7 +346,6 @@
                 <section class="top-rated-section" id="topRated">
                     <h2><i class="fas fa-trophy"></i>Top 20 Rated</h2>
                     <div class="top-rated-list" id="topRatedList">
-                        <!-- Top 20 anime will be loaded here -->
                         <div style="text-align: center; padding: 20px; color: var(--text-tertiary);">Loading top rated...</div>
                     </div>
                 </section>
@@ -384,20 +383,28 @@
             const description = animeData.description || animeData.synopsis || animeData.summary || '';
             const metaTags = animeData.metaTags || animeData.tags || animeData.genres || [];
             
-            // FIXED: Determine total episodes count correctly
-            // Priority: totalEpisodes from JSON > length of episodes array > 0
-            const totalEpisodesFromJson = animeData.totalEpisodes;
-            const episodesArrayLength = episodes.length;
+            // FIXED: Get the total episodes count properly
+            // The actual loaded episodes count
+            const loadedEpisodesCount = episodes.length;
             
-            // Use the maximum between totalEpisodes from JSON and actual episodes array length
-            // This ensures we show the correct count even for 1000+ episodes
-            let totalEpisodes;
-            if (totalEpisodesFromJson !== undefined && totalEpisodesFromJson !== null) {
-                // Use the larger number between declared total and actual episodes
-                totalEpisodes = Math.max(parseInt(totalEpisodesFromJson), episodesArrayLength);
+            // The total episodes as declared in JSON (could be different from loaded count)
+            const declaredTotal = animeData.totalEpisodes;
+            
+            // Use declared total if it's larger than loaded count, otherwise use loaded count
+            // This handles both cases: when JSON has all episodes or when it's a partial load
+            let totalEpisodesToShow;
+            if (declaredTotal !== undefined && declaredTotal !== null) {
+                const parsedTotal = parseInt(declaredTotal);
+                // If declared total is less than loaded, use loaded (actual data is more important)
+                // If declared total is more than loaded, use declared (some episodes might load later)
+                totalEpisodesToShow = Math.max(parsedTotal, loadedEpisodesCount);
             } else {
-                totalEpisodes = episodesArrayLength;
+                totalEpisodesToShow = loadedEpisodesCount;
             }
+            
+            console.log('Episodes loaded:', loadedEpisodesCount);
+            console.log('Declared total:', declaredTotal);
+            console.log('Display total:', totalEpisodesToShow);
             
             // Update page title
             document.title = animeName + ' | Episode Selection - Kitsune';
@@ -423,7 +430,6 @@
                     metaContainer.appendChild(span); 
                 });
             } else {
-                // Add default meta tags if none provided
                 const defaultTags = ['Anime', 'Series'];
                 defaultTags.forEach(tag => {
                     const span = document.createElement('span'); 
@@ -433,11 +439,8 @@
                 });
             }
             
-            // FIXED: Update episode counter with correct total
-            updateEpisodeCounterDisplay(totalEpisodes);
-            
-            // Load episode list with images
-            loadEpisodeList(totalEpisodes);
+            // Load episode list with proper total
+            loadEpisodeList(totalEpisodesToShow);
             
             // Load recommendations
             loadAnimeForRow();
@@ -465,20 +468,20 @@
         loadTopRated();
     }
 
-    // FIXED: Updated function to accept total episodes parameter
     function loadEpisodeList(totalEpisodes) {
         const grid = document.getElementById('episodeGrid'); 
         if (!grid) return;
         
         if (!episodes || episodes.length === 0) {
             grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-tertiary);">No episodes available</div>';
-            updateEpisodeCounterDisplay(0);
+            // FIXED: Show 0/0 when no episodes
+            document.getElementById('episodeCounter').textContent = '0/0';
             return;
         }
         
         let html = ''; 
         
-        // FIXED: Sort episodes numerically (not string comparison) to handle 1000+ episodes
+        // FIXED: Sort episodes numerically by converting to integers first
         episodes.sort((a, b) => {
             const numA = parseInt(a.number) || 0;
             const numB = parseInt(b.number) || 0;
@@ -487,7 +490,6 @@
             const imagePath = ep.img || ep.image || animeData?.poster || '../../Image & logo/Martial Master.webp';
             const quality = ep.quality || 'HD';
             const episodeTitle = ep.title || ep.name || `Episode ${ep.number}`;
-            // FIXED: Ensure episode number is treated as integer
             const episodeNumber = parseInt(ep.number) || 0;
             
             html += `
@@ -509,8 +511,11 @@
         
         grid.innerHTML = html; 
         
-        // FIXED: Update episode counter with correct display
-        updateEpisodeCounterDisplay(totalEpisodes);
+        // FIXED: Update counter with actual loaded count vs total
+        const loadedCount = episodes.length;
+        document.getElementById('episodeCounter').textContent = loadedCount + '/' + totalEpisodes;
+        
+        console.log('Episode counter set to:', loadedCount + '/' + totalEpisodes);
         
         // Highlight the last watched episode if any
         const lastWatched = localStorage.getItem('kitsune_current_watching_episode');
@@ -523,25 +528,6 @@
                 } 
             });
         }
-    }
-    
-    // FIXED: New helper function to update episode counter display
-    function updateEpisodeCounterDisplay(totalEpisodes) {
-        const counter = document.getElementById('episodeCounter'); 
-        if (!counter) return;
-        
-        // Use actual episodes length or provided total, whichever is larger
-        const actualCount = episodes ? episodes.length : 0;
-        const displayTotal = totalEpisodes || actualCount;
-        
-        // For very large numbers (1000+), format without commas
-        counter.textContent = actualCount + '/' + displayTotal;
-    }
-    
-    // FIXED: Keep backward compatibility
-    function updateEpisodeCounter() { 
-        const totalEpisodes = animeData?.totalEpisodes || episodes.length;
-        updateEpisodeCounterDisplay(totalEpisodes);
     }
 
     // ===== LOAD TOP RATED ANIME =====
@@ -582,7 +568,6 @@
         let html = '';
         
         animeList.forEach((anime, index) => {
-            // Determine rank class for top 3
             let rankClass = '';
             if (index === 0) rankClass = 'gold';
             else if (index === 1) rankClass = 'silver';
@@ -618,7 +603,6 @@
             if (!response.ok) throw new Error('Failed to load search data');
             const animeDataFromSearch = await response.json();
 
-            // Get stored order or take random items
             const storedOrder = JSON.parse(localStorage.getItem('kitsune_anime_order') || '[]');
             let animeToShow = [];
 
