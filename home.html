@@ -3977,7 +3977,7 @@
       return shuffled.slice(0, count);
     }
 
-    // ===== NEW: FEATURED ANIME QUEUE SYSTEM =====
+    // ===== NEW: FEATURED ANIME QUEUE SYSTEM (EACH ANIME ONCE BEFORE REPEAT) =====
     function getFeaturedAnimeForToday(animeList, count) {
       count = count || 30;
 
@@ -4000,16 +4000,28 @@
         batch.push(featuredAnimeQueue.shift());
       }
 
-      // If we don't have enough, refill queue
+      // If we don't have enough, refill queue with remaining unvisited anime
       if (batch.length < count) {
-        console.log('Refilling featured anime queue');
-        const shuffled = [...allFeaturedAnime];
-        for (let i = shuffled.length - 1; i > 0; i--) {
+        console.log('Refilling featured anime queue with remaining anime');
+        // Get remaining anime from the original list that haven't been visited yet
+        const visitedTitles = new Set();
+        allFeaturedAnime.forEach(function(anime) {
+          if (!featuredAnimeQueue.includes(anime)) {
+            visitedTitles.add(anime.title);
+          }
+        });
+        
+        const remainingAnime = allFeaturedAnime.filter(function(anime) {
+          return !visitedTitles.has(anime.title);
+        });
+        
+        // Shuffle remaining anime
+        for (let i = remainingAnime.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
-          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+          [remainingAnime[i], remainingAnime[j]] = [remainingAnime[j], remainingAnime[i]];
         }
-        featuredAnimeQueue = shuffled;
-
+        featuredAnimeQueue = remainingAnime;
+        
         // Add more to batch
         while (batch.length < count && featuredAnimeQueue.length > 0) {
           batch.push(featuredAnimeQueue.shift());
@@ -4052,7 +4064,7 @@
       featuredSection.appendChild(refreshBtn);
     }
 
-    // ===== REFRESH FEATURED ANIME FUNCTION =====
+    // ===== REFRESH FEATURED ANIME FUNCTION (NO TOAST) =====
     function refreshFeaturedAnime() {
       const refreshBtn = document.getElementById('featuredRefreshBtn');
       if (refreshBtn) {
@@ -4104,8 +4116,6 @@
           refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh';
           refreshBtn.style.opacity = '1';
         }
-
-        showToast('Featured anime refreshed!', 'success');
       }, 800);
     }
 
