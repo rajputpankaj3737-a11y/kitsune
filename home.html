@@ -52,7 +52,7 @@
     })();
   </script>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Kitsune - Premium Anime Streaming</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -353,6 +353,7 @@
       0% {
         background-position: 200% 0;
       }
+
       100% {
         background-position: -200% 0;
       }
@@ -431,6 +432,7 @@
         flex: 0 0 calc(50% - 10px);
         min-width: 140px;
       }
+
       .section-loader {
         gap: 12px;
       }
@@ -2130,16 +2132,23 @@
         border-radius: 9px;
       }
 
+      /* HIDE LOGO TEXT ON MOBILE - ONLY SHOW LOGO ICON */
       .logo-text {
-        font-size: 1.4rem;
+        display: none;
       }
 
       .nav-links {
         display: none !important;
       }
 
+      /* ALIGN TOGGLE, SEARCH, PROFILE TO THE RIGHT SIDE */
+      .nav-actions {
+        margin-left: auto;
+        gap: 10px;
+      }
+
       .theme-toggle-container {
-        margin-right: 8px;
+        margin-right: 5px;
       }
 
       .theme-toggle-label {
@@ -2369,7 +2378,7 @@
         padding: 20px 10px;
       }
 
-      /* ===== MOBILE FOOTER - 2 COLUMN ROW LAYOUT ===== */
+      /* ===== MOBILE FOOTER - 2 COLUMN ROW LAYOUT WITH LEGAL SECTION HIDDEN ===== */
       footer {
         padding: 30px 0 25px;
       }
@@ -2386,18 +2395,19 @@
         grid-column: 1 / -1;
       }
 
-      /* Browse and Support in first row */
+      /* Browse in first column */
       .footer-column:nth-child(2) {
         grid-column: 1;
       }
 
+      /* Support in second column */
       .footer-column:nth-child(3) {
         grid-column: 2;
       }
 
-      /* Legal in full width below */
+      /* HIDE LEGAL SECTION ON MOBILE */
       .footer-column:nth-child(4) {
-        grid-column: 1 / -1;
+        display: none;
       }
 
       .footer-column h3 {
@@ -2425,6 +2435,7 @@
 
       .footer-logo .logo-text {
         font-size: 1.3rem;
+        display: block;
       }
 
       .footer-about p {
@@ -2477,6 +2488,15 @@
       .today-releases-header .view-less {
         display: none !important;
       }
+      
+      /* FIX: Prevent desktop mode when rotating */
+      .nav-links {
+        display: none !important;
+      }
+      
+      .hamburger {
+        display: none !important;
+      }
     }
 
     /* ===== EXTRA SMALL DEVICES ===== */
@@ -2494,8 +2514,9 @@
         height: 32px;
       }
 
+      /* Logo text remains hidden on extra small */
       .logo-text {
-        font-size: 1.2rem;
+        display: none;
       }
 
       .theme-toggle-label {
@@ -2536,7 +2557,7 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
-      /* Footer still 2 columns on extra small */
+      /* Footer still 2 columns on extra small, legal hidden */
       .footer-content {
         grid-template-columns: 1fr 1fr !important;
         gap: 15px;
@@ -2556,7 +2577,16 @@
       }
 
       .footer-column:nth-child(4) {
-        grid-column: 1 / -1;
+        display: none;
+      }
+      
+      /* FIX: Prevent desktop mode when rotating */
+      .nav-links {
+        display: none !important;
+      }
+      
+      .hamburger {
+        display: none !important;
       }
     }
 
@@ -2578,6 +2608,11 @@
       .search-box.expanded .search-close-btn {
         display: block;
         opacity: 1;
+      }
+      
+      /* Ensure logo text is visible on desktop */
+      .logo-text {
+        display: block;
       }
     }
 
@@ -3215,7 +3250,7 @@
   <!-- Today's Releases Section -->
   <section class="today-releases-section" id="today-releases">
     <div class="container">
-      
+
       <!-- NEW: Latest Release Header Box -->
       <div class="latest-release-header fade-in">
         <h2>Latest Release</h2>
@@ -3230,7 +3265,7 @@
           </a>
         </div>
       </div>
-      
+
       <!-- Original Today's Releases Header (kept for layout consistency on mobile) -->
       <div class="today-releases-header fade-in" style="display: none;">
         <h2>Today's Releases</h2>
@@ -3243,17 +3278,18 @@
   <!-- Featured Anime Section -->
   <section class="anime-section" id="browse">
     <div class="container">
-      
+
       <!-- NEW: Latest Release Header Box for Featured Anime -->
       <div class="latest-release-header fade-in">
         <h2>Featured Anime</h2>
         <div class="view-toggle">
-          <button class="view-all" id="featuredRefreshBtn" style="background: rgba(255,255,255,0.15); padding: 6px 16px; border-radius: 20px; font-size: 0.9rem; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; color: #ffffff;">
+          <button class="view-all" id="featuredRefreshBtn"
+            style="background: rgba(255,255,255,0.15); padding: 6px 16px; border-radius: 20px; font-size: 0.9rem; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; color: #ffffff;">
             <i class="fas fa-sync-alt"></i> Refresh
           </button>
         </div>
       </div>
-      
+
       <div class="anime-grid" id="featuredAnimeGrid"></div>
     </div>
   </section>
@@ -3452,25 +3488,8 @@
     // ===== FIXED: Track navigation state to restore card styles on back button =====
     let navigatingAway = false;
 
-    // Listen for pageshow event to restore card styles when returning via back button
-    window.addEventListener('pageshow', function (event) {
-      if (event.persisted) {
-        console.log('Page loaded from cache (back button navigation detected) - Restoring card styles');
-        restoreAllCardStyles();
-      }
-      navigatingAway = false;
-    });
-
-    // Also listen for visibility change as a fallback
-    document.addEventListener('visibilitychange', function () {
-      if (document.visibilityState === 'visible' && navigatingAway) {
-        console.log('Page became visible after navigation - Restoring card styles');
-        setTimeout(function () {
-          restoreAllCardStyles();
-        }, 100);
-        navigatingAway = false;
-      }
-    });
+    // REMOVED: pageshow and visibilitychange event listeners that were causing page refresh on mobile scroll
+    // These have been removed to fix the auto-refresh issue
 
     // Function to restore all card styles
     function restoreAllCardStyles() {
@@ -3518,7 +3537,7 @@
       containerElement.innerHTML = '';
       const loaderDiv = document.createElement('div');
       loaderDiv.className = 'section-loader';
-      
+
       for (let i = 0; i < count; i++) {
         const skeletonCard = document.createElement('div');
         skeletonCard.className = 'skeleton-card';
@@ -4487,23 +4506,23 @@
         console.log('Refilling featured anime queue with remaining anime');
         // Get remaining anime from the original list that haven't been visited yet
         const visitedTitles = new Set();
-        allFeaturedAnime.forEach(function(anime) {
+        allFeaturedAnime.forEach(function (anime) {
           if (!featuredAnimeQueue.includes(anime)) {
             visitedTitles.add(anime.title);
           }
         });
-        
-        const remainingAnime = allFeaturedAnime.filter(function(anime) {
+
+        const remainingAnime = allFeaturedAnime.filter(function (anime) {
           return !visitedTitles.has(anime.title);
         });
-        
+
         // Shuffle remaining anime
         for (let i = remainingAnime.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [remainingAnime[i], remainingAnime[j]] = [remainingAnime[j], remainingAnime[i]];
         }
         featuredAnimeQueue = remainingAnime;
-        
+
         // Add more to batch
         while (batch.length < count && featuredAnimeQueue.length > 0) {
           batch.push(featuredAnimeQueue.shift());
@@ -4844,7 +4863,7 @@
         }, 500);
 
         // Hide page skeleton loader after everything is ready
-        setTimeout(function() {
+        setTimeout(function () {
           hidePageSkeletonLoader();
         }, 800);
 
@@ -4879,10 +4898,10 @@
       // Show skeleton loader
       showSectionLoader(todayReleasesGrid, 6);
 
-      setTimeout(function() {
+      setTimeout(function () {
         const lastTwoDaysAnime = getLastTwoDaysReleases(mainAnimeData);
         hideSectionLoader(todayReleasesGrid);
-        
+
         todayReleasesGrid.innerHTML = '';
         lastTwoDaysAnime.slice(0, 18).forEach(function (anime) {
           const animeCard = createAnimeCard(anime);
@@ -4908,7 +4927,7 @@
       // Show skeleton loader
       showSectionLoader(todayReleasesGrid, 6);
 
-      setTimeout(function() {
+      setTimeout(function () {
         const todaysReleases = getTodaysReleasesFromStorage(mainAnimeData);
         hideSectionLoader(todayReleasesGrid);
 
@@ -4928,7 +4947,7 @@
       // Show skeleton loader
       showSectionLoader(todayReleasesGrid, 6);
 
-      setTimeout(function() {
+      setTimeout(function () {
         hideSectionLoader(todayReleasesGrid);
         todayReleasesGrid.innerHTML = '';
 
@@ -4990,8 +5009,8 @@
 
       // Show skeleton for featured section
       showSectionLoader(featuredAnimeGrid, 6);
-      
-      setTimeout(function() {
+
+      setTimeout(function () {
         hideSectionLoader(featuredAnimeGrid);
         const featuredAnime = getFeaturedAnimeForToday(mainAnimeData, 30);
         populateFeaturedAnime(featuredAnime);
