@@ -1,0 +1,33 @@
+{
+  "animeTitle": "Battle Through the Heavens: The Origin",
+  "poster": "../../Image & logo/BTTHO1.webp",
+  "description": "Xiao Yan was once a genius child who lost his powers and became the town's laughingstock. Now, with the help of a mysterious teacher residing in his ring, he must reclaim his strength and honor through rigorous training and dangerous adventures. His journey takes him across the continent, facing powerful enemies and uncovering ancient secrets.",
+  "metaTags": [
+    "Chinese",
+    "Donghua",
+    "2023"
+  ],
+  "episodes": [
+    {
+      "number": 1,
+      "title": "Episode 01",
+      "videoUrl": "https://geo.dailymotion.com/player/xtv3w.html?video=k6ktx1sUGWPe5Gy9UIw",
+      "img": "../../Image & logo/BTTHO1.webp",
+      "quality": "1080p FHD"
+    },
+    {
+      "number": 2,
+      "title": "Episode 02",
+      "videoUrl": "https://geo.dailymotion.com/player/xtv3w.html?video=k4wd81lpaAUpbby9W4P",
+      "img": "../../Image & logo/BTTHO1.webp",
+      "quality": "1080p FHD"
+    },
+    {
+      "number": 3,
+      "title": "Episode 03",
+      "videoUrl": "https://geo.dailymotion.com/player/xtv3w.html?video=k2u7amIedxpXnDyaOjm",
+      "img": "../../Image & logo/BTTHO1.webp",
+      "quality": "1080p FHD"
+    }
+  ]
+}

@@ -54,21 +54,21 @@
     "rating": 8.5
   },
   {
-    "title": "Battle Through The Heavens",
-    "type": "DONGHUA • Ep 173 [4k] • Sub",
-    "genre": "Action, Adventure",
-    "image": "Image & logo/BTTH.jpg",
-    "link": "donghua/Battle Through The Heavens/episode.html",
-    "status": "ongoing",
-    "rating": 9.3
+    "title": "Battle Through the Heavens: The Origin",
+    "type": "DONGHUA • Ep 3 [4k] • Sub",
+    "genre": "Action, Adventure, Fantasy, Martial Arts, Romance",
+    "image": "Image & logo/BTTHO1.webp",
+    "link": "donghua/Battle Through The Heavens/episodes.html",
+    "status": "completed",
+    "rating": 9.2
   },
   {
     "title": "Apotheosis",
-    "type": "DONGHUA • Ep 42 [4k]• Sub",
+    "type": "DONGHUA • Ep 53 [4k]• Sub",
     "genre": "Action, Fantasy",
-    "image": "Image & logo/Apotheosis.png",
-    "link": "donghua/Apotheosis/episode.html",
-    "status": "ongoing",
+    "image": "Image & logo/Apotheosis.jpg",
+    "link": "donghua/Apotheosis/episodes.html",
+    "status": "completed",
     "rating": 8.8
   },
   {
@@ -76,7 +76,7 @@
     "type": "DONGHUA • Ep 100 [4K] • Sub",
     "genre": "Action, Adventure, Fantasy",
     "image": "Image & logo/Against_The_Sky_Supreme.webp",
-    "link": "donghua/Against the sky supreme/episode.html",
+    "link": "donghua/Against the sky supreme/episodes.html",
     "status": "ongoing",
     "rating": 8.6
   },
