@@ -52,7 +52,7 @@
     })();
   </script>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kitsune - Premium Anime Streaming</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -2132,23 +2132,16 @@
         border-radius: 9px;
       }
 
-      /* HIDE LOGO TEXT ON MOBILE - ONLY SHOW LOGO ICON */
       .logo-text {
-        display: none;
+        font-size: 1.4rem;
       }
 
       .nav-links {
         display: none !important;
       }
 
-      /* ALIGN TOGGLE, SEARCH, PROFILE TO THE RIGHT SIDE */
-      .nav-actions {
-        margin-left: auto;
-        gap: 10px;
-      }
-
       .theme-toggle-container {
-        margin-right: 5px;
+        margin-right: 8px;
       }
 
       .theme-toggle-label {
@@ -2378,7 +2371,7 @@
         padding: 20px 10px;
       }
 
-      /* ===== MOBILE FOOTER - 2 COLUMN ROW LAYOUT WITH LEGAL SECTION HIDDEN ===== */
+      /* ===== MOBILE FOOTER - 2 COLUMN ROW LAYOUT ===== */
       footer {
         padding: 30px 0 25px;
       }
@@ -2395,19 +2388,18 @@
         grid-column: 1 / -1;
       }
 
-      /* Browse in first column */
+      /* Browse and Support in first row */
       .footer-column:nth-child(2) {
         grid-column: 1;
       }
 
-      /* Support in second column */
       .footer-column:nth-child(3) {
         grid-column: 2;
       }
 
-      /* HIDE LEGAL SECTION ON MOBILE */
+      /* Legal in full width below */
       .footer-column:nth-child(4) {
-        display: none;
+        grid-column: 1 / -1;
       }
 
       .footer-column h3 {
@@ -2435,7 +2427,6 @@
 
       .footer-logo .logo-text {
         font-size: 1.3rem;
-        display: block;
       }
 
       .footer-about p {
@@ -2488,15 +2479,6 @@
       .today-releases-header .view-less {
         display: none !important;
       }
-      
-      /* FIX: Prevent desktop mode when rotating */
-      .nav-links {
-        display: none !important;
-      }
-      
-      .hamburger {
-        display: none !important;
-      }
     }
 
     /* ===== EXTRA SMALL DEVICES ===== */
@@ -2514,9 +2496,8 @@
         height: 32px;
       }
 
-      /* Logo text remains hidden on extra small */
       .logo-text {
-        display: none;
+        font-size: 1.2rem;
       }
 
       .theme-toggle-label {
@@ -2557,7 +2538,7 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
-      /* Footer still 2 columns on extra small, legal hidden */
+      /* Footer still 2 columns on extra small */
       .footer-content {
         grid-template-columns: 1fr 1fr !important;
         gap: 15px;
@@ -2577,16 +2558,7 @@
       }
 
       .footer-column:nth-child(4) {
-        display: none;
-      }
-      
-      /* FIX: Prevent desktop mode when rotating */
-      .nav-links {
-        display: none !important;
-      }
-      
-      .hamburger {
-        display: none !important;
+        grid-column: 1 / -1;
       }
     }
 
@@ -2608,11 +2580,6 @@
       .search-box.expanded .search-close-btn {
         display: block;
         opacity: 1;
-      }
-      
-      /* Ensure logo text is visible on desktop */
-      .logo-text {
-        display: block;
       }
     }
 
@@ -3488,8 +3455,25 @@
     // ===== FIXED: Track navigation state to restore card styles on back button =====
     let navigatingAway = false;
 
-    // REMOVED: pageshow and visibilitychange event listeners that were causing page refresh on mobile scroll
-    // These have been removed to fix the auto-refresh issue
+    // Listen for pageshow event to restore card styles when returning via back button
+    window.addEventListener('pageshow', function (event) {
+      if (event.persisted) {
+        console.log('Page loaded from cache (back button navigation detected) - Restoring card styles');
+        restoreAllCardStyles();
+      }
+      navigatingAway = false;
+    });
+
+    // Also listen for visibility change as a fallback
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'visible' && navigatingAway) {
+        console.log('Page became visible after navigation - Restoring card styles');
+        setTimeout(function () {
+          restoreAllCardStyles();
+        }, 100);
+        navigatingAway = false;
+      }
+    });
 
     // Function to restore all card styles
     function restoreAllCardStyles() {
