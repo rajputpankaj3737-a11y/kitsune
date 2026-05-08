@@ -3455,6 +3455,12 @@
     // ===== FIXED: Track navigation state to restore card styles on back button =====
     let navigatingAway = false;
 
+    // ===== FIXED: Track last window width to detect genuine resize vs scroll-induced resize =====
+    let lastWindowWidth = window.innerWidth;
+    let lastWindowHeight = window.innerHeight;
+    let resizeTimeout = null;
+    let isResizeHandlerActive = false;
+
     // Listen for pageshow event to restore card styles when returning via back button
     window.addEventListener('pageshow', function (event) {
       if (event.persisted) {
@@ -4851,6 +4857,10 @@
           hidePageSkeletonLoader();
         }, 800);
 
+        // Update initial dimensions
+        lastWindowWidth = window.innerWidth;
+        lastWindowHeight = window.innerHeight;
+
       } catch (error) {
         console.error('Error loading anime data:', error);
         showToast('Error loading anime data. Please refresh the page.', 'error');
@@ -5111,29 +5121,71 @@
       return animeCard;
     }
 
-    // Add resize listener
+    // ===== FIXED: Resize handler that only responds to genuine width changes, not scroll-induced resize =====
     window.addEventListener('resize', function () {
-      if (mainAnimeData.length > 0) {
-        const todaysReleases = getTodaysReleasesFromStorage(mainAnimeData);
-
-        if (isTodayReleasesExpanded) {
-          const lastTwoDaysAnime = getLastTwoDaysReleases(mainAnimeData);
-          todayReleasesGrid.innerHTML = '';
-          lastTwoDaysAnime.slice(0, 18).forEach(function (anime) {
-            const animeCard = createAnimeCard(anime);
-            todayReleasesGrid.appendChild(animeCard);
-          });
-        } else {
-          populateTodayReleases(todaysReleases);
-        }
-
-        const featuredAnime = getFeaturedAnimeForToday(mainAnimeData, 30);
-        populateFeaturedAnime(featuredAnime);
-
-        setTimeout(function () {
-          initHoverEffects();
-        }, 200);
+      // Clear any existing timeout
+      if (resizeTimeout) {
+        clearTimeout(resizeTimeout);
       }
+
+      // Get current dimensions
+      const currentWidth = window.innerWidth;
+      const currentHeight = window.innerHeight;
+
+      // Check if this is a genuine resize (width changed) or scroll-induced (only height changed on mobile)
+      const widthChanged = currentWidth !== lastWindowWidth;
+      const heightChanged = currentHeight !== lastWindowHeight;
+
+      // On mobile devices, scrolling often triggers resize events where only height changes
+      // We should only re-render if the width actually changed (orientation change or genuine resize)
+      const isMobileDevice = currentWidth <= 768;
+
+      if (isMobileDevice && !widthChanged && heightChanged) {
+        // This is likely a scroll-induced resize on mobile (browser chrome showing/hiding)
+        // Don't re-render sections
+        lastWindowHeight = currentHeight;
+        return;
+      }
+
+      // For genuine resizes, debounce with a 300ms delay
+      resizeTimeout = setTimeout(function () {
+        // Re-verify dimensions after debounce
+        const finalWidth = window.innerWidth;
+        const finalHeight = window.innerHeight;
+
+        // Only proceed if width actually changed from our last tracked width
+        if (finalWidth !== lastWindowWidth && mainAnimeData.length > 0) {
+          console.log('Genuine width change detected: ' + lastWindowWidth + 'px -> ' + finalWidth + 'px. Re-rendering sections.');
+
+          // Update tracked dimensions
+          lastWindowWidth = finalWidth;
+          lastWindowHeight = finalHeight;
+
+          // Re-render sections with appropriate layouts for new width
+          const todaysReleases = getTodaysReleasesFromStorage(mainAnimeData);
+
+          if (isTodayReleasesExpanded) {
+            const lastTwoDaysAnime = getLastTwoDaysReleases(mainAnimeData);
+            todayReleasesGrid.innerHTML = '';
+            lastTwoDaysAnime.slice(0, 18).forEach(function (anime) {
+              const animeCard = createAnimeCard(anime);
+              todayReleasesGrid.appendChild(animeCard);
+            });
+          } else {
+            populateTodayReleases(todaysReleases);
+          }
+
+          const featuredAnime = getFeaturedAnimeForToday(mainAnimeData, 30);
+          populateFeaturedAnime(featuredAnime);
+
+          setTimeout(function () {
+            initHoverEffects();
+          }, 200);
+        } else {
+          // Just update the tracked height if only height changed
+          lastWindowHeight = finalHeight;
+        }
+      }, 300);
     });
 
     // FIXED: Search functionality - navigates to episodes.html
@@ -5212,6 +5264,10 @@
     document.addEventListener('DOMContentLoaded', function () {
       // Show page skeleton loader initially
       showPageSkeletonLoader();
+
+      // Initialize tracked dimensions
+      lastWindowWidth = window.innerWidth;
+      lastWindowHeight = window.innerHeight;
 
       initializeThemeToggle();
 

@@ -204,7 +204,7 @@
             * { -webkit-tap-highlight-color: transparent; }
             body { font-size: 15px; -webkit-text-size-adjust: 100%; padding: 0; margin: 0; }
             .main-container { width: 100%; max-width: 100%; padding: 70px 0 20px; margin: 0; overflow-x: hidden; }
-            header { position: fixed; top: 0; left: 0; right: 0; padding: 12px 16px; background: rgba(var(--bg-primary), 0.98); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); border-bottom: 1px solid rgba(229, 9, 20, 0.3); z-index: 1000; display: flex; justify-content: space-between; align-items: center; }
+            header { position: fixed; top: 0; left: 0; right: 0; padding: 12px 16px; background: rgba(var(--bg-primary), 0.98); backdrop-filter: blur(60px); -webkit-backdrop-filter: blur(3px); border-bottom: 1px solid rgba(229, 9, 20, 0.3); z-index: 1000; display: flex; justify-content: space-between; align-items: center; }
             .nav-actions { gap: 12px; }
             .theme-toggle-label { width: 46px; height: 24px; }
             .theme-toggle-slider { width: 20px; height: 20px; }
@@ -355,6 +355,35 @@
     <footer>© 2025 Kitsune | All rights reserved.</footer>
 
     <script>
+    // ===== HELPER FUNCTIONS =====
+    // Parse episode number from different formats (1, "1-4", etc.)
+    function parseEpisodeNumber(episodeNumber) {
+        if (typeof episodeNumber === 'number') {
+            return episodeNumber;
+        }
+        if (typeof episodeNumber === 'string') {
+            if (episodeNumber.includes('-')) {
+                // For "1-4", return 1 (first episode in range)
+                const parts = episodeNumber.split('-');
+                return parseInt(parts[0]);
+            }
+            return parseInt(episodeNumber);
+        }
+        return 0;
+    }
+    
+    // Get the last episode number from a range
+    function getLastEpisodeNumber(episodeNumber) {
+        if (typeof episodeNumber === 'number') {
+            return episodeNumber;
+        }
+        if (typeof episodeNumber === 'string' && episodeNumber.includes('-')) {
+            const parts = episodeNumber.split('-');
+            return parseInt(parts[parts.length - 1]);
+        }
+        return parseInt(episodeNumber);
+    }
+
     // ===== THEME MANAGER =====
     class ThemeManager {
         constructor() { this.themeToggle = document.getElementById('themeToggle'); this.init(); }
@@ -383,20 +412,13 @@
             const description = animeData.description || animeData.synopsis || animeData.summary || '';
             const metaTags = animeData.metaTags || animeData.tags || animeData.genres || [];
             
-            // FIXED: Get the total episodes count properly
-            // The actual loaded episodes count
+            // Get the total episodes count properly
             const loadedEpisodesCount = episodes.length;
-            
-            // The total episodes as declared in JSON (could be different from loaded count)
             const declaredTotal = animeData.totalEpisodes;
             
-            // Use declared total if it's larger than loaded count, otherwise use loaded count
-            // This handles both cases: when JSON has all episodes or when it's a partial load
             let totalEpisodesToShow;
             if (declaredTotal !== undefined && declaredTotal !== null) {
                 const parsedTotal = parseInt(declaredTotal);
-                // If declared total is less than loaded, use loaded (actual data is more important)
-                // If declared total is more than loaded, use declared (some episodes might load later)
                 totalEpisodesToShow = Math.max(parsedTotal, loadedEpisodesCount);
             } else {
                 totalEpisodesToShow = loadedEpisodesCount;
@@ -474,34 +496,36 @@
         
         if (!episodes || episodes.length === 0) {
             grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-tertiary);">No episodes available</div>';
-            // FIXED: Show 0/0 when no episodes
             document.getElementById('episodeCounter').textContent = '0/0';
             return;
         }
         
         let html = ''; 
         
-        // FIXED: Sort episodes numerically by converting to integers first
+        // Sort episodes using parseEpisodeNumber to handle range format
         episodes.sort((a, b) => {
-            const numA = parseInt(a.number) || 0;
-            const numB = parseInt(b.number) || 0;
+            const numA = parseEpisodeNumber(a.number);
+            const numB = parseEpisodeNumber(b.number);
             return numA - numB;
         }).forEach(ep => { 
             const imagePath = ep.img || ep.image || animeData?.poster || '../../Image & logo/Martial Master.webp';
             const quality = ep.quality || 'HD';
             const episodeTitle = ep.title || ep.name || `Episode ${ep.number}`;
-            const episodeNumber = parseInt(ep.number) || 0;
+            // Get the first episode number for the link
+            const episodeNumber = parseEpisodeNumber(ep.number);
+            // Display the original number format (could be "1-4")
+            const displayNumber = ep.number;
             
             html += `
                 <a href="player.html?ep=${episodeNumber}" class="episode-card" data-ep="${episodeNumber}">
                     <div class="episode-card-image">
-                        <img src="${imagePath}" alt="Episode ${episodeNumber}" onerror="this.src='../../Image & logo/Martial Master.webp'">
-                        <div class="episode-card-badge">EP ${episodeNumber}</div>
+                        <img src="${imagePath}" alt="Episode ${displayNumber}" onerror="this.src='../../Image & logo/Martial Master.webp'">
+                        <div class="episode-card-badge">EP ${displayNumber}</div>
                     </div>
                     <div class="episode-card-content">
                         <h3>${episodeTitle}</h3>
                         <div class="episode-card-meta">
-                            <span class="episode-number">#${episodeNumber}</span>
+                            <span class="episode-number">#${displayNumber}</span>
                             <span class="episode-quality">${quality}</span>
                         </div>
                     </div>
@@ -511,7 +535,7 @@
         
         grid.innerHTML = html; 
         
-        // FIXED: Update counter with actual loaded count vs total
+        // Update counter with actual loaded count vs total
         const loadedCount = episodes.length;
         document.getElementById('episodeCounter').textContent = loadedCount + '/' + totalEpisodes;
         

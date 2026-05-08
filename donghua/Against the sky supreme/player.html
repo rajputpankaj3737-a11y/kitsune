@@ -171,7 +171,7 @@
             margin: 0 auto;
             padding: 18px 20px;
             background: rgba(var(--bg-primary), 0.98);
-            backdrop-filter: blur(30px);
+            backdrop-filter: blur(60px);
             border-bottom: 1px solid var(--border-color);
             position: fixed;
             top: 0;
@@ -1077,8 +1077,8 @@
                 right: 0;
                 padding: 12px 16px;
                 background: rgba(var(--bg-primary), 0.98);
-                backdrop-filter: blur(3px);
-                -webkit-backdrop-filter: blur(3px);
+                backdrop-filter: blur(60px);
+                -webkit-backdrop-filter: blur(60px);
                 border-bottom: 1px solid rgba(229, 9, 20, 0.3);
                 z-index: 1000;
                 display: flex;
@@ -1688,6 +1688,35 @@
     </footer>
 
     <script>
+        // ===== HELPER FUNCTIONS =====
+        // Parse episode number from different formats (1, "1-4", etc.)
+        function parseEpisodeNumber(episodeNumber) {
+            if (typeof episodeNumber === 'number') {
+                return episodeNumber;
+            }
+            if (typeof episodeNumber === 'string') {
+                if (episodeNumber.includes('-')) {
+                    // For "1-4", return 1 (first episode in range)
+                    const parts = episodeNumber.split('-');
+                    return parseInt(parts[0]);
+                }
+                return parseInt(episodeNumber);
+            }
+            return 0;
+        }
+        
+        // Get the last episode number from a range
+        function getLastEpisodeNumber(episodeNumber) {
+            if (typeof episodeNumber === 'number') {
+                return episodeNumber;
+            }
+            if (typeof episodeNumber === 'string' && episodeNumber.includes('-')) {
+                const parts = episodeNumber.split('-');
+                return parseInt(parts[parts.length - 1]);
+            }
+            return parseInt(episodeNumber);
+        }
+
         // ===== THEME MANAGER CLASS =====
         class ThemeManager {
             constructor() {
@@ -1747,7 +1776,8 @@
                 const epParam = urlParams.get('ep') || urlParams.get('episode');
                 
                 if (epParam) {
-                    const episodeNumber = parseInt(epParam);
+                    // Handle both numeric and range format in URL
+                    const episodeNumber = parseEpisodeNumber(epParam);
                     if (!isNaN(episodeNumber) && episodeNumber > 0) {
                         this.currentEpisode = episodeNumber;
                     }
@@ -1758,14 +1788,31 @@
                 if (!this.episodes || this.episodes.length === 0) {
                     return 1;
                 }
-                // Find the highest episode number
+                // Find the highest episode number, handling range format
                 let maxEpisode = 0;
                 this.episodes.forEach(episode => {
-                    if (episode.number > maxEpisode) {
-                        maxEpisode = episode.number;
+                    const lastNum = getLastEpisodeNumber(episode.number);
+                    if (lastNum > maxEpisode) {
+                        maxEpisode = lastNum;
                     }
                 });
                 return maxEpisode;
+            }
+
+            // Find episode by number, handling range format
+            findEpisodeByNumber(episodeNumber) {
+                return this.episodes.find(ep => {
+                    if (typeof ep.number === 'number') {
+                        return ep.number === episodeNumber;
+                    }
+                    if (typeof ep.number === 'string' && ep.number.includes('-')) {
+                        const parts = ep.number.split('-');
+                        const start = parseInt(parts[0]);
+                        const end = parseInt(parts[1]);
+                        return episodeNumber >= start && episodeNumber <= end;
+                    }
+                    return parseInt(ep.number) === episodeNumber;
+                });
             }
 
             async loadAnimeData() {
@@ -1779,7 +1826,7 @@
                     this.animeData = await response.json();
                     this.episodes = this.animeData.episodes || [];
                     
-                    // FIX: Count total episodes correctly from the episodes array
+                    // Count total episodes, handling range format
                     this.totalEpisodes = this.episodes.length;
                     
                     // If totalEpisodes is specified in JSON, use that instead
@@ -1792,7 +1839,7 @@
                     
                     // Determine which episode to load
                     if (this.currentEpisode === null || 
-                        !this.episodes.find(episode => episode.number === this.currentEpisode)) {
+                        !this.findEpisodeByNumber(this.currentEpisode)) {
                         this.currentEpisode = this.getLatestEpisode();
                     }
                     
@@ -1939,7 +1986,7 @@
                         metaContainer.appendChild(qualitySpan);
                     }
                     
-                    // Add total episodes count tag - FIX: Shows actual total
+                    // Add total episodes count tag - shows actual total
                     if (this.totalEpisodes > 0) {
                         const countSpan = document.createElement('span');
                         countSpan.className = 'meta-tag';
@@ -1948,11 +1995,11 @@
                     }
                 }
                 
-                // FIX: Immediately update the episode counter with total
+                // Immediately update the episode counter with total
                 this.forceUpdateTotalDisplay();
             }
 
-            // FIX: Force update the total episodes display
+            // Force update the total episodes display
             forceUpdateTotalDisplay() {
                 const totalEpDisplay = document.getElementById('totalEpDisplay');
                 if (totalEpDisplay && this.totalEpisodes > 0) {
@@ -1963,7 +2010,7 @@
             }
 
             loadEpisode(episodeNumber, updateHistory = true) {
-                const episode = this.episodes.find(ep => ep.number === episodeNumber);
+                const episode = this.findEpisodeByNumber(episodeNumber);
                 
                 if (!episode) {
                     // Episode not found, redirect to latest episode
@@ -2038,7 +2085,7 @@
                 this.updateNextButton(episodeNumber);
                 this.highlightCurrentEpisodeCard(episodeNumber);
                 
-                // FIX: Properly update the counter with actual episode number
+                // Properly update the counter with actual episode number
                 this.updateEpisodeCounterDisplay(episodeNumber);
             }
 
@@ -2048,12 +2095,12 @@
                     return;
                 }
                 
-                const nextEpisode = this.episodes.find(ep => ep.number === currentEpisodeNumber + 1);
+                const nextEpisode = this.findEpisodeByNumber(currentEpisodeNumber + 1);
                 
                 if (nextEpisode) {
                     nextButton.style.opacity = '1';
                     nextButton.disabled = false;
-                    nextButton.title = 'Go to Episode ' + nextEpisode.number;
+                    nextButton.title = 'Go to Episode ' + (currentEpisodeNumber + 1);
                 } else {
                     nextButton.style.opacity = '0.5';
                     nextButton.disabled = true;
@@ -2062,9 +2109,9 @@
             }
 
             goToNextEpisode() {
-                const nextEpisode = this.episodes.find(ep => ep.number === this.currentEpisode + 1);
+                const nextEpisode = this.findEpisodeByNumber(this.currentEpisode + 1);
                 if (nextEpisode) {
-                    this.loadEpisode(nextEpisode.number, true);
+                    this.loadEpisode(this.currentEpisode + 1, true);
                     // Scroll to top of video section
                     const videoSection = document.querySelector('.video-section');
                     if (videoSection) {
@@ -2089,8 +2136,12 @@
                 
                 let htmlContent = '';
                 
-                // Sort episodes by number
-                const sortedEpisodes = [...this.episodes].sort((a, b) => a.number - b.number);
+                // Sort episodes properly, handling range format
+                const sortedEpisodes = [...this.episodes].sort((a, b) => {
+                    const numA = parseEpisodeNumber(a.number);
+                    const numB = parseEpisodeNumber(b.number);
+                    return numA - numB;
+                });
                 
                 sortedEpisodes.forEach(episode => {
                     // Use episode image if available, otherwise use anime poster
@@ -2107,15 +2158,19 @@
                         episodeTitle.substring(0, 15) + '...' : 
                         episodeTitle;
                     
+                    // For click handler, use parseEpisodeNumber to get the number to pass
+                    const displayNumber = episode.number;
+                    const clickNumber = parseEpisodeNumber(episode.number);
+                    
                     htmlContent += `
-                        <div class="episode-card" data-ep="${episode.number}" 
-                             onclick="window.episodeManager.loadEpisode(${episode.number}, true)">
+                        <div class="episode-card" data-ep="${clickNumber}" data-ep-display="${displayNumber}"
+                             onclick="window.episodeManager.loadEpisode(${clickNumber}, true)">
                             <div class="episode-card-image">
                                 <img src="${imagePath}" 
-                                     alt="Episode ${episode.number}" 
+                                     alt="Episode ${displayNumber}" 
                                      onerror="this.src='../../Image & logo/Martial Master.webp'"
                                      loading="lazy">
-                                <div class="episode-card-badge">${episode.number}</div>
+                                <div class="episode-card-badge">${displayNumber}</div>
                             </div>
                             <div class="episode-card-content">
                                 <h3 title="${episodeTitle}">${truncatedTitle}</h3>
@@ -2129,10 +2184,10 @@
                 grid.innerHTML = htmlContent;
                 this.highlightCurrentEpisodeCard(this.currentEpisode);
                 
-                // FIX: Update counter display after grid is loaded
+                // Update counter display after grid is loaded
                 this.updateEpisodeCounterDisplay(this.currentEpisode);
                 
-                // FIX: Force update total display again
+                // Force update total display again
                 this.forceUpdateTotalDisplay();
             }
 
@@ -2155,7 +2210,7 @@
                 });
             }
 
-            // FIX: Completely rewritten counter update function
+            // Update episode counter display
             updateEpisodeCounterDisplay(currentEpisodeNumber) {
                 const currentEpDisplay = document.getElementById('currentEpDisplay');
                 const totalEpDisplay = document.getElementById('totalEpDisplay');
@@ -2178,9 +2233,6 @@
                         counterElement.classList.remove('counter-updated');
                     }, 500);
                 }
-                
-                // Debug log to verify correct values
-                console.log('Episode Counter Updated:', currentEpisodeNumber + '/' + this.totalEpisodes);
             }
 
             saveLastWatchedInfo() {
